@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap");
+
+.container {
+  margin-top: var(--chakra-sizes-4);
+  width: 100%;
+  @media (min-width: 500px) {
+    max-width: 300px;
+  }
+}
+
+.chronoButtonsContainer {
+  > * {
+    margin-right: var(--chakra-sizes-2);
+  }
+}
+
+.buttonWithTime {
+  display: flex;
+  flex-direction: column;
+  margin-right: var(--chakra-sizes-2);
+  margin-bottom: var(--chakra-sizes-3);
+  &:last-of-type {
+    margin-right: 0;
+  }
+  small {
+    font-weight: normal;
+  }
+}
+
+.countdownBox {
+  .clock {
+    line-height: 35px;
+    font-size: var(--chakra-fontSizes-5xl);
+    font-family: "Ubuntu Mono", monospace;
+    font-weight: 700;
+
+    display: flex;
+    gap: var(--chakra-sizes-2);
+  }
+  .timer {
+    display: grid;
+    display: flex;
+    align-items: center;
+    gap: var(--chakra-sizes-2-5);
+    margin-bottom: var(--chakra-sizes-2);
+    > svg {
+      font-size: var(--chakra-fontSizes-5xl);
+    }
+  }
+}
+
+.callsTable {
+  .past {
+    text-decoration: line-through;
+    color: var(--chakra-colors-gray-400);
+  }
+}
+
+.clockBox {
+  .bigTimer {
+    line-height: 35px;
+    font-size: var(--chakra-fontSizes-5xl) !important;
+    font-family: "Ubuntu Mono", monospace;
+    font-weight: 700;
+  }
+  .inProgressTimer {
+    margin: var(--chakra-sizes-2) 0;
+    &.past {
+      opacity: 0.6;
+    }
+    .title {
+      font-weight: 700;
+      font-size: var(--chakra-fontSizes-lg);
+      padding-right: var(--chakra-sizes-3);
+    }
+    .subTitle {
+      color: var(--chakra-colors-gray-600);
+      float: right;
+    }
+    .value {
+      font-size: var(--chakra-fontSizes-lg);
+      display: block;
+    }
+  }
+}

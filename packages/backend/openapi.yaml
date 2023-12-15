@@ -1,0 +1,195 @@
+swagger: "2.0"
+info:
+  title: Showplanner backend
+  description: API description in Markdown.
+  version: 1.0.0
+basePath: /v1
+host: localhost:8080
+schemes:
+  - http
+paths:
+  /users:
+    get:
+      summary: Returns a list of users.
+      description: Optional extended description in Markdown.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+  /events:
+    get:
+      parameters:
+        - in: query
+          required: true
+          name: showId
+          type: integer
+          description: ID of the show to get events from
+      summary: Returns a list of events.
+      produces:
+        - application/json
+      security:
+        - loggedIn: []
+      responses:
+        200:
+          description: OK
+          schema: 
+            type: array
+            items:
+              $ref: '#/definitions/EventDTO'
+        500:
+          $ref: '#/responses/Error'
+    post:
+      summary: Creates an event
+      consumes:
+        - application/json
+      security:
+        - loggedIn: []
+      parameters:
+        - in: body
+          name: event
+          description: The show to create
+          schema:
+            $ref: '#/definitions/EventCreateDTO'
+
+      responses:
+        500:
+          $ref: '#/responses/Error'
+        400:
+          $ref: '#/responses/Error'
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/EventDTO'
+  /shows:
+    get:
+      summary: Returns a list of shows
+      produces:
+        - application/json
+      security:
+        - loggedIn: []
+      responses:
+        401:
+          $ref: '#/responses/Error'
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BaseShowDTO'
+    post:
+      summary: Creates a show
+      consumes:
+        - application/json
+      security:
+        - loggedIn: []
+      parameters:
+        - in: body
+          name: show
+          description: The show to create
+          schema:
+            $ref: '#/definitions/BaseShowDTO'
+
+      responses:
+        500:
+          description: Internal server error
+        400:
+          $ref: '#/responses/Error'
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/BaseShowDTO'
+  /shows/{showSlug}:
+    get:
+      summary: Return details about a show
+      parameters:
+        - in: path
+          name: showSlug
+          type: string
+          required: true
+          description: Slug of show
+      produces:
+        - application/json
+      security:
+        - loggedIn: []
+      responses:
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        200:
+          description: "Show"
+          schema:
+            $ref: '#/definitions/ShowDTO'
+responses:
+  Error:
+    description: Error
+    schema:
+      $ref: '#/definitions/Error'
+definitions:
+  Error:
+    type: object
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    required:
+      - code
+      - message
+  principal:
+    type: string
+  ShowDTO:
+    allOf:
+      - $ref: '#/definitions/BaseShowDTO'
+  BaseShowDTO:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      company:
+        type: string
+      slug:
+        type: string
+    required:
+      - name
+      - company
+      - slug
+  EventCreateDTO:
+    properties:
+      showId: 
+        type: integer
+      start: 
+        type: string
+    required:
+      - showId
+      - start
+  EventDTO:
+    properties:
+      id:
+        type: integer
+      showId: 
+        type: integer
+      shortnote:
+        type: string
+      start:
+        type: string
+        format: date-time
+      curtainsUp:
+        type: string
+        format: date-time
+      end:
+        type: string
+        format: date-time
+    # Both properties are required
+    required:  
+      - id
+      - start
+
+securityDefinitions:
+  loggedIn:
+    type: apiKey
+    in: header
+    name: Authorization
+

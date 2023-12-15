@@ -1,0 +1,9 @@
+apis/DefaultApi.ts
+apis/index.ts
+index.ts
+models/BaseShow.ts
+models/Event.ts
+models/ModelError.ts
+models/Show.ts
+models/index.ts
+runtime.ts

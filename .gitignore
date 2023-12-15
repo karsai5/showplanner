@@ -1,0 +1,9 @@
+.idea
+data
+.DS_Store
+node_modules
+lerna-debug.log
+db-data
+test-results/
+playwright-report/
+request-testing/

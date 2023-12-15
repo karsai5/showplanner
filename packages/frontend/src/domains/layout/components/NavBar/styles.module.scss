@@ -1,0 +1,15 @@
+.desktopBaseLink {
+  border-bottom: 3px solid transparent;
+  transition: border 200ms;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  .icon,
+  .image {
+    margin-right: 0.5rem;
+  }
+  &:hover {
+    color: var(--chakra-colors-gray-800);
+    border-bottom-color: var(--chakra-colors-gray-200);
+  }
+}
