@@ -4,3 +4,4 @@
 # npm test
 # yarn lint
 # cd packages/frontend-next && yarn lint-staged
+gitleaks protect --staged
