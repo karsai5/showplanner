@@ -2,9 +2,13 @@
   "extends": [
     "next/core-web-vitals",
     "plugin:storybook/recommended",
-    "prettier"
+    "prettier",
+    "plugin:storybook/recommended"
   ],
-  "plugins": ["simple-import-sort", "import"],
+  "plugins": [
+    "simple-import-sort",
+    "import"
+  ],
   "rules": {
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
@@ -12,13 +16,21 @@
   },
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx", "*.js"],
+      "files": [
+        "*.ts",
+        "*.tsx",
+        "*.js"
+      ],
       "processor": "@graphql-eslint/graphql"
     },
     {
-      "files": ["*.graphql"],
+      "files": [
+        "*.graphql"
+      ],
       "parser": "@graphql-eslint/eslint-plugin",
-      "plugins": ["@graphql-eslint"],
+      "plugins": [
+        "@graphql-eslint"
+      ],
       "rules": {
         "@graphql-eslint/known-type-names": "error"
       }
