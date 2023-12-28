@@ -22,9 +22,13 @@ func HasRole(r *http.Request, role string) (bool, error) {
 }
 
 func HasPermissionOrAdmin(r *http.Request, permission string) (bool, error) {
-	_, permissions, err := getRolesAndPermissions(r)
+	roles, permissions, err := getRolesAndPermissions(r)
 	if err != nil {
 		return false, err
+	}
+
+	if contains(roles, Admin.Key) {
+		return true, nil
 	}
 
 	if contains(permissions, permission) {

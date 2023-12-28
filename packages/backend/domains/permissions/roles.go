@@ -1,66 +1,40 @@
 package permissions
 
 import (
-	"net/http"
-	"strconv"
-
 	"github.com/supertokens/supertokens-golang/recipe/userroles"
 )
 
-type role struct {
-	name        string
-	key         string
-	permissions []string
+type GeneralRole struct {
+	Name        string
+	Key         string
+	Permissions []string
 }
 
-func (r role) Initalise() {
-	_, err := userroles.CreateNewRoleOrAddPermissions(r.key, r.permissions, nil)
+func (r GeneralRole) Initialise() {
+	_, err := userroles.CreateNewRoleOrAddPermissions(r.Key, r.Permissions, nil)
 	if err != nil {
-		println("Error occured while inialising default permissions for '" + r.key + "': " + err.Error())
+		println("Error occured while inialising default permissions for '" + r.Key + "': " + err.Error())
 	}
 }
 
-type ShowPermission struct {
-	perm string
+type ShowRole struct {
+	Name        string
+	key         string
+	Permissions []ShowPermission
 }
 
-func (sp ShowPermission) Permission(showId string) string {
-	return "show:" + showId + ":" + sp.perm
+func (r ShowRole) Key(showId string) string {
+	return "show:" + showId + ":" + r.key
 }
 
-func (sp ShowPermission) HasPermission(showId uint, r *http.Request) (bool, error) {
-	id := strconv.Itoa(int(showId))
-	return HasPermissionOrAdmin(r, sp.Permission(id))
-}
-
-type Permission struct {
-	perm string
-}
-
-func (sp Permission) HasPermission(r *http.Request) (bool, error) {
-	return HasPermissionOrAdmin(r, sp.perm)
-}
-
-func (sp Permission) Permission() string {
-	return sp.perm
-}
-
-var ViewEvents = ShowPermission{perm: "view-events"}
-var AddEvents = ShowPermission{perm: "add-events"}
-
-var ViewShow = Permission{perm: "view-shows"}
-var AddShow = Permission{perm: "add-show"}
-
-var Roles = []role{Admin}
-
-var Admin = role{
-	name:        "Administrator",
-	key:         "admin",
-	permissions: []string{ViewShow.perm, AddShow.perm},
-}
-
-func InitialiseDefaultRoles() {
-	for _, role := range Roles {
-		role.Initalise()
+func (r ShowRole) Initialise(showId string) {
+	perms := []string{}
+	key := r.Key(showId)
+	for _, v := range r.Permissions {
+		perms = append(perms, v.Permission(showId))
+	}
+	_, err := userroles.CreateNewRoleOrAddPermissions(key, perms, nil)
+	if err != nil {
+		println("Error occured while inialising default permissions for '" + key + "': " + err.Error())
 	}
 }

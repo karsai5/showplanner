@@ -29,7 +29,7 @@ func configureAPI(api *operations.GoBackendAPI) http.Handler {
 		panic(err.Error())
 	}
 
-	permissions.InitialiseDefaultRoles()
+	initialiseRoles()
 
 	api.ServeError = errors.ServeError
 
