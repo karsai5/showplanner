@@ -42,7 +42,7 @@ var GetShowsSlugHandler = operations.GetShowsShowSlugHandlerFunc(func(gsssp oper
 		return &operations.GetShowsShowSlugNotFound{}
 	}
 	return &operations.GetShowsShowSlugOK{
-		Payload: MapEnrichedShow(show),
+		Payload: MapShow(show),
 	}
 })
 

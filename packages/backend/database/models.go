@@ -8,8 +8,10 @@ import (
 
 type Event struct {
 	gorm.Model
-	Start  time.Time
-	ShowID uint
+	Start      time.Time
+	End        time.Time
+	CurtainsUp time.Time
+	ShowID     uint
 }
 
 type Show struct {

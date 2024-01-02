@@ -1,6 +1,5 @@
-import { EventNamer } from "@showplanner/common";
 import cc from "classnames";
-import Address from "core/components/Address/Address";
+import { EventDTO } from "core/api/generated";
 import { getTimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
@@ -11,7 +10,6 @@ import { Fragment, ReactNode } from "react";
 import theatreIcons from "../images/theatre.png";
 import { displayDate } from "../lib/displayDate";
 import { processEvents } from "../lib/processEvents";
-import { EventTableEvent } from "../lib/types";
 
 dayjs.extend(advancedFormat);
 
@@ -26,34 +24,27 @@ const GapRow = ({ length }: { length: number }) => (
 export type FieldOptions = {
   header: ReactNode;
   position: "left" | "right";
-  render: (event: EventTableEvent) => ReactNode;
-  className?: (event: EventTableEvent) => string | string;
+  render: (event: EventDTO) => ReactNode;
+  className?: (event: EventDTO) => string | string;
 };
 
 export const EventTable: React.FC<{
-  events: Array<EventTableEvent>;
+  events: Array<EventDTO>;
   extraFieldOptions?: Array<FieldOptions>;
 }> = ({ events, extraFieldOptions }) => {
-  const shows = events
-    .filter((event) => event.curtainsUp)
-    .map((e) => ({
-      id: e.id as string,
-      start: e.start as string,
-    }));
 
   const leftExtraFieldOptions =
     extraFieldOptions?.filter((option) => option.position === "left") || [];
   const rightExtraFieldOptions =
     extraFieldOptions?.filter((option) => option.position === "right") || [];
 
-  const showNamer = new EventNamer("Show", shows);
   const headers = [
     ...leftExtraFieldOptions.map((option) => option.header),
     ...defaultHeaders,
     ...rightExtraFieldOptions.map((option) => option.header),
   ];
 
-  const { dates, groupedEvents } = processEvents<EventTableEvent>(events);
+  const { dates, groupedEvents } = processEvents<EventDTO>(events);
 
   return (
     <div className="w-full overflow-x-auto">
@@ -96,12 +87,13 @@ export const EventTable: React.FC<{
                         <div className="flex gap-1">
                           {e.curtainsUp && (
                             <Image
+                              alt="Theatre"
                               src={theatreIcons}
                               height="20px"
                               width="20px"
                             />
                           )}
-                          <span>{e.name || showNamer.getName(e.id)}</span>
+                          { /* <span>{e.name || showNamer.getName(e.id)}</span> */}
                         </div>
                       </Td>
                       <Td>
@@ -111,9 +103,11 @@ export const EventTable: React.FC<{
                           e.curtainsUp as any
                         )}
                       </Td>
+                      { /*
                       <Td>
                         <Address location={e?.location} />
                       </Td>
+                      */}
                       <Td>{e.shortnote}</Td>
                       {rightExtraFieldOptions.map((option) => (
                         <Td
@@ -138,7 +132,7 @@ export const EventTable: React.FC<{
 
 const getClassNameFromOption = (
   option: FieldOptions,
-  event: EventTableEvent
+  event: EventDTO
 ) => {
   const className = option.className;
   switch (typeof className) {

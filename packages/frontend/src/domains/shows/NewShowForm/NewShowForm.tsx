@@ -53,10 +53,6 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
       data-testid="NewShowForm"
       onSubmit={handleSubmit((data) => mutation.mutate(data))}
     >
-      <FileInput
-        onChange={(id) => setValue("bannerimage", id)}
-        label="Pick a banner image"
-      />
       <Input
         register={register("name", { required: true })}
         placeholder="Name"

@@ -19,7 +19,12 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
   } = useRouter();
   const { data: show, isLoading, isError } = useQuery(
     ["Show", slug],
-    () => api.showsShowSlugGet({showSlug: slug as string})
+    () => {
+      if (!slug) {
+        return null;
+      }
+      return api.showsShowSlugGet({ showSlug: slug as string });
+    }
   );
   return (
     <div className="flex flex-col h-screen">

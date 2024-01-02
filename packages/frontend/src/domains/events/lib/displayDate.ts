@@ -1,7 +1,7 @@
 import { dateFormatStringWithDay } from "core/dates/datesConstants";
 import dayjs from "dayjs";
 
-export const displayDate = (time: string) => {
+export const displayDate = (time: string | Date) => {
   if (!time) {
     return null;
   }

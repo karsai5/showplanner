@@ -1,4 +1,4 @@
-package dschedule
+package events_domain
 
 import (
 	"go-backend/domains/permissions"
@@ -35,8 +35,9 @@ var PostEventsHandler = operations.PostEventsHandlerFunc(func(params operations.
 		return &operations.PostShowsInternalServerError{}
 	}
 
+	mappedEvents := mapEventToEventDTO(event)
 	return &operations.PostEventsOK{
-		Payload: mapEventToEventDTO(&event),
+		Payload: &mappedEvents,
 	}
 })
 
@@ -59,7 +60,11 @@ var GetEventsHander = operations.GetEventsHandlerFunc(func(params operations.Get
 	if err != nil {
 		return &operations.GetEventsInternalServerError{}
 	}
+	for _, event := range events {
+		println(event.ID)
+		println(event.Start.String())
+	}
 	return &operations.GetEventsOK{
-		Payload: mapEventsToEventsDTO(&events),
+		Payload: mapEventsToEventsDTO(events),
 	}
 })

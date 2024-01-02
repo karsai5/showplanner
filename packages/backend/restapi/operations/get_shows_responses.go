@@ -26,7 +26,7 @@ type GetShowsOK struct {
 	/*
 	  In: Body
 	*/
-	Payload []*models.BaseShowDTO `json:"body,omitempty"`
+	Payload []*models.ShowDTO `json:"body,omitempty"`
 }
 
 // NewGetShowsOK creates GetShowsOK with default headers values
@@ -36,13 +36,13 @@ func NewGetShowsOK() *GetShowsOK {
 }
 
 // WithPayload adds the payload to the get shows o k response
-func (o *GetShowsOK) WithPayload(payload []*models.BaseShowDTO) *GetShowsOK {
+func (o *GetShowsOK) WithPayload(payload []*models.ShowDTO) *GetShowsOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get shows o k response
-func (o *GetShowsOK) SetPayload(payload []*models.BaseShowDTO) {
+func (o *GetShowsOK) SetPayload(payload []*models.ShowDTO) {
 	o.Payload = payload
 }
 
@@ -53,7 +53,7 @@ func (o *GetShowsOK) WriteResponse(rw http.ResponseWriter, producer runtime.Prod
 	payload := o.Payload
 	if payload == nil {
 		// return empty array
-		payload = make([]*models.BaseShowDTO, 0, 50)
+		payload = make([]*models.ShowDTO, 0, 50)
 	}
 
 	if err := producer.Produce(rw, payload); err != nil {

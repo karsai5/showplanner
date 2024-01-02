@@ -19,18 +19,35 @@ import (
 // swagger:model CreateEventDTO
 type CreateEventDTO struct {
 
+	// curtains up
+	// Format: date-time
+	CurtainsUp strfmt.DateTime `json:"curtainsUp,omitempty"`
+
+	// end
+	// Format: date-time
+	End strfmt.DateTime `json:"end,omitempty"`
+
 	// show Id
 	// Required: true
 	ShowID *int64 `json:"showId"`
 
 	// start
 	// Required: true
-	Start *string `json:"start"`
+	// Format: date-time
+	Start *strfmt.DateTime `json:"start"`
 }
 
 // Validate validates this create event d t o
 func (m *CreateEventDTO) Validate(formats strfmt.Registry) error {
 	var res []error
+
+	if err := m.validateCurtainsUp(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateEnd(formats); err != nil {
+		res = append(res, err)
+	}
 
 	if err := m.validateShowID(formats); err != nil {
 		res = append(res, err)
@@ -46,6 +63,30 @@ func (m *CreateEventDTO) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *CreateEventDTO) validateCurtainsUp(formats strfmt.Registry) error {
+	if swag.IsZero(m.CurtainsUp) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("curtainsUp", "body", "date-time", m.CurtainsUp.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *CreateEventDTO) validateEnd(formats strfmt.Registry) error {
+	if swag.IsZero(m.End) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("end", "body", "date-time", m.End.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *CreateEventDTO) validateShowID(formats strfmt.Registry) error {
 
 	if err := validate.Required("showId", "body", m.ShowID); err != nil {
@@ -58,6 +99,10 @@ func (m *CreateEventDTO) validateShowID(formats strfmt.Registry) error {
 func (m *CreateEventDTO) validateStart(formats strfmt.Registry) error {
 
 	if err := validate.Required("start", "body", m.Start); err != nil {
+		return err
+	}
+
+	if err := validate.FormatOf("start", "body", "date-time", m.Start.String(), formats); err != nil {
 		return err
 	}
 

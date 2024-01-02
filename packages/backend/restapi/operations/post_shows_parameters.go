@@ -36,7 +36,7 @@ type PostShowsParams struct {
 	/*The show to create
 	  In: body
 	*/
-	Show *models.BaseShowDTO
+	Show *models.CreateShowDTO
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -50,7 +50,7 @@ func (o *PostShowsParams) BindRequest(r *http.Request, route *middleware.Matched
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.BaseShowDTO
+		var body models.CreateShowDTO
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			res = append(res, errors.NewParseError("show", "body", "", err))
 		} else {

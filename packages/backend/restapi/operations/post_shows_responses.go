@@ -26,7 +26,7 @@ type PostShowsOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.BaseShowDTO `json:"body,omitempty"`
+	Payload *models.ShowDTO `json:"body,omitempty"`
 }
 
 // NewPostShowsOK creates PostShowsOK with default headers values
@@ -36,13 +36,13 @@ func NewPostShowsOK() *PostShowsOK {
 }
 
 // WithPayload adds the payload to the post shows o k response
-func (o *PostShowsOK) WithPayload(payload *models.BaseShowDTO) *PostShowsOK {
+func (o *PostShowsOK) WithPayload(payload *models.ShowDTO) *PostShowsOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post shows o k response
-func (o *PostShowsOK) SetPayload(payload *models.BaseShowDTO) {
+func (o *PostShowsOK) SetPayload(payload *models.ShowDTO) {
 	o.Payload = payload
 }
 

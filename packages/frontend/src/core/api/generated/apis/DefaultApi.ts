@@ -15,21 +15,32 @@
 
 import * as runtime from '../runtime';
 import type {
-  BaseShow,
-  Event,
-  Show,
+  CreateEventDTO,
+  CreateShowDTO,
+  EventDTO,
+  ShowDTO,
 } from '../models/index';
 import {
-    BaseShowFromJSON,
-    BaseShowToJSON,
-    EventFromJSON,
-    EventToJSON,
-    ShowFromJSON,
-    ShowToJSON,
+    CreateEventDTOFromJSON,
+    CreateEventDTOToJSON,
+    CreateShowDTOFromJSON,
+    CreateShowDTOToJSON,
+    EventDTOFromJSON,
+    EventDTOToJSON,
+    ShowDTOFromJSON,
+    ShowDTOToJSON,
 } from '../models/index';
 
+export interface EventsGetRequest {
+    showId: number;
+}
+
+export interface EventsPostRequest {
+    event?: CreateEventDTO;
+}
+
 export interface ShowsPostRequest {
-    show?: BaseShow;
+    show?: CreateShowDTO;
 }
 
 export interface ShowsShowSlugGetRequest {
@@ -44,8 +55,16 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Returns a list of events.
      */
-    async eventsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Event>>> {
+    async eventsGetRaw(requestParameters: EventsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<EventDTO>>> {
+        if (requestParameters.showId === null || requestParameters.showId === undefined) {
+            throw new runtime.RequiredError('showId','Required parameter requestParameters.showId was null or undefined when calling eventsGet.');
+        }
+
         const queryParameters: any = {};
+
+        if (requestParameters.showId !== undefined) {
+            queryParameters['showId'] = requestParameters.showId;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -60,21 +79,54 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EventFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EventDTOFromJSON));
     }
 
     /**
      * Returns a list of events.
      */
-    async eventsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Event>> {
-        const response = await this.eventsGetRaw(initOverrides);
+    async eventsGet(requestParameters: EventsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<EventDTO>> {
+        const response = await this.eventsGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates an event
+     */
+    async eventsPostRaw(requestParameters: EventsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EventDTO>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // loggedIn authentication
+        }
+
+        const response = await this.request({
+            path: `/events`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateEventDTOToJSON(requestParameters.event),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => EventDTOFromJSON(jsonValue));
+    }
+
+    /**
+     * Creates an event
+     */
+    async eventsPost(requestParameters: EventsPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EventDTO> {
+        const response = await this.eventsPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Returns a list of shows
      */
-    async showsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<BaseShow>>> {
+    async showsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ShowDTO>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -90,13 +142,13 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(BaseShowFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ShowDTOFromJSON));
     }
 
     /**
      * Returns a list of shows
      */
-    async showsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<BaseShow>> {
+    async showsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ShowDTO>> {
         const response = await this.showsGetRaw(initOverrides);
         return await response.value();
     }
@@ -104,7 +156,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Creates a show
      */
-    async showsPostRaw(requestParameters: ShowsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BaseShow>> {
+    async showsPostRaw(requestParameters: ShowsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ShowDTO>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -120,16 +172,16 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: BaseShowToJSON(requestParameters.show),
+            body: CreateShowDTOToJSON(requestParameters.show),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => BaseShowFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ShowDTOFromJSON(jsonValue));
     }
 
     /**
      * Creates a show
      */
-    async showsPost(requestParameters: ShowsPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BaseShow> {
+    async showsPost(requestParameters: ShowsPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ShowDTO> {
         const response = await this.showsPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -137,7 +189,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Return details about a show
      */
-    async showsShowSlugGetRaw(requestParameters: ShowsShowSlugGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Show>> {
+    async showsShowSlugGetRaw(requestParameters: ShowsShowSlugGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ShowDTO>> {
         if (requestParameters.showSlug === null || requestParameters.showSlug === undefined) {
             throw new runtime.RequiredError('showSlug','Required parameter requestParameters.showSlug was null or undefined when calling showsShowSlugGet.');
         }
@@ -157,13 +209,13 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ShowFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ShowDTOFromJSON(jsonValue));
     }
 
     /**
      * Return details about a show
      */
-    async showsShowSlugGet(requestParameters: ShowsShowSlugGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Show> {
+    async showsShowSlugGet(requestParameters: ShowsShowSlugGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ShowDTO> {
         const response = await this.showsShowSlugGetRaw(requestParameters, initOverrides);
         return await response.value();
     }

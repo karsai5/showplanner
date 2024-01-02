@@ -81,7 +81,7 @@ func init() {
             "name": "event",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/EventCreateDTO"
+              "$ref": "#/definitions/CreateEventDTO"
             }
           }
         ],
@@ -118,7 +118,7 @@ func init() {
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/BaseShowDTO"
+                "$ref": "#/definitions/ShowDTO"
               }
             }
           },
@@ -143,7 +143,7 @@ func init() {
             "name": "show",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/BaseShowDTO"
+              "$ref": "#/definitions/CreateShowDTO"
             }
           }
         ],
@@ -151,7 +151,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/BaseShowDTO"
+              "$ref": "#/definitions/ShowDTO"
             }
           },
           "400": {
@@ -215,7 +215,30 @@ func init() {
     }
   },
   "definitions": {
-    "BaseShowDTO": {
+    "CreateEventDTO": {
+      "required": [
+        "showId",
+        "start"
+      ],
+      "properties": {
+        "curtainsUp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "showId": {
+          "type": "integer"
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "CreateShowDTO": {
       "required": [
         "name",
         "company",
@@ -224,9 +247,6 @@ func init() {
       "properties": {
         "company": {
           "type": "string"
-        },
-        "id": {
-          "type": "integer"
         },
         "name": {
           "type": "string"
@@ -251,20 +271,6 @@ func init() {
         }
       }
     },
-    "EventCreateDTO": {
-      "required": [
-        "showId",
-        "start"
-      ],
-      "properties": {
-        "showId": {
-          "type": "integer"
-        },
-        "start": {
-          "type": "string"
-        }
-      }
-    },
     "EventDTO": {
       "required": [
         "id",
@@ -273,11 +279,13 @@ func init() {
       "properties": {
         "curtainsUp": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "x-nullable": true
         },
         "end": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "x-nullable": true
         },
         "id": {
           "type": "integer"
@@ -295,11 +303,26 @@ func init() {
       }
     },
     "ShowDTO": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/BaseShowDTO"
+      "required": [
+        "id",
+        "name",
+        "company",
+        "slug"
+      ],
+      "properties": {
+        "company": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
         }
-      ]
+      }
     },
     "principal": {
       "type": "string"
@@ -388,7 +411,7 @@ func init() {
             "name": "event",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/EventCreateDTO"
+              "$ref": "#/definitions/CreateEventDTO"
             }
           }
         ],
@@ -431,7 +454,7 @@ func init() {
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/BaseShowDTO"
+                "$ref": "#/definitions/ShowDTO"
               }
             }
           },
@@ -459,7 +482,7 @@ func init() {
             "name": "show",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/BaseShowDTO"
+              "$ref": "#/definitions/CreateShowDTO"
             }
           }
         ],
@@ -467,7 +490,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/BaseShowDTO"
+              "$ref": "#/definitions/ShowDTO"
             }
           },
           "400": {
@@ -540,7 +563,30 @@ func init() {
     }
   },
   "definitions": {
-    "BaseShowDTO": {
+    "CreateEventDTO": {
+      "required": [
+        "showId",
+        "start"
+      ],
+      "properties": {
+        "curtainsUp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "showId": {
+          "type": "integer"
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "CreateShowDTO": {
       "required": [
         "name",
         "company",
@@ -549,9 +595,6 @@ func init() {
       "properties": {
         "company": {
           "type": "string"
-        },
-        "id": {
-          "type": "integer"
         },
         "name": {
           "type": "string"
@@ -576,20 +619,6 @@ func init() {
         }
       }
     },
-    "EventCreateDTO": {
-      "required": [
-        "showId",
-        "start"
-      ],
-      "properties": {
-        "showId": {
-          "type": "integer"
-        },
-        "start": {
-          "type": "string"
-        }
-      }
-    },
     "EventDTO": {
       "required": [
         "id",
@@ -598,11 +627,13 @@ func init() {
       "properties": {
         "curtainsUp": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "x-nullable": true
         },
         "end": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "x-nullable": true
         },
         "id": {
           "type": "integer"
@@ -620,11 +651,26 @@ func init() {
       }
     },
     "ShowDTO": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/BaseShowDTO"
+      "required": [
+        "id",
+        "name",
+        "company",
+        "slug"
+      ],
+      "properties": {
+        "company": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
         }
-      ]
+      }
     },
     "principal": {
       "type": "string"

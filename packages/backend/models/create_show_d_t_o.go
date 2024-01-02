@@ -14,18 +14,14 @@ import (
 	"github.com/go-openapi/validate"
 )
 
-// ShowDTO show d t o
+// CreateShowDTO create show d t o
 //
-// swagger:model ShowDTO
-type ShowDTO struct {
+// swagger:model CreateShowDTO
+type CreateShowDTO struct {
 
 	// company
 	// Required: true
 	Company *string `json:"company"`
-
-	// id
-	// Required: true
-	ID *int64 `json:"id"`
 
 	// name
 	// Required: true
@@ -36,15 +32,11 @@ type ShowDTO struct {
 	Slug *string `json:"slug"`
 }
 
-// Validate validates this show d t o
-func (m *ShowDTO) Validate(formats strfmt.Registry) error {
+// Validate validates this create show d t o
+func (m *CreateShowDTO) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateCompany(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateID(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -62,7 +54,7 @@ func (m *ShowDTO) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *ShowDTO) validateCompany(formats strfmt.Registry) error {
+func (m *CreateShowDTO) validateCompany(formats strfmt.Registry) error {
 
 	if err := validate.Required("company", "body", m.Company); err != nil {
 		return err
@@ -71,16 +63,7 @@ func (m *ShowDTO) validateCompany(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *ShowDTO) validateID(formats strfmt.Registry) error {
-
-	if err := validate.Required("id", "body", m.ID); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ShowDTO) validateName(formats strfmt.Registry) error {
+func (m *CreateShowDTO) validateName(formats strfmt.Registry) error {
 
 	if err := validate.Required("name", "body", m.Name); err != nil {
 		return err
@@ -89,7 +72,7 @@ func (m *ShowDTO) validateName(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *ShowDTO) validateSlug(formats strfmt.Registry) error {
+func (m *CreateShowDTO) validateSlug(formats strfmt.Registry) error {
 
 	if err := validate.Required("slug", "body", m.Slug); err != nil {
 		return err
@@ -98,13 +81,13 @@ func (m *ShowDTO) validateSlug(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this show d t o based on context it is used
-func (m *ShowDTO) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+// ContextValidate validates this create show d t o based on context it is used
+func (m *CreateShowDTO) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (m *ShowDTO) MarshalBinary() ([]byte, error) {
+func (m *CreateShowDTO) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -112,8 +95,8 @@ func (m *ShowDTO) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *ShowDTO) UnmarshalBinary(b []byte) error {
-	var res ShowDTO
+func (m *CreateShowDTO) UnmarshalBinary(b []byte) error {
+	var res CreateShowDTO
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

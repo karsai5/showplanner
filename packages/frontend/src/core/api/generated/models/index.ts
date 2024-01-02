@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-export * from './BaseShow';
-export * from './Event';
+export * from './CreateEventDTO';
+export * from './CreateShowDTO';
+export * from './EventDTO';
 export * from './ModelError';
-export * from './Show';
+export * from './ShowDTO';

@@ -5,29 +5,24 @@ import (
 	"go-backend/models"
 )
 
-func MapShows(shows []database.Show) []*models.BaseShowDTO {
-	mappedShows := []*models.BaseShowDTO{}
+func MapShows(shows []database.Show) []*models.ShowDTO {
+	mappedShows := []*models.ShowDTO{}
 	for _, show := range shows {
 		mappedShows = append(mappedShows, MapShow(show))
 	}
 	return mappedShows
 }
 
-func MapShow(show database.Show) *models.BaseShowDTO {
-	return &models.BaseShowDTO{
-		ID:      int64(show.ID),
+func int64p(n uint) *int64 {
+	number := int64(n)
+	return &number
+}
+
+func MapShow(show database.Show) *models.ShowDTO {
+	return &models.ShowDTO{
+		ID:      int64p(show.ID),
 		Name:    &show.Name,
 		Slug:    &show.Slug,
 		Company: &show.Company,
-	}
-}
-
-func MapEnrichedShow(show database.Show) *models.ShowDTO {
-	return &models.ShowDTO{
-		BaseShowDTO: models.BaseShowDTO{
-			Name:    &show.Name,
-			Slug:    &show.Slug,
-			Company: &show.Company,
-		},
 	}
 }

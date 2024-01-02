@@ -1,9 +1,10 @@
 apis/DefaultApi.ts
 apis/index.ts
 index.ts
-models/BaseShow.ts
-models/Event.ts
+models/CreateEventDTO.ts
+models/CreateShowDTO.ts
+models/EventDTO.ts
 models/ModelError.ts
-models/Show.ts
+models/ShowDTO.ts
 models/index.ts
 runtime.ts

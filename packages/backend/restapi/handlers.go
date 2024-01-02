@@ -1,7 +1,7 @@
 package restapi
 
 import (
-	"go-backend/domains/dschedule"
+	"go-backend/domains/events_domain"
 	"go-backend/domains/shows_domain"
 	"go-backend/restapi/operations"
 
@@ -19,6 +19,6 @@ func getHandlers(api *operations.GoBackendAPI) {
 
 	})
 
-	api.GetEventsHandler = dschedule.GetEventsHander
-	api.PostEventsHandler = dschedule.PostEventsHandler
+	api.GetEventsHandler = events_domain.GetEventsHander
+	api.PostEventsHandler = events_domain.PostEventsHandler
 }

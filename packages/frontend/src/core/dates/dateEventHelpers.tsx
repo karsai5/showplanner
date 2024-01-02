@@ -6,23 +6,22 @@ dayjs.extend(customParseFormat);
 import { dateFormatString, timeFormatString } from "./datesConstants";
 
 export const getTimeRangeWithCurtainsUp = (
-  startString?: string,
-  endString?: string,
-  curtainsUpString?: string
+  start?: Date,
+  end?: Date,
+  curtainsUp?: Date
 ) => {
-  let stringBuilder = getTimeRangeString(startString, endString);
+  let stringBuilder = getTimeRangeString(start, end);
   if (stringBuilder?.length) {
-    if (curtainsUpString) {
-      const curtainsUp = dayjs(curtainsUpString, "HH:mm");
-      stringBuilder += ` (${curtainsUp.format(timeFormatString)} show)`;
+    if (curtainsUp) {
+      stringBuilder += ` (${dayjs(curtainsUp).format(timeFormatString)} show)`;
     }
     return stringBuilder;
   }
 };
 
 export const getTimeRangeString = (
-  startString?: string,
-  endString?: string
+  startString?: Date,
+  endString?: Date
 ) => {
   if (!startString) {
     return "";

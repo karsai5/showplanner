@@ -36,7 +36,7 @@ type PostEventsParams struct {
 	/*The show to create
 	  In: body
 	*/
-	Event *models.EventCreateDTO
+	Event *models.CreateEventDTO
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -50,7 +50,7 @@ func (o *PostEventsParams) BindRequest(r *http.Request, route *middleware.Matche
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.EventCreateDTO
+		var body models.CreateEventDTO
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			res = append(res, errors.NewParseError("event", "body", "", err))
 		} else {

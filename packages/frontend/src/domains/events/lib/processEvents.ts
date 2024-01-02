@@ -5,7 +5,7 @@ import orderBy from "lodash/orderBy";
 import uniqBy from "lodash/uniqBy";
 
 export const processEvents = <T>(
-  unprocessedEvents?: Array<{ start: string }>
+  unprocessedEvents?: Array<{ start: Date }>
 ) => {
   const uniqueDays = uniqBy(
     orderBy(unprocessedEvents, [(e) => e.start], ["asc"]).map((e) =>

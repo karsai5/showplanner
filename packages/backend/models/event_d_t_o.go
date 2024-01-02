@@ -21,11 +21,11 @@ type EventDTO struct {
 
 	// curtains up
 	// Format: date-time
-	CurtainsUp strfmt.DateTime `json:"curtainsUp,omitempty"`
+	CurtainsUp *strfmt.DateTime `json:"curtainsUp,omitempty"`
 
 	// end
 	// Format: date-time
-	End strfmt.DateTime `json:"end,omitempty"`
+	End *strfmt.DateTime `json:"end,omitempty"`
 
 	// id
 	// Required: true

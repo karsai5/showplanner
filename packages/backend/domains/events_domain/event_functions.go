@@ -1,4 +1,4 @@
-package dschedule
+package events_domain
 
 import "go-backend/database"
 

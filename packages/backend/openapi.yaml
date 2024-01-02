@@ -50,7 +50,7 @@ paths:
           name: event
           description: The show to create
           schema:
-            $ref: '#/definitions/EventCreateDTO'
+            $ref: '#/definitions/CreateEventDTO'
 
       responses:
         500:
@@ -76,7 +76,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/BaseShowDTO'
+              $ref: '#/definitions/ShowDTO'
     post:
       summary: Creates a show
       consumes:
@@ -88,7 +88,7 @@ paths:
           name: show
           description: The show to create
           schema:
-            $ref: '#/definitions/BaseShowDTO'
+            $ref: '#/definitions/CreateShowDTO'
 
       responses:
         500:
@@ -98,7 +98,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/BaseShowDTO'
+            $ref: '#/definitions/ShowDTO'
   /shows/{showSlug}:
     get:
       summary: Return details about a show
@@ -140,9 +140,6 @@ definitions:
   principal:
     type: string
   ShowDTO:
-    allOf:
-      - $ref: '#/definitions/BaseShowDTO'
-  BaseShowDTO:
     properties:
       id:
         type: integer
@@ -153,15 +150,35 @@ definitions:
       slug:
         type: string
     required:
+      - id
       - name
       - company
       - slug
-  EventCreateDTO:
+  CreateShowDTO:
+    properties:
+      name:
+        type: string
+      company:
+        type: string
+      slug:
+        type: string
+    required:
+      - name
+      - company
+      - slug
+  CreateEventDTO:
     properties:
       showId: 
         type: integer
       start: 
         type: string
+        format: date-time
+      end: 
+        type: string
+        format: date-time
+      curtainsUp: 
+        type: string
+        format: date-time
     required:
       - showId
       - start
@@ -179,10 +196,11 @@ definitions:
       curtainsUp:
         type: string
         format: date-time
+        x-nullable: true
       end:
         type: string
         format: date-time
-    # Both properties are required
+        x-nullable: true
     required:  
       - id
       - start

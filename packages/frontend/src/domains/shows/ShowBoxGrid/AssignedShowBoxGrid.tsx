@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getApi } from "core/api";
+import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { CrossIcon } from "core/components/Icons";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -13,12 +14,7 @@ export const AssignedShowBoxGrid: React.FC = () => {
 
   if (isError) {
     return (
-      <div className="alert alert-error mb-4">
-        <div>
-          <CrossIcon />
-          <span> Could not get shows </span>
-        </div>
-      </div>
+      <ErrorBox>Could not get shows</ErrorBox>
     );
   }
   if (isLoading) {
@@ -31,7 +27,7 @@ export const AssignedShowBoxGrid: React.FC = () => {
         <li key={show.slug}>
           <Link href={`shows/${show.slug}`}>
             <a>
-            {show.name}
+              {show.name}
             </a>
           </Link>
         </li>
