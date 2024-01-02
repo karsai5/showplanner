@@ -179,6 +179,12 @@ definitions:
       curtainsUp: 
         type: string
         format: date-time
+      name: 
+        type: string
+      shortnote:
+        type: string
+      address:
+        type: string
     required:
       - showId
       - start
@@ -188,11 +194,15 @@ definitions:
         type: integer
       showId: 
         type: integer
-      shortnote:
-        type: string
       start:
         type: string
         format: date-time
+      name: 
+        type: string
+      shortnote:
+        type: string
+      address:
+        type: string
       curtainsUp:
         type: string
         format: date-time

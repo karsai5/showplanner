@@ -1,3 +1,5 @@
+import { Loader } from "@googlemaps/js-api-loader";
+
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 export const getStaticMap = (lat?: number, lng?: number) => {
   if (!lat || !lng) {
@@ -7,3 +9,8 @@ export const getStaticMap = (lat?: number, lng?: number) => {
 };
 
 export const googleMapsScriptUrl = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places`;
+
+export const googleMapsLoader = new Loader({
+  apiKey: API_KEY || '',
+  version: 'weekly'
+});

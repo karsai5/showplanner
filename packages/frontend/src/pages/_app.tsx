@@ -3,13 +3,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ConfirmationModalWrapper } from "core/components/Modal/ConfirmationModal";
-import { googleMapsScriptUrl } from "core/maps/maps";
 import { Layout } from "domains/layout/Layout";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Router } from "next/router";
-import Script from "next/script";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
@@ -44,7 +42,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           <ConfirmationModalWrapper>
             {getLayout(
               <>
-                <Script src={googleMapsScriptUrl}></Script>
                 <Head>
                   <meta name="description" content="Your crew, in one place" />
                   <link rel="icon" href="/favicon.ico" />

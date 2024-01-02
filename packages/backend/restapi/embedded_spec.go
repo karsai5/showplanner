@@ -221,6 +221,9 @@ func init() {
         "start"
       ],
       "properties": {
+        "address": {
+          "type": "string"
+        },
         "curtainsUp": {
           "type": "string",
           "format": "date-time"
@@ -228,6 +231,12 @@ func init() {
         "end": {
           "type": "string",
           "format": "date-time"
+        },
+        "name": {
+          "type": "string"
+        },
+        "shortnote": {
+          "type": "string"
         },
         "showId": {
           "type": "integer"
@@ -277,6 +286,9 @@ func init() {
         "start"
       ],
       "properties": {
+        "address": {
+          "type": "string"
+        },
         "curtainsUp": {
           "type": "string",
           "format": "date-time",
@@ -289,6 +301,9 @@ func init() {
         },
         "id": {
           "type": "integer"
+        },
+        "name": {
+          "type": "string"
         },
         "shortnote": {
           "type": "string"
@@ -569,6 +584,9 @@ func init() {
         "start"
       ],
       "properties": {
+        "address": {
+          "type": "string"
+        },
         "curtainsUp": {
           "type": "string",
           "format": "date-time"
@@ -576,6 +594,12 @@ func init() {
         "end": {
           "type": "string",
           "format": "date-time"
+        },
+        "name": {
+          "type": "string"
+        },
+        "shortnote": {
+          "type": "string"
         },
         "showId": {
           "type": "integer"
@@ -625,6 +649,9 @@ func init() {
         "start"
       ],
       "properties": {
+        "address": {
+          "type": "string"
+        },
         "curtainsUp": {
           "type": "string",
           "format": "date-time",
@@ -637,6 +664,9 @@ func init() {
         },
         "id": {
           "type": "integer"
+        },
+        "name": {
+          "type": "string"
         },
         "shortnote": {
           "type": "string"

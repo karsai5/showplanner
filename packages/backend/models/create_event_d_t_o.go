@@ -19,6 +19,9 @@ import (
 // swagger:model CreateEventDTO
 type CreateEventDTO struct {
 
+	// address
+	Address string `json:"address,omitempty"`
+
 	// curtains up
 	// Format: date-time
 	CurtainsUp strfmt.DateTime `json:"curtainsUp,omitempty"`
@@ -26,6 +29,12 @@ type CreateEventDTO struct {
 	// end
 	// Format: date-time
 	End strfmt.DateTime `json:"end,omitempty"`
+
+	// name
+	Name string `json:"name,omitempty"`
+
+	// shortnote
+	Shortnote string `json:"shortnote,omitempty"`
 
 	// show Id
 	// Required: true

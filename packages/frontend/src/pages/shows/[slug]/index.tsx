@@ -54,7 +54,7 @@ const AddEventButton: FC<{showId: number}> = ({showId}) => {
   if (Array.isArray(permissions) && permissions.includes(permission)) {
     return (<>
       <button className="btn mb-2" onClick={open}>
-        Add show
+        Add event
       </button>
       <Modal isOpen={isOpen} close={close} title="Add a new show">
         <NewEventForm onSuccess={close} />

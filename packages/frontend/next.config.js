@@ -15,6 +15,12 @@ module.exports = {
         port: "",
         pathname: "/uploads/**",
       },
+       {
+        protocol: 'https',
+        hostname: 'maps.googleapis.com',
+        port: '',
+        pathname: '/maps/api/staticmap',
+      },
     ],
   },
 };

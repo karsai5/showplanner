@@ -1,5 +1,6 @@
 import cc from "classnames";
-import React, { FC } from "react";
+import { googleMapsLoader } from "core/maps/maps";
+import React, { FC, useEffect, useState } from "react";
 import { UseControllerReturn } from "react-hook-form";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -17,13 +18,23 @@ interface AddressPickerProps {
   className?: string;
   control: UseControllerReturn<any, any>;
   placeholder?: string;
+  label?: string;
 }
 
 const AddressPicker: FC<AddressPickerProps> = ({
   className,
   control,
   placeholder,
+  label,
 }) => {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    googleMapsLoader.load().then(async () => {
+      await google.maps.importLibrary('places');
+      setLoading(false);
+    })
+  });
+
   const handleChange = (address: any, lat?: number, lng?: number) => {
     control.field.onChange({ address, lat, lng });
   };
@@ -36,6 +47,10 @@ const AddressPicker: FC<AddressPickerProps> = ({
       })
       .catch((error) => console.error("Error", error));
   };
+
+  if (loading) {
+    return null;
+  }
   return (
     <>
       <PlacesAutocomplete
@@ -43,28 +58,35 @@ const AddressPicker: FC<AddressPickerProps> = ({
         onChange={handleChange}
         onSelect={handleSelect}
       >
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div>
-            <input
-              {...getInputProps({
-                placeholder: placeholder || "Search Places ...",
-                className: cc(
-                  "input input-bordered w-full location-search-input",
-                  className
-                ),
-              })}
-              onBlur={control.field.onBlur}
-            />
-            <div className="autocomplete-dropdown-container">
-              {loading && <div>Loading...</div>}
-              {suggestions && (
+        {({ getInputProps, suggestions, getSuggestionItemProps, loading: suggestionsLoading }) => (
+          <>
+            <div className="dropdown dropdown-bottom dropdown-open w-full">
+              {suggestionsLoading && <span className="loading loading-spinner loading-sm absolute top-3 right-3 text-slate-400"></span>}
+              {label && (
+                <label className="label">
+                  <span className="label-text-alt">
+                    {label}
+                  </span>
+                </label>
+              )}
+              <input
+                {...getInputProps({
+                  placeholder: placeholder || "Search Places ...",
+                  className: cc(
+                    "input input-bordered w-full location-search-input",
+                    className
+                  ),
+                })}
+                onBlur={control.field.onBlur}
+              />
+              {suggestions && suggestions.length > 0 && (
                 <ShowSuggestions
                   suggestions={suggestions}
                   getSuggestionItemProps={getSuggestionItemProps}
                 />
               )}
             </div>
-          </div>
+          </>
         )}
       </PlacesAutocomplete>
     </>
@@ -76,30 +98,22 @@ const ShowSuggestions: React.FC<{
   getSuggestionItemProps: any;
 }> = ({ suggestions, getSuggestionItemProps }) => {
   return (
-    <table>
-      <div className="overflow-x-auto">
-        <table className="table w-full table-compact mt-2">
-          <thead></thead>
-          <tbody>
-            {suggestions.map((suggestion) => {
-              return (
-                <tr
-                  key={suggestion.id}
-                  {...getSuggestionItemProps(suggestion, {
-                    className: cc(
-                      { active: suggestion.active },
-                      "hover cursor-pointer"
-                    ),
-                  })}
-                >
-                  <td>{suggestion.description}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </table>
+    <>
+      <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full">
+        {suggestions.map((suggestion) => {
+          return (
+            <li
+              key={suggestion.id}
+              {...getSuggestionItemProps(suggestion, {
+
+              })}
+            >
+              <a className={cc({ ['btn-active']: suggestion.active })}>{suggestion.description}</a>
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
 };
 

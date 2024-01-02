@@ -12,6 +12,9 @@ type Event struct {
 	End        time.Time
 	CurtainsUp time.Time
 	ShowID     uint
+	Name       string
+	ShortNote  string
+	Address    string
 }
 
 type Show struct {

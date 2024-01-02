@@ -1,9 +1,11 @@
 package events_domain
 
 import (
+	"go-backend/database"
 	"go-backend/domains/permissions"
 	"go-backend/models"
 	"go-backend/restapi/operations"
+	"time"
 
 	"github.com/go-openapi/runtime/middleware"
 )
@@ -21,7 +23,15 @@ var PostEventsHandler = operations.PostEventsHandlerFunc(func(params operations.
 		return &operations.PostShowsInternalServerError{}
 	}
 
-	event, err := mapCreateEventDTOtoEvent((*models.CreateEventDTO)(params.Event))
+	event := database.Event{
+		ShowID:     uint(*params.Event.ShowID),
+		Start:      time.Time(*params.Event.Start),
+		End:        time.Time(params.Event.End),
+		CurtainsUp: time.Time(params.Event.CurtainsUp),
+		Name:       params.Event.Name,
+		ShortNote:  params.Event.Shortnote,
+		Address:    params.Event.Address,
+	}
 
 	if err != nil {
 		println("Error mapping event: " + err.Error())
@@ -60,10 +70,7 @@ var GetEventsHander = operations.GetEventsHandlerFunc(func(params operations.Get
 	if err != nil {
 		return &operations.GetEventsInternalServerError{}
 	}
-	for _, event := range events {
-		println(event.ID)
-		println(event.Start.String())
-	}
+
 	return &operations.GetEventsOK{
 		Payload: mapEventsToEventsDTO(events),
 	}

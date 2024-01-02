@@ -1,5 +1,6 @@
 import cc from "classnames";
 import { EventDTO } from "core/api/generated";
+import Address from "core/components/Address/Address";
 import { getTimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
@@ -84,16 +85,18 @@ export const EventTable: React.FC<{
                         </Td>
                       )}
                       <Td>
-                        <div className="flex gap-1">
+                        <div className="flex gap-1 items-center">
                           {e.curtainsUp && (
-                            <Image
-                              alt="Theatre"
-                              src={theatreIcons}
-                              height="20px"
-                              width="20px"
-                            />
+                            <div className="mr-2">
+                              <Image
+                                alt="Theatre"
+                                src={theatreIcons}
+                                height="20px"
+                                width="20px"
+                              />
+                            </div>
                           )}
-                          { /* <span>{e.name || showNamer.getName(e.id)}</span> */}
+                          <span>{e.name}</span>
                         </div>
                       </Td>
                       <Td>
@@ -103,11 +106,9 @@ export const EventTable: React.FC<{
                           e.curtainsUp as any
                         )}
                       </Td>
-                      { /*
                       <Td>
-                        <Address location={e?.location} />
+                        <Address address={e?.address} />
                       </Td>
-                      */}
                       <Td>{e.shortnote}</Td>
                       {rightExtraFieldOptions.map((option) => (
                         <Td

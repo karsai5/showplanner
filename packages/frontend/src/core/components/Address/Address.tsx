@@ -1,10 +1,7 @@
 import React, { FC } from "react";
 
 interface AddressProps {
-  location?: {
-    address?: string;
-    name?: string;
-  };
+  address?: string;
 }
 
 const getUrl = (address: string) => {
@@ -13,27 +10,21 @@ const getUrl = (address: string) => {
   )}`;
 };
 
-const Address: FC<AddressProps> = ({ location }) => {
-  if (!location) {
+const Address: FC<AddressProps> = ({ address }) => {
+  if (!address) {
     return null;
   }
-  const { address, name } = location;
-  if (address) {
-    return (
-      <a
-        className="link"
-        target="_blank"
-        href={getUrl(address)}
-        rel="noreferrer"
-      >
-        {name || address}
-      </a>
-    );
-  }
-  if (name) {
-    return <>name</>;
-  }
-  return null;
+
+  return (
+    <a
+      className="link"
+      target="_blank"
+      href={getUrl(address)}
+      rel="noreferrer"
+    >
+      {address}
+    </a>
+  );
 };
 
 export default Address;

@@ -8,13 +8,13 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-func mapCreateEventDTOtoEvent(dto *models.CreateEventDTO) (database.Event, error) {
-	return database.Event{
-		Start:      time.Time(*dto.Start),
-		End:        time.Time(dto.End),
-		CurtainsUp: time.Time(dto.CurtainsUp),
-		ShowID:     uint(*dto.ShowID),
-	}, nil
+func mapEventsToEventsDTO(events []database.Event) []*models.EventDTO {
+	var mappedEvents []*models.EventDTO
+	for _, event := range events {
+		mappedEvent := mapEventToEventDTO(event)
+		mappedEvents = append(mappedEvents, &mappedEvent)
+	}
+	return mappedEvents
 }
 
 func mapEventToEventDTO(e database.Event) models.EventDTO {
@@ -23,22 +23,15 @@ func mapEventToEventDTO(e database.Event) models.EventDTO {
 	me := models.EventDTO{
 		ID:         getIdPointer(e.ID),
 		ShowID:     int64(e.ShowID),
-		Shortnote:  "",
+		Shortnote:  e.ShortNote,
 		Start:      &start,
 		CurtainsUp: getDateTime(e.CurtainsUp),
 		End:        getDateTime(e.End),
+		Name:       e.Name,
+		Address:    e.Address,
 	}
 
 	return me
-}
-
-func mapEventsToEventsDTO(events []database.Event) []*models.EventDTO {
-	var mappedEvents []*models.EventDTO
-	for _, event := range events {
-		mappedEvent := mapEventToEventDTO(event)
-		mappedEvents = append(mappedEvents, &mappedEvent)
-	}
-	return mappedEvents
 }
 
 func getIdPointer(n uint) *int64 {

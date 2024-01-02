@@ -43,6 +43,24 @@ export interface CreateEventDTO {
      * @memberof CreateEventDTO
      */
     curtainsUp?: Date;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateEventDTO
+     */
+    name?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateEventDTO
+     */
+    shortnote?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateEventDTO
+     */
+    address?: string;
 }
 
 /**
@@ -70,6 +88,9 @@ export function CreateEventDTOFromJSONTyped(json: any, ignoreDiscriminator: bool
         'start': (new Date(json['start'])),
         'end': !exists(json, 'end') ? undefined : (new Date(json['end'])),
         'curtainsUp': !exists(json, 'curtainsUp') ? undefined : (new Date(json['curtainsUp'])),
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'shortnote': !exists(json, 'shortnote') ? undefined : json['shortnote'],
+        'address': !exists(json, 'address') ? undefined : json['address'],
     };
 }
 
@@ -86,6 +107,9 @@ export function CreateEventDTOToJSON(value?: CreateEventDTO | null): any {
         'start': (value.start.toISOString()),
         'end': value.end === undefined ? undefined : (value.end.toISOString()),
         'curtainsUp': value.curtainsUp === undefined ? undefined : (value.curtainsUp.toISOString()),
+        'name': value.name,
+        'shortnote': value.shortnote,
+        'address': value.address,
     };
 }
 

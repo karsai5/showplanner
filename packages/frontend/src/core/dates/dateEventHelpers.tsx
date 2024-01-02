@@ -7,7 +7,7 @@ import { dateFormatString, timeFormatString } from "./datesConstants";
 
 export const getTimeRangeWithCurtainsUp = (
   start?: Date,
-  end?: Date,
+  end?: Date | null ,
   curtainsUp?: Date
 ) => {
   let stringBuilder = getTimeRangeString(start, end);

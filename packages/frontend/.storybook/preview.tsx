@@ -3,8 +3,7 @@ import React from 'react';
 import type { Preview } from "@storybook/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
-import { googleMapsScriptUrl } from "core/maps/maps";
-import Script from "next/script";
+import { googleMapsLoader } from "../src/core/maps/maps";
 
 import { withThemeByDataAttribute } from "@storybook/addon-themes";
 
@@ -30,9 +29,9 @@ const preview: Preview = {
     }),
     (Story) => {
       const queryClient = new QueryClient();
+      googleMapsLoader.load().then(() => google.maps.importLibrary('places'))
       return (
         <SessionProvider>
-          <Script src={googleMapsScriptUrl}></Script>
           <QueryClientProvider client={queryClient}>
             <Story />
           </QueryClientProvider>
