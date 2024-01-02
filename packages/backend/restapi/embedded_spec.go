@@ -101,6 +101,50 @@ func init() {
         }
       }
     },
+    "/events/{id}": {
+      "post": {
+        "security": [
+          {
+            "loggedIn": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Update event",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Id of event",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "The show to create",
+            "name": "event",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateEventDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Show",
+            "schema": {
+              "$ref": "#/definitions/ShowDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/shows": {
       "get": {
         "security": [
@@ -222,21 +266,26 @@ func init() {
       ],
       "properties": {
         "address": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "curtainsUp": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "x-nullable": true
         },
         "end": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "x-nullable": true
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "shortnote": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "showId": {
           "type": "integer"
@@ -287,7 +336,8 @@ func init() {
       ],
       "properties": {
         "address": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "curtainsUp": {
           "type": "string",
@@ -303,10 +353,16 @@ func init() {
           "type": "integer"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
+        },
+        "nameRaw": {
+          "type": "string",
+          "x-nullable": true
         },
         "shortnote": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "showId": {
           "type": "integer"
@@ -452,6 +508,56 @@ func init() {
         }
       }
     },
+    "/events/{id}": {
+      "post": {
+        "security": [
+          {
+            "loggedIn": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Update event",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Id of event",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "The show to create",
+            "name": "event",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateEventDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Show",
+            "schema": {
+              "$ref": "#/definitions/ShowDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/shows": {
       "get": {
         "security": [
@@ -585,21 +691,26 @@ func init() {
       ],
       "properties": {
         "address": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "curtainsUp": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "x-nullable": true
         },
         "end": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "x-nullable": true
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "shortnote": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "showId": {
           "type": "integer"
@@ -650,7 +761,8 @@ func init() {
       ],
       "properties": {
         "address": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "curtainsUp": {
           "type": "string",
@@ -666,10 +778,16 @@ func init() {
           "type": "integer"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
+        },
+        "nameRaw": {
+          "type": "string",
+          "x-nullable": true
         },
         "shortnote": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "showId": {
           "type": "integer"

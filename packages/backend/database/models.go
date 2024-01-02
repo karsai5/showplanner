@@ -9,12 +9,12 @@ import (
 type Event struct {
 	gorm.Model
 	Start      time.Time
-	End        time.Time
-	CurtainsUp time.Time
+	End        *time.Time
+	CurtainsUp *time.Time
 	ShowID     uint
-	Name       string
-	ShortNote  string
-	Address    string
+	Name       *string
+	ShortNote  *string
+	Address    *string
 }
 
 type Show struct {

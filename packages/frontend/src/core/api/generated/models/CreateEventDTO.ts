@@ -36,31 +36,31 @@ export interface CreateEventDTO {
      * @type {Date}
      * @memberof CreateEventDTO
      */
-    end?: Date;
+    end?: Date | null;
     /**
      * 
      * @type {Date}
      * @memberof CreateEventDTO
      */
-    curtainsUp?: Date;
+    curtainsUp?: Date | null;
     /**
      * 
      * @type {string}
      * @memberof CreateEventDTO
      */
-    name?: string;
+    name?: string | null;
     /**
      * 
      * @type {string}
      * @memberof CreateEventDTO
      */
-    shortnote?: string;
+    shortnote?: string | null;
     /**
      * 
      * @type {string}
      * @memberof CreateEventDTO
      */
-    address?: string;
+    address?: string | null;
 }
 
 /**
@@ -86,8 +86,8 @@ export function CreateEventDTOFromJSONTyped(json: any, ignoreDiscriminator: bool
         
         'showId': json['showId'],
         'start': (new Date(json['start'])),
-        'end': !exists(json, 'end') ? undefined : (new Date(json['end'])),
-        'curtainsUp': !exists(json, 'curtainsUp') ? undefined : (new Date(json['curtainsUp'])),
+        'end': !exists(json, 'end') ? undefined : (json['end'] === null ? null : new Date(json['end'])),
+        'curtainsUp': !exists(json, 'curtainsUp') ? undefined : (json['curtainsUp'] === null ? null : new Date(json['curtainsUp'])),
         'name': !exists(json, 'name') ? undefined : json['name'],
         'shortnote': !exists(json, 'shortnote') ? undefined : json['shortnote'],
         'address': !exists(json, 'address') ? undefined : json['address'],
@@ -105,8 +105,8 @@ export function CreateEventDTOToJSON(value?: CreateEventDTO | null): any {
         
         'showId': value.showId,
         'start': (value.start.toISOString()),
-        'end': value.end === undefined ? undefined : (value.end.toISOString()),
-        'curtainsUp': value.curtainsUp === undefined ? undefined : (value.curtainsUp.toISOString()),
+        'end': value.end === undefined ? undefined : (value.end === null ? null : value.end.toISOString()),
+        'curtainsUp': value.curtainsUp === undefined ? undefined : (value.curtainsUp === null ? null : value.curtainsUp.toISOString()),
         'name': value.name,
         'shortnote': value.shortnote,
         'address': value.address,

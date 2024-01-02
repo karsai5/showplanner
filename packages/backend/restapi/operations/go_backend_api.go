@@ -59,6 +59,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		PostEventsHandler: PostEventsHandlerFunc(func(params PostEventsParams, principal *models.Principal) middleware.Responder {
 			return middleware.NotImplemented("operation PostEvents has not yet been implemented")
 		}),
+		PostEventsIDHandler: PostEventsIDHandlerFunc(func(params PostEventsIDParams, principal *models.Principal) middleware.Responder {
+			return middleware.NotImplemented("operation PostEventsID has not yet been implemented")
+		}),
 		PostShowsHandler: PostShowsHandlerFunc(func(params PostShowsParams, principal *models.Principal) middleware.Responder {
 			return middleware.NotImplemented("operation PostShows has not yet been implemented")
 		}),
@@ -122,6 +125,8 @@ type GoBackendAPI struct {
 	GetUsersHandler GetUsersHandler
 	// PostEventsHandler sets the operation handler for the post events operation
 	PostEventsHandler PostEventsHandler
+	// PostEventsIDHandler sets the operation handler for the post events ID operation
+	PostEventsIDHandler PostEventsIDHandler
 	// PostShowsHandler sets the operation handler for the post shows operation
 	PostShowsHandler PostShowsHandler
 
@@ -219,6 +224,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.PostEventsHandler == nil {
 		unregistered = append(unregistered, "PostEventsHandler")
+	}
+	if o.PostEventsIDHandler == nil {
+		unregistered = append(unregistered, "PostEventsIDHandler")
 	}
 	if o.PostShowsHandler == nil {
 		unregistered = append(unregistered, "PostShowsHandler")
@@ -342,6 +350,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/events"] = NewPostEvents(o.context, o.PostEventsHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/events/{id}"] = NewPostEventsID(o.context, o.PostEventsIDHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

@@ -1,7 +1,7 @@
 import { Loader } from "@googlemaps/js-api-loader";
 
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
-export const getStaticMap = (lat?: number, lng?: number) => {
+export const getStaticMap = (lat?: number | null, lng?: number | null) => {
   if (!lat || !lng) {
     return "";
   }

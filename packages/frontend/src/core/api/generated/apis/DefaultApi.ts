@@ -35,6 +35,11 @@ export interface EventsGetRequest {
     showId: number;
 }
 
+export interface EventsIdPostRequest {
+    id: string;
+    event?: CreateEventDTO;
+}
+
 export interface EventsPostRequest {
     event?: CreateEventDTO;
 }
@@ -87,6 +92,43 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async eventsGet(requestParameters: EventsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<EventDTO>> {
         const response = await this.eventsGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Update event
+     */
+    async eventsIdPostRaw(requestParameters: EventsIdPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ShowDTO>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling eventsIdPost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // loggedIn authentication
+        }
+
+        const response = await this.request({
+            path: `/events/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateEventDTOToJSON(requestParameters.event),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ShowDTOFromJSON(jsonValue));
+    }
+
+    /**
+     * Update event
+     */
+    async eventsIdPost(requestParameters: EventsIdPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ShowDTO> {
+        const response = await this.eventsIdPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

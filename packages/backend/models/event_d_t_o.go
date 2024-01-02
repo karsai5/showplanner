@@ -20,7 +20,7 @@ import (
 type EventDTO struct {
 
 	// address
-	Address string `json:"address,omitempty"`
+	Address *string `json:"address,omitempty"`
 
 	// curtains up
 	// Format: date-time
@@ -35,10 +35,13 @@ type EventDTO struct {
 	ID *int64 `json:"id"`
 
 	// name
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
+
+	// name raw
+	NameRaw *string `json:"nameRaw,omitempty"`
 
 	// shortnote
-	Shortnote string `json:"shortnote,omitempty"`
+	Shortnote *string `json:"shortnote,omitempty"`
 
 	// show Id
 	ShowID int64 `json:"showId,omitempty"`

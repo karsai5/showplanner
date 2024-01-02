@@ -3,7 +3,7 @@ import { getApi } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { useModal } from "core/components/Modal/Modal";
 import { H2 } from "core/components/Typography";
-import { EventTable } from "domains/events/EventTable";
+import { AdminEventTable } from "domains/events/EventTable/AdminEventTable";
 import NewEventForm from "domains/events/NewEventForm/NewEventForm";
 import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
@@ -32,7 +32,7 @@ const ShowPage = () => {
           </div>
           {isError && <ErrorBox>Could not get shows</ErrorBox>}
           {isLoading && <progress className="progress w-56"></progress>}
-          {events && <EventTable events={events} />}
+          {events && <AdminEventTable events={events} />}
         </div>
       </div>
     </>

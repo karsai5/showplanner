@@ -33,7 +33,7 @@ paths:
       responses:
         200:
           description: OK
-          schema: 
+          schema:
             type: array
             items:
               $ref: '#/definitions/EventDTO'
@@ -61,6 +61,33 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/EventDTO'
+  /events/{id}:
+    post:
+      summary: Update event
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Id of event
+        - in: body
+          name: event
+          description: The show to create
+          schema:
+            $ref: '#/definitions/CreateEventDTO'
+      produces:
+        - application/json
+      security:
+        - loggedIn: []
+      responses:
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        200:
+          description: "Show"
+          schema:
+            $ref: '#/definitions/ShowDTO'
   /shows:
     get:
       summary: Returns a list of shows
@@ -168,23 +195,28 @@ definitions:
       - slug
   CreateEventDTO:
     properties:
-      showId: 
+      showId:
         type: integer
-      start: 
+      start:
         type: string
         format: date-time
-      end: 
+      end:
         type: string
         format: date-time
-      curtainsUp: 
+        x-nullable: true
+      curtainsUp:
         type: string
         format: date-time
-      name: 
+        x-nullable: true
+      name:
         type: string
+        x-nullable: true
       shortnote:
         type: string
+        x-nullable: true
       address:
         type: string
+        x-nullable: true
     required:
       - showId
       - start
@@ -192,17 +224,23 @@ definitions:
     properties:
       id:
         type: integer
-      showId: 
+      showId:
         type: integer
       start:
         type: string
         format: date-time
-      name: 
+      name:
         type: string
+        x-nullable: true
+      nameRaw:
+        type: string
+        x-nullable: true
       shortnote:
         type: string
+        x-nullable: true
       address:
         type: string
+        x-nullable: true
       curtainsUp:
         type: string
         format: date-time
@@ -211,7 +249,7 @@ definitions:
         type: string
         format: date-time
         x-nullable: true
-    required:  
+    required:
       - id
       - start
 
@@ -220,4 +258,3 @@ securityDefinitions:
     type: apiKey
     in: header
     name: Authorization
-

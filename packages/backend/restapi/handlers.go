@@ -21,4 +21,5 @@ func getHandlers(api *operations.GoBackendAPI) {
 
 	api.GetEventsHandler = events_domain.GetEventsHander
 	api.PostEventsHandler = events_domain.PostEventsHandler
+	api.PostEventsIDHandler = events_domain.PostEventsIdHandler
 }

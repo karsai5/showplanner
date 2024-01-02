@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
 import { getApi } from "core/api";
+import { EventDTO } from "core/api/generated";
 import AddressPicker from "core/components/fields/AddressPicker/AddressPicker";
 import Input from "core/components/fields/TextInput";
 import { getStaticMap } from "core/maps/maps";
@@ -8,7 +9,6 @@ import dayjs from "dayjs";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useShowSummary } from "domains/shows/lib/summaryContext";
 import Image from "next/image";
-import Link from "next/link";
 import React, { FC } from "react";
 import { useController, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -22,19 +22,18 @@ type Inputs = {
   curtainsUp: string;
   date: string;
   address?: {
-    lat: number;
-    lng: number;
+    lat: number | null;
+    lng: number | null;
     address: string;
   },
   name: string,
   shortNote: string,
 };
 
-interface NewShowFormProps {
+const NewEventForm: FC<{
   onSuccess?: () => void;
-}
-
-const NewEventForm: FC<NewShowFormProps> = ({ onSuccess }) => {
+  event?: EventDTO,
+}> = ({ onSuccess, event }) => {
   const show = useShowSummary();
   const queryClient = useQueryClient();
   const api = getApi();
@@ -46,7 +45,9 @@ const NewEventForm: FC<NewShowFormProps> = ({ onSuccess }) => {
     reset,
     control,
     watch,
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({
+    defaultValues: getDefaultValues(event)
+  });
 
   const addressControl = useController({ name: "address", control });
   const address = watch('address');
@@ -68,24 +69,40 @@ const NewEventForm: FC<NewShowFormProps> = ({ onSuccess }) => {
 
 
   const mutation = useMutation<any, unknown, Inputs>({
-    mutationFn: (form) => api.eventsPost({
-      event: {
-        showId: show.id,
-        start: getRequiredDateTime(form.date, form.start),
-        end: getDateTime(form.date, form.end),
-        curtainsUp: getDateTime(form.date, form.curtainsUp),
-        address: form.address?.address,
-        shortnote: form.shortNote,
-        name: form.name
+    mutationFn: (form) => {
+      if (!event) {
+        return api.eventsPost({
+          event: {
+            showId: show.id,
+            start: getRequiredDateTime(form.date, form.start),
+            end: getDateTime(form.date, form.end),
+            curtainsUp: getDateTime(form.date, form.curtainsUp),
+            address: form.address?.address,
+            shortnote: form.shortNote,
+            name: form.name
+          }
+        })
+      } else {
+        return api.eventsIdPost({
+          id: event.id.toString(),
+          event: {
+            showId: event.showId || show.id,
+            start: getRequiredDateTime(form.date, form.start),
+            end: getDateTime(form.date, form.end),
+            curtainsUp: getDateTime(form.date, form.curtainsUp),
+            address: form.address?.address,
+            shortnote: form.shortNote,
+            name: form.name
+          },
+        })
       }
-    }),
+    },
     onError: (e) => {
-      toast.error("Something went wrong creating new event");
-      console.error("Could not create show", e);
+      toast.error("Somethign went wrong");
+      console.error("Could not create/update event", e);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["EventsList", show.id] });
-      toast.success("Succesfully created a new event");
       reset();
       if (onSuccess) {
         onSuccess();
@@ -148,27 +165,51 @@ const NewEventForm: FC<NewShowFormProps> = ({ onSuccess }) => {
         label="Address"
       />
       {address?.lat && (
-        <a className="cursor-pointer" rel="noreferrer" target="_blank" 
+        <a className="cursor-pointer" rel="noreferrer" target="_blank"
           href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address.address)}`}>
-        <div className="flex justify-center mb-4">
-          <Image
-            alt={`map of ${address.address}`}
-            className="rounded-md"
-            height="300px"
-            width="600px"
-            src={getStaticMap(address.lat, address.lng)}
-          />
-        </div>
+          <div className="flex justify-center mb-4">
+            <Image
+              alt={`map of ${address.address}`}
+              className="rounded-md"
+              height="300px"
+              width="600px"
+              src={getStaticMap(address.lat, address.lng)}
+            />
+          </div>
         </a>
       )}
       <button
         type="submit"
         className={cc({ loading: mutation.isLoading }, "btn btn-block")}
       >
-        Create show
+        {event ? "Update" : "Create event" }
       </button>
     </form>
   );
 };
 
 export default NewEventForm;
+const getDefaultValues = (event: EventDTO | undefined): Partial<Inputs> | undefined => {
+  if (!event) {
+    return undefined;
+  }
+
+  const defaultValues: Inputs = {
+    start: dayjs(event.start).format('HH:mm'),
+    end: event.end ? dayjs(event.end).format('HH:mm') : "",
+    curtainsUp: event.curtainsUp ? dayjs(event.curtainsUp).format('HH:mm') : "",
+    date: dayjs(event.start).format('YYYY-MM-DD'),
+    name: event.nameRaw || '',
+    shortNote: event.shortnote || '',
+    address: {
+      lat: null,
+      lng: null,
+      address: event.address || '',
+    }
+  };
+
+  console.log(defaultValues);
+
+  return defaultValues;
+}
+

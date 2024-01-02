@@ -5,7 +5,6 @@ import (
 	"go-backend/domains/permissions"
 	"go-backend/models"
 	"go-backend/restapi/operations"
-	"time"
 
 	"github.com/go-openapi/runtime/middleware"
 )
@@ -23,22 +22,44 @@ var PostEventsHandler = operations.PostEventsHandlerFunc(func(params operations.
 		return &operations.PostShowsInternalServerError{}
 	}
 
-	event := database.Event{
-		ShowID:     uint(*params.Event.ShowID),
-		Start:      time.Time(*params.Event.Start),
-		End:        time.Time(params.Event.End),
-		CurtainsUp: time.Time(params.Event.CurtainsUp),
-		Name:       params.Event.Name,
-		ShortNote:  params.Event.Shortnote,
-		Address:    params.Event.Address,
-	}
+	event := mapToDatabaseEvent(*params.Event)
+	event, err = CreateEvent(event)
 
 	if err != nil {
-		println("Error mapping event: " + err.Error())
+		println("Error creating event: " + err.Error())
 		return &operations.PostShowsInternalServerError{}
 	}
 
-	event, err = CreateEvent(event)
+	mappedEvents := mapEventToEventDTO(event)
+
+	return &operations.PostEventsOK{
+		Payload: &mappedEvents,
+	}
+})
+
+var PostEventsIdHandler = operations.PostEventsIDHandlerFunc(func(params operations.PostEventsIDParams, p *models.Principal) middleware.Responder {
+	existingEvent := database.Event{}
+
+	res := db.First(&existingEvent, params.ID)
+
+	if res.Error != nil {
+		return &operations.PostShowsInternalServerError{}
+	}
+
+	hasPermission, err := permissions.AddEvents.HasPermission(existingEvent.ShowID, params.HTTPRequest)
+
+	if err != nil {
+		println("error", err.Error())
+		return &operations.PostShowsInternalServerError{}
+	}
+
+	if !hasPermission {
+		println("not authorized")
+		return &operations.PostShowsInternalServerError{}
+	}
+
+	event := mapToDatabaseEvent(*params.Event)
+	event, err = UpdateEvent(existingEvent.ID, event)
 
 	if err != nil {
 		println("Error creating event: " + err.Error())
@@ -67,6 +88,7 @@ var GetEventsHander = operations.GetEventsHandlerFunc(func(params operations.Get
 	}
 
 	events, err := GetEvents(showId)
+
 	if err != nil {
 		return &operations.GetEventsInternalServerError{}
 	}

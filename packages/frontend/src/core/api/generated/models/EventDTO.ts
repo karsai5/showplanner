@@ -42,19 +42,25 @@ export interface EventDTO {
      * @type {string}
      * @memberof EventDTO
      */
-    name?: string;
+    name?: string | null;
     /**
      * 
      * @type {string}
      * @memberof EventDTO
      */
-    shortnote?: string;
+    nameRaw?: string | null;
     /**
      * 
      * @type {string}
      * @memberof EventDTO
      */
-    address?: string;
+    shortnote?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof EventDTO
+     */
+    address?: string | null;
     /**
      * 
      * @type {Date}
@@ -94,6 +100,7 @@ export function EventDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'showId': !exists(json, 'showId') ? undefined : json['showId'],
         'start': (new Date(json['start'])),
         'name': !exists(json, 'name') ? undefined : json['name'],
+        'nameRaw': !exists(json, 'nameRaw') ? undefined : json['nameRaw'],
         'shortnote': !exists(json, 'shortnote') ? undefined : json['shortnote'],
         'address': !exists(json, 'address') ? undefined : json['address'],
         'curtainsUp': !exists(json, 'curtainsUp') ? undefined : (json['curtainsUp'] === null ? null : new Date(json['curtainsUp'])),
@@ -114,6 +121,7 @@ export function EventDTOToJSON(value?: EventDTO | null): any {
         'showId': value.showId,
         'start': (value.start.toISOString()),
         'name': value.name,
+        'nameRaw': value.nameRaw,
         'shortnote': value.shortnote,
         'address': value.address,
         'curtainsUp': value.curtainsUp === undefined ? undefined : (value.curtainsUp === null ? null : value.curtainsUp.toISOString()),

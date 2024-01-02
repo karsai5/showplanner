@@ -9,6 +9,14 @@ func CreateEvent(event database.Event) (database.Event, error) {
 	return event, res.Error
 }
 
+func UpdateEvent(id uint, event database.Event) (database.Event, error) {
+	updatedEvent := database.Event{}
+	println("updating event")
+	println(event.Name)
+	res := db.Where("ID = ?", id).Model(&updatedEvent).Omit("ShowId").Updates(event)
+	return updatedEvent, res.Error
+}
+
 func GetEvents(showId uint) ([]database.Event, error) {
 	var events []database.Event
 	res := db.Where("show_id = ?", showId).Find(&events)
