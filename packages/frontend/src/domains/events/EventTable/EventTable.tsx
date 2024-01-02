@@ -80,7 +80,7 @@ export const EventTable: React.FC<{
                         </Td>
                       ))}
                       {i === 0 && (
-                        <Td rowSpan={thisGroupEvents.length}>
+                        <Td className="whitespace-nowrap" rowSpan={thisGroupEvents.length}>
                           {displayDate(e.start)}
                         </Td>
                       )}
@@ -96,10 +96,10 @@ export const EventTable: React.FC<{
                               />
                             </div>
                           )}
-                          <span>{e.name}</span>
+                          <span className="whitespace-nowrap">{e.name}</span>
                         </div>
                       </Td>
-                      <Td>
+                      <Td className="whitespace-nowrap">
                         {getTimeRangeWithCurtainsUp(
                           e.start,
                           e.end,
