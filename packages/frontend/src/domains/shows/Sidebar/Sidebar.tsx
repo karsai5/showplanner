@@ -1,10 +1,7 @@
 import cc from "classnames";
 import {
   CalendarIcon,
-  DocumentCheckIcon,
-  UserIcon,
 } from "core/components/Icons";
-import { SHOW_PERMISSIONS, useHasPermission } from "core/permissions";
 import Link from "next/link";
 import React, { FC, ReactNode, useState } from "react";
 
@@ -26,14 +23,6 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, children }) => {
   const [state] = useState(STATE.collapsed);
   const collapsed = state === STATE.collapsed;
   const slug = useShowSlugFromUrl();
-  const hasPersonnelPermission = useHasPermission(
-    SHOW_PERMISSIONS.PERSONNEL,
-    slug
-  );
-  const hasRosteringPermission = useHasPermission(
-    SHOW_PERMISSIONS.ROSTERING,
-    slug
-  );
   return (
     <div className="flex flex-grow">
       {isOpen && (
@@ -46,22 +35,6 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, children }) => {
                 name={"Schedule"}
                 icon={<CalendarIcon />}
               />
-              {hasPersonnelPermission && (
-                <Item
-                  url={`/shows/${slug}/personnel`}
-                  collapsed={collapsed}
-                  name={"People"}
-                  icon={<UserIcon />}
-                />
-              )}
-              {hasRosteringPermission && (
-                <Item
-                  url={`/shows/${slug}/availabilities`}
-                  collapsed={collapsed}
-                  name={"Availabilities"}
-                  icon={<DocumentCheckIcon />}
-                />
-              )}
             </ul>
           </div>
         </div>

@@ -10,7 +10,7 @@ import { useShowSummary } from "domains/shows/lib/summaryContext";
 import Head from "next/head";
 import { FC } from "react";
 import Session from "supertokens-auth-react/recipe/session";
-import { PermissionClaim } from "supertokens-auth-react/recipe/userroles"
+import { PermissionClaim} from "supertokens-auth-react/recipe/userroles"
 
 const ShowPage = () => {
   const api = getApi();
@@ -24,22 +24,22 @@ const ShowPage = () => {
       <Head>
         <title>Schedule - {show.name} - ShowPlanner</title>
       </Head>
-      <div className="flex flex-col gap-4 sm:flex-row justify-between">
-        <div>
-          <div className="flex justify-between items-center">
-            <H2>{show.name} - Schedule </H2>
-            <AddEventButton showId={show.id} />
+        <div className="flex flex-col gap-4 sm:flex-row justify-between">
+          <div>
+            <div className="flex justify-between items-center">
+              <H2>{show.name} - Schedule </H2>
+              <AddEventButton showId={show.id} />
+            </div>
+            {isError && <ErrorBox>Could not get shows</ErrorBox>}
+            {isLoading && <progress className="progress w-56"></progress>}
+            {events && <AdminEventTable events={events} />}
           </div>
-          {isError && <ErrorBox>Could not get shows</ErrorBox>}
-          {isLoading && <progress className="progress w-56"></progress>}
-          {events && <AdminEventTable events={events} />}
         </div>
-      </div>
     </>
   );
 };
 
-const AddEventButton: FC<{showId: number}> = ({showId}) => {
+const AddEventButton: FC<{ showId: number }> = ({ showId }) => {
   const { Modal, open, close, isOpen } = useModal();
   let claimValue = Session.useClaimValue(PermissionClaim)
 
@@ -49,7 +49,6 @@ const AddEventButton: FC<{showId: number}> = ({showId}) => {
   let permissions = claimValue?.value;
 
   const permission = `show:${showId}:add-events`;
-  console.log(permission, permissions);
 
   if (Array.isArray(permissions) && permissions.includes(permission)) {
     return (<>
