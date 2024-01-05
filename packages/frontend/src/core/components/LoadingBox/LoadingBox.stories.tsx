@@ -1,11 +1,11 @@
 /* eslint-disable */
-import ErrorBox from "./ErrorBox";
+import LoadingBox from "./LoadingBox";
 
 export default {
-  title: "ErrorBox",
+  title: "LoadingBox",
 };
 
-export const Default = () => <ErrorBox>Example error box</ErrorBox>;
+export const Default = () => <LoadingBox>Example error box</LoadingBox>;
 
 Default.story = {
   name: "default",
