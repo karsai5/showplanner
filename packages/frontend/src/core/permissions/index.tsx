@@ -1,12 +1,16 @@
+import { ReactNode } from "react";
 import Session from "supertokens-auth-react/recipe/session";
 import { PermissionClaim } from "supertokens-auth-react/recipe/userroles"
 
 export const enum PERMISSION {
   addEvents = "add-events",
   viewEvents = "view-events",
+  personnel = "personnel",
 }
 
-export const showPermission = (showId: string | number | undefined | null, permission: PERMISSION) => {
+type showIdType = string | number | undefined | null
+
+export const showPermission = (showId: showIdType, permission: PERMISSION) => {
   return `show:${showId}:${permission}`;
 }
 
@@ -16,10 +20,19 @@ export const useHasPermission = () => {
   return (permission: string) => {
 
     if (claimValue.loading || !claimValue.doesSessionExist) {
-      return null;
+      return false;
     }
     let permissions = claimValue?.value;
 
     return (Array.isArray(permissions) && permissions.includes(permission));
   }
+}
+
+export const HasShowPermission: React.FC<{showId: showIdType, permission: PERMISSION, children: ReactNode}> = 
+({showId, permission ,children}) => {
+  const authorised = useHasPermission()(showPermission(showId, permission));
+  if (!authorised) {
+    return null;
+  }
+  return <>{children}</>
 }

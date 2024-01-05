@@ -26,3 +26,12 @@ func MapShow(show database.Show) *models.ShowDTO {
 		Company: &show.Company,
 	}
 }
+
+func MapShowSummary(show database.Show) *models.ShowSummaryDTO {
+	return &models.ShowSummaryDTO{
+		ID:      int64p(show.ID),
+		Name:    &show.Name,
+		Slug:    &show.Slug,
+		Company: &show.Company,
+	}
+}

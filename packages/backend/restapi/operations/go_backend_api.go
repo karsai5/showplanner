@@ -47,11 +47,14 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetEventsHandler: GetEventsHandlerFunc(func(params GetEventsParams, principal *models.Principal) middleware.Responder {
 			return middleware.NotImplemented("operation GetEvents has not yet been implemented")
 		}),
+		GetEventsPublicHandler: GetEventsPublicHandlerFunc(func(params GetEventsPublicParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetEventsPublic has not yet been implemented")
+		}),
 		GetShowsHandler: GetShowsHandlerFunc(func(params GetShowsParams, principal *models.Principal) middleware.Responder {
 			return middleware.NotImplemented("operation GetShows has not yet been implemented")
 		}),
-		GetShowsShowSlugHandler: GetShowsShowSlugHandlerFunc(func(params GetShowsShowSlugParams, principal *models.Principal) middleware.Responder {
-			return middleware.NotImplemented("operation GetShowsShowSlug has not yet been implemented")
+		GetShowsShowSlugSummaryHandler: GetShowsShowSlugSummaryHandlerFunc(func(params GetShowsShowSlugSummaryParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetShowsShowSlugSummary has not yet been implemented")
 		}),
 		GetUsersHandler: GetUsersHandlerFunc(func(params GetUsersParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetUsers has not yet been implemented")
@@ -117,10 +120,12 @@ type GoBackendAPI struct {
 
 	// GetEventsHandler sets the operation handler for the get events operation
 	GetEventsHandler GetEventsHandler
+	// GetEventsPublicHandler sets the operation handler for the get events public operation
+	GetEventsPublicHandler GetEventsPublicHandler
 	// GetShowsHandler sets the operation handler for the get shows operation
 	GetShowsHandler GetShowsHandler
-	// GetShowsShowSlugHandler sets the operation handler for the get shows show slug operation
-	GetShowsShowSlugHandler GetShowsShowSlugHandler
+	// GetShowsShowSlugSummaryHandler sets the operation handler for the get shows show slug summary operation
+	GetShowsShowSlugSummaryHandler GetShowsShowSlugSummaryHandler
 	// GetUsersHandler sets the operation handler for the get users operation
 	GetUsersHandler GetUsersHandler
 	// PostEventsHandler sets the operation handler for the post events operation
@@ -213,11 +218,14 @@ func (o *GoBackendAPI) Validate() error {
 	if o.GetEventsHandler == nil {
 		unregistered = append(unregistered, "GetEventsHandler")
 	}
+	if o.GetEventsPublicHandler == nil {
+		unregistered = append(unregistered, "GetEventsPublicHandler")
+	}
 	if o.GetShowsHandler == nil {
 		unregistered = append(unregistered, "GetShowsHandler")
 	}
-	if o.GetShowsShowSlugHandler == nil {
-		unregistered = append(unregistered, "GetShowsShowSlugHandler")
+	if o.GetShowsShowSlugSummaryHandler == nil {
+		unregistered = append(unregistered, "GetShowsShowSlugSummaryHandler")
 	}
 	if o.GetUsersHandler == nil {
 		unregistered = append(unregistered, "GetUsersHandler")
@@ -337,11 +345,15 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
+	o.handlers["GET"]["/events/public"] = NewGetEventsPublic(o.context, o.GetEventsPublicHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
 	o.handlers["GET"]["/shows"] = NewGetShows(o.context, o.GetShowsHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/shows/{showSlug}"] = NewGetShowsShowSlug(o.context, o.GetShowsShowSlugHandler)
+	o.handlers["GET"]["/shows/{showSlug}/summary"] = NewGetShowsShowSlugSummary(o.context, o.GetShowsShowSlugSummaryHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

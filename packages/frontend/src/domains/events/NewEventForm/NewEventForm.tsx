@@ -7,7 +7,6 @@ import Input from "core/components/fields/TextInput";
 import { getStaticMap } from "core/maps/maps";
 import dayjs from "dayjs";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { useShowSummary } from "domains/shows/lib/summaryContext";
 import Image from "next/image";
 import React, { FC } from "react";
 import { useController, useForm } from "react-hook-form";
@@ -33,8 +32,8 @@ type Inputs = {
 const NewEventForm: FC<{
   onSuccess?: () => void;
   event?: EventDTO,
-}> = ({ onSuccess, event }) => {
-  const show = useShowSummary();
+  showId: number,
+}> = ({ onSuccess, event, showId }) => {
   const queryClient = useQueryClient();
   const api = getApi();
 
@@ -73,7 +72,7 @@ const NewEventForm: FC<{
       if (!event) {
         return api.eventsPost({
           event: {
-            showId: show.id,
+            showId: showId,
             start: getRequiredDateTime(form.date, form.start),
             end: getDateTime(form.date, form.end),
             curtainsUp: getDateTime(form.date, form.curtainsUp),
@@ -86,7 +85,7 @@ const NewEventForm: FC<{
         return api.eventsIdPost({
           id: event.id.toString(),
           event: {
-            showId: event.showId || show.id,
+            showId: event.showId || showId,
             start: getRequiredDateTime(form.date, form.start),
             end: getDateTime(form.date, form.end),
             curtainsUp: getDateTime(form.date, form.curtainsUp),
@@ -102,7 +101,7 @@ const NewEventForm: FC<{
       console.error("Could not create/update event", e);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["EventsList", show.id] });
+      queryClient.invalidateQueries({ queryKey: ["EventsList", showId] });
       reset();
       if (onSuccess) {
         onSuccess();

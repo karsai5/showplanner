@@ -14,7 +14,13 @@ import { processEvents } from "../lib/processEvents";
 
 dayjs.extend(advancedFormat);
 
-const defaultHeaders = ["Date", "Name", "Time", "Location", "Note"];
+export enum eventTableDefaultHeaders {
+  Date = "Date",
+  Name = "Name",
+  Time = "Time",
+  Location = "Location",
+  Note = "Note",
+}
 
 const GapRow = ({ length }: { length: number }) => (
   <tr>
@@ -23,7 +29,7 @@ const GapRow = ({ length }: { length: number }) => (
 );
 
 export type FieldOptions = {
-  header: ReactNode;
+  header: string;
   position: "left" | "right";
   render: (event: EventDTO) => ReactNode;
   className?: (event: EventDTO) => string | string;
@@ -32,7 +38,8 @@ export type FieldOptions = {
 export const EventTable: React.FC<{
   events: Array<EventDTO>;
   extraFieldOptions?: Array<FieldOptions>;
-}> = ({ events, extraFieldOptions }) => {
+  hideHeaders?: Array<string>;
+}> = ({ events, extraFieldOptions, hideHeaders = [] }) => {
 
   const leftExtraFieldOptions =
     extraFieldOptions?.filter((option) => option.position === "left") || [];
@@ -41,9 +48,10 @@ export const EventTable: React.FC<{
 
   const headers = [
     ...leftExtraFieldOptions.map((option) => option.header),
-    ...defaultHeaders,
+    ...Object.values(eventTableDefaultHeaders),
     ...rightExtraFieldOptions.map((option) => option.header),
-  ];
+  ].filter(h => !hideHeaders.includes(h));
+  console.log('headers', headers);
 
   const { dates, groupedEvents } = processEvents<EventDTO>(events);
 
@@ -106,10 +114,12 @@ export const EventTable: React.FC<{
                           e.curtainsUp as any
                         )}
                       </Td>
-                      <Td>
-                        <Address address={e?.address} />
-                      </Td>
-                      <Td>{e.shortnote}</Td>
+                      {headers.includes(eventTableDefaultHeaders.Location) &&
+                        <Td>
+                          <Address address={e?.address} />
+                        </Td>}
+                      {headers.includes(eventTableDefaultHeaders.Note) &&
+                        <Td>{e.shortnote}</Td>}
                       {rightExtraFieldOptions.map((option) => (
                         <Td
                           key={e.id}

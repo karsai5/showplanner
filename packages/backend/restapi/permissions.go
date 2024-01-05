@@ -36,6 +36,6 @@ func initialiseRoles() {
 		if err != nil {
 			panic("Could not get role permissions" + err.Error())
 		}
-		println(role + ": " + strings.Join(permissions.OK.Permissions, ", "))
+		println(role + ": [" + strings.Join(permissions.OK.Permissions, ", ") + "]")
 	}
 }

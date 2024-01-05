@@ -27,8 +27,39 @@ func timep(stringTime strfmt.DateTime) *time.Time {
 	return &time
 }
 
-func mapEventsToEventsDTO(events []database.Event) []*models.EventDTO {
-	var mappedEvents []*models.EventDTO
+type Event interface {
+	int64 | float64
+}
+
+func mapEventsToPublicEventsDTO(events []database.Event) (mappedEvents []*models.EventPublicDTO) {
+	var showEvents []database.Event
+
+	for _, event := range events {
+		if event.CurtainsUp != nil {
+			showEvents = append(showEvents, event)
+		} else {
+			mappedEvent := mapEventToEventPublicDTO(event)
+			mappedEvents = append(mappedEvents, &mappedEvent)
+		}
+	}
+
+	sort.Slice(showEvents, func(i, j int) bool {
+		return showEvents[i].CurtainsUp.Before(*showEvents[j].CurtainsUp)
+	})
+
+	for i, event := range showEvents {
+		mappedEvent := mapEventToEventPublicDTO(event)
+		if mappedEvent.Name == nil || *mappedEvent.Name == "" {
+			name := "Show " + strconv.Itoa(i+1)
+			mappedEvent.Name = &name
+		}
+		mappedEvents = append(mappedEvents, &mappedEvent)
+	}
+
+	return mappedEvents
+}
+
+func mapEventsToEventsDTO(events []database.Event) (mappedEvents []*models.EventDTO) {
 	var showEvents []database.Event
 
 	for _, event := range events {
@@ -56,18 +87,33 @@ func mapEventsToEventsDTO(events []database.Event) []*models.EventDTO {
 	return mappedEvents
 }
 
+func mapEventToEventPublicDTO(e database.Event) models.EventPublicDTO {
+	start := strfmt.DateTime(e.Start)
+
+	me := models.EventPublicDTO{
+		ID:         getIdPointer(e.ID),
+		ShowID:     int64(e.ShowID),
+		Start:      &start,
+		CurtainsUp: getDateTime(e.CurtainsUp),
+		End:        getDateTime(e.End),
+		NameRaw:    e.Name,
+		Name:       e.Name,
+	}
+
+	return me
+}
 func mapEventToEventDTO(e database.Event) models.EventDTO {
 	start := strfmt.DateTime(e.Start)
 
 	me := models.EventDTO{
 		ID:         getIdPointer(e.ID),
 		ShowID:     int64(e.ShowID),
-		Shortnote:  e.ShortNote,
 		Start:      &start,
 		CurtainsUp: getDateTime(e.CurtainsUp),
 		End:        getDateTime(e.End),
 		NameRaw:    e.Name,
 		Name:       e.Name,
+		Shortnote:  e.ShortNote,
 		Address:    e.Address,
 	}
 

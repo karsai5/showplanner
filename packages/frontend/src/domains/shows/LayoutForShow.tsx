@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getApi } from "core/api";
 import { AccessDenied } from "core/components/AccessDenied/AccessDenied";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
+import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { PERMISSION, showPermission } from "core/permissions";
 import { Footer } from "domains/layout/components/Footer";
 import { Nav } from "domains/layout/components/Nav";
@@ -27,19 +28,19 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
       if (!slug) {
         return null;
       }
-      return api.showsShowSlugGet({ showSlug: slug as string });
+      return api.showsShowSlugSummaryGet({ showSlug: slug as string });
     }
   );
 
   return (
     <div className="flex flex-col h-screen">
       <Nav mobile={{ toggleSidebar: () => setSidebarOpen(!sidebarOpen) }} />
-      {isLoading && <progress className="progress w-full"></progress>}
+      {isLoading && <LoadingBox className="flex-1"/>}
       {isError && <ErrorBox>Something went wrong getting show</ErrorBox>}
-      <SessionAuth
+      {show && <SessionAuth
         accessDeniedScreen={AccessDenied}
-        overrideGlobalClaimValidators={(globalValidators) => [...globalValidators, 
-          PermissionClaim.validators.includes(showPermission(show?.id, PERMISSION.viewEvents))]}>
+        overrideGlobalClaimValidators={(globalValidators) => [...globalValidators,
+        PermissionClaim.validators.includes(showPermission(show?.id, PERMISSION.viewEvents))]}>
         <Sidebar isOpen={sidebarOpen}>
           <div className="p-6 h-full overflow-auto flex-grow">
             {show && (
@@ -49,7 +50,7 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
             )}
           </div>
         </Sidebar>
-      </SessionAuth>
+      </SessionAuth>}
       <Footer />
     </div>
   );

@@ -6,5 +6,6 @@ models/CreateShowDTO.ts
 models/EventDTO.ts
 models/ModelError.ts
 models/ShowDTO.ts
+models/ShowSummaryDTO.ts
 models/index.ts
 runtime.ts

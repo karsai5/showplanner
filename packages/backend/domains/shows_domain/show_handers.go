@@ -35,14 +35,14 @@ var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetS
 	}
 })
 
-var GetShowsSlugHandler = operations.GetShowsShowSlugHandlerFunc(func(gsssp operations.GetShowsShowSlugParams, p *models.Principal) middleware.Responder {
-	show, err := GetShowBySlug(gsssp.ShowSlug)
+var GetShowsSlugSummaryHandler = operations.GetShowsShowSlugSummaryHandlerFunc(func(params operations.GetShowsShowSlugSummaryParams) middleware.Responder {
+	show, err := GetShowBySlug(params.ShowSlug)
 	if err != nil {
 		println("Could not find show: " + err.Error())
-		return &operations.GetShowsShowSlugNotFound{}
+		return &operations.GetShowsShowSlugSummaryNotFound{}
 	}
-	return &operations.GetShowsShowSlugOK{
-		Payload: MapShow(show),
+	return &operations.GetShowsShowSlugSummaryOK{
+		Payload: MapShowSummary(show),
 	}
 })
 

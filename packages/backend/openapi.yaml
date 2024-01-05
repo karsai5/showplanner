@@ -61,6 +61,26 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/EventDTO'
+  /events/public:
+    get:
+      parameters:
+        - in: query
+          required: true
+          name: showId
+          type: integer
+          description: ID of the show to get events from
+      summary: Returns a list of events.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EventPublicDTO'
+        500:
+          $ref: '#/responses/Error'
   /events/{id}:
     post:
       summary: Update event
@@ -126,7 +146,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/ShowDTO'
-  /shows/{showSlug}:
+  /shows/{showSlug}/summary:
     get:
       summary: Return details about a show
       parameters:
@@ -137,8 +157,6 @@ paths:
           description: Slug of show
       produces:
         - application/json
-      security:
-        - loggedIn: []
       responses:
         401:
           $ref: '#/responses/Error'
@@ -147,7 +165,7 @@ paths:
         200:
           description: "Show"
           schema:
-            $ref: '#/definitions/ShowDTO'
+            $ref: '#/definitions/ShowSummaryDTO'
 responses:
   Error:
     description: Error
@@ -166,6 +184,21 @@ definitions:
       - message
   principal:
     type: string
+  ShowSummaryDTO:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      company:
+        type: string
+      slug:
+        type: string
+    required:
+      - id
+      - name
+      - company
+      - slug
   ShowDTO:
     properties:
       id:
@@ -219,6 +252,32 @@ definitions:
         x-nullable: true
     required:
       - showId
+      - start
+  EventPublicDTO:
+    properties:
+      id:
+        type: integer
+      showId:
+        type: integer
+      start:
+        type: string
+        format: date-time
+      name:
+        type: string
+        x-nullable: true
+      nameRaw:
+        type: string
+        x-nullable: true
+      curtainsUp:
+        type: string
+        format: date-time
+        x-nullable: true
+      end:
+        type: string
+        format: date-time
+        x-nullable: true
+    required:
+      - id
       - start
   EventDTO:
     properties:

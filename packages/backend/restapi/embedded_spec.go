@@ -101,6 +101,37 @@ func init() {
         }
       }
     },
+    "/events/public": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns a list of events.",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get events from",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/EventPublicDTO"
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/events/{id}": {
       "post": {
         "security": [
@@ -207,13 +238,8 @@ func init() {
         }
       }
     },
-    "/shows/{showSlug}": {
+    "/shows/{showSlug}/summary": {
       "get": {
-        "security": [
-          {
-            "loggedIn": []
-          }
-        ],
         "produces": [
           "application/json"
         ],
@@ -231,7 +257,7 @@ func init() {
           "200": {
             "description": "Show",
             "schema": {
-              "$ref": "#/definitions/ShowDTO"
+              "$ref": "#/definitions/ShowSummaryDTO"
             }
           },
           "401": {
@@ -373,7 +399,65 @@ func init() {
         }
       }
     },
+    "EventPublicDTO": {
+      "required": [
+        "id",
+        "start"
+      ],
+      "properties": {
+        "curtainsUp": {
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "nameRaw": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "showId": {
+          "type": "integer"
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
     "ShowDTO": {
+      "required": [
+        "id",
+        "name",
+        "company",
+        "slug"
+      ],
+      "properties": {
+        "company": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      }
+    },
+    "ShowSummaryDTO": {
       "required": [
         "id",
         "name",
@@ -508,6 +592,40 @@ func init() {
         }
       }
     },
+    "/events/public": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns a list of events.",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get events from",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/EventPublicDTO"
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/events/{id}": {
       "post": {
         "security": [
@@ -626,13 +744,8 @@ func init() {
         }
       }
     },
-    "/shows/{showSlug}": {
+    "/shows/{showSlug}/summary": {
       "get": {
-        "security": [
-          {
-            "loggedIn": []
-          }
-        ],
         "produces": [
           "application/json"
         ],
@@ -650,7 +763,7 @@ func init() {
           "200": {
             "description": "Show",
             "schema": {
-              "$ref": "#/definitions/ShowDTO"
+              "$ref": "#/definitions/ShowSummaryDTO"
             }
           },
           "401": {
@@ -798,7 +911,65 @@ func init() {
         }
       }
     },
+    "EventPublicDTO": {
+      "required": [
+        "id",
+        "start"
+      ],
+      "properties": {
+        "curtainsUp": {
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "nameRaw": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "showId": {
+          "type": "integer"
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
     "ShowDTO": {
+      "required": [
+        "id",
+        "name",
+        "company",
+        "slug"
+      ],
+      "properties": {
+        "company": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      }
+    },
+    "ShowSummaryDTO": {
       "required": [
         "id",
         "name",

@@ -12,8 +12,8 @@ import (
 	"strings"
 )
 
-// GetShowsShowSlugURL generates an URL for the get shows show slug operation
-type GetShowsShowSlugURL struct {
+// GetShowsShowSlugSummaryURL generates an URL for the get shows show slug summary operation
+type GetShowsShowSlugSummaryURL struct {
 	ShowSlug string
 
 	_basePath string
@@ -24,7 +24,7 @@ type GetShowsShowSlugURL struct {
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetShowsShowSlugURL) WithBasePath(bp string) *GetShowsShowSlugURL {
+func (o *GetShowsShowSlugSummaryURL) WithBasePath(bp string) *GetShowsShowSlugSummaryURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -32,21 +32,21 @@ func (o *GetShowsShowSlugURL) WithBasePath(bp string) *GetShowsShowSlugURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetShowsShowSlugURL) SetBasePath(bp string) {
+func (o *GetShowsShowSlugSummaryURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *GetShowsShowSlugURL) Build() (*url.URL, error) {
+func (o *GetShowsShowSlugSummaryURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/shows/{showSlug}"
+	var _path = "/shows/{showSlug}/summary"
 
 	showSlug := o.ShowSlug
 	if showSlug != "" {
 		_path = strings.Replace(_path, "{showSlug}", showSlug, -1)
 	} else {
-		return nil, errors.New("showSlug is required on GetShowsShowSlugURL")
+		return nil, errors.New("showSlug is required on GetShowsShowSlugSummaryURL")
 	}
 
 	_basePath := o._basePath
@@ -59,7 +59,7 @@ func (o *GetShowsShowSlugURL) Build() (*url.URL, error) {
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *GetShowsShowSlugURL) Must(u *url.URL, err error) *url.URL {
+func (o *GetShowsShowSlugSummaryURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -70,17 +70,17 @@ func (o *GetShowsShowSlugURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *GetShowsShowSlugURL) String() string {
+func (o *GetShowsShowSlugSummaryURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *GetShowsShowSlugURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *GetShowsShowSlugSummaryURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on GetShowsShowSlugURL")
+		return nil, errors.New("scheme is required for a full url on GetShowsShowSlugSummaryURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on GetShowsShowSlugURL")
+		return nil, errors.New("host is required for a full url on GetShowsShowSlugSummaryURL")
 	}
 
 	base, err := o.Build()
@@ -94,6 +94,6 @@ func (o *GetShowsShowSlugURL) BuildFull(scheme, host string) (*url.URL, error) {
 }
 
 // StringFull returns the string representation of a complete url
-func (o *GetShowsShowSlugURL) StringFull(scheme, host string) string {
+func (o *GetShowsShowSlugSummaryURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

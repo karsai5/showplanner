@@ -72,6 +72,20 @@ var PostEventsIdHandler = operations.PostEventsIDHandlerFunc(func(params operati
 	}
 })
 
+var GetEventsPublicHandler = operations.GetEventsPublicHandlerFunc(func(params operations.GetEventsPublicParams) middleware.Responder {
+	showId := uint(params.ShowID)
+
+	events, err := GetEvents(showId)
+
+	if err != nil {
+		return &operations.GetEventsInternalServerError{}
+	}
+
+	return &operations.GetEventsPublicOK{
+		Payload: mapEventsToPublicEventsDTO(events),
+	}
+})
+
 var GetEventsHander = operations.GetEventsHandlerFunc(func(params operations.GetEventsParams, p *models.Principal) middleware.Responder {
 	showId := uint(params.ShowID)
 

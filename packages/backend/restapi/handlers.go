@@ -11,7 +11,7 @@ import (
 func getHandlers(api *operations.GoBackendAPI) {
 
 	api.GetShowsHandler = shows_domain.GetShowsHandler
-	api.GetShowsShowSlugHandler = shows_domain.GetShowsSlugHandler
+	api.GetShowsShowSlugSummaryHandler = shows_domain.GetShowsSlugSummaryHandler
 	api.PostShowsHandler = shows_domain.PostShowsHandler
 
 	api.GetUsersHandler = operations.GetUsersHandlerFunc(func(params operations.GetUsersParams) middleware.Responder {
@@ -20,6 +20,7 @@ func getHandlers(api *operations.GoBackendAPI) {
 	})
 
 	api.GetEventsHandler = events_domain.GetEventsHander
+	api.GetEventsPublicHandler = events_domain.GetEventsPublicHandler
 	api.PostEventsHandler = events_domain.PostEventsHandler
 	api.PostEventsIDHandler = events_domain.PostEventsIdHandler
 }
