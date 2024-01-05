@@ -1,6 +1,5 @@
-import { Configuration, DefaultApi } from "api";
 import Link from "next/link";
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import Session from "supertokens-auth-react/recipe/session";
 
 interface HomeHeroProps { }
