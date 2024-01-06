@@ -1,6 +1,5 @@
 import { useModal } from "core/components/Modal/Modal";
-import RequirePermission from "core/components/RequirePermission/RequirePermission";
-import { PERMISSIONS } from "core/permissions";
+import { HasPermission, PERMISSION } from "core/permissions";
 import NewShowForm from "domains/shows/NewShowForm/NewShowForm";
 import {
   AssignedShowBoxGrid,
@@ -8,7 +7,7 @@ import {
 import Head from "next/head";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import Session from "supertokens-auth-react/recipe/session";
-import { PermissionClaim, UserRoleClaim } from "supertokens-auth-react/recipe/userroles"
+import { PermissionClaim } from "supertokens-auth-react/recipe/userroles"
 
 const Shows = () => {
   return (
@@ -18,7 +17,9 @@ const Shows = () => {
       </Head>
       <div className="flex justify-between items-center">
         <h1 className="text-2xl mb-4 font-bold">Shows</h1>
-        <AddShowButton />
+        <HasPermission permission={PERMISSION.addShow}>
+          <AddShowButton />
+        </HasPermission>
       </div>
       <AssignedShowBoxGrid />
     </SessionAuth>

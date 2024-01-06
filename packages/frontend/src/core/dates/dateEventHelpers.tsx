@@ -21,7 +21,7 @@ export const getTimeRangeWithCurtainsUp = (
 
 export const getTimeRangeString = (
   startString?: Date,
-  endString?: Date
+  endString?: Date | null
 ) => {
   if (!startString) {
     return "";

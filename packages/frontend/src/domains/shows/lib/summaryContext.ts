@@ -1,12 +1,12 @@
-import { Show, ShowDTO } from "core/api/generated";
+import { ShowDTO } from "core/api/generated";
 import { createContext, useContext } from "react";
 
-export const ShowSummaryContext = createContext<Show | undefined>(
+export const ShowSummaryContext = createContext<ShowDTO | undefined>(
   undefined
 );
 
 export const useShowSummary = (): ShowDTO => {
-  const show = useContext<ShowDTO>(ShowSummaryContext);
+  const show = useContext(ShowSummaryContext);
   if (!show) {
     throw new Error("Show context missing");
   }

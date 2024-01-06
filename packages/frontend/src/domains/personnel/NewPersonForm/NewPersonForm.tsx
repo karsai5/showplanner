@@ -3,8 +3,6 @@ import FileInput from "core/components/fields/FileInput";
 import FormattedTextInput from "core/components/fields/FormattedTextInput";
 import TextArea from "core/components/fields/TextArea";
 import Input from "core/components/fields/TextInput";
-import { useAuthenticatedClient } from "core/config";
-import { graphql } from "core/gql";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import React, { FC, ReactNode, useEffect, useState } from "react";
@@ -34,16 +32,6 @@ type Inputs = {
   publishedAt: Date;
 };
 
-const createPerson = graphql(`
-  mutation CreatePerson($data: PersonInput!) {
-    createPerson(data: $data) {
-      data {
-        id
-      }
-    }
-  }
-`);
-
 const NewPersonForm: FC<NewPersonFormProps> = () => {
   const {
     register,
@@ -51,7 +39,6 @@ const NewPersonForm: FC<NewPersonFormProps> = () => {
     formState: { errors },
     setValue,
   } = useForm<Inputs>();
-  const client = useAuthenticatedClient();
   const [loading, setLoading] = useState<boolean>(false);
   const { data: session } = useSession();
   const router = useRouter();
@@ -63,13 +50,15 @@ const NewPersonForm: FC<NewPersonFormProps> = () => {
       setValue("user", session?.id);
       setValue("publishedAt", new Date());
     }
-  }, [session]);
+  }, [session, setValue]);
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async () => {
     setLoading(true);
 
     try {
-      await client.request(createPerson, { data });
+      // TODO: Create person
+      //
+      // await client.request(createPerson, { data });
       toast.success("Details successfully updated, redirecting to shows list.");
       reloadSession();
       router.push("/shows");

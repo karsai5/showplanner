@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
 import { getApi } from "core/api";
-import FileInput from "core/components/fields/FileInput";
 import Input from "core/components/fields/TextInput";
 import React, { FC } from "react";
 import { useForm } from "react-hook-form";
@@ -28,7 +27,6 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
     reset,
   } = useForm<Inputs>();
 

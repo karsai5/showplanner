@@ -3,7 +3,7 @@ import { getApi } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { useModal } from "core/components/Modal/Modal";
 import { H2 } from "core/components/Typography";
-import { HasShowPermission, PERMISSION } from "core/permissions";
+import { HasPermission, PERMISSION } from "core/permissions";
 import { AdminEventTable } from "domains/events/EventTable/AdminEventTable";
 import NewEventForm from "domains/events/NewEventForm/NewEventForm";
 import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
@@ -29,14 +29,14 @@ const ShowPage = () => {
           <div className="flex justify-between items-center">
             <H2>{show.name} - Schedule </H2>
             <div className="flex gap-2">
-              <HasShowPermission showId={show.id} permission={PERMISSION.personnel}>
+              <HasPermission showId={show.id} permission={PERMISSION.personnel}>
                 <Link href={`${show.slug}/public`} target="_blank">
                   <a className="btn btn-ghost">Public schedule</a>
                 </Link>
-              </HasShowPermission>
-              <HasShowPermission showId={show.id} permission={PERMISSION.addEvents}>
+              </HasPermission>
+              <HasPermission showId={show.id} permission={PERMISSION.addEvents}>
                 <AddEventButton showId={show.id} />
-              </HasShowPermission>
+              </HasPermission>
             </div>
           </div>
           {isError && <ErrorBox>Could not get shows</ErrorBox>}

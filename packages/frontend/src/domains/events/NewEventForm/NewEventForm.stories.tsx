@@ -16,7 +16,7 @@ const show: ShowDTO = {
 }
 
 export const New = () => (<ShowSummaryContext.Provider value={show}>
-  <NewShowForm onSuccess={() => { }} />
+  <NewShowForm onSuccess={() => { } } showId={0} />
 </ShowSummaryContext.Provider>);
 
 
@@ -32,5 +32,5 @@ const event: EventDTO = {
 }
 
 export const Edit = () => (<ShowSummaryContext.Provider value={show}>
-  <NewShowForm onSuccess={() => { }} event={event} />
+  <NewShowForm onSuccess={() => { } } event={event} showId={0} />
 </ShowSummaryContext.Provider>);

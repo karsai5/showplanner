@@ -116,7 +116,7 @@ export const EventTable: React.FC<{
                       </Td>
                       {headers.includes(eventTableDefaultHeaders.Location) &&
                         <Td>
-                          <Address address={e?.address} />
+                          {e.address && <Address address={e?.address} />}
                         </Td>}
                       {headers.includes(eventTableDefaultHeaders.Note) &&
                         <Td>{e.shortnote}</Td>}

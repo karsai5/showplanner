@@ -1,5 +1,6 @@
 import { EventDTO } from "core/api/generated";
 import { useModal } from "core/components/Modal/Modal";
+
 import NewEventForm from "../NewEventForm/NewEventForm";
 import { EventTable, FieldOptions } from "./EventTable";
 

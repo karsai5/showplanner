@@ -6,6 +6,8 @@ export const enum PERMISSION {
   addEvents = "add-events",
   viewEvents = "view-events",
   personnel = "personnel",
+
+  addShow = "add-show",
 }
 
 type showIdType = string | number | undefined | null
@@ -28,9 +30,10 @@ export const useHasPermission = () => {
   }
 }
 
-export const HasShowPermission: React.FC<{showId: showIdType, permission: PERMISSION, children: ReactNode}> = 
+export const HasPermission: React.FC<{showId?: showIdType, permission: PERMISSION, children: ReactNode}> = 
 ({showId, permission ,children}) => {
-  const authorised = useHasPermission()(showPermission(showId, permission));
+  const permissionString = showId ? showPermission(showId, permission) : permission.toString();
+  const authorised = useHasPermission()(permissionString);
   if (!authorised) {
     return null;
   }

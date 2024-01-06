@@ -5,7 +5,7 @@ export default {
   title: "LoadingBox",
 };
 
-export const Default = () => <LoadingBox>Example error box</LoadingBox>;
+export const Default = () => <LoadingBox/>;
 
 Default.story = {
   name: "default",

@@ -1,5 +1,4 @@
-import Sidebar from "domains/shows/Sidebar/Sidebar";
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 
 import { Footer } from "./components/Footer";
 import { Nav } from "./components/Nav";
