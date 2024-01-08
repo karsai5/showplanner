@@ -12,6 +12,7 @@ import (
 	"go-backend/domains/permissions"
 	"go-backend/models"
 	"go-backend/restapi/operations"
+	"go-backend/utils"
 	"net/http"
 
 	"github.com/supertokens/supertokens-golang/supertokens"
@@ -80,7 +81,7 @@ func setupGlobalMiddleware(handler http.Handler) http.Handler {
 
 func corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, r *http.Request) {
-		writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		writer.Header().Set("Access-Control-Allow-Origin", utils.GetEnvVariable("API_URL", true))
 		writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		if r.Method == "OPTIONS" {
 			// we add content-type + other headers used by SuperTokens
