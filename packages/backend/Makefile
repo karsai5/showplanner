@@ -8,7 +8,7 @@ generate:
 	swagger validate openapi.yaml
 	swagger generate server -f openapi.yaml -A go-backend -P models.Principal
 
-build: format build-cli build-server
+build: build-cli build-server
 
 build-server:
 	go build ./cmd/go-backend-server
@@ -16,13 +16,14 @@ build-cli:
 	go build ./cmd/go-backend-cli
 
 serve:
-	./go-backend-server --host localhost --port 8080
+	./go-backend-server --host '' --port 8080
+
+serve-with-wait:
+	sleep 5 
+	make serve
 
 lint:
 	golangci-lint run
-
-format:
-	go fmt
 
 build-and-serve: build serve
 	make build

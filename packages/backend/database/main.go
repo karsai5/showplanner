@@ -1,8 +1,12 @@
 package database
 
 import (
+	"fmt"
+	"go-backend/utils"
+	"log"
 	"sync"
 
+	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -22,13 +26,39 @@ func GetDatabase() *gorm.DB {
 	return database
 }
 
-func initDB() *gorm.DB {
+func getSQLiteDatabase() *gorm.DB {
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
-		panic("failed to connect to database")
+		log.Fatalf("Failed to connect to database: %s", err.Error())
+	}
+	return db
+}
+
+func getPostgresDatabase() *gorm.DB {
+	host := utils.GetEnvVariable("POSTGRES_HOST", true)
+	user := utils.GetEnvVariable("POSTGRES_USER", true)
+	database := utils.GetEnvVariable("POSTGRES_DB", true)
+	password := utils.GetEnvVariable("POSTGRES_PASSWORD", true)
+	tz := utils.GetEnvVariable("POSTGRES_TIMEZONE", true)
+
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=%s", host, user, password, database, tz)
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %s", err.Error())
+	}
+	return db
+}
+
+func initDB() *gorm.DB {
+	var db *gorm.DB
+	pg_host := utils.GetEnvVariable("POSTGRES_HOST", false)
+	if pg_host != "" {
+		db = getPostgresDatabase()
+	} else {
+		db = getSQLiteDatabase()
 	}
 
-	err = db.AutoMigrate(&Event{})
+	err := db.AutoMigrate(&Event{})
 	if err != nil {
 		panic("Failed to migrate event")
 	}

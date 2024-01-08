@@ -1,9 +1,8 @@
 package permissions
 
 import (
-	"os"
+	"go-backend/utils"
 
-	"github.com/joho/godotenv"
 	"github.com/supertokens/supertokens-golang/recipe/dashboard"
 	"github.com/supertokens/supertokens-golang/recipe/dashboard/dashboardmodels"
 	"github.com/supertokens/supertokens-golang/recipe/session"
@@ -20,13 +19,13 @@ func InitSupertokens() error {
 	websiteBasePath := "/auth"
 	return supertokens.Init(supertokens.TypeInput{
 		Supertokens: &supertokens.ConnectionInfo{
-			ConnectionURI: "http://localhost:3567",
-			APIKey:        getDotEnvVariable("API_KEY"),
+			ConnectionURI: utils.GetEnvVariable("SUPERTOKENS_URL", true),
+			APIKey:        utils.GetEnvVariable("API_KEY", true),
 		},
 		AppInfo: supertokens.AppInfo{
 			AppName:         "Showplanner",
-			APIDomain:       "https://localhost:8123",
-			WebsiteDomain:   "http://localhost:3000",
+			APIDomain:       utils.GetEnvVariable("API_URL", true),
+			WebsiteDomain:   utils.GetEnvVariable("FRONTEND_URL", true),
 			APIBasePath:     &apiBasePath,
 			WebsiteBasePath: &websiteBasePath,
 		},
@@ -39,8 +38,8 @@ func InitSupertokens() error {
 							ThirdPartyId: "google",
 							Clients: []tpmodels.ProviderClientConfig{
 								{
-									ClientID:     getDotEnvVariable("GOOGLE_ID"),
-									ClientSecret: getDotEnvVariable("GOOGLE_SECRET"),
+									ClientID:     utils.GetEnvVariable("GOOGLE_ID", false),
+									ClientSecret: utils.GetEnvVariable("GOOGLE_SECRET", false),
 								},
 							},
 						},
@@ -55,12 +54,4 @@ func InitSupertokens() error {
 			}),
 		},
 	})
-}
-
-func getDotEnvVariable(key string) string {
-	err := godotenv.Load(".env")
-	if err != nil {
-		println("Error loading .env file: " + err.Error())
-	}
-	return os.Getenv(key)
 }
