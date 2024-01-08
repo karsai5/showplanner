@@ -1,6 +1,6 @@
 main
 test.db
 
-go-backend-cli
-go-backend-server
+/go-backend-cli
+/go-backend-server
 .env
