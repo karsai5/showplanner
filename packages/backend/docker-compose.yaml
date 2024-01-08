@@ -22,6 +22,8 @@ services:
   supertokens:
     image: registry.supertokens.io/supertokens/supertokens-postgresql:7.0
     restart: always
+    ports:
+      - 3567:3567
     environment:
       POSTGRESQL_USER: supertokens
       POSTGRESQL_PASSWORD: supertokens
@@ -34,6 +36,8 @@ services:
   db:
     image: postgres
     restart: always
+    ports:
+      - 5444:5432
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: admin
@@ -51,5 +55,10 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 3568:8080
 volumes:
   database_volume:
