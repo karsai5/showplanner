@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import cc from 'classnames';
 import { getApi } from "core/api";
 import { EventDTO } from "core/api/generated";
 import { useModal } from "core/components/Modal/Modal";
 import { showToastError } from "core/utils/errors";
 import { isNil } from "core/utils/isNil";
-import cc from 'classnames';
+import { useState } from "react";
 
 import NewEventForm from "../NewEventForm/NewEventForm";
 import { EventTable, FieldOptions } from "./EventTable";
-import { useState } from "react";
 
 const AdminButtons: FieldOptions = {
   header: "Edit",

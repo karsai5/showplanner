@@ -12,7 +12,16 @@
   "rules": {
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "import/no-cycle": "warn"
+    "import/no-cycle": "warn",
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ]
   },
   "overrides": [
     {
