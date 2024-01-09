@@ -207,8 +207,6 @@ const getDefaultValues = (event: EventDTO | undefined): Partial<Inputs> | undefi
     }
   };
 
-  console.log(defaultValues);
-
   return defaultValues;
 }
 

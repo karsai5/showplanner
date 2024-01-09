@@ -51,7 +51,6 @@ export const EventTable: React.FC<{
     ...Object.values(eventTableDefaultHeaders),
     ...rightExtraFieldOptions.map((option) => option.header),
   ].filter(h => !hideHeaders.includes(h));
-  console.log('headers', headers);
 
   const { dates, groupedEvents } = processEvents<EventDTO>(events);
 
