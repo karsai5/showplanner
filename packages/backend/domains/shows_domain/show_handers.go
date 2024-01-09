@@ -5,23 +5,13 @@ import (
 	"go-backend/domains/permissions"
 	"go-backend/models"
 	"go-backend/restapi/operations"
+	"net/http"
 	"strings"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetShowsParams, principal *models.Principal) middleware.Responder {
-	hasPermission, err := permissions.ViewShow.HasPermission(params.HTTPRequest)
-
-	if err != nil {
-		println("error", err.Error())
-		return &operations.PostShowsInternalServerError{}
-	}
-
-	if !hasPermission {
-		println("not authorized")
-		return &operations.PostShowsInternalServerError{}
-	}
 
 	shows, err := GetAllShows()
 
@@ -31,9 +21,27 @@ var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetS
 	}
 
 	return &operations.GetShowsOK{
-		Payload: MapShows(shows),
+		Payload: MapShows(getShowsWithPermission(shows, params.HTTPRequest)),
 	}
 })
+
+func getShowsWithPermission(shows []database.Show, request *http.Request) []database.Show {
+	showsWithPermission := []database.Show{}
+
+	for _, show := range shows {
+		hasPermission, err := permissions.ViewEvents.HasPermission(show.ID, request)
+
+		if err != nil {
+			println("Error getting permission", err.Error())
+		}
+
+		if hasPermission {
+			showsWithPermission = append(showsWithPermission, show)
+		}
+	}
+
+	return showsWithPermission
+}
 
 var GetShowsSlugSummaryHandler = operations.GetShowsShowSlugSummaryHandlerFunc(func(params operations.GetShowsShowSlugSummaryParams) middleware.Responder {
 	show, err := GetShowBySlug(params.ShowSlug)

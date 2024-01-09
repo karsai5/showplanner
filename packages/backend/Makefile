@@ -16,7 +16,7 @@ build-cli:
 	go build ./cmd/go-backend-cli
 
 serve:
-	./go-backend-server --host '' --port 8080
+	./go-backend-server --host localhost --port 8080
 
 serve-with-wait:
 	sleep 5 

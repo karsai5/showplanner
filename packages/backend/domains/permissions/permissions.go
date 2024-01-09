@@ -15,7 +15,7 @@ func (sp ShowPermission) Permission(showId string) string {
 
 func (sp ShowPermission) HasPermission(showId uint, r *http.Request) (bool, error) {
 	id := strconv.Itoa(int(showId))
-	return HasPermissionOrAdmin(r, sp.Permission(id))
+	return HasPermission(r, sp.Permission(id))
 }
 
 type Permission struct {
@@ -23,7 +23,7 @@ type Permission struct {
 }
 
 func (sp Permission) HasPermission(r *http.Request) (bool, error) {
-	return HasPermissionOrAdmin(r, sp.perm)
+	return HasPermission(r, sp.perm)
 }
 
 func (sp Permission) Permission() string {
