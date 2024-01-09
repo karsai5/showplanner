@@ -33,25 +33,27 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
   );
 
   return (
-    <div className="flex flex-col h-screen">
-      <Nav mobile={{ toggleSidebar: () => setSidebarOpen(!sidebarOpen) }} />
-      {isLoading && <LoadingBox className="flex-1"/>}
-      {isError && <ErrorBox>Something went wrong getting show</ErrorBox>}
-      {show && <SessionAuth
-        accessDeniedScreen={AccessDenied}
-        overrideGlobalClaimValidators={(globalValidators) => [...globalValidators,
-        PermissionClaim.validators.includes(showPermission(show?.id, PERMISSION.viewEvents))]}>
-        <Sidebar isOpen={sidebarOpen}>
-          <div className="p-6 h-full overflow-auto flex-grow">
-            {show && (
-              <ShowSummaryContext.Provider value={show}>
-                {children}
-              </ShowSummaryContext.Provider>
-            )}
-          </div>
-        </Sidebar>
-      </SessionAuth>}
-      <Footer />
-    </div>
+    <SessionAuth>
+      <div className="flex flex-col h-screen">
+        <Nav mobile={{ toggleSidebar: () => setSidebarOpen(!sidebarOpen) }} />
+        {isLoading && <LoadingBox className="flex-1" />}
+        {isError && <ErrorBox>Something went wrong getting show</ErrorBox>}
+        {show && <SessionAuth
+          accessDeniedScreen={AccessDenied}
+          overrideGlobalClaimValidators={(globalValidators) => [...globalValidators,
+          PermissionClaim.validators.includes(showPermission(show?.id, PERMISSION.viewEvents))]}>
+          <Sidebar isOpen={sidebarOpen}>
+            <div className="p-6 h-full overflow-auto flex-grow">
+              {show && (
+                <ShowSummaryContext.Provider value={show}>
+                  {children}
+                </ShowSummaryContext.Provider>
+              )}
+            </div>
+          </Sidebar>
+        </SessionAuth>}
+        <Footer />
+      </div>
+    </SessionAuth>
   );
 };

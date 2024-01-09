@@ -1,6 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 import React, { FC } from "react";
 import Session from "supertokens-auth-react/recipe/session";
+
+import imageSrc from './hero.png';
 
 interface HomeHeroProps { }
 
@@ -10,12 +13,15 @@ const HomeHero: FC<HomeHeroProps> = () => {
   return (
     <div className="hero relative h-full">
       <div className="hero-content text-center text-neutral-content bg-white rounded-md p-6">
-        <div className="max-w-md">
+        <div className="max-w-md prose">
           <h1 className="mb-5 text-5xl font-bold">
             Welcome to the ShowPlanner
           </h1>
+          <Image src={imageSrc} objectFit="scale-down" alt="People chaotically organising paper" />
           <p className="mb-5">
-            For all your crew management needs. <br />
+            Tired of dozens of complicated spreadsheets?. Use the ShowPlanner to handle schedules, availabilities and rostering.
+          </p>
+          <p>
             Login to view shows assigned to you.
           </p>
           {!session.loading && !session.doesSessionExist && (
