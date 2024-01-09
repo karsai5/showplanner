@@ -13,9 +13,8 @@ ADD models models
 ADD restapi restapi 
 ADD utils utils 
 
-COPY .env.production ./
-
 RUN CGO_ENABLED=0 GOOS=linux go build ./cmd/go-backend-server
+RUN CGO_ENABLED=0 GOOS=linux go build ./cmd/go-backend-cli
 
 COPY Makefile ./
 
