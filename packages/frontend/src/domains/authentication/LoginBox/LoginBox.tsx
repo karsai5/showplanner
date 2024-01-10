@@ -3,7 +3,6 @@ import { CrossIcon } from "core/components/Icons";
 import { API_URL } from "core/config";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { signIn, signOut, useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaDiscord, FaFacebook, FaGoogle } from "react-icons/fa";
@@ -18,7 +17,7 @@ export const LoginBox: React.FC<{ className?: string; signup?: boolean }> = ({
 }) => {
   const noun = signup ? "Signup" : "Login";
   const verb = signup ? "Sign up" : "Log in";
-  const { status } = useSession();
+  const status = undefined;
   const router = useRouter();
   const {
     register,
@@ -32,12 +31,7 @@ export const LoginBox: React.FC<{ className?: string; signup?: boolean }> = ({
     setLoading(true);
     setErrorCode(undefined);
 
-    const result = await signIn("username-password", {
-      redirect: false,
-      email: data.username,
-      password: data.password,
-      callbackUrl: window.location.origin,
-    });
+    const result: any = undefined;
 
     setLoading(false);
 
@@ -53,9 +47,6 @@ export const LoginBox: React.FC<{ className?: string; signup?: boolean }> = ({
       <div className="card card-compact w-full sm:w-96 bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="card-title">Already signed in</h2>
-          <button onClick={() => signOut()} className="btn mt-4">
-            Log out
-          </button>
         </div>
       </div>
     );

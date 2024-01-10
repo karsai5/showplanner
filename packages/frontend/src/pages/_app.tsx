@@ -5,11 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ConfirmationModalWrapper } from "core/components/Modal/ConfirmationModal";
 import { Layout } from "domains/layout/Layout";
 import type { NextPage } from "next";
-import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Router } from "next/router";
-import { Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
 import SuperTokensReact, { SuperTokensWrapper } from "supertokens-auth-react";
@@ -22,7 +19,7 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
-type AppPropsWithLayout = AppProps<{ session: Session }> & {
+type AppPropsWithLayout = {
   Component: NextPageWithLayout;
 };
 
@@ -31,49 +28,47 @@ if (typeof window !== "undefined") {
   SuperTokensReact.init(frontendConfig());
 }
 
-function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+function MyApp({ Component }: AppPropsWithLayout) {
   const loading = usePageLoading();
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
 
   return (
     <SuperTokensWrapper>
-      <SessionProvider session={pageProps.session}>
-        <QueryClientProvider client={queryClient}>
-          <ConfirmationModalWrapper>
-            {getLayout(
-              <>
-                <Head>
-                  <meta name="description" content="Your crew, in one place" />
-                  <link rel="icon" href="/favicon.ico" />
-                  <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1.0"
-                  />
-                  <title>ShowPlanner</title>
-                </Head>
-                <ToastContainer
-                  position="top-center"
-                  autoClose={8000}
-                  hideProgressBar={false}
-                  newestOnTop={false}
-                  closeOnClick
-                  rtl={false}
-                  pauseOnFocusLoss
-                  draggable
-                  pauseOnHover
-                  transition={Zoom}
+      <QueryClientProvider client={queryClient}>
+        <ConfirmationModalWrapper>
+          {getLayout(
+            <>
+              <Head>
+                <meta name="description" content="Your crew, in one place" />
+                <link rel="icon" href="/favicon.ico" />
+                <meta
+                  name="viewport"
+                  content="width=device-width, initial-scale=1.0"
                 />
+                <title>ShowPlanner</title>
+              </Head>
+              <ToastContainer
+                position="top-center"
+                autoClose={8000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                transition={Zoom}
+              />
 
-                {loading ? (
-                  <progress className="progress w-full"></progress>
-                ) : (
-                  <Component {...(pageProps as any)} />
-                )}
-              </>
-            )}
-          </ConfirmationModalWrapper>
-        </QueryClientProvider>
-      </SessionProvider>
+              {loading ? (
+                <progress className="progress w-full"></progress>
+              ) : (
+                <Component />
+              )}
+            </>
+          )}
+        </ConfirmationModalWrapper>
+      </QueryClientProvider>
     </SuperTokensWrapper>
   );
 }

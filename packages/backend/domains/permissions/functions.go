@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"strings"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -34,9 +33,13 @@ func HasPermission(r *http.Request, permission string) (bool, error) {
 }
 
 func getRolesAndPermissions(r *http.Request) (roles []string, permissions []string, err error) {
-	tokenString := strings.ReplaceAll(r.Header.Get("Authorization"), "Bearer ", "")
+	cookie, err := r.Cookie("sAccessToken")
 
-	token, _ := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+	if err != nil {
+		return nil, nil, err
+	}
+
+	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}

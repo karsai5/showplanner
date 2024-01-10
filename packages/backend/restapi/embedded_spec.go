@@ -32,11 +32,6 @@ func init() {
   "paths": {
     "/events": {
       "get": {
-        "security": [
-          {
-            "loggedIn": []
-          }
-        ],
         "produces": [
           "application/json"
         ],
@@ -66,11 +61,6 @@ func init() {
         }
       },
       "post": {
-        "security": [
-          {
-            "loggedIn": []
-          }
-        ],
         "consumes": [
           "application/json"
         ],
@@ -134,11 +124,6 @@ func init() {
     },
     "/events/{id}": {
       "post": {
-        "security": [
-          {
-            "loggedIn": []
-          }
-        ],
         "produces": [
           "application/json"
         ],
@@ -178,11 +163,6 @@ func init() {
     },
     "/shows": {
       "get": {
-        "security": [
-          {
-            "loggedIn": []
-          }
-        ],
         "produces": [
           "application/json"
         ],
@@ -203,11 +183,6 @@ func init() {
         }
       },
       "post": {
-        "security": [
-          {
-            "loggedIn": []
-          }
-        ],
         "consumes": [
           "application/json"
         ],
@@ -489,13 +464,6 @@ func init() {
       "schema": {
         "$ref": "#/definitions/Error"
       }
-    }
-  },
-  "securityDefinitions": {
-    "loggedIn": {
-      "type": "apiKey",
-      "name": "Authorization",
-      "in": "header"
     }
   }
 }`))
@@ -514,11 +482,6 @@ func init() {
   "paths": {
     "/events": {
       "get": {
-        "security": [
-          {
-            "loggedIn": []
-          }
-        ],
         "produces": [
           "application/json"
         ],
@@ -551,11 +514,6 @@ func init() {
         }
       },
       "post": {
-        "security": [
-          {
-            "loggedIn": []
-          }
-        ],
         "consumes": [
           "application/json"
         ],
@@ -628,11 +586,6 @@ func init() {
     },
     "/events/{id}": {
       "post": {
-        "security": [
-          {
-            "loggedIn": []
-          }
-        ],
         "produces": [
           "application/json"
         ],
@@ -678,11 +631,6 @@ func init() {
     },
     "/shows": {
       "get": {
-        "security": [
-          {
-            "loggedIn": []
-          }
-        ],
         "produces": [
           "application/json"
         ],
@@ -706,11 +654,6 @@ func init() {
         }
       },
       "post": {
-        "security": [
-          {
-            "loggedIn": []
-          }
-        ],
         "consumes": [
           "application/json"
         ],
@@ -1001,13 +944,6 @@ func init() {
       "schema": {
         "$ref": "#/definitions/Error"
       }
-    }
-  },
-  "securityDefinitions": {
-    "loggedIn": {
-      "type": "apiKey",
-      "name": "Authorization",
-      "in": "header"
     }
   }
 }`))

@@ -28,8 +28,6 @@ paths:
       summary: Returns a list of events.
       produces:
         - application/json
-      security:
-        - loggedIn: []
       responses:
         200:
           description: OK
@@ -43,8 +41,6 @@ paths:
       summary: Creates an event
       consumes:
         - application/json
-      security:
-        - loggedIn: []
       parameters:
         - in: body
           name: event
@@ -97,8 +93,6 @@ paths:
             $ref: '#/definitions/CreateEventDTO'
       produces:
         - application/json
-      security:
-        - loggedIn: []
       responses:
         401:
           $ref: '#/responses/Error'
@@ -113,8 +107,6 @@ paths:
       summary: Returns a list of shows
       produces:
         - application/json
-      security:
-        - loggedIn: []
       responses:
         401:
           $ref: '#/responses/Error'
@@ -128,8 +120,6 @@ paths:
       summary: Creates a show
       consumes:
         - application/json
-      security:
-        - loggedIn: []
       parameters:
         - in: body
           name: show
@@ -311,9 +301,3 @@ definitions:
     required:
       - id
       - start
-
-securityDefinitions:
-  loggedIn:
-    type: apiKey
-    in: header
-    name: Authorization

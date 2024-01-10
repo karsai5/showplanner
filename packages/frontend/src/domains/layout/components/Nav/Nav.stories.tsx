@@ -1,5 +1,4 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { SessionProvider } from "next-auth/react";
 
 import { Nav } from "./Nav";
 
@@ -13,9 +12,7 @@ export default {
   decorators: [
     (Story) => {
       return (
-        <SessionProvider>
           <Story />
-        </SessionProvider>
       );
     },
   ],

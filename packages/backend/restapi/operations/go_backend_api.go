@@ -18,8 +18,6 @@ import (
 	"github.com/go-openapi/spec"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-
-	"go-backend/models"
 )
 
 // NewGoBackendAPI creates a new GoBackend instance
@@ -44,13 +42,13 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
-		GetEventsHandler: GetEventsHandlerFunc(func(params GetEventsParams, principal *models.Principal) middleware.Responder {
+		GetEventsHandler: GetEventsHandlerFunc(func(params GetEventsParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetEvents has not yet been implemented")
 		}),
 		GetEventsPublicHandler: GetEventsPublicHandlerFunc(func(params GetEventsPublicParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetEventsPublic has not yet been implemented")
 		}),
-		GetShowsHandler: GetShowsHandlerFunc(func(params GetShowsParams, principal *models.Principal) middleware.Responder {
+		GetShowsHandler: GetShowsHandlerFunc(func(params GetShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetShows has not yet been implemented")
 		}),
 		GetShowsShowSlugSummaryHandler: GetShowsShowSlugSummaryHandlerFunc(func(params GetShowsShowSlugSummaryParams) middleware.Responder {
@@ -59,22 +57,15 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetUsersHandler: GetUsersHandlerFunc(func(params GetUsersParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetUsers has not yet been implemented")
 		}),
-		PostEventsHandler: PostEventsHandlerFunc(func(params PostEventsParams, principal *models.Principal) middleware.Responder {
+		PostEventsHandler: PostEventsHandlerFunc(func(params PostEventsParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostEvents has not yet been implemented")
 		}),
-		PostEventsIDHandler: PostEventsIDHandlerFunc(func(params PostEventsIDParams, principal *models.Principal) middleware.Responder {
+		PostEventsIDHandler: PostEventsIDHandlerFunc(func(params PostEventsIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostEventsID has not yet been implemented")
 		}),
-		PostShowsHandler: PostShowsHandlerFunc(func(params PostShowsParams, principal *models.Principal) middleware.Responder {
+		PostShowsHandler: PostShowsHandlerFunc(func(params PostShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostShows has not yet been implemented")
 		}),
-
-		// Applies when the "Authorization" header is set
-		LoggedInAuth: func(token string) (*models.Principal, error) {
-			return nil, errors.NotImplemented("api key auth (loggedIn) Authorization from header param [Authorization] has not yet been implemented")
-		},
-		// default authorizer is authorized meaning no requests are blocked
-		APIAuthorizer: security.Authorized(),
 	}
 }
 
@@ -110,13 +101,6 @@ type GoBackendAPI struct {
 	// JSONProducer registers a producer for the following mime types:
 	//   - application/json
 	JSONProducer runtime.Producer
-
-	// LoggedInAuth registers a function that takes a token and returns a principal
-	// it performs authentication based on an api key Authorization provided in the header
-	LoggedInAuth func(string) (*models.Principal, error)
-
-	// APIAuthorizer provides access control (ACL/RBAC/ABAC) by providing access to the request and authenticated principal
-	APIAuthorizer runtime.Authorizer
 
 	// GetEventsHandler sets the operation handler for the get events operation
 	GetEventsHandler GetEventsHandler
@@ -211,10 +195,6 @@ func (o *GoBackendAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
-	if o.LoggedInAuth == nil {
-		unregistered = append(unregistered, "AuthorizationAuth")
-	}
-
 	if o.GetEventsHandler == nil {
 		unregistered = append(unregistered, "GetEventsHandler")
 	}
@@ -254,23 +234,12 @@ func (o *GoBackendAPI) ServeErrorFor(operationID string) func(http.ResponseWrite
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
 func (o *GoBackendAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
-	result := make(map[string]runtime.Authenticator)
-	for name := range schemes {
-		switch name {
-		case "loggedIn":
-			scheme := schemes[name]
-			result[name] = o.APIKeyAuthenticator(scheme.Name, scheme.In, func(token string) (interface{}, error) {
-				return o.LoggedInAuth(token)
-			})
-
-		}
-	}
-	return result
+	return nil
 }
 
 // Authorizer returns the registered authorizer
 func (o *GoBackendAPI) Authorizer() runtime.Authorizer {
-	return o.APIAuthorizer
+	return nil
 }
 
 // ConsumersFor gets the consumers for the specified media types.

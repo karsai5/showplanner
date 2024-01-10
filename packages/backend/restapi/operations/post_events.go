@@ -9,21 +9,19 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
-
-	"go-backend/models"
 )
 
 // PostEventsHandlerFunc turns a function with the right signature into a post events handler
-type PostEventsHandlerFunc func(PostEventsParams, *models.Principal) middleware.Responder
+type PostEventsHandlerFunc func(PostEventsParams) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn PostEventsHandlerFunc) Handle(params PostEventsParams, principal *models.Principal) middleware.Responder {
-	return fn(params, principal)
+func (fn PostEventsHandlerFunc) Handle(params PostEventsParams) middleware.Responder {
+	return fn(params)
 }
 
 // PostEventsHandler interface for that can handle valid post events params
 type PostEventsHandler interface {
-	Handle(PostEventsParams, *models.Principal) middleware.Responder
+	Handle(PostEventsParams) middleware.Responder
 }
 
 // NewPostEvents creates a new http.Handler for the post events operation
@@ -47,25 +45,12 @@ func (o *PostEvents) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		*r = *rCtx
 	}
 	var Params = NewPostEventsParams()
-	uprinc, aCtx, err := o.Context.Authorize(r, route)
-	if err != nil {
-		o.Context.Respond(rw, r, route.Produces, route, err)
-		return
-	}
-	if aCtx != nil {
-		*r = *aCtx
-	}
-	var principal *models.Principal
-	if uprinc != nil {
-		principal = uprinc.(*models.Principal) // this is really a models.Principal, I promise
-	}
-
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params
 		o.Context.Respond(rw, r, route.Produces, route, err)
 		return
 	}
 
-	res := o.Handler.Handle(Params, principal) // actually handle the request
+	res := o.Handler.Handle(Params) // actually handle the request
 	o.Context.Respond(rw, r, route.Produces, route, res)
 
 }

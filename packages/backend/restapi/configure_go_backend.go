@@ -10,7 +10,6 @@ import (
 	"github.com/go-openapi/runtime"
 
 	"go-backend/domains/permissions"
-	"go-backend/models"
 	"go-backend/restapi/operations"
 	"go-backend/utils"
 	"net/http"
@@ -35,11 +34,6 @@ func configureAPI(api *operations.GoBackendAPI) http.Handler {
 	api.ServeError = errors.ServeError
 
 	api.UseSwaggerUI()
-
-	api.LoggedInAuth = func(token string) (*models.Principal, error) {
-		prin := models.Principal(token)
-		return &prin, nil
-	}
 
 	api.JSONConsumer = runtime.JSONConsumer()
 

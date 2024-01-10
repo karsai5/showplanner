@@ -1,12 +1,18 @@
 import Router from "next/router";
 import Session from "supertokens-auth-react/recipe/session";
 import ThirdPartyEmailPasswordReact from "supertokens-auth-react/recipe/thirdpartyemailpassword";
-
-import { appInfo } from "./appInfo";
+export const SUPERTOKENS_URL = process.env.NEXT_PUBLIC_SUPERTOKENS_URL;
+export const FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL;
 
 export const frontendConfig = () => {
   return {
-    appInfo,
+    appInfo: {
+      appName: "Showplanner",
+      apiDomain: SUPERTOKENS_URL || "http://localhost:8080",
+      websiteDomain: FRONTEND_URL || "http://localhost:3000",
+      apiBasePath: "/auth",
+      websiteBasePath: "/auth",
+    },
     recipeList: [
       ThirdPartyEmailPasswordReact.init({
         signInAndUpFeature: {
@@ -18,9 +24,7 @@ export const frontendConfig = () => {
           ],
         },
       }),
-      Session.init({
-        tokenTransferMethod: 'header'
-      }),
+      Session.init(),
     ],
     windowHandler: (oI: any) => {
       return {
@@ -28,10 +32,10 @@ export const frontendConfig = () => {
         location: {
           ...oI.location,
           setHref: (href: string) => {
-            Router.push(href);
+            Router.push(href)
           },
         },
-      };
+      }
     },
   };
 };

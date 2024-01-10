@@ -4,7 +4,6 @@ import FormattedTextInput from "core/components/fields/FormattedTextInput";
 import TextArea from "core/components/fields/TextArea";
 import Input from "core/components/fields/TextInput";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -40,17 +39,9 @@ const NewPersonForm: FC<NewPersonFormProps> = () => {
     setValue,
   } = useForm<Inputs>();
   const [loading, setLoading] = useState<boolean>(false);
-  const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {}, []);
-
-  useEffect(() => {
-    if (session?.id) {
-      setValue("user", session?.id);
-      setValue("publishedAt", new Date());
-    }
-  }, [session, setValue]);
 
   const onSubmit: SubmitHandler<Inputs> = async () => {
     setLoading(true);

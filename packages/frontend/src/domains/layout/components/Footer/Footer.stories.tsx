@@ -1,5 +1,4 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { SessionProvider } from "next-auth/react";
 
 import { Footer } from "./Footer";
 
@@ -9,9 +8,7 @@ export default {
   decorators: [
     (Story) => {
       return (
-        <SessionProvider>
-          <Story />
-        </SessionProvider>
+        <Story />
       );
     },
   ],

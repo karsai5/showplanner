@@ -3,10 +3,7 @@ import { GraphQLClient } from "graphql-request";
 import {
   GetServerSidePropsContext,
   NextApiRequest,
-  NextApiResponse,
 } from "next";
-import { getToken } from "next-auth/jwt";
-import { getSession, useSession } from "next-auth/react";
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const GRAPHQL_URL = `${API_URL}/graphql`;
@@ -16,7 +13,6 @@ if (!API_URL) {
 }
 
 export const useAuthenticatedClient = () => {
-  // const { data: session } = useSession();
   return new GraphQLClient(GRAPHQL_URL);
 };
 
@@ -35,33 +31,17 @@ export const getUnauthenticatedAxiosClient = () => {
 };
 
 export const useAuthenticatedAxiosClient = (baseUrl?: string) => {
-  const { data: session } = useSession();
   return axios.create({
     baseURL: baseUrl || API_URL + "/api",
     headers: {
-      Authorization: `Bearer ${session?.jwt}`,
+      Authorization: `Bearer `,
     },
   });
 };
 
 export const checkLoggedIn = async (context: GetServerSidePropsContext) => {
-  const session = await getSession(context);
+  const session = undefined;
   let redirect = undefined;
-  if (!session?.jwt) {
-    redirect = {
-      redirect: {
-        permanent: false,
-        destination: "/auth/login",
-      },
-    };
-  } else if (session && !session.person) {
-    redirect = {
-      redirect: {
-        permanent: false,
-        destination: "/auth/newperson",
-      },
-    };
-  }
   return { session, redirect };
 };
 
@@ -80,7 +60,7 @@ export const checkPermission = async (
   if (redirect) {
     return { session, redirect };
   }
-  const sessionPermissions = session?.permissions || "";
+  const sessionPermissions = "";
   const matchingPermissions = permissionsArray.filter((p) =>
     sessionPermissions.includes(p)
   );

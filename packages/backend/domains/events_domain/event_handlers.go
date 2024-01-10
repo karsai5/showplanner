@@ -3,13 +3,12 @@ package events_domain
 import (
 	"go-backend/database"
 	"go-backend/domains/permissions"
-	"go-backend/models"
 	"go-backend/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
-var PostEventsHandler = operations.PostEventsHandlerFunc(func(params operations.PostEventsParams, p *models.Principal) middleware.Responder {
+var PostEventsHandler = operations.PostEventsHandlerFunc(func(params operations.PostEventsParams) middleware.Responder {
 	hasPermission, err := permissions.AddEvents.HasPermission(uint(*params.Event.ShowID), params.HTTPRequest)
 
 	if err != nil {
@@ -37,7 +36,7 @@ var PostEventsHandler = operations.PostEventsHandlerFunc(func(params operations.
 	}
 })
 
-var PostEventsIdHandler = operations.PostEventsIDHandlerFunc(func(params operations.PostEventsIDParams, p *models.Principal) middleware.Responder {
+var PostEventsIdHandler = operations.PostEventsIDHandlerFunc(func(params operations.PostEventsIDParams) middleware.Responder {
 	existingEvent := database.Event{}
 
 	res := db.First(&existingEvent, params.ID)
@@ -86,7 +85,7 @@ var GetEventsPublicHandler = operations.GetEventsPublicHandlerFunc(func(params o
 	}
 })
 
-var GetEventsHander = operations.GetEventsHandlerFunc(func(params operations.GetEventsParams, p *models.Principal) middleware.Responder {
+var GetEventsHander = operations.GetEventsHandlerFunc(func(params operations.GetEventsParams) middleware.Responder {
 	showId := uint(params.ShowID)
 
 	hasPermission, err := permissions.AddEvents.HasPermission(showId, params.HTTPRequest)

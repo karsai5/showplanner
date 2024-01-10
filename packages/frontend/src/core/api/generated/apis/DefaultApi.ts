@@ -18,6 +18,7 @@ import type {
   CreateEventDTO,
   CreateShowDTO,
   EventDTO,
+  EventPublicDTO,
   ShowDTO,
   ShowSummaryDTO,
 } from '../models/index';
@@ -28,6 +29,8 @@ import {
     CreateShowDTOToJSON,
     EventDTOFromJSON,
     EventDTOToJSON,
+    EventPublicDTOFromJSON,
+    EventPublicDTOToJSON,
     ShowDTOFromJSON,
     ShowDTOToJSON,
     ShowSummaryDTOFromJSON,
@@ -80,10 +83,6 @@ export class DefaultApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // loggedIn authentication
-        }
-
         const response = await this.request({
             path: `/events`,
             method: 'GET',
@@ -116,10 +115,6 @@ export class DefaultApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // loggedIn authentication
-        }
-
         const response = await this.request({
             path: `/events/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'POST',
@@ -149,10 +144,6 @@ export class DefaultApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // loggedIn authentication
-        }
-
         const response = await this.request({
             path: `/events`,
             method: 'POST',
@@ -175,7 +166,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Returns a list of events.
      */
-    async eventsPublicGetRaw(requestParameters: EventsPublicGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<EventDTO>>> {
+    async eventsPublicGetRaw(requestParameters: EventsPublicGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<EventPublicDTO>>> {
         if (requestParameters.showId === null || requestParameters.showId === undefined) {
             throw new runtime.RequiredError('showId','Required parameter requestParameters.showId was null or undefined when calling eventsPublicGet.');
         }
@@ -195,13 +186,13 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EventDTOFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EventPublicDTOFromJSON));
     }
 
     /**
      * Returns a list of events.
      */
-    async eventsPublicGet(requestParameters: EventsPublicGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<EventDTO>> {
+    async eventsPublicGet(requestParameters: EventsPublicGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<EventPublicDTO>> {
         const response = await this.eventsPublicGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -213,10 +204,6 @@ export class DefaultApi extends runtime.BaseAPI {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // loggedIn authentication
-        }
 
         const response = await this.request({
             path: `/shows`,
@@ -245,10 +232,6 @@ export class DefaultApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // loggedIn authentication
-        }
 
         const response = await this.request({
             path: `/shows`,

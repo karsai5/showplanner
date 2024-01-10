@@ -4,6 +4,7 @@ index.ts
 models/CreateEventDTO.ts
 models/CreateShowDTO.ts
 models/EventDTO.ts
+models/EventPublicDTO.ts
 models/ModelError.ts
 models/ShowDTO.ts
 models/ShowSummaryDTO.ts

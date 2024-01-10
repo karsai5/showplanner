@@ -1,5 +1,4 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { SessionProvider } from "next-auth/react";
 import React from "react";
 
 import { LoginBox } from "./LoginBox";
@@ -14,9 +13,7 @@ export default {
   decorators: [
     (Story) => {
       return (
-        <SessionProvider>
-          <Story />
-        </SessionProvider>
+        <Story />
       );
     },
   ],

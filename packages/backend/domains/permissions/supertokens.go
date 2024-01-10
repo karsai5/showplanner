@@ -49,7 +49,7 @@ func InitSupertokens() error {
 			session.Init(nil), // initializes session features
 			dashboard.Init(&dashboardmodels.TypeInput{
 				Admins: &[]string{
-					"johndoe@gmail.com",
+					"linus@linusk.com.au",
 				},
 			}),
 		},

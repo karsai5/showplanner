@@ -11,7 +11,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 )
 
-var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetShowsParams, principal *models.Principal) middleware.Responder {
+var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetShowsParams) middleware.Responder {
 
 	shows, err := GetAllShows()
 
@@ -54,7 +54,7 @@ var GetShowsSlugSummaryHandler = operations.GetShowsShowSlugSummaryHandlerFunc(f
 	}
 })
 
-var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostShowsParams, principal *models.Principal) middleware.Responder {
+var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostShowsParams) middleware.Responder {
 
 	show, err := CreateShow(database.Show{
 		Name:    *psp.Show.Name,
