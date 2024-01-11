@@ -18,7 +18,7 @@ export const LayoutWithBackgroundImage: React.FC<{ children: ReactNode }> = ({
   return (
     <div className="flex flex-col h-screen">
       <Nav />
-      <div className="relative h-full">
+      <div className="relative flex-grow">
         <Image
           src={randomImage}
           layout="fill"
@@ -26,7 +26,7 @@ export const LayoutWithBackgroundImage: React.FC<{ children: ReactNode }> = ({
           alt=""
           placeholder="blur"
         />
-        <div className="flex-grow p-6 h-full">{children}</div>
+        <div className="p-6">{children}</div>
       </div>
       <Footer />
     </div>

@@ -1,15 +1,14 @@
+import { getRequiredEnvVariable } from "core/utils/envVariables";
 import Router from "next/router";
 import Session from "supertokens-auth-react/recipe/session";
 import ThirdPartyEmailPasswordReact from "supertokens-auth-react/recipe/thirdpartyemailpassword";
-export const SUPERTOKENS_URL = process.env.NEXT_PUBLIC_SUPERTOKENS_URL;
-export const FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL;
 
 export const frontendConfig = () => {
   return {
     appInfo: {
       appName: "Showplanner",
-      apiDomain: SUPERTOKENS_URL || "http://localhost:8080",
-      websiteDomain: FRONTEND_URL || "http://localhost:3000",
+      apiDomain: getRequiredEnvVariable(process.env.NEXT_PUBLIC_SUPERTOKENS_URL),
+      websiteDomain: getRequiredEnvVariable(process.env.NEXT_PUBLIC_FRONTEND_URL),
       apiBasePath: "/auth",
       websiteBasePath: "/auth",
     },
@@ -24,7 +23,9 @@ export const frontendConfig = () => {
           ],
         },
       }),
-      Session.init(),
+      Session.init({
+         sessionTokenBackendDomain: getRequiredEnvVariable(process.env.NEXT_PUBLIC_COOKIE_DOMAIN),
+      }),
     ],
     windowHandler: (oI: any) => {
       return {

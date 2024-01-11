@@ -1,4 +1,5 @@
 import HomeHero from "core/components/HomeHero/HomeHero";
+import { getLoggedIn } from "core/permissions";
 import { LayoutWithBackgroundImage } from "domains/layout/LayoutWithBackgroundImage";
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
@@ -18,8 +19,19 @@ Home.getLayout = (page: any) => (
   <LayoutWithBackgroundImage>{page}</LayoutWithBackgroundImage>
 );
 
-export async function getServerSideProps(_ctx: GetServerSidePropsContext) {
-  return {props: {}};
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const isLoggedIn = await getLoggedIn(context);
+
+  if(isLoggedIn) {
+    return {
+      redirect: {
+        destination: '/shows',
+        permanent: false
+      }
+    }
+  }
+
+  return { props: {} };
 }
 
 export default Home;

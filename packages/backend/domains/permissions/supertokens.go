@@ -6,6 +6,7 @@ import (
 	"github.com/supertokens/supertokens-golang/recipe/dashboard"
 	"github.com/supertokens/supertokens-golang/recipe/dashboard/dashboardmodels"
 	"github.com/supertokens/supertokens-golang/recipe/session"
+	"github.com/supertokens/supertokens-golang/recipe/session/sessmodels"
 	"github.com/supertokens/supertokens-golang/recipe/thirdparty/tpmodels"
 	"github.com/supertokens/supertokens-golang/recipe/thirdpartyemailpassword"
 	"github.com/supertokens/supertokens-golang/recipe/thirdpartyemailpassword/tpepmodels"
@@ -17,6 +18,8 @@ func InitSupertokens() error {
 
 	apiBasePath := "/auth"
 	websiteBasePath := "/auth"
+	cookieDomain := utils.GetEnvVariable("COOKIE_DOMAIN", true)
+
 	return supertokens.Init(supertokens.TypeInput{
 		Supertokens: &supertokens.ConnectionInfo{
 			ConnectionURI: utils.GetEnvVariable("SUPERTOKENS_URL", true),
@@ -46,11 +49,11 @@ func InitSupertokens() error {
 					},
 				},
 			}),
-			session.Init(nil), // initializes session features
+			session.Init(&sessmodels.TypeInput{
+				CookieDomain: &cookieDomain,
+			}), // initializes session features
 			dashboard.Init(&dashboardmodels.TypeInput{
-				Admins: &[]string{
-					"linus@linusk.com.au",
-				},
+				Admins: &[]string{},
 			}),
 		},
 	})

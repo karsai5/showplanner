@@ -1,0 +1,54 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+  nginx:
+    build: nginx-local
+    depends_on:
+      db:
+        condition: service_healthy
+    network_mode: "host"
+  supertokens:
+    image: registry.supertokens.io/supertokens/supertokens-postgresql:7.0
+    restart: always
+    ports:
+      - 3567:3567
+    environment:
+      POSTGRESQL_USER: supertokens
+      POSTGRESQL_PASSWORD: supertokens
+      POSTGRESQL_HOST: db
+      POSTGRESQL_PORT: 5432
+      POSTGRESQL_DATABASE_NAME: supertokens
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: admin
+      SUPERTOKENS_USER: supertokens
+      SUPERTOKENS_PASSWORD: supertokens
+      SUPERTOKENS_DATABASE: supertokens
+      SHOWPLANNER_USER: showplanner
+      SHOWPLANNER_PASSWORD: showplanner
+      SHOWPLANNER_DATABASE: showplanner
+    volumes:
+      - database_volume:/var/lib/postgresql/data
+      - ./compose-multiple-databases.sh:/docker-entrypoint-initdb.d/setup.sh
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 3568:8080
+
+volumes:
+  database_volume:

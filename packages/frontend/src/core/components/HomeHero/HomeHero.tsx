@@ -19,10 +19,7 @@ const HomeHero: FC<HomeHeroProps> = () => {
           </h1>
           <Image src={imageSrc} objectFit="scale-down" alt="People chaotically organising paper" />
           <p className="mb-5">
-            Tired of dozens of complicated spreadsheets?. Use the ShowPlanner to handle schedules, availabilities and rostering.
-          </p>
-          <p>
-            Login to view shows assigned to you.
+            Tired of dozens of complicated spreadsheets? Use the ShowPlanner to handle schedules, availabilities and rostering.
           </p>
           {!session.loading && !session.doesSessionExist && (
             <>
