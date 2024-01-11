@@ -103,6 +103,51 @@ func (o *PostShowsBadRequest) WriteResponse(rw http.ResponseWriter, producer run
 	}
 }
 
+// PostShowsUnauthorizedCode is the HTTP code returned for type PostShowsUnauthorized
+const PostShowsUnauthorizedCode int = 401
+
+/*
+PostShowsUnauthorized Error
+
+swagger:response postShowsUnauthorized
+*/
+type PostShowsUnauthorized struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewPostShowsUnauthorized creates PostShowsUnauthorized with default headers values
+func NewPostShowsUnauthorized() *PostShowsUnauthorized {
+
+	return &PostShowsUnauthorized{}
+}
+
+// WithPayload adds the payload to the post shows unauthorized response
+func (o *PostShowsUnauthorized) WithPayload(payload *models.Error) *PostShowsUnauthorized {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the post shows unauthorized response
+func (o *PostShowsUnauthorized) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *PostShowsUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(401)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
 // PostShowsInternalServerErrorCode is the HTTP code returned for type PostShowsInternalServerError
 const PostShowsInternalServerErrorCode int = 500
 

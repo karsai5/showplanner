@@ -207,6 +207,9 @@ func init() {
           "400": {
             "$ref": "#/responses/Error"
           },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
           "500": {
             "description": "Internal server error"
           }
@@ -240,20 +243,9 @@ func init() {
           },
           "404": {
             "$ref": "#/responses/Error"
-          }
-        }
-      }
-    },
-    "/users": {
-      "get": {
-        "description": "Optional extended description in Markdown.",
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns a list of users.",
-        "responses": {
-          "200": {
-            "description": "OK"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
           }
         }
       }
@@ -681,6 +673,12 @@ func init() {
               "$ref": "#/definitions/Error"
             }
           },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
           "500": {
             "description": "Internal server error"
           }
@@ -720,20 +718,12 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Error"
             }
-          }
-        }
-      }
-    },
-    "/users": {
-      "get": {
-        "description": "Optional extended description in Markdown.",
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns a list of users.",
-        "responses": {
-          "200": {
-            "description": "OK"
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }

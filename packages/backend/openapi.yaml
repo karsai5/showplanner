@@ -8,15 +8,6 @@ host: localhost:8080
 schemes:
   - http
 paths:
-  /users:
-    get:
-      summary: Returns a list of users.
-      description: Optional extended description in Markdown.
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
   /events:
     get:
       parameters:
@@ -132,6 +123,8 @@ paths:
           description: Internal server error
         400:
           $ref: '#/responses/Error'
+        401:
+          $ref: '#/responses/Error'
         200:
           description: OK
           schema:
@@ -148,6 +141,8 @@ paths:
       produces:
         - application/json
       responses:
+        500:
+          $ref: '#/responses/Error'
         401:
           $ref: '#/responses/Error'
         404:

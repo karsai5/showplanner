@@ -54,9 +54,6 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetShowsShowSlugSummaryHandler: GetShowsShowSlugSummaryHandlerFunc(func(params GetShowsShowSlugSummaryParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetShowsShowSlugSummary has not yet been implemented")
 		}),
-		GetUsersHandler: GetUsersHandlerFunc(func(params GetUsersParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetUsers has not yet been implemented")
-		}),
 		PostEventsHandler: PostEventsHandlerFunc(func(params PostEventsParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostEvents has not yet been implemented")
 		}),
@@ -110,8 +107,6 @@ type GoBackendAPI struct {
 	GetShowsHandler GetShowsHandler
 	// GetShowsShowSlugSummaryHandler sets the operation handler for the get shows show slug summary operation
 	GetShowsShowSlugSummaryHandler GetShowsShowSlugSummaryHandler
-	// GetUsersHandler sets the operation handler for the get users operation
-	GetUsersHandler GetUsersHandler
 	// PostEventsHandler sets the operation handler for the post events operation
 	PostEventsHandler PostEventsHandler
 	// PostEventsIDHandler sets the operation handler for the post events ID operation
@@ -206,9 +201,6 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.GetShowsShowSlugSummaryHandler == nil {
 		unregistered = append(unregistered, "GetShowsShowSlugSummaryHandler")
-	}
-	if o.GetUsersHandler == nil {
-		unregistered = append(unregistered, "GetUsersHandler")
 	}
 	if o.PostEventsHandler == nil {
 		unregistered = append(unregistered, "PostEventsHandler")
@@ -323,10 +315,6 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/shows/{showSlug}/summary"] = NewGetShowsShowSlugSummary(o.context, o.GetShowsShowSlugSummaryHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/users"] = NewGetUsers(o.context, o.GetUsersHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

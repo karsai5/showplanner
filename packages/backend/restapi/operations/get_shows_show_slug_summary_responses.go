@@ -147,3 +147,48 @@ func (o *GetShowsShowSlugSummaryNotFound) WriteResponse(rw http.ResponseWriter, 
 		}
 	}
 }
+
+// GetShowsShowSlugSummaryInternalServerErrorCode is the HTTP code returned for type GetShowsShowSlugSummaryInternalServerError
+const GetShowsShowSlugSummaryInternalServerErrorCode int = 500
+
+/*
+GetShowsShowSlugSummaryInternalServerError Error
+
+swagger:response getShowsShowSlugSummaryInternalServerError
+*/
+type GetShowsShowSlugSummaryInternalServerError struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewGetShowsShowSlugSummaryInternalServerError creates GetShowsShowSlugSummaryInternalServerError with default headers values
+func NewGetShowsShowSlugSummaryInternalServerError() *GetShowsShowSlugSummaryInternalServerError {
+
+	return &GetShowsShowSlugSummaryInternalServerError{}
+}
+
+// WithPayload adds the payload to the get shows show slug summary internal server error response
+func (o *GetShowsShowSlugSummaryInternalServerError) WithPayload(payload *models.Error) *GetShowsShowSlugSummaryInternalServerError {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get shows show slug summary internal server error response
+func (o *GetShowsShowSlugSummaryInternalServerError) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *GetShowsShowSlugSummaryInternalServerError) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(500)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}

@@ -32,19 +32,41 @@ func HasPermission(r *http.Request, permission string) (bool, error) {
 	return false, nil
 }
 
-func getRolesAndPermissions(r *http.Request) (roles []string, permissions []string, err error) {
+func IsLoggedIn(r *http.Request) (bool, error) {
+	token, err := getToken(r)
+	if err != nil || token == nil {
+		return false, err
+	}
+	return true, nil
+}
+
+func getToken(r *http.Request) (*jwt.Token, error) {
 	cookie, err := r.Cookie("sAccessToken")
 
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		return []byte("secret key"), nil
 	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return token, err
+}
+
+func getRolesAndPermissions(r *http.Request) (roles []string, permissions []string, err error) {
+	token, err := getToken(r)
+
+	if err != nil {
+		return nil, nil, err
+	}
 
 	if token == nil {
 		return nil, nil, errors.New("No JWT token")
