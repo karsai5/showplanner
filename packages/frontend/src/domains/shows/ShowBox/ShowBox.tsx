@@ -72,8 +72,8 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
             <p>{company}</p>
           </div>
           <div className="card-actions">
-            <Link href={`/shows/${slug}`}>
-              <a className="btn btn-block btn-outline">View schedule</a>
+            <Link href={`/shows/${slug}`} className="btn btn-block btn-outline">
+              View schedule
             </Link>
             <div className="">{dates ? dates : "No dates yet"}</div>
             {!!showCount && showCount > 0 && (

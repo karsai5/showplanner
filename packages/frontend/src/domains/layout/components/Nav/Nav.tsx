@@ -61,8 +61,8 @@ const MobileNav: React.FC<MobileNavProps> = ({ toggleSidebar }) => {
 };
 
 const Title = () => (
-  <Link href="/">
-    <a className="btn btn-ghost normal-case text-xl">ShowPlanner</a>
+  <Link href="/" className="btn btn-ghost normal-case text-xl">
+    ShowPlanner
   </Link>
 );
 
@@ -70,10 +70,8 @@ const NavList: React.FC<{ className?: string }> = ({ className }) => (
   <ul className={className}>
     <li>
       <Link href="/tools/showtimer">
-        <a>
-          <ClockIcon />
-          ShowTimer
-        </a>
+        <ClockIcon />
+        ShowTimer
       </Link>
     </li>
     <AuthItems />
@@ -94,11 +92,11 @@ const AuthItems: React.FC = () => {
     return (<>
       <li>
         <Link href="/shows">
-          <a>Shows</a>
+          Shows
         </Link>
       </li>
       <li>
-          <a onClick={onLogout}>Log out</a>
+        <a onClick={onLogout}>Log out</a>
       </li>
     </>)
   }
@@ -107,7 +105,7 @@ const AuthItems: React.FC = () => {
     <>
       <li>
         <Link href="/auth">
-          <a>Log in</a>
+          Log in
         </Link>
       </li>
     </>

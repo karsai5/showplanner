@@ -50,17 +50,22 @@ export const getDecodedJWT = async (ctx: GetServerSidePropsContext) => {
     return undefined;
   }
 
-  return new Promise<JsonWebToken.JwtPayload>((resolve, reject) => {
-    JsonWebToken.verify(sAccessToken, getKey, {}, function(err, decoded) {
-      if (err) {
-        return reject(err);
-      }
-      if (decoded === undefined || typeof decoded === "string") {
-        return reject(new Error("Decoded value incorrect type"));
-      }
-      resolve(decoded);
+  try {
+    const jwt = await new Promise<JsonWebToken.JwtPayload>((resolve, reject) => {
+      JsonWebToken.verify(sAccessToken, getKey, {}, function(err, decoded) {
+        if (err) {
+          return reject(err);
+        }
+        if (decoded === undefined || typeof decoded === "string") {
+          return reject(new Error("Decoded value incorrect type"));
+        }
+        resolve(decoded);
+      });
     });
-  });
+    return jwt;
+  } catch (err) {
+    return undefined
+  }
 }
 
 export const getLoggedIn = async (ctx: GetServerSidePropsContext) => {

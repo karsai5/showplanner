@@ -23,8 +23,8 @@ const HomeHero: FC<HomeHeroProps> = () => {
           </p>
           {!session.loading && !session.doesSessionExist && (
             <>
-              <Link href="/auth">
-                <button className="btn btn-primary mr-4 w-28">Log In</button>
+              <Link href="/auth" className="btn btn-primary mr-4 w-28">
+                Log In
               </Link>
             </>
           )}

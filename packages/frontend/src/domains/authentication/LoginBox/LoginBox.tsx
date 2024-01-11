@@ -58,23 +58,17 @@ export const LoginBox: React.FC<{ className?: string; signup?: boolean }> = ({
         <div className="card-body">
           <h2 className="card-title">{noun}</h2>
           <div className="flex flex-col gap-3">
-            <Link href={`${API_URL}/api/connect/google`} className="btn">
-              <a className="btn bg-sky-500 border-sky-500">
+            <Link href={`${API_URL}/api/connect/google`} className="btn bg-sky-500 border-sky-500">
                 <FaGoogle className="mr-2" />
                 {verb} with Google
-              </a>
             </Link>
-            <Link href={`${API_URL}/api/connect/facebook`}>
-              <a className="btn bg-sky-700 border-sky-700">
+            <Link href={`${API_URL}/api/connect/facebook`} className="btn bg-sky-700 border-sky-700">
                 <FaFacebook className="mr-2" />
                 {verb} with Facebook
-              </a>
             </Link>
-            <Link href={`${API_URL}/api/connect/discord`}>
-              <a className="btn bg-zinc-500 border-zinc-500">
+            <Link href={`${API_URL}/api/connect/discord`} className="btn bg-zinc-500 border-zinc-500">
                 <FaDiscord className="mr-2" />
                 {verb} with Discord
-              </a>
             </Link>
           </div>
           {!signup && (

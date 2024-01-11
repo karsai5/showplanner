@@ -170,8 +170,8 @@ const NewEventForm: FC<{
             <Image
               alt={`map of ${address.address}`}
               className="rounded-md"
-              height="300px"
-              width="600px"
+              height="300"
+              width="600"
               src={getStaticMap(address.lat, address.lng)}
             />
           </div>

@@ -30,8 +30,8 @@ const ShowPage = () => {
             <H2>{show.name} - Schedule </H2>
             <div className="flex gap-2">
               <HasPermission showId={show.id} permission={PERMISSION.personnel}>
-                <Link href={`${show.slug}/public`} target="_blank">
-                  <a className="btn btn-ghost">Public schedule</a>
+                <Link href={`${show.slug}/public`} target="_blank" className="btn btn-ghost">
+                  Public schedule
                 </Link>
               </HasPermission>
               <HasPermission showId={show.id} permission={PERMISSION.addEvents}>

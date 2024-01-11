@@ -98,8 +98,8 @@ export const EventTable: React.FC<{
                               <Image
                                 alt="Theatre"
                                 src={theatreIcons}
-                                height="20px"
-                                width="20px"
+                                height="20"
+                                width="20"
                               />
                             </div>
                           )}
