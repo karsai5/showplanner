@@ -12,11 +12,6 @@ import (
 )
 
 var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetShowsParams) middleware.Responder {
-	isLoggedIn, _ := permissions.IsLoggedIn(params.HTTPRequest)
-
-	if !isLoggedIn {
-		return &operations.GetShowsUnauthorized{}
-	}
 
 	shows, err := GetAllShows()
 
@@ -50,37 +45,16 @@ func getShowsWithPermission(shows []database.Show, request *http.Request) []data
 
 var GetShowsSlugSummaryHandler = operations.GetShowsShowSlugSummaryHandlerFunc(func(params operations.GetShowsShowSlugSummaryParams) middleware.Responder {
 	show, err := GetShowBySlug(params.ShowSlug)
-
 	if err != nil {
-		return &operations.GetShowsShowSlugSummaryInternalServerError{}
+		println("Could not find show: " + err.Error())
+		return &operations.GetShowsShowSlugSummaryNotFound{}
 	}
-
-	hasPermission, err := permissions.ViewEvents.HasPermission(show.ID, params.HTTPRequest)
-
-	if err != nil {
-		return &operations.GetShowsShowSlugSummaryInternalServerError{}
-	}
-
-	if !hasPermission {
-		return &operations.GetShowsShowSlugSummaryUnauthorized{}
-	}
-
 	return &operations.GetShowsShowSlugSummaryOK{
 		Payload: MapShowSummary(show),
 	}
 })
 
 var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostShowsParams) middleware.Responder {
-
-	hasPermission, err := permissions.AddShow.HasPermission(psp.HTTPRequest)
-
-	if err != nil {
-		return &operations.PostShowsInternalServerError{}
-	}
-
-	if !hasPermission {
-		return &operations.PostShowsUnauthorized{}
-	}
 
 	show, err := CreateShow(database.Show{
 		Name:    *psp.Show.Name,

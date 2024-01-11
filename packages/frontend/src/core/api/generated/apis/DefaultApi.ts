@@ -282,4 +282,31 @@ export class DefaultApi extends runtime.BaseAPI {
         return await response.value();
     }
 
+    /**
+     * Optional extended description in Markdown.
+     * Returns a list of users.
+     */
+    async usersGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/users`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Optional extended description in Markdown.
+     * Returns a list of users.
+     */
+    async usersGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.usersGetRaw(initOverrides);
+    }
+
 }

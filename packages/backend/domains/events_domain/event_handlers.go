@@ -8,7 +8,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 )
 
-var CreateEventHandler = operations.PostEventsHandlerFunc(func(params operations.PostEventsParams) middleware.Responder {
+var PostEventsHandler = operations.PostEventsHandlerFunc(func(params operations.PostEventsParams) middleware.Responder {
 	hasPermission, err := permissions.AddEvents.HasPermission(uint(*params.Event.ShowID), params.HTTPRequest)
 
 	if err != nil {
@@ -36,7 +36,7 @@ var CreateEventHandler = operations.PostEventsHandlerFunc(func(params operations
 	}
 })
 
-var UpdateEventHandler = operations.PostEventsIDHandlerFunc(func(params operations.PostEventsIDParams) middleware.Responder {
+var PostEventsIdHandler = operations.PostEventsIDHandlerFunc(func(params operations.PostEventsIDParams) middleware.Responder {
 	existingEvent := database.Event{}
 
 	res := db.First(&existingEvent, params.ID)
