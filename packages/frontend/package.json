@@ -10,7 +10,6 @@
     "generate": "npx @openapitools/openapi-generator-cli generate -i ../backend/openapi.yaml -g typescript-fetch -o src/core/api/generated",
     "test": "jest --watch",
     "test:ci": "jest --ci",
-    "prepare": "husky install",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
