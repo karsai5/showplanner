@@ -49,12 +49,34 @@ var GetShowsSlugSummaryHandler = operations.GetShowsShowSlugSummaryHandlerFunc(f
 		println("Could not find show: " + err.Error())
 		return &operations.GetShowsShowSlugSummaryNotFound{}
 	}
+
+	hasPermission, err := permissions.ViewEvents.HasPermission(show.ID, params.HTTPRequest)
+
+	if err != nil {
+		println("Error getting permission: " + err.Error())
+		return &operations.GetShowsShowSlugSummaryInternalServerError{}
+	}
+
+	if !hasPermission {
+		return &operations.GetShowsShowSlugSummaryUnauthorized{}
+	}
+
 	return &operations.GetShowsShowSlugSummaryOK{
 		Payload: MapShowSummary(show),
 	}
 })
 
 var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostShowsParams) middleware.Responder {
+
+	hasPermission, err := permissions.AddShow.HasPermission(psp.HTTPRequest)
+
+	if err != nil {
+		return &operations.PostShowsInternalServerError{}
+	}
+
+	if !hasPermission {
+		return &operations.PostShowsUnauthorized{}
+	}
 
 	show, err := CreateShow(database.Show{
 		Name:    *psp.Show.Name,
@@ -63,7 +85,7 @@ var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostS
 	})
 
 	if err != nil {
-		code := "404"
+		code := "400"
 		message := "Something went wrong"
 		if strings.Contains(err.Error(), "UNIQUE constraint failed: shows.slug") {
 			message = "Slug must be unique"

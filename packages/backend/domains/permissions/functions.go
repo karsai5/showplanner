@@ -2,79 +2,45 @@ package permissions
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 
-	"github.com/golang-jwt/jwt/v5"
+	"github.com/supertokens/supertokens-golang/recipe/session"
+	"github.com/supertokens/supertokens-golang/recipe/session/claims"
+	"github.com/supertokens/supertokens-golang/recipe/userroles/userrolesclaims"
 )
 
 func HasRole(r *http.Request, role string) (bool, error) {
-	roles, _, err := getRolesAndPermissions(r)
-	if err != nil {
-		return false, err
+	sessionContainer := session.GetSessionFromRequestContext(r.Context())
+
+	if sessionContainer == nil {
+		return false, errors.New("Cannot find session")
 	}
 
-	if contains(roles, role) {
-		return true, nil
+	err := sessionContainer.AssertClaims([]claims.SessionClaimValidator{
+		userrolesclaims.UserRoleClaimValidators.Includes(role, nil, nil),
+	})
+
+	if err != nil {
+		return false, nil
 	}
-	return false, nil
+
+	return true, nil
 }
 
 func HasPermission(r *http.Request, permission string) (bool, error) {
-	_, permissions, err := getRolesAndPermissions(r)
-	if err != nil {
-		return false, err
+	sessionContainer := session.GetSessionFromRequestContext(r.Context())
+
+	if sessionContainer == nil {
+		return false, errors.New("Cannot find session")
 	}
 
-	if contains(permissions, permission) {
-		return true, nil
-	}
-	return false, nil
-}
-
-func getRolesAndPermissions(r *http.Request) (roles []string, permissions []string, err error) {
-	cookie, err := r.Cookie("sAccessToken")
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	token, _ := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-		return []byte("secret key"), nil
+	err := sessionContainer.AssertClaims([]claims.SessionClaimValidator{
+		userrolesclaims.PermissionClaimValidators.Includes(permission, nil, nil),
 	})
 
-	if token == nil {
-		return nil, nil, errors.New("No JWT token")
+	if err != nil {
+		return false, nil
 	}
 
-	claims := token.Claims.(jwt.MapClaims)
-	permissions = []string{}
-	roles = []string{}
-
-	stPerm := claims["st-perm"].(map[string]interface{})
-	stRole := claims["st-role"].(map[string]interface{})
-
-	untypedPermissions := stPerm["v"].([]interface{})
-	untypedRoles := stRole["v"].([]interface{})
-
-	for _, perm := range untypedPermissions {
-		permissions = append(permissions, perm.(string))
-	}
-
-	for _, r := range untypedRoles {
-		roles = append(roles, r.(string))
-	}
-	return roles, permissions, nil
-}
-
-func contains(s []string, e string) bool {
-	for _, a := range s {
-		if a == e {
-			return true
-		}
-	}
-	return false
+	return true, nil
 }

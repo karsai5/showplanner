@@ -6,6 +6,7 @@ models/CreateShowDTO.ts
 models/EventDTO.ts
 models/EventPublicDTO.ts
 models/ModelError.ts
+models/PublicScheduleGet200Response.ts
 models/ShowDTO.ts
 models/ShowSummaryDTO.ts
 models/index.ts

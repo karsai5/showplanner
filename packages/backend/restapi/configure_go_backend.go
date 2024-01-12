@@ -4,10 +4,14 @@ package restapi
 
 import (
 	"crypto/tls"
+	"log"
+	"regexp"
 	"strings"
+	"time"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/supertokens/supertokens-golang/recipe/session"
 
 	"go-backend/domains/permissions"
 	"go-backend/restapi/operations"
@@ -63,7 +67,33 @@ func configureServer(s *http.Server, scheme, addr string) {
 // The middleware configuration is for the handler executors. These do not apply to the swagger.json document.
 // The middleware executes after routing but before authentication, binding and validation.
 func setupMiddlewares(handler http.Handler) http.Handler {
-	return handler
+	return VerifiedEndpointHandler(handler)
+}
+
+func VerifiedEndpointHandler(handlerToWrap http.Handler) *VerifiedEndpoint {
+	return &VerifiedEndpoint{handlerToWrap}
+}
+
+type VerifiedEndpoint struct {
+	handler http.Handler
+}
+
+// ServeHTTP handles the request by passing it to the real
+// handler and logging the request details
+func (ve *VerifiedEndpoint) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	publicEndpoint, err := regexp.Match(`^/v1/public.*$`, []byte(r.URL.Path))
+	if err != nil {
+		panic("Error with regex: " + err.Error())
+	}
+
+	if !publicEndpoint {
+		session.VerifySession(nil, ve.handler.ServeHTTP).ServeHTTP(w, r)
+	} else {
+		ve.handler.ServeHTTP(w, r)
+	}
+
+	log.Printf("%s %s %v", r.Method, r.URL.Path, time.Since(start))
 }
 
 // The middleware configuration happens before anything, this middleware also applies to serving the swagger.json document.

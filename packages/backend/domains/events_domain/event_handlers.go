@@ -8,7 +8,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 )
 
-var PostEventsHandler = operations.PostEventsHandlerFunc(func(params operations.PostEventsParams) middleware.Responder {
+var CreateEventsHandler = operations.PostEventsHandlerFunc(func(params operations.PostEventsParams) middleware.Responder {
 	hasPermission, err := permissions.AddEvents.HasPermission(uint(*params.Event.ShowID), params.HTTPRequest)
 
 	if err != nil {
@@ -36,7 +36,7 @@ var PostEventsHandler = operations.PostEventsHandlerFunc(func(params operations.
 	}
 })
 
-var PostEventsIdHandler = operations.PostEventsIDHandlerFunc(func(params operations.PostEventsIDParams) middleware.Responder {
+var UpdateEventsHandler = operations.PostEventsIDHandlerFunc(func(params operations.PostEventsIDParams) middleware.Responder {
 	existingEvent := database.Event{}
 
 	res := db.First(&existingEvent, params.ID)
@@ -68,20 +68,6 @@ var PostEventsIdHandler = operations.PostEventsIDHandlerFunc(func(params operati
 	mappedEvents := mapEventToEventDTO(event)
 	return &operations.PostEventsOK{
 		Payload: &mappedEvents,
-	}
-})
-
-var GetEventsPublicHandler = operations.GetEventsPublicHandlerFunc(func(params operations.GetEventsPublicParams) middleware.Responder {
-	showId := uint(params.ShowID)
-
-	events, err := GetEvents(showId)
-
-	if err != nil {
-		return &operations.GetEventsInternalServerError{}
-	}
-
-	return &operations.GetEventsPublicOK{
-		Payload: mapEventsToPublicEventsDTO(events),
 	}
 })
 

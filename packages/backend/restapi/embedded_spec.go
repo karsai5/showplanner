@@ -91,37 +91,6 @@ func init() {
         }
       }
     },
-    "/events/public": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns a list of events.",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the show to get events from",
-            "name": "showId",
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/EventPublicDTO"
-              }
-            }
-          },
-          "500": {
-            "$ref": "#/responses/Error"
-          }
-        }
-      }
-    },
     "/events/{id}": {
       "post": {
         "produces": [
@@ -161,6 +130,45 @@ func init() {
         }
       }
     },
+    "/public/schedule": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns a list of events.",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "ID of the show to get events from",
+            "name": "showSlug",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "events": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/EventPublicDTO"
+                  }
+                },
+                "showName": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/shows": {
       "get": {
         "produces": [
@@ -178,6 +186,9 @@ func init() {
             }
           },
           "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
             "$ref": "#/responses/Error"
           }
         }
@@ -205,6 +216,9 @@ func init() {
             }
           },
           "400": {
+            "$ref": "#/responses/Error"
+          },
+          "401": {
             "$ref": "#/responses/Error"
           },
           "500": {
@@ -239,6 +253,9 @@ func init() {
             "$ref": "#/responses/Error"
           },
           "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
             "$ref": "#/responses/Error"
           }
         }
@@ -550,40 +567,6 @@ func init() {
         }
       }
     },
-    "/events/public": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns a list of events.",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the show to get events from",
-            "name": "showId",
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/EventPublicDTO"
-              }
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
     "/events/{id}": {
       "post": {
         "produces": [
@@ -629,6 +612,48 @@ func init() {
         }
       }
     },
+    "/public/schedule": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns a list of events.",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "ID of the show to get events from",
+            "name": "showSlug",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "events": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/EventPublicDTO"
+                  }
+                },
+                "showName": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/shows": {
       "get": {
         "produces": [
@@ -646,6 +671,12 @@ func init() {
             }
           },
           "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
             "description": "Error",
             "schema": {
               "$ref": "#/definitions/Error"
@@ -676,6 +707,12 @@ func init() {
             }
           },
           "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
             "description": "Error",
             "schema": {
               "$ref": "#/definitions/Error"
@@ -716,6 +753,12 @@ func init() {
             }
           },
           "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
             "description": "Error",
             "schema": {
               "$ref": "#/definitions/Error"

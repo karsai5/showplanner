@@ -9,13 +9,11 @@ import (
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
-
-	"github.com/go-openapi/swag"
 )
 
-// GetEventsPublicURL generates an URL for the get events public operation
-type GetEventsPublicURL struct {
-	ShowID int64
+// GetPublicScheduleURL generates an URL for the get public schedule operation
+type GetPublicScheduleURL struct {
+	ShowSlug string
 
 	_basePath string
 	// avoid unkeyed usage
@@ -25,7 +23,7 @@ type GetEventsPublicURL struct {
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetEventsPublicURL) WithBasePath(bp string) *GetEventsPublicURL {
+func (o *GetPublicScheduleURL) WithBasePath(bp string) *GetPublicScheduleURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -33,15 +31,15 @@ func (o *GetEventsPublicURL) WithBasePath(bp string) *GetEventsPublicURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetEventsPublicURL) SetBasePath(bp string) {
+func (o *GetPublicScheduleURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *GetEventsPublicURL) Build() (*url.URL, error) {
+func (o *GetPublicScheduleURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/events/public"
+	var _path = "/public/schedule"
 
 	_basePath := o._basePath
 	if _basePath == "" {
@@ -51,9 +49,9 @@ func (o *GetEventsPublicURL) Build() (*url.URL, error) {
 
 	qs := make(url.Values)
 
-	showIDQ := swag.FormatInt64(o.ShowID)
-	if showIDQ != "" {
-		qs.Set("showId", showIDQ)
+	showSlugQ := o.ShowSlug
+	if showSlugQ != "" {
+		qs.Set("showSlug", showSlugQ)
 	}
 
 	_result.RawQuery = qs.Encode()
@@ -62,7 +60,7 @@ func (o *GetEventsPublicURL) Build() (*url.URL, error) {
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *GetEventsPublicURL) Must(u *url.URL, err error) *url.URL {
+func (o *GetPublicScheduleURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -73,17 +71,17 @@ func (o *GetEventsPublicURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *GetEventsPublicURL) String() string {
+func (o *GetPublicScheduleURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *GetEventsPublicURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *GetPublicScheduleURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on GetEventsPublicURL")
+		return nil, errors.New("scheme is required for a full url on GetPublicScheduleURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on GetEventsPublicURL")
+		return nil, errors.New("host is required for a full url on GetPublicScheduleURL")
 	}
 
 	base, err := o.Build()
@@ -97,6 +95,6 @@ func (o *GetEventsPublicURL) BuildFull(scheme, host string) (*url.URL, error) {
 }
 
 // StringFull returns the string representation of a complete url
-func (o *GetEventsPublicURL) StringFull(scheme, host string) string {
+func (o *GetPublicScheduleURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

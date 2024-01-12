@@ -105,3 +105,48 @@ func (o *GetShowsUnauthorized) WriteResponse(rw http.ResponseWriter, producer ru
 		}
 	}
 }
+
+// GetShowsInternalServerErrorCode is the HTTP code returned for type GetShowsInternalServerError
+const GetShowsInternalServerErrorCode int = 500
+
+/*
+GetShowsInternalServerError Error
+
+swagger:response getShowsInternalServerError
+*/
+type GetShowsInternalServerError struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewGetShowsInternalServerError creates GetShowsInternalServerError with default headers values
+func NewGetShowsInternalServerError() *GetShowsInternalServerError {
+
+	return &GetShowsInternalServerError{}
+}
+
+// WithPayload adds the payload to the get shows internal server error response
+func (o *GetShowsInternalServerError) WithPayload(payload *models.Error) *GetShowsInternalServerError {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get shows internal server error response
+func (o *GetShowsInternalServerError) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *GetShowsInternalServerError) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(500)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}

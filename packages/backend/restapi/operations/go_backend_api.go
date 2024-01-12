@@ -45,8 +45,8 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetEventsHandler: GetEventsHandlerFunc(func(params GetEventsParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetEvents has not yet been implemented")
 		}),
-		GetEventsPublicHandler: GetEventsPublicHandlerFunc(func(params GetEventsPublicParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetEventsPublic has not yet been implemented")
+		GetPublicScheduleHandler: GetPublicScheduleHandlerFunc(func(params GetPublicScheduleParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetPublicSchedule has not yet been implemented")
 		}),
 		GetShowsHandler: GetShowsHandlerFunc(func(params GetShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetShows has not yet been implemented")
@@ -104,8 +104,8 @@ type GoBackendAPI struct {
 
 	// GetEventsHandler sets the operation handler for the get events operation
 	GetEventsHandler GetEventsHandler
-	// GetEventsPublicHandler sets the operation handler for the get events public operation
-	GetEventsPublicHandler GetEventsPublicHandler
+	// GetPublicScheduleHandler sets the operation handler for the get public schedule operation
+	GetPublicScheduleHandler GetPublicScheduleHandler
 	// GetShowsHandler sets the operation handler for the get shows operation
 	GetShowsHandler GetShowsHandler
 	// GetShowsShowSlugSummaryHandler sets the operation handler for the get shows show slug summary operation
@@ -198,8 +198,8 @@ func (o *GoBackendAPI) Validate() error {
 	if o.GetEventsHandler == nil {
 		unregistered = append(unregistered, "GetEventsHandler")
 	}
-	if o.GetEventsPublicHandler == nil {
-		unregistered = append(unregistered, "GetEventsPublicHandler")
+	if o.GetPublicScheduleHandler == nil {
+		unregistered = append(unregistered, "GetPublicScheduleHandler")
 	}
 	if o.GetShowsHandler == nil {
 		unregistered = append(unregistered, "GetShowsHandler")
@@ -314,7 +314,7 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/events/public"] = NewGetEventsPublic(o.context, o.GetEventsPublicHandler)
+	o.handlers["GET"]["/public/schedule"] = NewGetPublicSchedule(o.context, o.GetPublicScheduleHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

@@ -3,7 +3,6 @@ import { getApi } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { H2 } from "core/components/Typography";
 import { EventTable } from "domains/events/EventTable";
-import { AdminEventTable } from "domains/events/EventTable/AdminEventTable";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -18,9 +17,8 @@ const ShowPage = () => {
       if (!slug) {
         return null;
       }
-      const show = await api.showsShowSlugSummaryGet({ showSlug: slug as string });
-      const events = await api.eventsPublicGet({ showId: show?.id });
-      return { show, events };
+      const { showName, events } = await api.publicScheduleGet({ showSlug: slug as string });
+      return { showName, events };
     }
   );
 
@@ -41,19 +39,19 @@ const ShowPage = () => {
     </>
   }
 
-  const {show, events} = data;
+  const { showName, events } = data;
 
   return (
     <>
       <Head>
-        <title>Schedule - {show.name} - ShowPlanner</title>
+        <title>Schedule - {showName} - ShowPlanner</title>
       </Head>
       <div className="flex flex-col gap-4 sm:flex-row justify-between">
         <div>
           <div className="flex justify-between items-center">
-            <H2>{show.name} - Schedule </H2>
+            <H2>{showName} - Schedule </H2>
           </div>
-          {events && <EventTable events={events} hideHeaders={["Location", "Note"]}/>}
+          {events && <EventTable events={events} hideHeaders={["Location", "Note"]} />}
         </div>
       </div>
     </>

@@ -9,8 +9,10 @@ import missingImg from "./missing.png";
 export const AssignedShowBoxGrid: React.FC = () => {
   const api = getApi();
   const { data: shows, isLoading, isError } = useQuery(
-    ["AssignedShowsList"],
-    () => api.showsGet()
+    ["ShowList"],
+    () => {
+        return api.showsGet();
+    }
   );
 
   if (isError) {

@@ -18,7 +18,7 @@ import type {
   CreateEventDTO,
   CreateShowDTO,
   EventDTO,
-  EventPublicDTO,
+  PublicScheduleGet200Response,
   ShowDTO,
   ShowSummaryDTO,
 } from '../models/index';
@@ -29,8 +29,8 @@ import {
     CreateShowDTOToJSON,
     EventDTOFromJSON,
     EventDTOToJSON,
-    EventPublicDTOFromJSON,
-    EventPublicDTOToJSON,
+    PublicScheduleGet200ResponseFromJSON,
+    PublicScheduleGet200ResponseToJSON,
     ShowDTOFromJSON,
     ShowDTOToJSON,
     ShowSummaryDTOFromJSON,
@@ -50,8 +50,8 @@ export interface EventsPostRequest {
     event?: CreateEventDTO;
 }
 
-export interface EventsPublicGetRequest {
-    showId: number;
+export interface PublicScheduleGetRequest {
+    showSlug: string;
 }
 
 export interface ShowsPostRequest {
@@ -166,34 +166,34 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Returns a list of events.
      */
-    async eventsPublicGetRaw(requestParameters: EventsPublicGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<EventPublicDTO>>> {
-        if (requestParameters.showId === null || requestParameters.showId === undefined) {
-            throw new runtime.RequiredError('showId','Required parameter requestParameters.showId was null or undefined when calling eventsPublicGet.');
+    async publicScheduleGetRaw(requestParameters: PublicScheduleGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PublicScheduleGet200Response>> {
+        if (requestParameters.showSlug === null || requestParameters.showSlug === undefined) {
+            throw new runtime.RequiredError('showSlug','Required parameter requestParameters.showSlug was null or undefined when calling publicScheduleGet.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.showId !== undefined) {
-            queryParameters['showId'] = requestParameters.showId;
+        if (requestParameters.showSlug !== undefined) {
+            queryParameters['showSlug'] = requestParameters.showSlug;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/events/public`,
+            path: `/public/schedule`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EventPublicDTOFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => PublicScheduleGet200ResponseFromJSON(jsonValue));
     }
 
     /**
      * Returns a list of events.
      */
-    async eventsPublicGet(requestParameters: EventsPublicGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<EventPublicDTO>> {
-        const response = await this.eventsPublicGetRaw(requestParameters, initOverrides);
+    async publicScheduleGet(requestParameters: PublicScheduleGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PublicScheduleGet200Response> {
+        const response = await this.publicScheduleGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

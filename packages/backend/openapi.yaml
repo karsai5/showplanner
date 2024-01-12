@@ -57,13 +57,13 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/EventDTO'
-  /events/public:
+  /public/schedule:
     get:
       parameters:
         - in: query
           required: true
-          name: showId
-          type: integer
+          name: showSlug
+          type: string
           description: ID of the show to get events from
       summary: Returns a list of events.
       produces:
@@ -72,9 +72,14 @@ paths:
         200:
           description: OK
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/EventPublicDTO'
+            type: object
+            properties: 
+              showName:
+                type: string
+              events:
+                type: array
+                items:
+                  $ref: '#/definitions/EventPublicDTO'
         500:
           $ref: '#/responses/Error'
   /events/{id}:
@@ -108,6 +113,8 @@ paths:
       produces:
         - application/json
       responses:
+        500:
+          $ref: '#/responses/Error'
         401:
           $ref: '#/responses/Error'
         200:
@@ -132,6 +139,8 @@ paths:
           description: Internal server error
         400:
           $ref: '#/responses/Error'
+        401:
+          $ref: '#/responses/Error'
         200:
           description: OK
           schema:
@@ -148,6 +157,8 @@ paths:
       produces:
         - application/json
       responses:
+        500:
+          $ref: '#/responses/Error'
         401:
           $ref: '#/responses/Error'
         404:
