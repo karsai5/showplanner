@@ -6,6 +6,7 @@ import { useModal } from "core/components/Modal/Modal";
 import { showToastError } from "core/utils/errors";
 import { isNil } from "core/utils/isNil";
 import { useState } from "react";
+
 import NewEventForm from "../../NewEventForm/NewEventForm";
 
 export const CloneEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
