@@ -9,37 +9,29 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/errors"
-	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-	"github.com/go-openapi/validate"
-
-	"go-backend/models"
 )
 
-// NewPostEventsIDParams creates a new PostEventsIDParams object
+// NewDeleteEventsIDParams creates a new DeleteEventsIDParams object
 //
 // There are no default values defined in the spec.
-func NewPostEventsIDParams() PostEventsIDParams {
+func NewDeleteEventsIDParams() DeleteEventsIDParams {
 
-	return PostEventsIDParams{}
+	return DeleteEventsIDParams{}
 }
 
-// PostEventsIDParams contains all the bound params for the post events ID operation
+// DeleteEventsIDParams contains all the bound params for the delete events ID operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters PostEventsID
-type PostEventsIDParams struct {
+// swagger:parameters DeleteEventsID
+type DeleteEventsIDParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
-	/*The show to create
-	  In: body
-	*/
-	Event *models.CreateEventDTO
-	/*Id of event update
+	/*Id of event to delete
 	  Required: true
 	  In: path
 	*/
@@ -49,33 +41,11 @@ type PostEventsIDParams struct {
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewPostEventsIDParams() beforehand.
-func (o *PostEventsIDParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewDeleteEventsIDParams() beforehand.
+func (o *DeleteEventsIDParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r
-
-	if runtime.HasBody(r) {
-		defer r.Body.Close()
-		var body models.CreateEventDTO
-		if err := route.Consumer.Consume(r.Body, &body); err != nil {
-			res = append(res, errors.NewParseError("event", "body", "", err))
-		} else {
-			// validate body object
-			if err := body.Validate(route.Formats); err != nil {
-				res = append(res, err)
-			}
-
-			ctx := validate.WithOperationRequest(r.Context())
-			if err := body.ContextValidate(ctx, route.Formats); err != nil {
-				res = append(res, err)
-			}
-
-			if len(res) == 0 {
-				o.Event = &body
-			}
-		}
-	}
 
 	rID, rhkID, _ := route.Params.GetOK("id")
 	if err := o.bindID(rID, rhkID, route.Formats); err != nil {
@@ -88,7 +58,7 @@ func (o *PostEventsIDParams) BindRequest(r *http.Request, route *middleware.Matc
 }
 
 // bindID binds and validates parameter ID from path.
-func (o *PostEventsIDParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *DeleteEventsIDParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]

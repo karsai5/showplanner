@@ -83,14 +83,32 @@ paths:
         500:
           $ref: '#/responses/Error'
   /events/{id}:
+    delete:
+      summary: Delete's an event
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: Id of event to delete
+      produces:
+        - application/json
+      responses:
+        500:
+          $ref: '#/responses/Error'
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        200:
     post:
       summary: Update event
       parameters:
         - in: path
           name: id
-          type: string
+          type: number
           required: true
-          description: Id of event
+          description: Id of event update
         - in: body
           name: event
           description: The show to create

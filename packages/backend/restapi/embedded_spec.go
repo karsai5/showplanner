@@ -99,8 +99,8 @@ func init() {
         "summary": "Update event",
         "parameters": [
           {
-            "type": "string",
-            "description": "Id of event",
+            "type": "number",
+            "description": "Id of event update",
             "name": "id",
             "in": "path",
             "required": true
@@ -125,6 +125,35 @@ func init() {
             "$ref": "#/responses/Error"
           },
           "404": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      },
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete's an event",
+        "parameters": [
+          {
+            "type": "number",
+            "description": "Id of event to delete",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
             "$ref": "#/responses/Error"
           }
         }
@@ -575,8 +604,8 @@ func init() {
         "summary": "Update event",
         "parameters": [
           {
-            "type": "string",
-            "description": "Id of event",
+            "type": "number",
+            "description": "Id of event update",
             "name": "id",
             "in": "path",
             "required": true
@@ -604,6 +633,44 @@ func init() {
             }
           },
           "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete's an event",
+        "parameters": [
+          {
+            "type": "number",
+            "description": "Id of event to delete",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
             "description": "Error",
             "schema": {
               "$ref": "#/definitions/Error"

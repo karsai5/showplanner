@@ -1,7 +1,6 @@
 package events_domain
 
 import (
-	"go-backend/database"
 	"go-backend/domains/permissions"
 	"go-backend/restapi/operations"
 
@@ -37,11 +36,9 @@ var CreateEventsHandler = operations.PostEventsHandlerFunc(func(params operation
 })
 
 var UpdateEventsHandler = operations.PostEventsIDHandlerFunc(func(params operations.PostEventsIDParams) middleware.Responder {
-	existingEvent := database.Event{}
+	existingEvent, err := GetEvent(uint(params.ID))
 
-	res := db.First(&existingEvent, params.ID)
-
-	if res.Error != nil {
+	if err != nil {
 		return &operations.PostShowsInternalServerError{}
 	}
 
@@ -95,4 +92,32 @@ var GetEventsHander = operations.GetEventsHandlerFunc(func(params operations.Get
 	return &operations.GetEventsOK{
 		Payload: mapEventsToEventsDTO(events),
 	}
+})
+
+var DeleteEventHandler = operations.DeleteEventsIDHandlerFunc(func(params operations.DeleteEventsIDParams) middleware.Responder {
+
+	existingEvent, err := GetEvent(uint(params.ID))
+
+	if err != nil {
+		return &operations.DeleteEventsIDInternalServerError{}
+	}
+
+	hasPermission, err := permissions.AddEvents.HasPermission(existingEvent.ShowID, params.HTTPRequest)
+
+	if err != nil {
+		println("error", err.Error())
+		return &operations.DeleteEventsIDInternalServerError{}
+	}
+
+	if !hasPermission {
+		println("not authorized")
+		return &operations.DeleteEventsIDInternalServerError{}
+	}
+
+	err = DeleteEvent(existingEvent.ID)
+
+	if err != nil {
+		return &operations.DeleteEventsIDInternalServerError{}
+	}
+	return &operations.DeleteEventsIDOK{}
 })

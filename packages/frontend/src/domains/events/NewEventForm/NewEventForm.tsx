@@ -83,7 +83,7 @@ const NewEventForm: FC<{
         })
       } else {
         return api.eventsIdPost({
-          id: event.id.toString(),
+          id: event.id,
           event: {
             showId: event.showId || showId,
             start: getRequiredDateTime(form.date, form.start),

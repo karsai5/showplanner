@@ -41,8 +41,12 @@ export interface EventsGetRequest {
     showId: number;
 }
 
+export interface EventsIdDeleteRequest {
+    id: number;
+}
+
 export interface EventsIdPostRequest {
-    id: string;
+    id: number;
     event?: CreateEventDTO;
 }
 
@@ -99,6 +103,35 @@ export class DefaultApi extends runtime.BaseAPI {
     async eventsGet(requestParameters: EventsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<EventDTO>> {
         const response = await this.eventsGetRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Delete\'s an event
+     */
+    async eventsIdDeleteRaw(requestParameters: EventsIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling eventsIdDelete.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/events/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete\'s an event
+     */
+    async eventsIdDelete(requestParameters: EventsIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.eventsIdDeleteRaw(requestParameters, initOverrides);
     }
 
     /**

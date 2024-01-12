@@ -42,6 +42,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
+		DeleteEventsIDHandler: DeleteEventsIDHandlerFunc(func(params DeleteEventsIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation DeleteEventsID has not yet been implemented")
+		}),
 		GetEventsHandler: GetEventsHandlerFunc(func(params GetEventsParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetEvents has not yet been implemented")
 		}),
@@ -102,6 +105,8 @@ type GoBackendAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// DeleteEventsIDHandler sets the operation handler for the delete events ID operation
+	DeleteEventsIDHandler DeleteEventsIDHandler
 	// GetEventsHandler sets the operation handler for the get events operation
 	GetEventsHandler GetEventsHandler
 	// GetPublicScheduleHandler sets the operation handler for the get public schedule operation
@@ -195,6 +200,9 @@ func (o *GoBackendAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.DeleteEventsIDHandler == nil {
+		unregistered = append(unregistered, "DeleteEventsIDHandler")
+	}
 	if o.GetEventsHandler == nil {
 		unregistered = append(unregistered, "GetEventsHandler")
 	}
@@ -307,6 +315,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
+	o.handlers["DELETE"]["/events/{id}"] = NewDeleteEventsID(o.context, o.DeleteEventsIDHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
