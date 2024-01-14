@@ -68,5 +68,10 @@ func initDB() *gorm.DB {
 		panic("Failed to migrate show")
 	}
 
+	err = db.AutoMigrate(&Availability{})
+	if err != nil {
+		panic("Failed to migrate availabilities")
+	}
+
 	return db
 }

@@ -185,6 +185,26 @@ paths:
           description: "Show"
           schema:
             $ref: '#/definitions/ShowSummaryDTO'
+  /availabilities:
+    post:
+      summary: Create or update availability
+      produces:
+        - application/json  
+      parameters:
+        - in: body
+          name: availability
+          description: The availability to create or update
+          schema:
+            $ref: '#/definitions/AvailabilityDTO'
+      responses:
+        500:
+          description: Internal server error
+        401:
+          $ref: '#/responses/Error'
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/AvailabilityDTO'
 responses:
   Error:
     description: Error
@@ -330,3 +350,16 @@ definitions:
     required:
       - id
       - start
+  AvailabilityDTO:
+    type: object
+    properties:
+      eventId:
+        type: integer
+      userId:
+        type: string
+      available:
+        type: boolean
+    required:
+      - eventId
+      - userId
+      - available

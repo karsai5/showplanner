@@ -30,6 +30,38 @@ func init() {
   "host": "localhost:8080",
   "basePath": "/v1",
   "paths": {
+    "/availabilities": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Create or update availability",
+        "parameters": [
+          {
+            "description": "The availability to create or update",
+            "name": "availability",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/AvailabilityDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AvailabilityDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/events": {
       "get": {
         "produces": [
@@ -306,6 +338,25 @@ func init() {
     }
   },
   "definitions": {
+    "AvailabilityDTO": {
+      "type": "object",
+      "required": [
+        "eventId",
+        "userId",
+        "available"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "eventId": {
+          "type": "integer"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
     "CreateEventDTO": {
       "required": [
         "showId",
@@ -526,6 +577,41 @@ func init() {
   "host": "localhost:8080",
   "basePath": "/v1",
   "paths": {
+    "/availabilities": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Create or update availability",
+        "parameters": [
+          {
+            "description": "The availability to create or update",
+            "name": "availability",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/AvailabilityDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AvailabilityDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/events": {
       "get": {
         "produces": [
@@ -850,6 +936,25 @@ func init() {
     }
   },
   "definitions": {
+    "AvailabilityDTO": {
+      "type": "object",
+      "required": [
+        "eventId",
+        "userId",
+        "available"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "eventId": {
+          "type": "integer"
+        },
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
     "CreateEventDTO": {
       "required": [
         "showId",

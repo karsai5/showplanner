@@ -12,6 +12,7 @@ type Event struct {
 	End        *time.Time
 	CurtainsUp *time.Time
 	ShowID     uint
+	Show       Show
 	Name       *string
 	ShortNote  *string
 	Address    *string
@@ -23,4 +24,12 @@ type Show struct {
 	Company string
 	Slug    string `gorm:"unique"`
 	Events  []Event
+}
+
+type Availability struct {
+	gorm.Model
+	UserID    string `gorm:"uniqueIndex:unique_availability`
+	Event     Event
+	EventID   uint `gorm:"uniqueIndex:unique_availability`
+	Available bool
 }

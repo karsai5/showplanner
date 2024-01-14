@@ -16,6 +16,10 @@ func GetIdPointer(n uint) *int64 {
 	return &id
 }
 
+func GetStringPointer(s string) *string {
+	return &s
+}
+
 func GetDateTime(t *time.Time) *strfmt.DateTime {
 	if t == nil {
 		return nil

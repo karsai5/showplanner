@@ -27,6 +27,11 @@ func HasRole(r *http.Request, role string) (bool, error) {
 	return true, nil
 }
 
+func UserId(r *http.Request) string {
+	sessionContainer := session.GetSessionFromRequestContext(r.Context())
+	return sessionContainer.GetUserID()
+}
+
 func HasPermission(r *http.Request, permission string) (bool, error) {
 	sessionContainer := session.GetSessionFromRequestContext(r.Context())
 
