@@ -11,6 +11,7 @@ import (
 	"go-backend/domains/permissions"
 	"go-backend/restapi/middleware"
 	"go-backend/restapi/operations"
+	"go-backend/utils"
 	"net/http"
 
 	"github.com/supertokens/supertokens-golang/supertokens"
@@ -34,7 +35,9 @@ func configureAPI(api *operations.GoBackendAPI) http.Handler {
 
 	api.ServeError = errors.ServeError
 
-	api.UseSwaggerUI()
+	if utils.IsDev() {
+		api.UseSwaggerUI()
+	}
 
 	api.JSONConsumer = runtime.JSONConsumer()
 

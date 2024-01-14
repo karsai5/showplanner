@@ -9,7 +9,7 @@ import (
 
 func initSentry() {
 	err := sentry.Init(sentry.ClientOptions{
-		Dsn: utils.GetEnvVariable("SENTRY_DSN", utils.IsProduction()),
+		Dsn: utils.GetEnvVariable("SENTRY_DSN", utils.IsProd()),
 		// Set TracesSampleRate to 1.0 to capture 100%
 		// of transactions for performance monitoring.
 		// We recommend adjusting this value in production,

@@ -16,7 +16,7 @@ func GetEnvVariable(key string, required bool) string {
 	return result
 }
 
-func IsProduction() bool {
+func IsProd() bool {
 	return GetEnvVariable("APP_ENV", false) == "PROD"
 }
 
