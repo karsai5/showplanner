@@ -4,6 +4,9 @@
     "prettier": "^2.2.1",
     "strapi-to-typescript": "^2.0.6"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
     "@playwright/test": "^1.18.0",
     "@types/color-hash": "^1.0.2",
@@ -13,71 +16,11 @@
     "lerna": "^3.22.1",
     "pretty-quick": "^3.1.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  },
   "scripts": {
     "generate-types": "yarn sts packages/backend/api -o packages/frontend/src/types",
     "lint": "lerna run lint",
     "prepare": "husky install"
   },
   "name": "showplanner",
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-emoji"
-    },
-    "cz-emoji": {
-      "symbol": true,
-      "skipQuestions": [
-        "breaking"
-      ],
-      "types": [
-        {
-          "emoji": "✨",
-          "code": ":sparkles:",
-          "description": "A new feature",
-          "name": "feature"
-        },
-        {
-          "emoji": "🎨",
-          "code": ":art:",
-          "description": "A UI improvement",
-          "name": "ui"
-        },
-        {
-          "emoji": "🗃",
-          "code": ":card_file_box:",
-          "description": "A backend improvement",
-          "name": "backend"
-        },
-        {
-          "emoji": "🐛",
-          "code": ":bug:",
-          "description": "Fix a bug",
-          "name": "bug"
-        },
-        {
-          "emoji": "👷‍♂️",
-          "code": ":construction_worker:",
-          "description": "Work in progress",
-          "name": "wip"
-        },
-        {
-          "emoji": "♻️",
-          "code": ":recycle:",
-          "description": "Refactor",
-          "name": "refactor"
-        },
-        {
-          "emoji": "🧱",
-          "code": ":bricks:",
-          "description": "Miscellaneous",
-          "name": "misc"
-        }
-      ]
-    }
-  },
   "packageManager": "yarn@4.0.2"
 }
