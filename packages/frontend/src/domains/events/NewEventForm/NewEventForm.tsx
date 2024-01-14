@@ -5,7 +5,7 @@ import { EventDTO } from "core/api/generated";
 import AddressPicker from "core/components/fields/AddressPicker/AddressPicker";
 import Input from "core/components/fields/TextInput";
 import { getStaticMap } from "core/maps/maps";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import Image from "next/image";
 import React, { FC } from "react";
@@ -14,6 +14,10 @@ import { toast } from "react-toastify";
 
 dayjs.extend(customParseFormat)
 
+const DEFAULT_PRE_SHOW_DURATION = 1.5;
+const DEFAULT_POST_SHOW_DURATION = 4;
+
+const AUTO_START_END_TOOLTIP = `Set start time to ${DEFAULT_PRE_SHOW_DURATION} hours before curtains up and end to ${DEFAULT_POST_SHOW_DURATION} hours after curtains up`;
 
 type Inputs = {
   start: string;
@@ -44,28 +48,23 @@ const NewEventForm: FC<{
     reset,
     control,
     watch,
+    setValue,
   } = useForm<Inputs>({
     defaultValues: getDefaultValues(event)
   });
 
   const addressControl = useController({ name: "address", control });
   const address = watch('address');
+  const curtainsUp = watch('curtainsUp');
 
-  const getRequiredDateTime = (date: string, time: string) => {
-    const result = getDateTime(date, time);
-    if (!result) {
-      throw new Error("date or time missing");
+  const setDefaultStartAndEnd = () => {
+    const t = getDayJsTime('2020-01-01', curtainsUp);
+    if (!t) {
+      return;
     }
-    return result;
+    setValue("start", formatTime(t.subtract(DEFAULT_PRE_SHOW_DURATION, 'h')))
+    setValue("end", formatTime(t.add(DEFAULT_POST_SHOW_DURATION, 'h')))
   }
-
-  const getDateTime = (date: string, time: string) => {
-    if (!date || !time) {
-      return undefined;
-    }
-    return dayjs(`${date} ${time}`, 'YYYY-MM-DD HH:mm').toDate();
-  }
-
 
   const mutation = useMutation<any, unknown, Inputs>({
     mutationFn: (form) => {
@@ -97,7 +96,7 @@ const NewEventForm: FC<{
       }
     },
     onError: (e) => {
-      toast.error("Somethign went wrong");
+      toast.error("Something went wrong");
       console.error("Could not create/update event", e);
     },
     onSuccess: () => {
@@ -136,13 +135,23 @@ const NewEventForm: FC<{
           type="time"
         />
       </div>
-      <Input
-        label="Curtains up"
-        register={register("curtainsUp")}
-        errors={errors}
-        helpText="What time the show should start"
-        type="time"
-      />
+      <div className="flex gap-2">
+        <Input
+          label="Curtains up"
+          register={register("curtainsUp")}
+          errors={errors}
+          helpText="What time the show should start"
+          type="time"
+        />
+
+        <div className="tooltip tooltip-left" data-tip={AUTO_START_END_TOOLTIP}>
+          <button className="btn mt-8" type="button" disabled={!curtainsUp}
+            onClick={() => setDefaultStartAndEnd()}
+          >
+            Auto start/end
+          </button>
+        </div>
+      </div>
 
       <Input
         label="Event name"
@@ -181,7 +190,7 @@ const NewEventForm: FC<{
         type="submit"
         className={cc({ loading: mutation.isLoading }, "btn btn-block")}
       >
-        {event ? "Update" : "Create event" }
+        {event ? "Update" : "Create event"}
       </button>
     </form>
   );
@@ -194,10 +203,10 @@ const getDefaultValues = (event: EventDTO | undefined): Partial<Inputs> | undefi
   }
 
   const defaultValues: Inputs = {
-    start: dayjs(event.start).format('HH:mm'),
-    end: event.end ? dayjs(event.end).format('HH:mm') : "",
-    curtainsUp: event.curtainsUp ? dayjs(event.curtainsUp).format('HH:mm') : "",
-    date: dayjs(event.start).format('YYYY-MM-DD'),
+    start: formatTime(dayjs(event.start)),
+    end: event.end ? formatTime(dayjs(event.end)) : "",
+    curtainsUp: event.curtainsUp ? formatTime(dayjs(event.curtainsUp)) : "",
+    date: formatDate(dayjs(event.start)),
     name: event.nameRaw || '',
     shortNote: event.shortnote || '',
     address: {
@@ -210,3 +219,24 @@ const getDefaultValues = (event: EventDTO | undefined): Partial<Inputs> | undefi
   return defaultValues;
 }
 
+const formatTime = (t: Dayjs) => t.format('HH:mm');
+const formatDate = (d: Dayjs) => d.format('YYYY-MM-DD');
+
+const getRequiredDateTime = (date: string, time: string) => {
+  const result = getDateTime(date, time);
+  if (!result) {
+    throw new Error("date or time missing");
+  }
+  return result;
+}
+
+const getDateTime = (date: string, time: string) => {
+  return getDayJsTime(date, time)?.toDate();
+}
+
+const getDayJsTime = (date: string, time: string) => {
+  if (!date || !time) {
+    return undefined;
+  }
+  return dayjs(`${date} ${time}`, 'YYYY-MM-DD HH:mm');
+}
