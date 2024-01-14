@@ -23,6 +23,7 @@
     "@graphql-codegen/typescript-operations": "^2.4.2",
     "@graphql-codegen/typescript-react-query": "^3.5.14",
     "@headlessui/react": "^1.7.9",
+    "@sentry/nextjs": "^7.93.0",
     "@showplanner/common": "^2.0.0",
     "@tanstack/react-query": "^4.10.3",
     "@tanstack/react-table": "^8.5.15",
