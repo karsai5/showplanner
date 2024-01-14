@@ -22,6 +22,8 @@ func configureFlags(api *operations.GoBackendAPI) {
 
 func configureAPI(api *operations.GoBackendAPI) http.Handler {
 
+	initSentry()
+
 	err := permissions.InitSupertokens()
 
 	if err != nil {

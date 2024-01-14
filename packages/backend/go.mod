@@ -27,6 +27,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/derekstavis/go-qs v0.0.0-20180720192143-9eef69e6c4e7 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
+	github.com/getsentry/sentry-go v0.26.0 // indirect
 	github.com/go-openapi/analysis v0.21.4 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.20.0 // indirect
