@@ -40,6 +40,14 @@ export const useIsLoggedIn = () => {
   return true;
 }
 
+export const useUserId = () => {
+  const session = Session.useSessionContext();
+  if (session.loading || !session.doesSessionExist) {
+    return undefined;
+  }
+  return session.userId;
+}
+
 export const getDecodedJWT = async (ctx: GetServerSidePropsContext) => {
   const c = ctx.req.headers.cookie;
   if (!c) {

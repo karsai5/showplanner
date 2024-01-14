@@ -4,7 +4,7 @@ import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { useModal } from "core/components/Modal/Modal";
 import { H2 } from "core/components/Typography";
 import { HasPermission, PERMISSION } from "core/permissions";
-import { AdminEventTable } from "domains/events/EventTable/AdminEventTable";
+import { Schedule } from "domains/events/EventTable/Schedule";
 import NewEventForm from "domains/events/NewEventForm/NewEventForm";
 import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
@@ -41,7 +41,7 @@ const ShowPage = () => {
           </div>
           {isError && <ErrorBox>Could not get shows</ErrorBox>}
           {isLoading && <progress className="progress w-56"></progress>}
-          {events && <AdminEventTable events={events} />}
+          {events && <Schedule events={events} />}
         </div>
       </div>
     </>

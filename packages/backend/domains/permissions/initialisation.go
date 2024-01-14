@@ -18,10 +18,17 @@ var ShowManager = ShowRole{
 	Permissions: []ShowPermission{ViewEvents, AddEvents, ManagePersonnel},
 }
 
+var ShowMember = ShowRole{
+	Name:        "Member",
+	key:         "member",
+	Permissions: []ShowPermission{ViewEvents},
+}
+
 var Roles = []GeneralRole{
 	Admin,
 }
 
 var ShowRoles = []ShowRole{
 	ShowManager,
+	ShowMember,
 }

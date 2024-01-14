@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './AvailabilityDTO';
 export * from './CreateEventDTO';
 export * from './CreateShowDTO';
 export * from './EventDTO';

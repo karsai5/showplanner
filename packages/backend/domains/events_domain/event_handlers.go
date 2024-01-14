@@ -71,7 +71,7 @@ var UpdateEventsHandler = operations.PostEventsIDHandlerFunc(func(params operati
 var GetEventsHander = operations.GetEventsHandlerFunc(func(params operations.GetEventsParams) middleware.Responder {
 	showId := uint(params.ShowID)
 
-	hasPermission, err := permissions.AddEvents.HasPermission(showId, params.HTTPRequest)
+	hasPermission, err := permissions.ViewEvents.HasPermission(showId, params.HTTPRequest)
 
 	if err != nil {
 		println("error", err.Error())

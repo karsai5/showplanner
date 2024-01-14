@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import sortBy from "lodash/sortBy";
 import Image from "next/image";
-import { Fragment, ReactNode } from "react";
+import { FC, Fragment, ReactNode } from "react";
 
 import theatreIcons from "../images/theatre.png";
 import { displayDate } from "../lib/displayDate";
@@ -15,7 +15,6 @@ import { processEvents } from "../lib/processEvents";
 dayjs.extend(advancedFormat);
 
 export enum eventTableDefaultHeaders {
-  Date = "Date",
   Name = "Name",
   Time = "Time",
   Location = "Location",
@@ -31,8 +30,9 @@ const GapRow = ({ length }: { length: number }) => (
 export type FieldOptions = {
   header: string;
   position: "left" | "right";
-  render: (event: EventDTO) => ReactNode;
+  render: FC<{event: EventDTO}>;
   className?: (event: EventDTO) => string | string;
+  noPadding?: boolean;
 };
 
 export const EventTable: React.FC<{
@@ -47,6 +47,7 @@ export const EventTable: React.FC<{
     extraFieldOptions?.filter((option) => option.position === "right") || [];
 
   const headers = [
+    "Date",
     ...leftExtraFieldOptions.map((option) => option.header),
     ...Object.values(eventTableDefaultHeaders),
     ...rightExtraFieldOptions.map((option) => option.header),
@@ -78,19 +79,21 @@ export const EventTable: React.FC<{
                       key={e.id}
                       className="last:border-b first:border-t border-slate-200"
                     >
-                      {leftExtraFieldOptions.map((option) => (
-                        <Td
-                          key={e.id}
-                          className={getClassNameFromOption(option, e)}
-                        >
-                          {option.render(e)}
-                        </Td>
-                      ))}
                       {i === 0 && (
                         <Td className="whitespace-nowrap" rowSpan={thisGroupEvents.length}>
                           {displayDate(e.start)}
                         </Td>
                       )}
+                      {leftExtraFieldOptions.map((option) => (
+                        <Td
+                          key={e.id}
+                          className={cc(getClassNameFromOption(option, e), "relative", {
+                            ["p-0"]: option.noPadding
+                          })}
+                        >
+                          {option.render({event: e})}
+                        </Td>
+                      ))}
                       <Td>
                         <div className="flex gap-1 items-center">
                           {e.curtainsUp && (

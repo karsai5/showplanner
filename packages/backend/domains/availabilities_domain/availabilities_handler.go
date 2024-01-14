@@ -13,10 +13,10 @@ import (
 var HandleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(params operations.PostAvailabilitiesParams) middleware.Responder {
 	userId := permissions.UserId(params.HTTPRequest)
 
-	if params.Availability.UserID != &userId {
+	if *params.Availability.UserID != userId {
 		return &operations.PostAvailabilitiesUnauthorized{
 			Payload: &models.Error{
-				Message: utils.GetStringPointer("Cannot update an availability for another user"),
+				Message: utils.GetStringPointer("Cannot update an availability for another user. " + *params.Availability.UserID + "!=" + userId),
 			},
 		}
 	}

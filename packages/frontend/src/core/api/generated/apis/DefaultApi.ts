@@ -15,6 +15,7 @@
 
 import * as runtime from '../runtime';
 import type {
+  AvailabilityDTO,
   CreateEventDTO,
   CreateShowDTO,
   EventDTO,
@@ -23,6 +24,8 @@ import type {
   ShowSummaryDTO,
 } from '../models/index';
 import {
+    AvailabilityDTOFromJSON,
+    AvailabilityDTOToJSON,
     CreateEventDTOFromJSON,
     CreateEventDTOToJSON,
     CreateShowDTOFromJSON,
@@ -36,6 +39,10 @@ import {
     ShowSummaryDTOFromJSON,
     ShowSummaryDTOToJSON,
 } from '../models/index';
+
+export interface AvailabilitiesPostRequest {
+    availability?: AvailabilityDTO;
+}
 
 export interface EventsGetRequest {
     showId: number;
@@ -70,6 +77,35 @@ export interface ShowsShowSlugSummaryGetRequest {
  * 
  */
 export class DefaultApi extends runtime.BaseAPI {
+
+    /**
+     * Create or update availability
+     */
+    async availabilitiesPostRaw(requestParameters: AvailabilitiesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AvailabilityDTO>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/availabilities`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AvailabilityDTOToJSON(requestParameters.availability),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AvailabilityDTOFromJSON(jsonValue));
+    }
+
+    /**
+     * Create or update availability
+     */
+    async availabilitiesPost(requestParameters: AvailabilitiesPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AvailabilityDTO> {
+        const response = await this.availabilitiesPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Returns a list of events.

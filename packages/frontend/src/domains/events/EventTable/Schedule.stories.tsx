@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { EventDTO } from "core/api/generated";
 import dayjs from "dayjs";
-import { AdminEventTable } from "./AdminEventTable";
+import { Schedule } from "./Schedule";
 
 export default {
   title: "Events table/Admin",
@@ -9,7 +9,7 @@ export default {
 
 
 export const Default = () => (<div>
-  <AdminEventTable events={events} />
+  <Schedule events={events} />
 </div>);
 
 Default.story = {

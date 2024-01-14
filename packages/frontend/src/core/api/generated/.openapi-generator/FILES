@@ -1,6 +1,7 @@
 apis/DefaultApi.ts
 apis/index.ts
 index.ts
+models/AvailabilityDTO.ts
 models/CreateEventDTO.ts
 models/CreateShowDTO.ts
 models/EventDTO.ts

@@ -1,6 +1,7 @@
 package restapi
 
 import (
+	"go-backend/domains/availabilities_domain"
 	"go-backend/domains/events_domain"
 	"go-backend/domains/public_schedule_domain"
 	"go-backend/domains/shows_domain"
@@ -19,4 +20,6 @@ func getHandlers(api *operations.GoBackendAPI) {
 	api.DeleteEventsIDHandler = events_domain.DeleteEventHandler
 
 	api.GetPublicScheduleHandler = public_schedule_domain.GetPublicScheduleHandler
+
+	api.PostAvailabilitiesHandler = availabilities_domain.HandleUpdateAvailability
 }

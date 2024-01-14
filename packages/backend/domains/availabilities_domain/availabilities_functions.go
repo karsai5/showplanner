@@ -9,7 +9,7 @@ var db = database.GetDatabase()
 
 func GetAvailability(userId string, eventId uint) (*database.Availability, error) {
 	var availabilities []database.Availability
-	res := db.Where("userId = ? AND eventId = ?", userId, eventId).Find(&availabilities)
+	res := db.Where("user_id = ? AND event_id = ?", userId, eventId).Find(&availabilities)
 
 	if len(availabilities) > 1 {
 		return nil, errors.New("Too many availabilities returned")
