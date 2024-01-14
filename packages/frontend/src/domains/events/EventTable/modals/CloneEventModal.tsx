@@ -28,7 +28,7 @@ export const CloneEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
           curtainsUp: event.curtainsUp,
           address: event.address,
           shortnote: event.shortnote,
-          name: event.name,
+          name: event.nameRaw,
         }
       })
     },
