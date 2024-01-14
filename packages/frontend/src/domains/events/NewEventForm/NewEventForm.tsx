@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 dayjs.extend(customParseFormat)
 
 const DEFAULT_PRE_SHOW_DURATION = 1.5;
-const DEFAULT_POST_SHOW_DURATION = 4;
+const DEFAULT_POST_SHOW_DURATION = 3.5;
 
 const AUTO_START_END_TOOLTIP = `Set start time to ${DEFAULT_PRE_SHOW_DURATION} hours before curtains up and end to ${DEFAULT_POST_SHOW_DURATION} hours after curtains up`;
 
