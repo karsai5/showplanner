@@ -24,25 +24,28 @@ var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operation
 		return &operations.GetScheduleUnauthorized{}
 	}
 
-	events, err := events_domain.GetEventsWithAvailabilityForUser(showId, userId) // TODO: with availabilities
+	events, err := events_domain.GetEventsWithAvailabilityForUser(showId, userId)
 
 	if err != nil {
 		return &operations.GetScheduleInternalServerError{}
 	}
 
 	scheduledEvents := []*models.ScheduleEventDTO{}
+
 	for _, e := range events {
-		mappedEvent := events_domain.MapEventToEventDTO(e)
-		var availability *models.AvailabilityDTO
-		if len(e.Availabilities) > 0 {
-			a := mapAvailabilityDTO(e.Availabilities[0])
-			availability = &a
+		scheduledEvent := models.ScheduleEventDTO{
+			EventDTO: events_domain.MapEventToEventDTO(e),
 		}
-		scheduledEvents = append(scheduledEvents, &models.ScheduleEventDTO{
-			EventDTO:     mappedEvent,
-			Availability: availability,
-		})
+
+		if len(e.Availabilities) > 0 {
+			availability := mapAvailabilityDTO(e.Availabilities[0])
+			scheduledEvent.Availability = &availability
+		}
+
+		scheduledEvents = append(scheduledEvents, &scheduledEvent)
 	}
+
+	events_domain.NameScheduleEvents(scheduledEvents)
 
 	return &operations.GetScheduleOK{
 		Payload: scheduledEvents,

@@ -65,6 +65,28 @@ func NameShows(events []*models.EventDTO) {
 	}
 }
 
+func NameScheduleEvents(events []*models.ScheduleEventDTO) {
+	var showEvents []*models.ScheduleEventDTO
+	for _, event := range events {
+		if event.CurtainsUp != nil {
+			showEvents = append(showEvents, event)
+		}
+	}
+
+	sort.Slice(showEvents, func(i, j int) bool {
+		iCurtainsUp := *timep(*showEvents[i].CurtainsUp)
+		jCurtainsUp := *timep(*showEvents[j].CurtainsUp)
+		return iCurtainsUp.Before(jCurtainsUp)
+	})
+
+	for i, event := range showEvents {
+		if event.Name == nil || *event.Name == "" {
+			name := "Show " + strconv.Itoa(i+1)
+			event.Name = &name
+		}
+	}
+}
+
 func MapEventToEventDTO(e database.Event) models.EventDTO {
 	start := strfmt.DateTime(e.Start)
 

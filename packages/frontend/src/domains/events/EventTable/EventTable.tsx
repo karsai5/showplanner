@@ -69,7 +69,7 @@ export const EventTable: React.FC<{
           {dates.map((date) => {
             const thisGroupEvents = sortBy(
               groupedEvents[date.date.toString()],
-              "start"
+              "start", "curtainsUp"
             );
             return (
               <Fragment key={date.date.toString()}>
