@@ -63,35 +63,6 @@ func init() {
       }
     },
     "/events": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns a list of events.",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the show to get events from",
-            "name": "showId",
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/EventDTO"
-              }
-            }
-          },
-          "500": {
-            "$ref": "#/responses/Error"
-          }
-        }
-      },
       "post": {
         "consumes": [
           "application/json"
@@ -223,6 +194,40 @@ func init() {
                 }
               }
             }
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/schedule": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns a list of events.",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get events from",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ScheduleEventDTO"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
           },
           "500": {
             "$ref": "#/responses/Error"
@@ -507,6 +512,22 @@ func init() {
         }
       }
     },
+    "ScheduleEventDTO": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/EventDTO"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "availability": {
+              "x-nullable": true,
+              "$ref": "#/definitions/AvailabilityDTO"
+            }
+          }
+        }
+      ]
+    },
     "ShowDTO": {
       "required": [
         "id",
@@ -550,9 +571,6 @@ func init() {
           "type": "string"
         }
       }
-    },
-    "principal": {
-      "type": "string"
     }
   },
   "responses": {
@@ -613,38 +631,6 @@ func init() {
       }
     },
     "/events": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns a list of events.",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the show to get events from",
-            "name": "showId",
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/EventDTO"
-              }
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
       "post": {
         "consumes": [
           "application/json"
@@ -796,6 +782,46 @@ func init() {
                   "type": "string"
                 }
               }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/schedule": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns a list of events.",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get events from",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ScheduleEventDTO"
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
             }
           },
           "500": {
@@ -1105,6 +1131,22 @@ func init() {
         }
       }
     },
+    "ScheduleEventDTO": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/EventDTO"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "availability": {
+              "x-nullable": true,
+              "$ref": "#/definitions/AvailabilityDTO"
+            }
+          }
+        }
+      ]
+    },
     "ShowDTO": {
       "required": [
         "id",
@@ -1148,9 +1190,6 @@ func init() {
           "type": "string"
         }
       }
-    },
-    "principal": {
-      "type": "string"
     }
   },
   "responses": {

@@ -28,7 +28,7 @@ var CreateEventsHandler = operations.PostEventsHandlerFunc(func(params operation
 		return &operations.PostShowsInternalServerError{}
 	}
 
-	mappedEvents := mapEventToEventDTO(event)
+	mappedEvents := MapEventToEventDTO(event)
 
 	return &operations.PostEventsOK{
 		Payload: &mappedEvents,
@@ -62,35 +62,9 @@ var UpdateEventsHandler = operations.PostEventsIDHandlerFunc(func(params operati
 		return &operations.PostShowsInternalServerError{}
 	}
 
-	mappedEvents := mapEventToEventDTO(event)
+	mappedEvents := MapEventToEventDTO(event)
 	return &operations.PostEventsOK{
 		Payload: &mappedEvents,
-	}
-})
-
-var GetEventsHander = operations.GetEventsHandlerFunc(func(params operations.GetEventsParams) middleware.Responder {
-	showId := uint(params.ShowID)
-
-	hasPermission, err := permissions.ViewEvents.HasPermission(showId, params.HTTPRequest)
-
-	if err != nil {
-		println("error", err.Error())
-		return &operations.PostShowsInternalServerError{}
-	}
-
-	if !hasPermission {
-		println("not authorized")
-		return &operations.PostShowsInternalServerError{}
-	}
-
-	events, err := GetEvents(showId)
-
-	if err != nil {
-		return &operations.GetEventsInternalServerError{}
-	}
-
-	return &operations.GetEventsOK{
-		Payload: mapEventsToEventsDTO(events),
 	}
 })
 

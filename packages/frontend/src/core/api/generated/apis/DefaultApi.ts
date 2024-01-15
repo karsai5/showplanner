@@ -20,6 +20,7 @@ import type {
   CreateShowDTO,
   EventDTO,
   PublicScheduleGet200Response,
+  ScheduleEventDTO,
   ShowDTO,
   ShowSummaryDTO,
 } from '../models/index';
@@ -34,6 +35,8 @@ import {
     EventDTOToJSON,
     PublicScheduleGet200ResponseFromJSON,
     PublicScheduleGet200ResponseToJSON,
+    ScheduleEventDTOFromJSON,
+    ScheduleEventDTOToJSON,
     ShowDTOFromJSON,
     ShowDTOToJSON,
     ShowSummaryDTOFromJSON,
@@ -42,10 +45,6 @@ import {
 
 export interface AvailabilitiesPostRequest {
     availability?: AvailabilityDTO;
-}
-
-export interface EventsGetRequest {
-    showId: number;
 }
 
 export interface EventsIdDeleteRequest {
@@ -63,6 +62,10 @@ export interface EventsPostRequest {
 
 export interface PublicScheduleGetRequest {
     showSlug: string;
+}
+
+export interface ScheduleGetRequest {
+    showId: number;
 }
 
 export interface ShowsPostRequest {
@@ -104,40 +107,6 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async availabilitiesPost(requestParameters: AvailabilitiesPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AvailabilityDTO> {
         const response = await this.availabilitiesPostRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Returns a list of events.
-     */
-    async eventsGetRaw(requestParameters: EventsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<EventDTO>>> {
-        if (requestParameters.showId === null || requestParameters.showId === undefined) {
-            throw new runtime.RequiredError('showId','Required parameter requestParameters.showId was null or undefined when calling eventsGet.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.showId !== undefined) {
-            queryParameters['showId'] = requestParameters.showId;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/events`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(EventDTOFromJSON));
-    }
-
-    /**
-     * Returns a list of events.
-     */
-    async eventsGet(requestParameters: EventsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<EventDTO>> {
-        const response = await this.eventsGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -263,6 +232,40 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async publicScheduleGet(requestParameters: PublicScheduleGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PublicScheduleGet200Response> {
         const response = await this.publicScheduleGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Returns a list of events.
+     */
+    async scheduleGetRaw(requestParameters: ScheduleGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ScheduleEventDTO>>> {
+        if (requestParameters.showId === null || requestParameters.showId === undefined) {
+            throw new runtime.RequiredError('showId','Required parameter requestParameters.showId was null or undefined when calling scheduleGet.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.showId !== undefined) {
+            queryParameters['showId'] = requestParameters.showId;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/schedule`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ScheduleEventDTOFromJSON));
+    }
+
+    /**
+     * Returns a list of events.
+     */
+    async scheduleGet(requestParameters: ScheduleGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ScheduleEventDTO>> {
+        const response = await this.scheduleGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

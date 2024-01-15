@@ -17,7 +17,7 @@ const ShowPage = () => {
   const show = useShowSummary();
   const { data: events, isLoading, isError } = useQuery(
     ["EventsList", show.id],
-    () => api.eventsGet({ showId: show.id })
+    () => api.scheduleGet({ showId: show.id })
   );
   return (
     <>

@@ -1,12 +1,12 @@
 import cc from "classnames";
-import { EventDTO } from "core/api/generated";
+import { ScheduleEventDTO } from "core/api/generated";
 import Address from "core/components/Address/Address";
 import { getTimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import sortBy from "lodash/sortBy";
 import Image from "next/image";
-import { FC, Fragment, ReactNode } from "react";
+import { FC, Fragment } from "react";
 
 import theatreIcons from "../images/theatre.png";
 import { displayDate } from "../lib/displayDate";
@@ -30,13 +30,13 @@ const GapRow = ({ length }: { length: number }) => (
 export type FieldOptions = {
   header: string;
   position: "left" | "right";
-  render: FC<{event: EventDTO}>;
-  className?: (event: EventDTO) => string | string;
+  render: FC<{event: ScheduleEventDTO}>;
+  className?: (event: ScheduleEventDTO) => string | string;
   noPadding?: boolean;
 };
 
 export const EventTable: React.FC<{
-  events: Array<EventDTO>;
+  events: Array<ScheduleEventDTO>;
   extraFieldOptions?: Array<FieldOptions>;
   hideHeaders?: Array<string>;
 }> = ({ events, extraFieldOptions, hideHeaders = [] }) => {
@@ -53,7 +53,7 @@ export const EventTable: React.FC<{
     ...rightExtraFieldOptions.map((option) => option.header),
   ].filter(h => !hideHeaders.includes(h));
 
-  const { dates, groupedEvents } = processEvents<EventDTO>(events);
+  const { dates, groupedEvents } = processEvents<ScheduleEventDTO>(events);
 
   return (
     <div className="w-full overflow-x-auto">
@@ -127,7 +127,7 @@ export const EventTable: React.FC<{
                           key={e.id}
                           className={getClassNameFromOption(option, e)}
                         >
-                          {option.render(e)}
+                          {option.render({event: e})}
                         </Td>
                       ))}
                     </tr>
@@ -145,7 +145,7 @@ export const EventTable: React.FC<{
 
 const getClassNameFromOption = (
   option: FieldOptions,
-  event: EventDTO
+  event: ScheduleEventDTO
 ) => {
   const className = option.className;
   switch (typeof className) {

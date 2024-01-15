@@ -17,7 +17,7 @@ paths:
       responses:
         200:
           description: OK
-  /events:
+  /schedule:
     get:
       parameters:
         - in: query
@@ -34,9 +34,12 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/EventDTO'
+              $ref: '#/definitions/ScheduleEventDTO'
+        401:
+          $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'
+  /events:
     post:
       summary: Creates an event
       consumes:
@@ -221,8 +224,6 @@ definitions:
     required:
       - code
       - message
-  principal:
-    type: string
   ShowSummaryDTO:
     properties:
       id:
@@ -318,6 +319,14 @@ definitions:
     required:
       - id
       - start
+  ScheduleEventDTO:
+    allOf: 
+    - $ref: '#/definitions/EventDTO'
+    - type: object
+      properties:
+        availability:
+          x-nullable: true
+          $ref: '#/definitions/AvailabilityDTO'
   EventDTO:
     properties:
       id:

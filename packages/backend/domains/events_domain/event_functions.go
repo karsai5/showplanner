@@ -24,6 +24,13 @@ func GetEvents(showId uint) ([]database.Event, error) {
 	return events, res.Error
 }
 
+func GetEventsWithAvailabilityForUser(showId uint, userId string) ([]database.Event, error) {
+	var events []database.Event
+	res := db.Preload("Availabilities", "user_id = ?", userId).Where("show_id = ?", showId).Find(&events)
+
+	return events, res.Error
+}
+
 func GetEvent(id uint) (database.Event, error) {
 	existingEvent := database.Event{}
 	res := db.First(&existingEvent, id)

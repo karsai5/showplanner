@@ -8,14 +8,15 @@ import (
 
 type Event struct {
 	gorm.Model
-	Start      time.Time
-	End        *time.Time
-	CurtainsUp *time.Time
-	ShowID     uint
-	Show       Show
-	Name       *string
-	ShortNote  *string
-	Address    *string
+	Start          time.Time
+	End            *time.Time
+	CurtainsUp     *time.Time
+	ShowID         uint
+	Show           Show
+	Name           *string
+	ShortNote      *string
+	Address        *string
+	Availabilities []Availability
 }
 
 type Show struct {
@@ -29,7 +30,6 @@ type Show struct {
 type Availability struct {
 	gorm.Model
 	UserID    string `gorm:"uniqueIndex:unique_availability`
-	Event     Event
-	EventID   uint `gorm:"uniqueIndex:unique_availability`
+	EventID   uint   `gorm:"uniqueIndex:unique_availability`
 	Available bool
 }

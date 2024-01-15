@@ -1,4 +1,4 @@
-import { EventDTO } from "core/api/generated";
+import { ScheduleEventDTO } from "core/api/generated";
 import { PERMISSION, showPermission, useHasPermission } from "core/permissions";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
 
@@ -20,7 +20,7 @@ export const Schedule: React.FC<React.ComponentProps<typeof EventTable>> = (prop
   return <EventTable {...props} extraFieldOptions={extraFieldOptions} />
 }
 
-const AdminButtons: React.FC<{ event: EventDTO }> = ({ event }) => {
+const AdminButtons: React.FC<{ event: ScheduleEventDTO }> = ({ event }) => {
   return <div className="flex gap-2">
     <EditEventModal event={event} />
     <CloneEventModal event={event} />

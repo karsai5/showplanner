@@ -45,11 +45,11 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		DeleteEventsIDHandler: DeleteEventsIDHandlerFunc(func(params DeleteEventsIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation DeleteEventsID has not yet been implemented")
 		}),
-		GetEventsHandler: GetEventsHandlerFunc(func(params GetEventsParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetEvents has not yet been implemented")
-		}),
 		GetPublicScheduleHandler: GetPublicScheduleHandlerFunc(func(params GetPublicScheduleParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPublicSchedule has not yet been implemented")
+		}),
+		GetScheduleHandler: GetScheduleHandlerFunc(func(params GetScheduleParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetSchedule has not yet been implemented")
 		}),
 		GetShowsHandler: GetShowsHandlerFunc(func(params GetShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetShows has not yet been implemented")
@@ -110,10 +110,10 @@ type GoBackendAPI struct {
 
 	// DeleteEventsIDHandler sets the operation handler for the delete events ID operation
 	DeleteEventsIDHandler DeleteEventsIDHandler
-	// GetEventsHandler sets the operation handler for the get events operation
-	GetEventsHandler GetEventsHandler
 	// GetPublicScheduleHandler sets the operation handler for the get public schedule operation
 	GetPublicScheduleHandler GetPublicScheduleHandler
+	// GetScheduleHandler sets the operation handler for the get schedule operation
+	GetScheduleHandler GetScheduleHandler
 	// GetShowsHandler sets the operation handler for the get shows operation
 	GetShowsHandler GetShowsHandler
 	// GetShowsShowSlugSummaryHandler sets the operation handler for the get shows show slug summary operation
@@ -208,11 +208,11 @@ func (o *GoBackendAPI) Validate() error {
 	if o.DeleteEventsIDHandler == nil {
 		unregistered = append(unregistered, "DeleteEventsIDHandler")
 	}
-	if o.GetEventsHandler == nil {
-		unregistered = append(unregistered, "GetEventsHandler")
-	}
 	if o.GetPublicScheduleHandler == nil {
 		unregistered = append(unregistered, "GetPublicScheduleHandler")
+	}
+	if o.GetScheduleHandler == nil {
+		unregistered = append(unregistered, "GetScheduleHandler")
 	}
 	if o.GetShowsHandler == nil {
 		unregistered = append(unregistered, "GetShowsHandler")
@@ -330,11 +330,11 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/events"] = NewGetEvents(o.context, o.GetEventsHandler)
+	o.handlers["GET"]["/public/schedule"] = NewGetPublicSchedule(o.context, o.GetPublicScheduleHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/public/schedule"] = NewGetPublicSchedule(o.context, o.GetPublicScheduleHandler)
+	o.handlers["GET"]["/schedule"] = NewGetSchedule(o.context, o.GetScheduleHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

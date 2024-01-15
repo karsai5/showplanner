@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import cc from 'classnames';
 import { getApi } from "core/api";
-import { AvailabilityDTO, EventDTO } from "core/api/generated";
+import { AvailabilityDTO, EventDTO, ScheduleEventDTO } from "core/api/generated";
 import { useUserId } from "core/permissions";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -10,10 +10,10 @@ const YES = "YES";
 const NO = "NO";
 const UNKNOWN = "UNKNOWN";
 
-export const AvailabiltyDropdown: React.FC<{ event: EventDTO }> = ({ event }) => {
+export const AvailabiltyDropdown: React.FC<{ event: ScheduleEventDTO }> = ({ event }) => {
   const api = getApi();
 
-  const [value, setValue] = useState<string>(UNKNOWN);
+  const [value, setValue] = useState<string>(getStringFromBoolean(event.availability?.available));
   const userId = useUserId();
   const mutation = useMutation<AvailabilityDTO, any, boolean>({
     mutationFn: (bool) => api.availabilitiesPost({
@@ -45,7 +45,7 @@ export const AvailabiltyDropdown: React.FC<{ event: EventDTO }> = ({ event }) =>
         </div>
       </div>}
       <div className={cc(getBgColor(value), "absolute top-0 bottom-0 left-0 right-0")}>
-        <select className="select w-full max-w-xs bg-transparent" onChange={e => handleChange(e.target.value)} value={value}>
+        <select className="select w-full h-full max-w-xs bg-transparent" onChange={e => handleChange(e.target.value)} value={value}>
           <option value={UNKNOWN} disabled selected>Unknown</option>
           <option value={YES}>Yes</option>
           <option value={NO}>No</option>
@@ -81,7 +81,7 @@ const getBooleanFromString = (value: string) => {
   }
 }
 
-const getStringFromBoolean = (value: boolean) => {
+const getStringFromBoolean = (value: boolean | undefined) => {
   switch (value) {
     case true:
       return YES;
