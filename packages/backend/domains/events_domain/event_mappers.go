@@ -32,57 +32,24 @@ type Event interface {
 	int64 | float64
 }
 
-func MapEventsToEventsDTO(events []database.Event) (mappedEvents []*models.EventDTO) {
+func NameEventsWithCurtainsUp[E models.EventWithCurtainsUp](events []E) {
+	var showEvents []E
 	for _, event := range events {
-		mappedEvent := MapEventToEventDTO(event)
-		mappedEvents = append(mappedEvents, &mappedEvent)
-	}
-
-	NameShows(mappedEvents)
-
-	return mappedEvents
-}
-
-func NameShows(events []*models.EventDTO) {
-	var showEvents []*models.EventDTO
-	for _, event := range events {
-		if event.CurtainsUp != nil {
+		if (event).GetCurtainsUp() != nil {
 			showEvents = append(showEvents, event)
 		}
 	}
 
 	sort.Slice(showEvents, func(i, j int) bool {
-		iCurtainsUp := *timep(*showEvents[i].CurtainsUp)
-		jCurtainsUp := *timep(*showEvents[j].CurtainsUp)
+		iCurtainsUp := *timep(*showEvents[i].GetCurtainsUp())
+		jCurtainsUp := *timep(*showEvents[j].GetCurtainsUp())
 		return iCurtainsUp.Before(jCurtainsUp)
 	})
 
 	for i, event := range showEvents {
-		if event.Name == nil || *event.Name == "" {
+		if event.IsNameEmpty() {
 			name := "Show " + strconv.Itoa(i+1)
-			event.Name = &name
-		}
-	}
-}
-
-func NameScheduleEvents(events []*models.ScheduleEventDTO) {
-	var showEvents []*models.ScheduleEventDTO
-	for _, event := range events {
-		if event.CurtainsUp != nil {
-			showEvents = append(showEvents, event)
-		}
-	}
-
-	sort.Slice(showEvents, func(i, j int) bool {
-		iCurtainsUp := *timep(*showEvents[i].CurtainsUp)
-		jCurtainsUp := *timep(*showEvents[j].CurtainsUp)
-		return iCurtainsUp.Before(jCurtainsUp)
-	})
-
-	for i, event := range showEvents {
-		if event.Name == nil || *event.Name == "" {
-			name := "Show " + strconv.Itoa(i+1)
-			event.Name = &name
+			event.SetName(name)
 		}
 	}
 }

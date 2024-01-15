@@ -22,10 +22,14 @@ var GetPublicScheduleHandler = operations.GetPublicScheduleHandlerFunc(func(para
 		return &operations.GetPublicScheduleInternalServerError{}
 	}
 
+	mappedEvents := mapEventsToPublicEventsDTO(events)
+
+	events_domain.NameEventsWithCurtainsUp(mappedEvents)
+
 	return &operations.GetPublicScheduleOK{
 		Payload: &operations.GetPublicScheduleOKBody{
 			ShowName: show.Name,
-			Events:   mapEventsToPublicEventsDTO(events),
+			Events:   mappedEvents,
 		},
 	}
 })
