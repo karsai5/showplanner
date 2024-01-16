@@ -18,6 +18,9 @@ build-cli:
 serve:
 	./go-backend-server --host localhost --port 8080
 
+test:
+	go test ./...
+
 serve-with-wait:
 	sleep 5 
 	make serve

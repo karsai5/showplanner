@@ -11,11 +11,13 @@ import (
 func main() {
 	app := &cli.App{
 		Commands: []*cli.Command{
+			ListShows(),
 			AddShow(),
 			ListRoles(),
 			AddRole(),
 			MakeAdmin(),
 			GiveRole(),
+			AddToShow(),
 			SendEmail(),
 		},
 	}
@@ -32,7 +34,6 @@ func SendEmail() *cli.Command {
 		Action: func(ctx *cli.Context) error {
 			email := notifications.Email{
 				ToEmail: "linus@linusk.com.au",
-				ToName:  "Linus",
 				Subject: "Test email",
 				Body:    "This is another test email!",
 			}

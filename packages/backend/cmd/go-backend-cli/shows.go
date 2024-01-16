@@ -2,11 +2,34 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"go-backend/database"
+	"go-backend/domains/shows_domain"
+	"os"
 	"regexp"
+	"text/tabwriter"
 
 	"github.com/urfave/cli/v2"
 )
+
+func ListShows() *cli.Command {
+	return &cli.Command{
+		Name:  "list-shows",
+		Usage: "List all shows",
+		Action: func(ctx *cli.Context) error {
+			shows, err := shows_domain.GetAllShows()
+
+			w := tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', 0)
+			fmt.Fprintln(w, "ID\tName\tSlug")
+			for _, show := range shows {
+				fmt.Fprintf(w, "%v\t%s\t%s\n", show.ID, show.Name, show.Slug)
+			}
+			w.Flush()
+
+			return err
+		},
+	}
+}
 
 func AddShow() *cli.Command {
 	return &cli.Command{

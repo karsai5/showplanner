@@ -20,6 +20,13 @@ func GetShowBySlug(slug string) (database.Show, error) {
 	return show, res.Error
 }
 
+func GetShowById(showId string) (database.Show, error) {
+	show := database.Show{}
+	res := db.First(&show, showId)
+
+	return show, res.Error
+}
+
 func CreateShow(show database.Show) (database.Show, error) {
 	res := db.Create(&show)
 	return show, res.Error

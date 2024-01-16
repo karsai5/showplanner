@@ -2,10 +2,10 @@ package main
 
 import (
 	"go-backend/domains/permissions"
+	"go-backend/domains/users_domain"
 	"strconv"
 	"strings"
 
-	"github.com/supertokens/supertokens-golang/recipe/thirdpartyemailpassword"
 	"github.com/supertokens/supertokens-golang/recipe/userroles"
 	"github.com/urfave/cli/v2"
 )
@@ -97,8 +97,34 @@ func MakeAdmin() *cli.Command {
 			},
 		},
 		Action: func(ctx *cli.Context) error {
+			permissions.InitSupertokens()
 			email := ctx.String("email")
-			return giveRole(email, "admin")
+			return users_domain.GiveRole("admin", email)
+		},
+	}
+}
+
+func AddToShow() *cli.Command {
+	return &cli.Command{
+		Name:  "add-member",
+		Usage: "Add a user to a show",
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:     "email",
+				Usage:    "email of user to make admin",
+				Required: true,
+			},
+			&cli.StringFlag{
+				Name:     "showId",
+				Usage:    "id of show to get added to",
+				Required: true,
+			},
+		},
+		Action: func(ctx *cli.Context) error {
+			permissions.InitSupertokens()
+			email := ctx.String("email")
+			showId := ctx.String("showId")
+			return users_domain.AddToShow(showId, email)
 		},
 	}
 }
@@ -120,52 +146,10 @@ func GiveRole() *cli.Command {
 			},
 		},
 		Action: func(ctx *cli.Context) error {
+			permissions.InitSupertokens()
 			email := ctx.String("email")
 			role := ctx.String("role")
-			return giveRole(email, role)
+			return users_domain.GiveRole(role, email)
 		},
 	}
-}
-
-func giveRole(email string, role string) error {
-
-	err := permissions.InitSupertokens()
-	if err != nil {
-		return err
-	}
-
-	users, err := thirdpartyemailpassword.GetUsersByEmail("public", email)
-
-	if err != nil {
-		println("Error getting user", err.Error())
-		return err
-	}
-
-	if len(users) == 0 {
-		println("No users found")
-		return nil
-	}
-
-	for _, user := range users {
-		println("User found: " + user.Email + ", " + user.ID)
-		response, err := userroles.AddRoleToUser("public", user.ID, role)
-		if err != nil {
-			println("Could not make user an admin" + err.Error())
-			return err
-		} else {
-			if response.UnknownRoleError != nil {
-				println("Role does not exist")
-				return nil
-			} else if response.OK.DidUserAlreadyHaveRole {
-				println("User already had the role")
-				return nil
-			} else {
-				println("Roles successfully added")
-				return nil
-			}
-		}
-	}
-
-	return nil
-
 }

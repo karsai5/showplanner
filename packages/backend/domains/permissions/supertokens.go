@@ -1,6 +1,8 @@
 package permissions
 
 import (
+	"fmt"
+	users_domain "go-backend/domains/users_domain/notifications"
 	"go-backend/utils"
 
 	"github.com/supertokens/supertokens-golang/recipe/dashboard"
@@ -35,6 +37,65 @@ func InitSupertokens() error {
 		RecipeList: []supertokens.Recipe{
 			userroles.Init(nil),
 			thirdpartyemailpassword.Init(&tpepmodels.TypeInput{
+				Override: &tpepmodels.OverrideStruct{
+					Functions: func(originalImplementation tpepmodels.RecipeInterface) tpepmodels.RecipeInterface {
+						// create a copy of the originalImplementation
+						originalEmailPasswordSignUp := *originalImplementation.EmailPasswordSignUp
+						// originalEmailPasswordSignIn := *originalImplementation.EmailPasswordSignIn
+						originalThirdPartySignInUp := *originalImplementation.ThirdPartySignInUp
+
+						// override the email password sign up function
+						(*originalImplementation.EmailPasswordSignUp) = func(email, password string, tenantId string, userContext supertokens.UserContext) (tpepmodels.SignUpResponse, error) {
+
+							// Pre sign up logic
+
+							resp, err := originalEmailPasswordSignUp(email, password, tenantId, userContext)
+							if err != nil {
+								return tpepmodels.SignUpResponse{}, err
+							}
+
+							if resp.OK != nil {
+								// Post sign up logic
+								users_domain.SendEmailToNewUser(email)
+							}
+
+							return resp, err
+						}
+
+						// override the thirdparty sign in / up function
+						(*originalImplementation.ThirdPartySignInUp) = func(thirdPartyID, thirdPartyUserID, email string, oAuthTokens tpmodels.TypeOAuthTokens, rawUserInfoFromProvider tpmodels.TypeRawUserInfoFromProvider, tenantId string, userContext supertokens.UserContext) (tpepmodels.SignInUpResponse, error) {
+
+							// Pre sign up logic
+
+							resp, err := originalThirdPartySignInUp(thirdPartyID, thirdPartyUserID, email, oAuthTokens, rawUserInfoFromProvider, tenantId, userContext)
+							if err != nil {
+								return tpepmodels.SignInUpResponse{}, err
+							}
+
+							if resp.OK != nil {
+								user := resp.OK.User
+								fmt.Println(user)
+
+								accessToken := resp.OK.OAuthTokens["access_token"].(string)
+								firstName := resp.OK.RawUserInfoFromProvider.FromUserInfoAPI["first_name"].(string)
+
+								fmt.Println(accessToken)
+								fmt.Println(firstName)
+
+								if resp.OK.CreatedNewUser {
+									// Post sign up logic
+									users_domain.SendEmailToNewUser(email)
+								} else {
+									// Post sign in
+								}
+							}
+
+							return resp, err
+						}
+
+						return originalImplementation
+					},
+				},
 				Providers: []tpmodels.ProviderInput{
 					{
 						Config: tpmodels.ProviderConfig{
@@ -53,7 +114,7 @@ func InitSupertokens() error {
 				CookieDomain: &cookieDomain,
 			}), // initializes session features
 			dashboard.Init(&dashboardmodels.TypeInput{
-				Admins: &[]string{},
+				Admins: &[]string{utils.GetEnvVariable("ADMIN_EMAIL", true)},
 			}),
 		},
 	})
