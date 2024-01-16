@@ -12,7 +12,7 @@ ADD domains domains
 ADD models models 
 ADD restapi restapi 
 ADD utils utils 
-ADD notification notifications 
+ADD notifications notifications 
 
 RUN CGO_ENABLED=0 GOOS=linux go build ./cmd/go-backend-server
 RUN CGO_ENABLED=0 GOOS=linux go build ./cmd/go-backend-cli
