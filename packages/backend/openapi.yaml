@@ -8,15 +8,17 @@ host: localhost:8080
 schemes:
   - http
 paths:
-  /users:
+  /public/health:
     get:
-      summary: Returns a list of users.
-      description: Optional extended description in Markdown.
+      summary: Healthcheck
+      description: Healthcheck endpoint
       produces:
         - application/json
       responses:
         200:
           description: OK
+          schema:
+            $ref: '#/definitions/HealthCheck'
   /schedule:
     get:
       parameters:
@@ -214,6 +216,13 @@ responses:
     schema:
       $ref: '#/definitions/Error'
 definitions:
+  HealthCheck:
+    type: object
+    properties:
+      message:
+        type: string
+    required:
+      - message
   Error:
     type: object
     properties:

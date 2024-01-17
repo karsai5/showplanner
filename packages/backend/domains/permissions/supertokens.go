@@ -77,10 +77,8 @@ func InitSupertokens() error {
 								fmt.Println(user)
 
 								accessToken := resp.OK.OAuthTokens["access_token"].(string)
-								firstName := resp.OK.RawUserInfoFromProvider.FromUserInfoAPI["first_name"].(string)
 
 								fmt.Println(accessToken)
-								fmt.Println(firstName)
 
 								if resp.OK.CreatedNewUser {
 									// Post sign up logic

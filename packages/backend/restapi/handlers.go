@@ -3,6 +3,7 @@ package restapi
 import (
 	"go-backend/domains/availabilities_domain"
 	"go-backend/domains/events_domain"
+	"go-backend/domains/healthcheck"
 	"go-backend/domains/public_schedule_domain"
 	"go-backend/domains/schedule_domain"
 	"go-backend/domains/shows_domain"
@@ -10,6 +11,7 @@ import (
 )
 
 func getHandlers(api *operations.GoBackendAPI) {
+	api.GetPublicHealthHandler = healthcheck.HealthCheckHander
 
 	api.GetShowsHandler = shows_domain.GetShowsHandler
 	api.GetShowsShowSlugSummaryHandler = shows_domain.GetShowsSlugSummaryHandler

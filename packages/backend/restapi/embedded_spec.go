@@ -162,6 +162,23 @@ func init() {
         }
       }
     },
+    "/public/health": {
+      "get": {
+        "description": "Healthcheck endpoint",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Healthcheck",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/HealthCheck"
+            }
+          }
+        }
+      }
+    },
     "/public/schedule": {
       "get": {
         "produces": [
@@ -323,20 +340,6 @@ func init() {
           },
           "500": {
             "$ref": "#/responses/Error"
-          }
-        }
-      }
-    },
-    "/users": {
-      "get": {
-        "description": "Optional extended description in Markdown.",
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns a list of users.",
-        "responses": {
-          "200": {
-            "description": "OK"
           }
         }
       }
@@ -509,6 +512,17 @@ func init() {
         "start": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "HealthCheck": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
         }
       }
     },
@@ -751,6 +765,23 @@ func init() {
         }
       }
     },
+    "/public/health": {
+      "get": {
+        "description": "Healthcheck endpoint",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Healthcheck",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/HealthCheck"
+            }
+          }
+        }
+      }
+    },
     "/public/schedule": {
       "get": {
         "produces": [
@@ -945,20 +976,6 @@ func init() {
           }
         }
       }
-    },
-    "/users": {
-      "get": {
-        "description": "Optional extended description in Markdown.",
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns a list of users.",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
     }
   },
   "definitions": {
@@ -1128,6 +1145,17 @@ func init() {
         "start": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "HealthCheck": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
         }
       }
     },

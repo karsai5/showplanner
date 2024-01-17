@@ -45,6 +45,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		DeleteEventsIDHandler: DeleteEventsIDHandlerFunc(func(params DeleteEventsIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation DeleteEventsID has not yet been implemented")
 		}),
+		GetPublicHealthHandler: GetPublicHealthHandlerFunc(func(params GetPublicHealthParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetPublicHealth has not yet been implemented")
+		}),
 		GetPublicScheduleHandler: GetPublicScheduleHandlerFunc(func(params GetPublicScheduleParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPublicSchedule has not yet been implemented")
 		}),
@@ -56,9 +59,6 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		}),
 		GetShowsShowSlugSummaryHandler: GetShowsShowSlugSummaryHandlerFunc(func(params GetShowsShowSlugSummaryParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetShowsShowSlugSummary has not yet been implemented")
-		}),
-		GetUsersHandler: GetUsersHandlerFunc(func(params GetUsersParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetUsers has not yet been implemented")
 		}),
 		PostAvailabilitiesHandler: PostAvailabilitiesHandlerFunc(func(params PostAvailabilitiesParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostAvailabilities has not yet been implemented")
@@ -110,6 +110,8 @@ type GoBackendAPI struct {
 
 	// DeleteEventsIDHandler sets the operation handler for the delete events ID operation
 	DeleteEventsIDHandler DeleteEventsIDHandler
+	// GetPublicHealthHandler sets the operation handler for the get public health operation
+	GetPublicHealthHandler GetPublicHealthHandler
 	// GetPublicScheduleHandler sets the operation handler for the get public schedule operation
 	GetPublicScheduleHandler GetPublicScheduleHandler
 	// GetScheduleHandler sets the operation handler for the get schedule operation
@@ -118,8 +120,6 @@ type GoBackendAPI struct {
 	GetShowsHandler GetShowsHandler
 	// GetShowsShowSlugSummaryHandler sets the operation handler for the get shows show slug summary operation
 	GetShowsShowSlugSummaryHandler GetShowsShowSlugSummaryHandler
-	// GetUsersHandler sets the operation handler for the get users operation
-	GetUsersHandler GetUsersHandler
 	// PostAvailabilitiesHandler sets the operation handler for the post availabilities operation
 	PostAvailabilitiesHandler PostAvailabilitiesHandler
 	// PostEventsHandler sets the operation handler for the post events operation
@@ -208,6 +208,9 @@ func (o *GoBackendAPI) Validate() error {
 	if o.DeleteEventsIDHandler == nil {
 		unregistered = append(unregistered, "DeleteEventsIDHandler")
 	}
+	if o.GetPublicHealthHandler == nil {
+		unregistered = append(unregistered, "GetPublicHealthHandler")
+	}
 	if o.GetPublicScheduleHandler == nil {
 		unregistered = append(unregistered, "GetPublicScheduleHandler")
 	}
@@ -219,9 +222,6 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.GetShowsShowSlugSummaryHandler == nil {
 		unregistered = append(unregistered, "GetShowsShowSlugSummaryHandler")
-	}
-	if o.GetUsersHandler == nil {
-		unregistered = append(unregistered, "GetUsersHandler")
 	}
 	if o.PostAvailabilitiesHandler == nil {
 		unregistered = append(unregistered, "PostAvailabilitiesHandler")
@@ -330,6 +330,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
+	o.handlers["GET"]["/public/health"] = NewGetPublicHealth(o.context, o.GetPublicHealthHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
 	o.handlers["GET"]["/public/schedule"] = NewGetPublicSchedule(o.context, o.GetPublicScheduleHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -343,10 +347,6 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/shows/{showSlug}/summary"] = NewGetShowsShowSlugSummary(o.context, o.GetShowsShowSlugSummaryHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/users"] = NewGetUsers(o.context, o.GetUsersHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
