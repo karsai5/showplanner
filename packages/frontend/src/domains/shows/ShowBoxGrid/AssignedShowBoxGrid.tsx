@@ -39,12 +39,14 @@ export const AssignedShowBoxGrid: React.FC = () => {
         </div>
       </div>}
 
+      <div className="flex gap-4 flex-wrap">
       {shows.map((show) =>
         <ShowBox
           key={show.id}
           show={show}
         />
       )}
+      </div>
     </>
   );
 };
