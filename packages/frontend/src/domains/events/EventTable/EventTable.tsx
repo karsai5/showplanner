@@ -97,7 +97,7 @@ export const EventTable: React.FC<{
                       <Td>
                         <div className="flex gap-1 items-center">
                           {e.curtainsUp && (
-                            <div className="mr-2">
+                            <div className="mr-2 w-5">
                               <Image
                                 alt="Theatre"
                                 src={theatreIcons}
@@ -118,7 +118,7 @@ export const EventTable: React.FC<{
                       </Td>
                       {headers.includes(eventTableDefaultHeaders.Location) &&
                         <Td>
-                          {e.address && <Address address={e?.address} />}
+                          {e.address && <div className="min-w-60"><Address address={e?.address} /></div>}
                         </Td>}
                       {headers.includes(eventTableDefaultHeaders.Note) &&
                         <Td>{e.shortnote}</Td>}

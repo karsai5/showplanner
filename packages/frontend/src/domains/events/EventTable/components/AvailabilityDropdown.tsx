@@ -38,20 +38,20 @@ export const AvailabiltyDropdown: React.FC<{ event: ScheduleEventDTO }> = ({ eve
   }
 
   return (
-    <>
+    <div className="w-32">
       {mutation.isLoading && <div className="bg-white absolute top-0 bottom-0 left-0 right-0 z-10">
         <div className="flex h-full justify-center items-center">
           <span className="loading loading-spinner loading-xs"></span>
         </div>
       </div>}
       <div className={cc(getBgColor(value), "absolute top-0 bottom-0 left-0 right-0")}>
-        <select className="select w-full h-full max-w-xs bg-transparent" onChange={e => handleChange(e.target.value)} value={value}>
+        <select className="select w-full h-full bg-transparent" onChange={e => handleChange(e.target.value)} value={value}>
           <option value={UNKNOWN} disabled selected>Unknown</option>
           <option value={YES}>Yes</option>
           <option value={NO}>No</option>
         </select>
       </div>
-    </>
+    </div>
   )
 }
 
