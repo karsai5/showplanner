@@ -3,6 +3,7 @@ import { getApi } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import Image from "next/image";
 import Link from "next/link";
+import { ShowBox } from "../ShowBox/ShowBox";
 
 import missingImg from "./missing.png";
 
@@ -29,8 +30,7 @@ export const AssignedShowBoxGrid: React.FC = () => {
   }
 
   return (
-    <ul className="list-disc">
-
+    <>
       {shows.length === 0 && <div className="prose flex mr-auto ml-auto gap-4 flex-col-reverse md:flex-row">
         <Image src={missingImg} alt="Chef pointing at thin air" width="500" height="500" />
         <div>
@@ -40,12 +40,11 @@ export const AssignedShowBoxGrid: React.FC = () => {
       </div>}
 
       {shows.map((show) =>
-        <li key={show.slug}>
-          <Link href={`shows/${show.slug}`}>
-              {show.name}
-          </Link>
-        </li>
+        <ShowBox
+          key={show.id}
+          show={show}
+        />
       )}
-    </ul>
+    </>
   );
 };
