@@ -1,8 +1,8 @@
 package main
 
 import (
-	"go-backend/domains/permissions"
-	"go-backend/domains/users_domain"
+	"go-backend/pkg/permissions"
+	"go-backend/pkg/handlers/users_domain"
 	"strconv"
 	"strings"
 

@@ -3,8 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
-	"go-backend/database"
-	"go-backend/domains/shows_domain"
+	"go-backend/pkg/database"
+	"go-backend/pkg/handlers/shows_domain"
 	"os"
 	"regexp"
 	"text/tabwriter"

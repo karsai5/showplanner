@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-backend/notifications"
+	"go-backend/pkg/notifications"
 	"log"
 	"os"
 

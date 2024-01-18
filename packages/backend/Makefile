@@ -6,7 +6,7 @@ watch-swagger:
 
 generate:
 	swagger validate openapi.yaml
-	swagger generate server -f openapi.yaml -A go-backend -P models.Principal
+	swagger generate server -f openapi.yaml -A go-backend -P models.Principal --model-package="pkg/models" --server-package="pkg/restapi"
 
 build: build-cli build-server
 

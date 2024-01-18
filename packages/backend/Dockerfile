@@ -7,12 +7,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 ADD cmd cmd
-ADD database database 
-ADD domains domains 
-ADD models models 
-ADD restapi restapi 
-ADD utils utils 
-ADD notifications notifications 
+ADD pkg pkg
 
 RUN CGO_ENABLED=0 GOOS=linux go build ./cmd/go-backend-server
 RUN CGO_ENABLED=0 GOOS=linux go build ./cmd/go-backend-cli
