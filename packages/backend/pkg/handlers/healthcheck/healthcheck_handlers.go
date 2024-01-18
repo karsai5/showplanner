@@ -9,5 +9,5 @@ import (
 
 var HealthCheckHander = operations.GetPublicHealthHandlerFunc(func(_ operations.GetPublicHealthParams) middleware.Responder {
 	message := "Hello"
-	return &operations.GetHealthOK{Payload: &models.HealthCheck{Message: &message}}
+	return &operations.GetPublicHealthOK{Payload: &models.HealthCheck{Message: &message}}
 })
