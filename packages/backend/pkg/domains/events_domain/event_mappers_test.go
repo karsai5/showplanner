@@ -1,7 +1,7 @@
 package events_domain_test
 
 import (
-	"showplanner.io/pkg/handlers/events_domain"
+	"showplanner.io/pkg/domains/events_domain"
 	"showplanner.io/pkg/models"
 	"testing"
 	"time"

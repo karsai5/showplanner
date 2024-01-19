@@ -1,8 +1,8 @@
 package public_schedule_domain
 
 import (
-	"showplanner.io/pkg/handlers/events_domain"
-	"showplanner.io/pkg/handlers/shows_domain"
+	"showplanner.io/pkg/domains/events_domain"
+	"showplanner.io/pkg/domains/shows_domain"
 	"showplanner.io/pkg/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"

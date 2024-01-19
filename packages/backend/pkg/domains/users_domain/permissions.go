@@ -2,8 +2,8 @@ package users_domain
 
 import (
 	"fmt"
-	"showplanner.io/pkg/handlers/shows_domain"
-	users_domain "showplanner.io/pkg/handlers/users_domain/notifications"
+	"showplanner.io/pkg/domains/shows_domain"
+	users_domain "showplanner.io/pkg/domains/users_domain/notifications"
 	"showplanner.io/pkg/permissions"
 
 	"github.com/supertokens/supertokens-golang/recipe/thirdpartyemailpassword"

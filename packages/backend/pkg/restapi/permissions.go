@@ -1,7 +1,7 @@
 package restapi
 
 import (
-	"showplanner.io/pkg/handlers/shows_domain"
+	"showplanner.io/pkg/domains/shows_domain"
 	"showplanner.io/pkg/permissions"
 	"strconv"
 	"strings"

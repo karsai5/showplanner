@@ -6,7 +6,7 @@ import (
 	"os"
 	"regexp"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/handlers/shows_domain"
+	"showplanner.io/pkg/domains/shows_domain"
 	"text/tabwriter"
 
 	"github.com/urfave/cli/v2"

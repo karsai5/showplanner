@@ -1,12 +1,12 @@
 package restapi
 
 import (
-	"showplanner.io/pkg/handlers/availabilities_domain"
-	"showplanner.io/pkg/handlers/events_domain"
-	"showplanner.io/pkg/handlers/healthcheck"
-	"showplanner.io/pkg/handlers/public_schedule_domain"
-	"showplanner.io/pkg/handlers/schedule_domain"
-	"showplanner.io/pkg/handlers/shows_domain"
+	"showplanner.io/pkg/domains/availabilities_domain"
+	"showplanner.io/pkg/domains/events_domain"
+	"showplanner.io/pkg/domains/healthcheck"
+	"showplanner.io/pkg/domains/public_schedule_domain"
+	"showplanner.io/pkg/domains/schedule_domain"
+	"showplanner.io/pkg/domains/shows_domain"
 	"showplanner.io/pkg/restapi/operations"
 )
 

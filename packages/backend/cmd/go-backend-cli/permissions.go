@@ -1,7 +1,7 @@
 package main
 
 import (
-	"showplanner.io/pkg/handlers/users_domain"
+	"showplanner.io/pkg/domains/users_domain"
 	"showplanner.io/pkg/permissions"
 	"strconv"
 	"strings"

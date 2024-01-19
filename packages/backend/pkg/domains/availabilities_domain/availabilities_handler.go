@@ -1,7 +1,7 @@
 package availabilities_domain
 
 import (
-	"showplanner.io/pkg/handlers/events_domain"
+	"showplanner.io/pkg/domains/events_domain"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
