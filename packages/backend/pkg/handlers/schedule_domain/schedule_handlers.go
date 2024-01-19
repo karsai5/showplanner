@@ -1,10 +1,10 @@
 package schedule_domain
 
 import (
-	"go-backend/pkg/handlers/events_domain"
-	"go-backend/pkg/permissions"
-	"go-backend/pkg/models"
-	"go-backend/pkg/restapi/operations"
+	"showplanner.io/pkg/handlers/events_domain"
+	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/permissions"
+	"showplanner.io/pkg/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"
 )

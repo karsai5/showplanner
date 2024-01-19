@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"go-backend/pkg/models"
+	"showplanner.io/pkg/models"
 )
 
 // GetPublicScheduleOKCode is the HTTP code returned for type GetPublicScheduleOK

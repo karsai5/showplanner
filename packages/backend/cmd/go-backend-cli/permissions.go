@@ -1,8 +1,8 @@
 package main
 
 import (
-	"go-backend/pkg/permissions"
-	"go-backend/pkg/handlers/users_domain"
+	"showplanner.io/pkg/handlers/users_domain"
+	"showplanner.io/pkg/permissions"
 	"strconv"
 	"strings"
 

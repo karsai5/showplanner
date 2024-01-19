@@ -1,8 +1,8 @@
 package events_domain_test
 
 import (
-	"go-backend/pkg/handlers/events_domain"
-	"go-backend/pkg/models"
+	"showplanner.io/pkg/handlers/events_domain"
+	"showplanner.io/pkg/models"
 	"testing"
 	"time"
 

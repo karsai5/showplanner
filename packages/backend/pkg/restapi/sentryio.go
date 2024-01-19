@@ -1,8 +1,8 @@
 package restapi
 
 import (
-	"go-backend/pkg/utils"
 	"log"
+	"showplanner.io/pkg/utils"
 
 	"github.com/getsentry/sentry-go"
 )

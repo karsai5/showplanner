@@ -1,7 +1,7 @@
 package notifications
 
 import (
-	"go-backend/pkg/utils"
+	"showplanner.io/pkg/utils"
 
 	"gopkg.in/gomail.v2"
 )

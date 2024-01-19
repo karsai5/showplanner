@@ -2,8 +2,8 @@ package database
 
 import (
 	"fmt"
-	"go-backend/pkg/utils"
 	"log"
+	"showplanner.io/pkg/utils"
 	"sync"
 
 	"gorm.io/driver/postgres"

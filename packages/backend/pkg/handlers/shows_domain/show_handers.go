@@ -1,11 +1,11 @@
 package shows_domain
 
 import (
-	"go-backend/pkg/database"
-	"go-backend/pkg/permissions"
-	"go-backend/pkg/models"
-	"go-backend/pkg/restapi/operations"
 	"net/http"
+	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/permissions"
+	"showplanner.io/pkg/restapi/operations"
 	"strings"
 
 	"github.com/go-openapi/runtime/middleware"

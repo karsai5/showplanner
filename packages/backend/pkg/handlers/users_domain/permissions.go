@@ -2,9 +2,9 @@ package users_domain
 
 import (
 	"fmt"
-	"go-backend/pkg/permissions"
-	"go-backend/pkg/handlers/shows_domain"
-	users_domain "go-backend/pkg/handlers/users_domain/notifications"
+	"showplanner.io/pkg/handlers/shows_domain"
+	users_domain "showplanner.io/pkg/handlers/users_domain/notifications"
+	"showplanner.io/pkg/permissions"
 
 	"github.com/supertokens/supertokens-golang/recipe/thirdpartyemailpassword"
 	"github.com/supertokens/supertokens-golang/recipe/userroles"

@@ -1,8 +1,8 @@
 package shows_domain
 
 import (
-	"go-backend/pkg/database"
-	"go-backend/pkg/models"
+	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/models"
 )
 
 func MapShows(shows []database.Show) []*models.ShowDTO {

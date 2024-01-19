@@ -24,7 +24,7 @@ import (
 	flags "github.com/jessevdk/go-flags"
 	"golang.org/x/net/netutil"
 
-	"go-backend/pkg/restapi/operations"
+	"showplanner.io/pkg/restapi/operations"
 )
 
 const (

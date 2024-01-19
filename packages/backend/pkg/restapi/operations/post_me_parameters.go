@@ -13,7 +13,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
 
-	"go-backend/pkg/models"
+	"showplanner.io/pkg/models"
 )
 
 // NewPostMeParams creates a new PostMeParams object

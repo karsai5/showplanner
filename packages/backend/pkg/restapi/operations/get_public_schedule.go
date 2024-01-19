@@ -15,7 +15,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"go-backend/pkg/models"
+	"showplanner.io/pkg/models"
 )
 
 // GetPublicScheduleHandlerFunc turns a function with the right signature into a get public schedule handler

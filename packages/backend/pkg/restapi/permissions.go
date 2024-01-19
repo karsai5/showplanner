@@ -1,8 +1,8 @@
 package restapi
 
 import (
-	"go-backend/pkg/handlers/shows_domain"
-	"go-backend/pkg/permissions"
+	"showplanner.io/pkg/handlers/shows_domain"
+	"showplanner.io/pkg/permissions"
 	"strconv"
 	"strings"
 

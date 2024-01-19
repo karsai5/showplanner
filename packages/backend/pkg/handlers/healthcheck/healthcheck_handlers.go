@@ -1,8 +1,8 @@
 package healthcheck
 
 import (
-	"go-backend/pkg/models"
-	"go-backend/pkg/restapi/operations"
+	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"
 )

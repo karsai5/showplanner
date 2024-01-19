@@ -2,7 +2,7 @@ package users_domain
 
 import (
 	"fmt"
-	"go-backend/pkg/notifications"
+	"showplanner.io/pkg/notifications"
 )
 
 func SendEmailToNewUser(email string) {

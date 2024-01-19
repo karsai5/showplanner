@@ -1,9 +1,9 @@
 package schedule_domain
 
 import (
-	"go-backend/pkg/database"
-	"go-backend/pkg/models"
-	"go-backend/pkg/utils"
+	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/utils"
 )
 
 func mapAvailabilityDTO(a database.Availability) models.AvailabilityDTO {

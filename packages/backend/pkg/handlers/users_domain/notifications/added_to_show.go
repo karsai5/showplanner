@@ -2,8 +2,8 @@ package users_domain
 
 import (
 	"fmt"
-	"go-backend/pkg/notifications"
-	"go-backend/pkg/utils"
+	"showplanner.io/pkg/notifications"
+	"showplanner.io/pkg/utils"
 )
 
 type WelcomeToShowEmail struct {

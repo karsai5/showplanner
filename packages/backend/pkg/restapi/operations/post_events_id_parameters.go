@@ -15,7 +15,7 @@ import (
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"go-backend/pkg/models"
+	"showplanner.io/pkg/models"
 )
 
 // NewPostEventsIDParams creates a new PostEventsIDParams object

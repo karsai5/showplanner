@@ -1,8 +1,8 @@
 package events_domain
 
 import (
-	"go-backend/pkg/permissions"
-	"go-backend/pkg/restapi/operations"
+	"showplanner.io/pkg/permissions"
+	"showplanner.io/pkg/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"
 )

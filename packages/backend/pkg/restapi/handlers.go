@@ -1,13 +1,13 @@
 package restapi
 
 import (
-	"go-backend/pkg/handlers/availabilities_domain"
-	"go-backend/pkg/handlers/events_domain"
-	"go-backend/pkg/handlers/healthcheck"
-	"go-backend/pkg/handlers/public_schedule_domain"
-	"go-backend/pkg/handlers/schedule_domain"
-	"go-backend/pkg/handlers/shows_domain"
-	"go-backend/pkg/restapi/operations"
+	"showplanner.io/pkg/handlers/availabilities_domain"
+	"showplanner.io/pkg/handlers/events_domain"
+	"showplanner.io/pkg/handlers/healthcheck"
+	"showplanner.io/pkg/handlers/public_schedule_domain"
+	"showplanner.io/pkg/handlers/schedule_domain"
+	"showplanner.io/pkg/handlers/shows_domain"
+	"showplanner.io/pkg/restapi/operations"
 )
 
 func getHandlers(api *operations.GoBackendAPI) {

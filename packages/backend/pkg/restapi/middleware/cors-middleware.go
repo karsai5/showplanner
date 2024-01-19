@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"go-backend/pkg/utils"
 	"net/http"
+	"showplanner.io/pkg/utils"
 	"strings"
 
 	"github.com/supertokens/supertokens-golang/supertokens"

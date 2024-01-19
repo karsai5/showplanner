@@ -1,9 +1,9 @@
 package main
 
 import (
-	"go-backend/pkg/notifications"
 	"log"
 	"os"
+	"showplanner.io/pkg/notifications"
 
 	"github.com/urfave/cli/v2"
 )

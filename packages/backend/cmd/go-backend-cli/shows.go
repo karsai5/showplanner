@@ -3,10 +3,10 @@ package main
 import (
 	"errors"
 	"fmt"
-	"go-backend/pkg/database"
-	"go-backend/pkg/handlers/shows_domain"
 	"os"
 	"regexp"
+	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/handlers/shows_domain"
 	"text/tabwriter"
 
 	"github.com/urfave/cli/v2"

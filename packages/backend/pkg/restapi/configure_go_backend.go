@@ -4,10 +4,10 @@ package restapi
 
 import (
 	"crypto/tls"
-	"go-backend/pkg/permissions"
-	"go-backend/pkg/restapi/middleware"
-	"go-backend/pkg/restapi/operations"
-	"go-backend/pkg/utils"
+	"showplanner.io/pkg/permissions"
+	"showplanner.io/pkg/restapi/middleware"
+	"showplanner.io/pkg/restapi/operations"
+	"showplanner.io/pkg/utils"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"

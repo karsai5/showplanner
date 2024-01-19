@@ -1,4 +1,4 @@
-module go-backend
+module showplanner.io
 
 go 1.19
 
@@ -10,7 +10,6 @@ require (
 	github.com/go-openapi/strfmt v0.21.7
 	github.com/go-openapi/swag v0.22.3
 	github.com/go-openapi/validate v0.22.1
-	github.com/golang-jwt/jwt/v5 v5.0.0
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/joho/godotenv v1.5.1
 	github.com/supertokens/supertokens-golang v0.16.5

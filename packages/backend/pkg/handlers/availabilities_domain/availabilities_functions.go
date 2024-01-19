@@ -2,7 +2,7 @@ package availabilities_domain
 
 import (
 	"errors"
-	"go-backend/pkg/database"
+	"showplanner.io/pkg/database"
 )
 
 var db = database.GetDatabase()
