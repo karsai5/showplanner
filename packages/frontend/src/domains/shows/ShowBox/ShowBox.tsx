@@ -61,7 +61,7 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
         <div className="card-body">
           <div className="flex flex-col">
             <h2 className="card-title">
-              {name}
+              {show.name}
               {pastEvent && <div className="badge">Show finished</div>}
             </h2>
             <p>{show.company}</p>
