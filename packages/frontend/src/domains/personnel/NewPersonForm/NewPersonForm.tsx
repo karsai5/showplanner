@@ -1,5 +1,4 @@
 import cc from "classnames";
-import FileInput from "core/components/fields/FileInput";
 import FormattedTextInput from "core/components/fields/FormattedTextInput";
 import TextArea from "core/components/fields/TextArea";
 import Input from "core/components/fields/TextInput";
@@ -7,8 +6,6 @@ import { useRouter } from "next/router";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-
-interface NewPersonFormProps {}
 
 type Inputs = {
   avatar: string;
@@ -31,12 +28,11 @@ type Inputs = {
   publishedAt: Date;
 };
 
-const NewPersonForm: FC<NewPersonFormProps> = () => {
+const NewPersonForm: FC<{}> = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<Inputs>();
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -62,11 +58,6 @@ const NewPersonForm: FC<NewPersonFormProps> = () => {
 
   return (
     <form data-testid="NewPersonForm" onSubmit={handleSubmit(onSubmit)}>
-      <p className="mb-2 text-2xl font-bold">Profile information</p>
-      <FileInput
-        onChange={(id) => setValue("avatar", id)}
-        label="Pick a profile picture (a picture is worth a thousand words!)"
-      />
       <p className="mb-2 text-lg font-bold">Personal details</p>
       <Row>
         <select className="select select-bordered" {...register("pronoun")}>
@@ -196,7 +187,7 @@ const NewPersonForm: FC<NewPersonFormProps> = () => {
         className="h-20 mb-4"
       />
       <button type="submit" className={cc({ loading }, "btn btn-block")}>
-        Login
+        Save
       </button>
     </form>
   );

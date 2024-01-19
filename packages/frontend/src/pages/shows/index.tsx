@@ -1,9 +1,7 @@
 import { useModal } from "core/components/Modal/Modal";
 import { HasPermission, PERMISSION } from "core/permissions";
 import NewShowForm from "domains/shows/NewShowForm/NewShowForm";
-import {
-  AssignedShowBoxGrid,
-} from "domains/shows/ShowBoxGrid";
+import { AssignedShowBoxGrid } from "domains/shows/ShowBoxGrid/AssignedShowBoxGrid";
 import Head from "next/head";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import Session from "supertokens-auth-react/recipe/session";
