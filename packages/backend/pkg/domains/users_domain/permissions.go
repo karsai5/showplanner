@@ -2,7 +2,7 @@ package users_domain
 
 import (
 	"fmt"
-	"showplanner.io/pkg/domains/shows_domain"
+	"showplanner.io/pkg/database"
 	users_domain "showplanner.io/pkg/domains/users_domain/notifications"
 	"showplanner.io/pkg/permissions"
 
@@ -17,7 +17,7 @@ func AddToShow(showId string, email string) error {
 		return fmt.Errorf("Error adding user to show: %w", err)
 	}
 
-	show, err := shows_domain.GetShowById(showId)
+	show, err := database.GetShowById(showId)
 
 	if err != nil {
 		return fmt.Errorf("Error adding user to show: %w", err)

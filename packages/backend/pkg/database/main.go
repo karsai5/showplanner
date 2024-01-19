@@ -26,6 +26,8 @@ func GetDatabase() *gorm.DB {
 	return database
 }
 
+var db = GetDatabase()
+
 func getSQLiteDatabase() *gorm.DB {
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {

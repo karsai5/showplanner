@@ -1,6 +1,7 @@
 package events_domain
 
 import (
+	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
 
@@ -21,7 +22,7 @@ var CreateEventsHandler = operations.PostEventsHandlerFunc(func(params operation
 	}
 
 	event := mapToDatabaseEvent(*params.Event)
-	event, err = CreateEvent(event)
+	event, err = database.CreateEvent(event)
 
 	if err != nil {
 		println("Error creating event: " + err.Error())
@@ -36,7 +37,7 @@ var CreateEventsHandler = operations.PostEventsHandlerFunc(func(params operation
 })
 
 var UpdateEventsHandler = operations.PostEventsIDHandlerFunc(func(params operations.PostEventsIDParams) middleware.Responder {
-	existingEvent, err := GetEvent(uint(params.ID))
+	existingEvent, err := database.GetEvent(uint(params.ID))
 
 	if err != nil {
 		return &operations.PostShowsInternalServerError{}
@@ -55,7 +56,7 @@ var UpdateEventsHandler = operations.PostEventsIDHandlerFunc(func(params operati
 	}
 
 	event := mapToDatabaseEvent(*params.Event)
-	event, err = UpdateEvent(existingEvent.ID, event)
+	event, err = database.UpdateEvent(existingEvent.ID, event)
 
 	if err != nil {
 		println("Error creating event: " + err.Error())
@@ -70,7 +71,7 @@ var UpdateEventsHandler = operations.PostEventsIDHandlerFunc(func(params operati
 
 var DeleteEventHandler = operations.DeleteEventsIDHandlerFunc(func(params operations.DeleteEventsIDParams) middleware.Responder {
 
-	existingEvent, err := GetEvent(uint(params.ID))
+	existingEvent, err := database.GetEvent(uint(params.ID))
 
 	if err != nil {
 		return &operations.DeleteEventsIDInternalServerError{}
@@ -88,7 +89,7 @@ var DeleteEventHandler = operations.DeleteEventsIDHandlerFunc(func(params operat
 		return &operations.DeleteEventsIDInternalServerError{}
 	}
 
-	err = DeleteEvent(existingEvent.ID)
+	err = database.DeleteEvent(existingEvent.ID)
 
 	if err != nil {
 		return &operations.DeleteEventsIDInternalServerError{}

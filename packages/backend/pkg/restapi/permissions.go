@@ -1,7 +1,7 @@
 package restapi
 
 import (
-	"showplanner.io/pkg/domains/shows_domain"
+	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/permissions"
 	"strconv"
 	"strings"
@@ -14,7 +14,7 @@ func initialiseRoles() {
 		role.Initialise()
 	}
 
-	shows, err := shows_domain.GetAllShows()
+	shows, err := database.GetAllShows()
 
 	if err != nil {
 		panic("Error getting shows: " + err.Error())

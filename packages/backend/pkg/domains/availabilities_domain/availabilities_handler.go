@@ -1,7 +1,7 @@
 package availabilities_domain
 
 import (
-	"showplanner.io/pkg/domains/events_domain"
+	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
@@ -21,7 +21,7 @@ var HandleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(par
 		}
 	}
 
-	event, err := events_domain.GetEvent(uint(*params.Availability.EventID))
+	event, err := database.GetEvent(uint(*params.Availability.EventID))
 
 	if err != nil {
 		return &operations.PostAvailabilitiesInternalServerError{}
@@ -35,7 +35,7 @@ var HandleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(par
 		}
 	}
 
-	availability, err := UpdateAvailability(userId, uint(*params.Availability.EventID), *params.Availability.Available)
+	availability, err := database.UpdateAvailability(userId, uint(*params.Availability.EventID), *params.Availability.Available)
 
 	if err != nil {
 		return &operations.PostAvailabilitiesInternalServerError{}

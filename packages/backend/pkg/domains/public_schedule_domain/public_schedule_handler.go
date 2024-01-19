@@ -1,8 +1,8 @@
 package public_schedule_domain
 
 import (
+	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/events_domain"
-	"showplanner.io/pkg/domains/shows_domain"
 	"showplanner.io/pkg/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -10,13 +10,13 @@ import (
 
 var GetPublicScheduleHandler = operations.GetPublicScheduleHandlerFunc(func(params operations.GetPublicScheduleParams) middleware.Responder {
 
-	show, err := shows_domain.GetShowBySlug(params.ShowSlug)
+	show, err := database.GetShowBySlug(params.ShowSlug)
 
 	if err != nil {
 		return &operations.GetPublicScheduleInternalServerError{}
 	}
 
-	events, err := events_domain.GetEvents(show.ID)
+	events, err := database.GetEvents(show.ID)
 
 	if err != nil {
 		return &operations.GetPublicScheduleInternalServerError{}

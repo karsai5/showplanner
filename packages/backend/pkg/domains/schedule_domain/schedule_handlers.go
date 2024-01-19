@@ -1,6 +1,7 @@
 package schedule_domain
 
 import (
+	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/events_domain"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
@@ -24,7 +25,7 @@ var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operation
 		return &operations.GetScheduleUnauthorized{}
 	}
 
-	events, err := events_domain.GetEventsWithAvailabilityForUser(showId, userId)
+	events, err := database.GetEventsWithAvailabilityForUser(showId, userId)
 
 	if err != nil {
 		return &operations.GetScheduleInternalServerError{}

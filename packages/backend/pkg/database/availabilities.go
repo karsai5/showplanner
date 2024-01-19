@@ -1,14 +1,11 @@
-package availabilities_domain
+package database
 
 import (
 	"errors"
-	"showplanner.io/pkg/database"
 )
 
-var db = database.GetDatabase()
-
-func GetAvailability(userId string, eventId uint) (*database.Availability, error) {
-	var availabilities []database.Availability
+func GetAvailability(userId string, eventId uint) (*Availability, error) {
+	var availabilities []Availability
 	res := db.Where("user_id = ? AND event_id = ?", userId, eventId).Find(&availabilities)
 
 	if len(availabilities) > 1 {
@@ -26,13 +23,13 @@ func GetAvailability(userId string, eventId uint) (*database.Availability, error
 	return &availabilities[0], res.Error
 }
 
-func UpdateAvailability(userId string, eventId uint, available bool) (*database.Availability, error) {
+func UpdateAvailability(userId string, eventId uint, available bool) (*Availability, error) {
 	existingAvailability, err := GetAvailability(userId, eventId)
 	if err != nil {
 		return nil, err
 	}
 
-	newAvailability := database.Availability{
+	newAvailability := Availability{
 		UserID:    userId,
 		EventID:   eventId,
 		Available: available,

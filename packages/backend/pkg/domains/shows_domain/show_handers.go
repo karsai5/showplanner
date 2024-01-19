@@ -13,7 +13,7 @@ import (
 
 var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetShowsParams) middleware.Responder {
 
-	shows, err := GetAllShows()
+	shows, err := database.GetAllShows()
 
 	if err != nil {
 		println("Error getting shows: " + err.Error())
@@ -44,7 +44,7 @@ func getShowsWithPermission(shows []database.Show, request *http.Request) []data
 }
 
 var GetShowsSlugSummaryHandler = operations.GetShowsShowSlugSummaryHandlerFunc(func(params operations.GetShowsShowSlugSummaryParams) middleware.Responder {
-	show, err := GetShowBySlug(params.ShowSlug)
+	show, err := database.GetShowBySlug(params.ShowSlug)
 	if err != nil {
 		println("Could not find show: " + err.Error())
 		return &operations.GetShowsShowSlugSummaryNotFound{}
@@ -78,7 +78,7 @@ var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostS
 		return &operations.PostShowsUnauthorized{}
 	}
 
-	show, err := CreateShow(database.Show{
+	show, err := database.CreateShow(database.Show{
 		Name:    *psp.Show.Name,
 		Slug:    *psp.Show.Slug,
 		Company: *psp.Show.Company,

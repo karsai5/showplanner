@@ -6,7 +6,6 @@ import (
 	"os"
 	"regexp"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/shows_domain"
 	"text/tabwriter"
 
 	"github.com/urfave/cli/v2"
@@ -17,7 +16,7 @@ func ListShows() *cli.Command {
 		Name:  "list-shows",
 		Usage: "List all shows",
 		Action: func(ctx *cli.Context) error {
-			shows, err := shows_domain.GetAllShows()
+			shows, err := database.GetAllShows()
 
 			w := tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', 0)
 			fmt.Fprintln(w, "ID\tName\tSlug")
