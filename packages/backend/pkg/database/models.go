@@ -3,6 +3,7 @@ package database
 import (
 	"time"
 
+	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 )
 
@@ -32,4 +33,26 @@ type Availability struct {
 	UserID    string `gorm:"uniqueIndex:unique_availability`
 	EventID   uint   `gorm:"uniqueIndex:unique_availability`
 	Available bool
+}
+
+type Person struct {
+	ID        uuid.UUID `gorm:"type:uuid;primary_key;"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time `gorm:"index"`
+
+	Pronoun               string
+	FirstName             string
+	LastName              string
+	Email                 string
+	Phone                 string
+	WWC                   string
+	DOB                   string
+	Allergies             string
+	EmergencyPhone        string
+	EmergencyName         string
+	EmergencyRelationship string
+	HearAboutUs           string
+	PreviousWork          string
+	ReasonForCrewing      string
 }

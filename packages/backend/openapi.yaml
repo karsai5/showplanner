@@ -210,6 +210,24 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/AvailabilityDTO'
+  /me:
+    post:
+      produces:
+        - application/json  
+      parameters:
+        - in: body
+          name: availability
+          description: The availability to create or update
+          schema:
+            $ref: '#/definitions/PersonUpdateDTO'
+      responses:
+        500:
+          description: Internal server error
+        401:
+          $ref: '#/responses/Error'
+        200:
+          description: OK
+
 responses:
   Error:
     description: Error
@@ -381,3 +399,44 @@ definitions:
       - eventId
       - userId
       - available
+  PersonUpdateDTO:
+    type: object
+    properties:
+      pronoun:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
+      wwc:
+        type: string
+      dob:
+        type: string
+      allergies:
+        type: string
+      emergencyPhone:
+        type: string
+      emergencyName:
+        type: string
+      emergencyRelationship:
+        type: string
+      hearAboutUs:
+        type: string
+      previousWork:
+        type: string
+      reasonForCrewing:
+        type: string
+    required:
+      - firstName
+      - lastName
+      - email
+      - phone
+      - dob
+      - allergies
+      - emergencyName
+      - emergencyPhone
+      - emergencyRelationship

@@ -162,6 +162,34 @@ func init() {
         }
       }
     },
+    "/me": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The availability to create or update",
+            "name": "availability",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/PersonUpdateDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/public/health": {
       "get": {
         "description": "Healthcheck endpoint",
@@ -522,6 +550,64 @@ func init() {
       ],
       "properties": {
         "message": {
+          "type": "string"
+        }
+      }
+    },
+    "PersonUpdateDTO": {
+      "type": "object",
+      "required": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "dob",
+        "allergies",
+        "emergencyName",
+        "emergencyPhone",
+        "emergencyRelationship"
+      ],
+      "properties": {
+        "allergies": {
+          "type": "string"
+        },
+        "dob": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "emergencyName": {
+          "type": "string"
+        },
+        "emergencyPhone": {
+          "type": "string"
+        },
+        "emergencyRelationship": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "hearAboutUs": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "previousWork": {
+          "type": "string"
+        },
+        "pronoun": {
+          "type": "string"
+        },
+        "reasonForCrewing": {
+          "type": "string"
+        },
+        "wwc": {
           "type": "string"
         }
       }
@@ -765,6 +851,37 @@ func init() {
         }
       }
     },
+    "/me": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "description": "The availability to create or update",
+            "name": "availability",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/PersonUpdateDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/public/health": {
       "get": {
         "description": "Healthcheck endpoint",
@@ -1155,6 +1272,64 @@ func init() {
       ],
       "properties": {
         "message": {
+          "type": "string"
+        }
+      }
+    },
+    "PersonUpdateDTO": {
+      "type": "object",
+      "required": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "dob",
+        "allergies",
+        "emergencyName",
+        "emergencyPhone",
+        "emergencyRelationship"
+      ],
+      "properties": {
+        "allergies": {
+          "type": "string"
+        },
+        "dob": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "emergencyName": {
+          "type": "string"
+        },
+        "emergencyPhone": {
+          "type": "string"
+        },
+        "emergencyRelationship": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "hearAboutUs": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "previousWork": {
+          "type": "string"
+        },
+        "pronoun": {
+          "type": "string"
+        },
+        "reasonForCrewing": {
+          "type": "string"
+        },
+        "wwc": {
           "type": "string"
         }
       }

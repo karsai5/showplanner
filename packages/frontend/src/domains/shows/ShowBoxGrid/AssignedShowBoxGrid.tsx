@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getApi } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import Image from "next/image";
-import Link from "next/link";
 
 import { ShowBox } from "../ShowBox/ShowBox";
 import missingImg from "./missing.png";
