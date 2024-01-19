@@ -1,10 +1,10 @@
 import { Dialog } from "@headlessui/react";
 import { PencilIcon } from "core/components/Icons";
+import { ResetButton } from "domains/showtimer/buttons/ResetButton";
 import moment from "moment";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 
-import { ResetButton } from "../buttons/ResetButton";
 import { TimerLabels, Timers } from "./types";
 
 type Props = {

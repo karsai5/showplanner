@@ -5,9 +5,8 @@ import { EventDTO } from "core/api/generated";
 import { useModal } from "core/components/Modal/Modal";
 import { showToastError } from "core/utils/errors";
 import { isNil } from "core/utils/isNil";
+import NewEventForm from "domains/events/NewEventForm/NewEventForm";
 import { useState } from "react";
-
-import NewEventForm from "../../NewEventForm/NewEventForm";
 
 export const CloneEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
   const api = getApi();

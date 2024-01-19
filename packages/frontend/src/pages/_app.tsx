@@ -1,9 +1,9 @@
-import "../styles/globals.css";
+import "styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ConfirmationModalWrapper } from "core/components/Modal/ConfirmationModal";
-import { Layout } from "domains/layout/Layout";
+import { DefaultLayout } from "domains/layout/DefaultLayout";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Router } from "next/router";
@@ -30,7 +30,7 @@ if (typeof window !== "undefined") {
 
 function MyApp({ Component }: AppPropsWithLayout) {
   const loading = usePageLoading();
-  const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
+  const getLayout = Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>);
 
   return (
     <SuperTokensWrapper>

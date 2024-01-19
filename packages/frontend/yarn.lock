@@ -6322,6 +6322,7 @@ __metadata:
     eslint-config-next: "npm:^14.0.4"
     eslint-config-prettier: "npm:^8.6.0"
     eslint-plugin-import: "npm:^2.26.0"
+    eslint-plugin-no-relative-import-paths: "npm:^1.5.3"
     eslint-plugin-simple-import-sort: "npm:^7.0.0"
     eslint-plugin-storybook: "npm:^0.6.15"
     framer-motion: "npm:^6.3.10"
@@ -12947,6 +12948,13 @@ __metadata:
   peerDependencies:
     eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
   checksum: 199b883e526e6f9d7c54cb3f094abc54f11a1ec816db5fb6cae3b938eb0e503acc10ccba91ca7451633a9d0b9abc0ea03601844a8aba5fe88c5e8897c9ac8f49
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-no-relative-import-paths@npm:^1.5.3":
+  version: 1.5.3
+  resolution: "eslint-plugin-no-relative-import-paths@npm:1.5.3"
+  checksum: 4eba4cc149d120d70dd99783faa9405c5f5f2179ba8647f0196eb3b51ceb0bb0711552cae61baed1ff5c16839e62fd7c2ecc71eab65d807a4ef19890f11192e4
   languageName: node
   linkType: hard
 

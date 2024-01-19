@@ -1,7 +1,6 @@
 import { EventDTO } from "core/api/generated";
 import { useModal } from "core/components/Modal/Modal";
-
-import NewEventForm from "../../NewEventForm/NewEventForm";
+import NewEventForm from "domains/events/NewEventForm/NewEventForm";
 
 export const EditEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
   const { Modal, open, close, isOpen } = useModal();

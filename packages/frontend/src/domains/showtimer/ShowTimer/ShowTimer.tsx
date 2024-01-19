@@ -1,13 +1,13 @@
 import confetti from "canvas-confetti";
 import { ClipboardIcon, EmailIcon } from "core/components/Icons";
 import { useCopyToClipboard } from "core/hooks/useCopyToClipboard";
+import { NextButton } from "domains/showtimer/buttons/NextButton";
+import { ChronoButton } from "domains/showtimer/ChronoButton";
 import { EditorState as DraftJSEditorState, EditorState } from "draft-js";
 import moment, { Moment } from "moment";
 import React, { createContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
-import { NextButton } from "../buttons/NextButton";
-import { ChronoButton } from "../ChronoButton";
 import { Beginners } from "./Beginners";
 import { CurrentTimeCard } from "./CurrentTimeCard";
 import { EditTimes } from "./EditTimes";

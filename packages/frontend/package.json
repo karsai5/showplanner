@@ -104,6 +104,7 @@
     "eslint-config-next": "^14.0.4",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-no-relative-import-paths": "^1.5.3",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-storybook": "^0.6.15",
     "generate-react-cli": "^8.2.0",

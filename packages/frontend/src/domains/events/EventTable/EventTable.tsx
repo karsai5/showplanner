@@ -4,13 +4,12 @@ import Address from "core/components/Address/Address";
 import { getTimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
+import theatreIcons from "domains/events/images/theatre.png";
+import { displayDate } from "domains/events/lib/displayDate";
+import { processEvents } from "domains/events/lib/processEvents";
 import sortBy from "lodash/sortBy";
 import Image from "next/image";
 import { FC, Fragment } from "react";
-
-import theatreIcons from "../images/theatre.png";
-import { displayDate } from "../lib/displayDate";
-import { processEvents } from "../lib/processEvents";
 
 dayjs.extend(advancedFormat);
 

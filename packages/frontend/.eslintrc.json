@@ -7,7 +7,8 @@
   ],
   "plugins": [
     "simple-import-sort",
-    "import"
+    "import",
+    "no-relative-import-paths"
   ],
   "rules": {
     "simple-import-sort/imports": "error",
@@ -21,6 +22,10 @@
           "error"
         ]
       }
+    ],
+    "no-relative-import-paths/no-relative-import-paths": [
+      "warn",
+      { "allowSameFolder": true, "rootDir": "src" }
     ]
   },
   "overrides": [

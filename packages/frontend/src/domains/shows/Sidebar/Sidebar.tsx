@@ -2,10 +2,10 @@ import cc from "classnames";
 import {
   CalendarIcon,
 } from "core/components/Icons";
+import { useShowSlugFromUrl } from "domains/shows/lib/helpers";
 import Link from "next/link";
 import React, { FC, ReactNode, useState } from "react";
 
-import { useShowSlugFromUrl } from "../lib/helpers";
 import styles from "./Sidebar.module.scss";
 
 interface SidebarProps {

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { getApi } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
+import { ShowBox } from "domains/shows/ShowBox/ShowBox";
 import Image from "next/image";
 
-import { ShowBox } from "../ShowBox/ShowBox";
 import missingImg from "./missing.png";
 
 export const AssignedShowBoxGrid: React.FC = () => {

@@ -1,10 +1,10 @@
 import cc from "classnames";
+import { HoldButton } from "domains/showtimer/HoldButton/HoldButton";
+import { Phase, TimerLabels, Timers } from "domains/showtimer/ShowTimer/types";
 import moment from "moment";
 import { useState } from "react";
 import { useLongPress } from "use-long-press";
 
-import { HoldButton } from "../HoldButton/HoldButton";
-import { Phase, TimerLabels, Timers } from "../ShowTimer/types";
 import { ResetButton } from "./ResetButton";
 
 export const NextButton: React.FC<

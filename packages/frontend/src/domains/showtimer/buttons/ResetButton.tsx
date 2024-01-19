@@ -1,9 +1,8 @@
 import cc from "classnames";
+import { emptyTimers } from "domains/showtimer/ShowTimer/ShowTimer";
+import { Timers } from "domains/showtimer/ShowTimer/types";
 import { useState } from "react";
 import { useLongPress } from "use-long-press";
-
-import { emptyTimers } from "../ShowTimer/ShowTimer";
-import { Timers } from "../ShowTimer/types";
 
 export const ResetButton: React.FC<{
   setTimers: (updatedTimers: Partial<Timers>) => void;

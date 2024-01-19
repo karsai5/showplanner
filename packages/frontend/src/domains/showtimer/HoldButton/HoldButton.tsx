@@ -1,8 +1,8 @@
 import cc from "classnames";
+import { ConfettiContext } from "domains/showtimer/ShowTimer/ShowTimer";
 import { ReactNode, useContext, useRef, useState } from "react";
 import { useLongPress } from "use-long-press";
 
-import { ConfettiContext } from "../ShowTimer/ShowTimer";
 import styles from "./HoldButton.module.scss";
 
 export const HoldButton: React.FC<
