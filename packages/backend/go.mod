@@ -1,6 +1,6 @@
 module showplanner.io
 
-go 1.19
+go 1.21
 
 require (
 	github.com/go-openapi/errors v0.20.4

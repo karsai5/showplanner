@@ -19,6 +19,9 @@ import type {
   CreateEventDTO,
   CreateShowDTO,
   EventDTO,
+  HealthCheck,
+  MeDetailsDTO,
+  PersonUpdateDTO,
   PublicScheduleGet200Response,
   ScheduleEventDTO,
   ShowDTO,
@@ -33,6 +36,12 @@ import {
     CreateShowDTOToJSON,
     EventDTOFromJSON,
     EventDTOToJSON,
+    HealthCheckFromJSON,
+    HealthCheckToJSON,
+    MeDetailsDTOFromJSON,
+    MeDetailsDTOToJSON,
+    PersonUpdateDTOFromJSON,
+    PersonUpdateDTOToJSON,
     PublicScheduleGet200ResponseFromJSON,
     PublicScheduleGet200ResponseToJSON,
     ScheduleEventDTOFromJSON,
@@ -58,6 +67,10 @@ export interface EventsIdPostRequest {
 
 export interface EventsPostRequest {
     event?: CreateEventDTO;
+}
+
+export interface MePostRequest {
+    personalDetails?: PersonUpdateDTO;
 }
 
 export interface PublicScheduleGetRequest {
@@ -198,6 +211,84 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async eventsPost(requestParameters: EventsPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EventDTO> {
         const response = await this.eventsPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async meGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MeDetailsDTO>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/me`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => MeDetailsDTOFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async meGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MeDetailsDTO> {
+        const response = await this.meGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async mePostRaw(requestParameters: MePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/me`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PersonUpdateDTOToJSON(requestParameters.personalDetails),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     */
+    async mePost(requestParameters: MePostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.mePostRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Healthcheck endpoint
+     * Healthcheck
+     */
+    async publicHealthGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<HealthCheck>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/public/health`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => HealthCheckFromJSON(jsonValue));
+    }
+
+    /**
+     * Healthcheck endpoint
+     * Healthcheck
+     */
+    async publicHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<HealthCheck> {
+        const response = await this.publicHealthGetRaw(initOverrides);
         return await response.value();
     }
 
@@ -352,33 +443,6 @@ export class DefaultApi extends runtime.BaseAPI {
     async showsShowSlugSummaryGet(requestParameters: ShowsShowSlugSummaryGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ShowSummaryDTO> {
         const response = await this.showsShowSlugSummaryGetRaw(requestParameters, initOverrides);
         return await response.value();
-    }
-
-    /**
-     * Optional extended description in Markdown.
-     * Returns a list of users.
-     */
-    async usersGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/users`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Optional extended description in Markdown.
-     * Returns a list of users.
-     */
-    async usersGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.usersGetRaw(initOverrides);
     }
 
 }

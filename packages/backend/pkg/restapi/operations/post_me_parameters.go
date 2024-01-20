@@ -36,7 +36,7 @@ type PostMeParams struct {
 	/*The availability to create or update
 	  In: body
 	*/
-	Availability *models.PersonUpdateDTO
+	PersonalDetails *models.PersonUpdateDTO
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -52,7 +52,7 @@ func (o *PostMeParams) BindRequest(r *http.Request, route *middleware.MatchedRou
 		defer r.Body.Close()
 		var body models.PersonUpdateDTO
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
-			res = append(res, errors.NewParseError("availability", "body", "", err))
+			res = append(res, errors.NewParseError("personalDetails", "body", "", err))
 		} else {
 			// validate body object
 			if err := body.Validate(route.Formats); err != nil {
@@ -65,7 +65,7 @@ func (o *PostMeParams) BindRequest(r *http.Request, route *middleware.MatchedRou
 			}
 
 			if len(res) == 0 {
-				o.Availability = &body
+				o.PersonalDetails = &body
 			}
 		}
 	}

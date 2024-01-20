@@ -1,7 +1,10 @@
+import { useMutation } from "@tanstack/react-query";
 import cc from "classnames";
+import { getApi } from "core/api";
 import FormattedTextInput from "core/components/fields/FormattedTextInput";
 import TextArea from "core/components/fields/TextArea";
 import Input from "core/components/fields/TextInput";
+import { showToastError } from "core/utils/errors";
 import { useRouter } from "next/router";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -28,6 +31,8 @@ type Inputs = {
   publishedAt: Date;
 };
 
+const api = getApi();
+
 const NewPersonForm: FC<{}> = () => {
   const {
     register,
@@ -35,25 +40,35 @@ const NewPersonForm: FC<{}> = () => {
     formState: { errors },
   } = useForm<Inputs>();
   const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
 
-  useEffect(() => {}, []);
+  const mutation = useMutation<any, unknown, Inputs>({
+    mutationFn: (formData) => api.mePost({
+      personalDetails: {
+        firstName: formData.firstname,
+        lastName: formData.lastname,
+        email: formData.email,
+        phone: formData.phone,
+        wwc: formData.wwc,
+        dob: formData.dob,
+        allergies: formData.allergies,
+        emergencyName: formData.emergencyName,
+        emergencyRelationship: formData.emergencyRelationship,
+        emergencyPhone: formData.emergencyPhone,
+        hearAboutUs: formData.hearAboutUs,
+        previousWork: formData.previousWork,
+        reasonForCrewing: formData.reasonForCrewing,
+      }
+    }),
+    onError: (e) => {
+      showToastError("Something went wrong updating personal details.");
+    },
+    onSuccess: () => {
+      toast.success("Personal data successfully updated.");
+    },
+  });
 
-  const onSubmit: SubmitHandler<Inputs> = async () => {
-    setLoading(true);
-
-    try {
-      // TODO: Create person
-      //
-      // await client.request(createPerson, { data });
-      toast.success("Details successfully updated, redirecting to shows list.");
-      reloadSession();
-      router.push("/shows");
-    } catch (e) {
-      toast.error("Something went wrong creating person");
-      console.error("Could not create person", e);
-      setLoading(false);
-    }
+  const onSubmit: SubmitHandler<Inputs> = async (formData) => {
+    mutation.mutate(formData);
   };
 
   return (

@@ -3,8 +3,9 @@ package database
 import (
 	"fmt"
 	"log"
-	"showplanner.io/pkg/utils"
 	"sync"
+
+	"showplanner.io/pkg/utils"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
@@ -73,6 +74,11 @@ func initDB() *gorm.DB {
 	err = db.AutoMigrate(&Availability{})
 	if err != nil {
 		panic("Failed to migrate availabilities")
+	}
+
+	err = db.AutoMigrate(&Person{})
+	if err != nil {
+		panic("Failed to migrate person")
 	}
 
 	return db

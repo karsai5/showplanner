@@ -6,7 +6,10 @@ models/CreateEventDTO.ts
 models/CreateShowDTO.ts
 models/EventDTO.ts
 models/EventPublicDTO.ts
+models/HealthCheck.ts
+models/MeDetailsDTO.ts
 models/ModelError.ts
+models/PersonUpdateDTO.ts
 models/PublicScheduleGet200Response.ts
 models/ScheduleEventDTO.ts
 models/ShowDTO.ts

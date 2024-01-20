@@ -216,8 +216,8 @@ paths:
         - application/json  
       parameters:
         - in: body
-          name: availability
           description: The availability to create or update
+          name: personalDetails
           schema:
             $ref: '#/definitions/PersonUpdateDTO'
       responses:
@@ -227,6 +227,18 @@ paths:
           $ref: '#/responses/Error'
         200:
           description: OK
+    get:
+      produces:
+        - application/json  
+      responses:
+        500:
+          description: Internal server error
+        401:
+          $ref: '#/responses/Error'
+        200:
+          description: Details about logged in user
+          schema:
+            $ref: '#/definitions/MeDetailsDTO'
 
 responses:
   Error:
@@ -399,6 +411,13 @@ definitions:
       - eventId
       - userId
       - available
+  MeDetailsDTO:
+    type: object
+    properties:
+      firstName:
+        type: string
+      email:
+        type: string
   PersonUpdateDTO:
     type: object
     properties:

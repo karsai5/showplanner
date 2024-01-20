@@ -163,6 +163,25 @@ func init() {
       }
     },
     "/me": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Details about logged in user",
+            "schema": {
+              "$ref": "#/definitions/MeDetailsDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
       "post": {
         "produces": [
           "application/json"
@@ -170,7 +189,7 @@ func init() {
         "parameters": [
           {
             "description": "The availability to create or update",
-            "name": "availability",
+            "name": "personalDetails",
             "in": "body",
             "schema": {
               "$ref": "#/definitions/PersonUpdateDTO"
@@ -550,6 +569,17 @@ func init() {
       ],
       "properties": {
         "message": {
+          "type": "string"
+        }
+      }
+    },
+    "MeDetailsDTO": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "firstName": {
           "type": "string"
         }
       }
@@ -852,6 +882,28 @@ func init() {
       }
     },
     "/me": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Details about logged in user",
+            "schema": {
+              "$ref": "#/definitions/MeDetailsDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
       "post": {
         "produces": [
           "application/json"
@@ -859,7 +911,7 @@ func init() {
         "parameters": [
           {
             "description": "The availability to create or update",
-            "name": "availability",
+            "name": "personalDetails",
             "in": "body",
             "schema": {
               "$ref": "#/definitions/PersonUpdateDTO"
@@ -1272,6 +1324,17 @@ func init() {
       ],
       "properties": {
         "message": {
+          "type": "string"
+        }
+      }
+    },
+    "MeDetailsDTO": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "firstName": {
           "type": "string"
         }
       }
