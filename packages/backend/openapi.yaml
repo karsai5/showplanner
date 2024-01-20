@@ -30,7 +30,7 @@ paths:
       summary: Healthcheck
       description: Healthcheck endpoint
       produces:
-        - text/plain
+        - text/calendar; charset=utf-8
       responses:
         200:
           description: OK

@@ -213,7 +213,7 @@ func init() {
       "get": {
         "description": "Healthcheck endpoint",
         "produces": [
-          "text/plain"
+          "text/calendar; charset=utf-8"
         ],
         "summary": "Healthcheck",
         "parameters": [
@@ -967,7 +967,7 @@ func init() {
       "get": {
         "description": "Healthcheck endpoint",
         "produces": [
-          "text/plain"
+          "text/calendar; charset=utf-8"
         ],
         "summary": "Healthcheck",
         "parameters": [

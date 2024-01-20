@@ -7,6 +7,7 @@ package operations
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 
@@ -41,7 +42,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		JSONConsumer: runtime.JSONConsumer(),
 
 		JSONProducer: runtime.JSONProducer(),
-		TxtProducer:  runtime.TextProducer(),
+		TextCalendarProducer: runtime.ProducerFunc(func(w io.Writer, data interface{}) error {
+			return errors.NotImplemented("textCalendar producer has not yet been implemented")
+		}),
 
 		DeleteEventsIDHandler: DeleteEventsIDHandlerFunc(func(params DeleteEventsIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation DeleteEventsID has not yet been implemented")
@@ -117,9 +120,9 @@ type GoBackendAPI struct {
 	// JSONProducer registers a producer for the following mime types:
 	//   - application/json
 	JSONProducer runtime.Producer
-	// TxtProducer registers a producer for the following mime types:
-	//   - text/plain
-	TxtProducer runtime.Producer
+	// TextCalendarProducer registers a producer for the following mime types:
+	//   - text/calendar
+	TextCalendarProducer runtime.Producer
 
 	// DeleteEventsIDHandler sets the operation handler for the delete events ID operation
 	DeleteEventsIDHandler DeleteEventsIDHandler
@@ -223,8 +226,8 @@ func (o *GoBackendAPI) Validate() error {
 	if o.JSONProducer == nil {
 		unregistered = append(unregistered, "JSONProducer")
 	}
-	if o.TxtProducer == nil {
-		unregistered = append(unregistered, "TxtProducer")
+	if o.TextCalendarProducer == nil {
+		unregistered = append(unregistered, "TextCalendarProducer")
 	}
 
 	if o.DeleteEventsIDHandler == nil {
@@ -314,8 +317,8 @@ func (o *GoBackendAPI) ProducersFor(mediaTypes []string) map[string]runtime.Prod
 		switch mt {
 		case "application/json":
 			result["application/json"] = o.JSONProducer
-		case "text/plain":
-			result["text/plain"] = o.TxtProducer
+		case "text/calendar":
+			result["text/calendar"] = o.TextCalendarProducer
 		}
 
 		if p, ok := o.customProducers[mt]; ok {

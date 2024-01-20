@@ -37,7 +37,6 @@ func createCalendarForPerson(id uuid.UUID) (_ string, err error) {
 		events_domain.NameEventsWithCurtainsUp(events)
 
 		for _, e := range events {
-			println(e.ID)
 			event := cal.AddEvent(fmt.Sprintf("%v@showplanner.io", e.ID))
 			event.SetCreatedTime(time.Now())
 			event.SetDtStampTime(time.Now())

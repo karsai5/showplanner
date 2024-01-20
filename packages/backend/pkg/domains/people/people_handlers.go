@@ -4,7 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"net/http"
 
+	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
@@ -97,6 +99,10 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 			return &operations.GetMeInternalServerError{}
 		}
 
-		return &operations.GetPublicCalendarIDOK{Payload: calendarString}
+		return middleware.ResponderFunc(func(w http.ResponseWriter, p runtime.Producer) {
+			w.Write([]byte(calendarString))
+		})
+
+		// return &operations.GetPublicCalendarIDOK{Payload: calendarString}
 	})
 }

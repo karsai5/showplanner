@@ -14,7 +14,7 @@
 //
 //	Produces:
 //	  - application/json
-//	  - text/plain
+//	  - text/calendar
 //
 // swagger:meta
 package restapi
