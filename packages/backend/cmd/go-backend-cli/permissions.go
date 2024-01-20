@@ -1,7 +1,7 @@
 package main
 
 import (
-	"showplanner.io/pkg/domains/users_domain"
+	"showplanner.io/pkg/domains/users"
 	"showplanner.io/pkg/permissions"
 	"strconv"
 	"strings"
@@ -99,7 +99,7 @@ func MakeAdmin() *cli.Command {
 		Action: func(ctx *cli.Context) error {
 			permissions.InitSupertokens()
 			email := ctx.String("email")
-			return users_domain.GiveRole("admin", email)
+			return users.GiveRole("admin", email)
 		},
 	}
 }
@@ -124,7 +124,7 @@ func AddToShow() *cli.Command {
 			permissions.InitSupertokens()
 			email := ctx.String("email")
 			showId := ctx.String("showId")
-			return users_domain.AddToShow(showId, email)
+			return users.AddToShow(showId, email)
 		},
 	}
 }
@@ -149,7 +149,7 @@ func GiveRole() *cli.Command {
 			permissions.InitSupertokens()
 			email := ctx.String("email")
 			role := ctx.String("role")
-			return users_domain.GiveRole(role, email)
+			return users.GiveRole(role, email)
 		},
 	}
 }

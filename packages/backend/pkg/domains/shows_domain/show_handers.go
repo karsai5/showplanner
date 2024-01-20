@@ -1,47 +1,30 @@
 package shows_domain
 
 import (
-	"net/http"
+	"log/slog"
+	"strings"
+
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
-	"strings"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
 var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetShowsParams) middleware.Responder {
 
-	shows, err := database.GetAllShows()
+	shows, err := database.GetShowsForCurrentUser(params.HTTPRequest)
 
 	if err != nil {
-		println("Error getting shows: " + err.Error())
+		slog.Error("Could not get shows: " + err.Error())
 		return &operations.PostShowsInternalServerError{}
 	}
 
 	return &operations.GetShowsOK{
-		Payload: MapShows(getShowsWithPermission(shows, params.HTTPRequest)),
+		Payload: MapShows(shows),
 	}
 })
-
-func getShowsWithPermission(shows []database.Show, request *http.Request) []database.Show {
-	showsWithPermission := []database.Show{}
-
-	for _, show := range shows {
-		hasPermission, err := permissions.ViewEvents.HasPermission(show.ID, request)
-
-		if err != nil {
-			println("Error getting permission", err.Error())
-		}
-
-		if hasPermission {
-			showsWithPermission = append(showsWithPermission, show)
-		}
-	}
-
-	return showsWithPermission
-}
 
 var GetShowsSlugSummaryHandler = operations.GetShowsShowSlugSummaryHandlerFunc(func(params operations.GetShowsShowSlugSummaryParams) middleware.Responder {
 	show, err := database.GetShowBySlug(params.ShowSlug)

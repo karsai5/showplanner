@@ -2,7 +2,7 @@ package permissions
 
 import (
 	"fmt"
-	users_domain "showplanner.io/pkg/domains/users_domain/notifications"
+	users_domain "showplanner.io/pkg/domains/users/notifications"
 	"showplanner.io/pkg/utils"
 
 	"github.com/supertokens/supertokens-golang/recipe/dashboard"

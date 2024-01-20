@@ -41,12 +41,16 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		JSONConsumer: runtime.JSONConsumer(),
 
 		JSONProducer: runtime.JSONProducer(),
+		TxtProducer:  runtime.TextProducer(),
 
 		DeleteEventsIDHandler: DeleteEventsIDHandlerFunc(func(params DeleteEventsIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation DeleteEventsID has not yet been implemented")
 		}),
 		GetMeHandler: GetMeHandlerFunc(func(params GetMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetMe has not yet been implemented")
+		}),
+		GetPublicCalendarIDHandler: GetPublicCalendarIDHandlerFunc(func(params GetPublicCalendarIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetPublicCalendarID has not yet been implemented")
 		}),
 		GetPublicHealthHandler: GetPublicHealthHandlerFunc(func(params GetPublicHealthParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPublicHealth has not yet been implemented")
@@ -113,11 +117,16 @@ type GoBackendAPI struct {
 	// JSONProducer registers a producer for the following mime types:
 	//   - application/json
 	JSONProducer runtime.Producer
+	// TxtProducer registers a producer for the following mime types:
+	//   - text/plain
+	TxtProducer runtime.Producer
 
 	// DeleteEventsIDHandler sets the operation handler for the delete events ID operation
 	DeleteEventsIDHandler DeleteEventsIDHandler
 	// GetMeHandler sets the operation handler for the get me operation
 	GetMeHandler GetMeHandler
+	// GetPublicCalendarIDHandler sets the operation handler for the get public calendar ID operation
+	GetPublicCalendarIDHandler GetPublicCalendarIDHandler
 	// GetPublicHealthHandler sets the operation handler for the get public health operation
 	GetPublicHealthHandler GetPublicHealthHandler
 	// GetPublicScheduleHandler sets the operation handler for the get public schedule operation
@@ -214,12 +223,18 @@ func (o *GoBackendAPI) Validate() error {
 	if o.JSONProducer == nil {
 		unregistered = append(unregistered, "JSONProducer")
 	}
+	if o.TxtProducer == nil {
+		unregistered = append(unregistered, "TxtProducer")
+	}
 
 	if o.DeleteEventsIDHandler == nil {
 		unregistered = append(unregistered, "DeleteEventsIDHandler")
 	}
 	if o.GetMeHandler == nil {
 		unregistered = append(unregistered, "GetMeHandler")
+	}
+	if o.GetPublicCalendarIDHandler == nil {
+		unregistered = append(unregistered, "GetPublicCalendarIDHandler")
 	}
 	if o.GetPublicHealthHandler == nil {
 		unregistered = append(unregistered, "GetPublicHealthHandler")
@@ -299,6 +314,8 @@ func (o *GoBackendAPI) ProducersFor(mediaTypes []string) map[string]runtime.Prod
 		switch mt {
 		case "application/json":
 			result["application/json"] = o.JSONProducer
+		case "text/plain":
+			result["text/plain"] = o.TxtProducer
 		}
 
 		if p, ok := o.customProducers[mt]; ok {
@@ -347,6 +364,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/me"] = NewGetMe(o.context, o.GetMeHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/public/calendar/{id}"] = NewGetPublicCalendarID(o.context, o.GetPublicCalendarIDHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

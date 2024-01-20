@@ -79,6 +79,24 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 				Email:     person.Email,
 			},
 		}
+	})
 
+	api.GetPublicCalendarIDHandler = operations.GetPublicCalendarIDHandlerFunc(func(params operations.GetPublicCalendarIDParams) middleware.Responder {
+		userId := params.ID
+		id, err := uuid.FromString(userId)
+
+		if err != nil {
+			slog.Error(fmt.Errorf("Error getting calendar: %w", err).Error())
+			return &operations.GetMeInternalServerError{}
+		}
+
+		calendarString, err := createCalendarForPerson(id)
+
+		if err != nil {
+			slog.Error(fmt.Errorf("Error getting calendar: %w", err).Error())
+			return &operations.GetMeInternalServerError{}
+		}
+
+		return &operations.GetPublicCalendarIDOK{Payload: calendarString}
 	})
 }

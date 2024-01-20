@@ -3,8 +3,10 @@ package database
 import (
 	"time"
 
+	"github.com/go-openapi/strfmt"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
+	"showplanner.io/pkg/utils"
 )
 
 type Event struct {
@@ -20,12 +22,25 @@ type Event struct {
 	Availabilities []Availability
 }
 
+func (e *Event) GetCurtainsUp() *strfmt.DateTime {
+	return utils.GetDateTime(e.CurtainsUp)
+}
+
+func (e *Event) SetName(name string) {
+	e.Name = &name
+}
+
+func (e *Event) IsNameEmpty() bool {
+	return e.Name == nil || *e.Name == ""
+}
+
 type Show struct {
 	gorm.Model
 	Name    string
 	Company string
 	Slug    string `gorm:"unique"`
 	Events  []Event
+	People  []Person `gorm:"many2many:show_people;"`
 }
 
 type Availability struct {
@@ -55,4 +70,6 @@ type Person struct {
 	HearAboutUs           string
 	PreviousWork          string
 	ReasonForCrewing      string
+
+	Shows []Show `gorm:"many2many:show_people;"`
 }

@@ -19,6 +19,27 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/HealthCheck'
+  /public/calendar/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: ID of calendar to get
+      summary: Healthcheck
+      description: Healthcheck endpoint
+      produces:
+        - text/plain
+      responses:
+        200:
+          description: OK
+          schema:
+            type: string
+        404:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
   /schedule:
     get:
       parameters:
