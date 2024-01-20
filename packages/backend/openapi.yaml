@@ -233,8 +233,8 @@ paths:
       responses:
         500:
           description: Internal server error
-        401:
-          $ref: '#/responses/Error'
+        404:
+          description: Not found
         200:
           description: Details about logged in user
           schema:

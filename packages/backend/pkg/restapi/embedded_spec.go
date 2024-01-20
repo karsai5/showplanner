@@ -174,8 +174,8 @@ func init() {
               "$ref": "#/definitions/MeDetailsDTO"
             }
           },
-          "401": {
-            "$ref": "#/responses/Error"
+          "404": {
+            "description": "Not found"
           },
           "500": {
             "description": "Internal server error"
@@ -893,11 +893,8 @@ func init() {
               "$ref": "#/definitions/MeDetailsDTO"
             }
           },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
+          "404": {
+            "description": "Not found"
           },
           "500": {
             "description": "Internal server error"

@@ -1,11 +1,13 @@
 package people
 
 import (
+	"errors"
 	"fmt"
 	"log/slog"
 
 	"github.com/go-openapi/runtime/middleware"
 	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
@@ -64,6 +66,9 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 		person, err := database.GetPerson(uuid)
 
 		if err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return &operations.GetMeNotFound{}
+			}
 			slog.Error(fmt.Errorf("Error getting me details: %w", err).Error())
 			return &operations.GetMeInternalServerError{}
 		}

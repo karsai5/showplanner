@@ -58,49 +58,29 @@ func (o *GetMeOK) WriteResponse(rw http.ResponseWriter, producer runtime.Produce
 	}
 }
 
-// GetMeUnauthorizedCode is the HTTP code returned for type GetMeUnauthorized
-const GetMeUnauthorizedCode int = 401
+// GetMeNotFoundCode is the HTTP code returned for type GetMeNotFound
+const GetMeNotFoundCode int = 404
 
 /*
-GetMeUnauthorized Error
+GetMeNotFound Not found
 
-swagger:response getMeUnauthorized
+swagger:response getMeNotFound
 */
-type GetMeUnauthorized struct {
-
-	/*
-	  In: Body
-	*/
-	Payload *models.Error `json:"body,omitempty"`
+type GetMeNotFound struct {
 }
 
-// NewGetMeUnauthorized creates GetMeUnauthorized with default headers values
-func NewGetMeUnauthorized() *GetMeUnauthorized {
+// NewGetMeNotFound creates GetMeNotFound with default headers values
+func NewGetMeNotFound() *GetMeNotFound {
 
-	return &GetMeUnauthorized{}
-}
-
-// WithPayload adds the payload to the get me unauthorized response
-func (o *GetMeUnauthorized) WithPayload(payload *models.Error) *GetMeUnauthorized {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the get me unauthorized response
-func (o *GetMeUnauthorized) SetPayload(payload *models.Error) {
-	o.Payload = payload
+	return &GetMeNotFound{}
 }
 
 // WriteResponse to the client
-func (o *GetMeUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+func (o *GetMeNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.WriteHeader(401)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
-	}
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
+	rw.WriteHeader(404)
 }
 
 // GetMeInternalServerErrorCode is the HTTP code returned for type GetMeInternalServerError

@@ -33,13 +33,12 @@ type Inputs = {
 
 const api = getApi();
 
-const NewPersonForm: FC<{}> = () => {
+const NewPersonForm: FC<{ onSuccess?: () => void }> = ({onSuccess}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const [loading, setLoading] = useState<boolean>(false);
 
   const mutation = useMutation<any, unknown, Inputs>({
     mutationFn: (formData) => api.mePost({
@@ -60,9 +59,12 @@ const NewPersonForm: FC<{}> = () => {
       }
     }),
     onError: (e) => {
-      showToastError("Something went wrong updating personal details.");
+      showToastError("Something went wrong updating personal details.", e);
     },
     onSuccess: () => {
+      if (onSuccess) {
+        onSuccess();
+      }
       toast.success("Personal data successfully updated.");
     },
   });
@@ -201,7 +203,7 @@ const NewPersonForm: FC<{}> = () => {
         errors={errors}
         className="h-20 mb-4"
       />
-      <button type="submit" className={cc({ loading }, "btn btn-block")}>
+      <button type="submit" className={cc({ loading: mutation.isLoading }, "btn btn-block")}>
         Save
       </button>
     </form>

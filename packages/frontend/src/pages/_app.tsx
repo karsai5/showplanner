@@ -2,6 +2,7 @@ import "styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MeContextWrapper } from "core/components/MeContext/MeContext";
 import { ConfirmationModalWrapper } from "core/components/Modal/ConfirmationModal";
 import { DefaultLayout } from "domains/layout/DefaultLayout";
 import type { NextPage } from "next";
@@ -37,7 +38,7 @@ function MyApp({ Component }: AppPropsWithLayout) {
       <QueryClientProvider client={queryClient}>
         <ConfirmationModalWrapper>
           {getLayout(
-            <>
+            <MeContextWrapper>
               <Head>
                 <meta name="description" content="Your crew, in one place" />
                 <link rel="icon" href="/favicon.ico" />
@@ -65,7 +66,7 @@ function MyApp({ Component }: AppPropsWithLayout) {
               ) : (
                 <Component />
               )}
-            </>
+            </MeContextWrapper>
           )}
         </ConfirmationModalWrapper>
       </QueryClientProvider>
