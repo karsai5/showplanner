@@ -2,9 +2,11 @@ package permissions
 
 import (
 	"fmt"
+
 	users_domain "showplanner.io/pkg/domains/users/notifications"
 	"showplanner.io/pkg/utils"
 
+	"github.com/supertokens/supertokens-golang/ingredients/emaildelivery"
 	"github.com/supertokens/supertokens-golang/recipe/dashboard"
 	"github.com/supertokens/supertokens-golang/recipe/dashboard/dashboardmodels"
 	"github.com/supertokens/supertokens-golang/recipe/session"
@@ -22,6 +24,19 @@ func InitSupertokens() error {
 	websiteBasePath := "/auth"
 	cookieDomain := utils.GetEnvVariable("COOKIE_DOMAIN", true)
 
+	smtpUsername := utils.GetEnvVariable("SMTP_USER", true)
+	smtpSettings := emaildelivery.SMTPSettings{
+		Host: utils.GetEnvVariable("SMTP_HOST", true),
+		From: emaildelivery.SMTPFrom{
+			Name:  "ShowPlanner.io",
+			Email: "noreply@showplanner.io",
+		},
+		Port:     587,
+		Username: &smtpUsername,
+		Password: utils.GetEnvVariable("SMTP_PASS", true),
+		Secure:   false,
+	}
+
 	return supertokens.Init(supertokens.TypeInput{
 		Supertokens: &supertokens.ConnectionInfo{
 			ConnectionURI: utils.GetEnvVariable("SUPERTOKENS_URL", true),
@@ -37,6 +52,11 @@ func InitSupertokens() error {
 		RecipeList: []supertokens.Recipe{
 			userroles.Init(nil),
 			thirdpartyemailpassword.Init(&tpepmodels.TypeInput{
+				EmailDelivery: &emaildelivery.TypeInput{
+					Service: thirdpartyemailpassword.MakeSMTPService(emaildelivery.SMTPServiceConfig{
+						Settings: smtpSettings,
+					}),
+				},
 				Override: &tpepmodels.OverrideStruct{
 					Functions: func(originalImplementation tpepmodels.RecipeInterface) tpepmodels.RecipeInterface {
 						// create a copy of the originalImplementation

@@ -1,5 +1,6 @@
 import { getRequiredEnvVariable } from "core/utils/envVariables";
 import Router from "next/router";
+import EmailVerification from "supertokens-auth-react/recipe/emailverification";
 import Session from "supertokens-auth-react/recipe/session";
 import ThirdPartyEmailPasswordReact from "supertokens-auth-react/recipe/thirdpartyemailpassword";
 
@@ -24,7 +25,7 @@ export const frontendConfig = () => {
         },
       }),
       Session.init({
-         sessionTokenBackendDomain: getRequiredEnvVariable(process.env.NEXT_PUBLIC_COOKIE_DOMAIN),
+        sessionTokenBackendDomain: getRequiredEnvVariable(process.env.NEXT_PUBLIC_COOKIE_DOMAIN),
       }),
     ],
     windowHandler: (oI: any) => {

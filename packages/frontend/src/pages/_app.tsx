@@ -10,7 +10,11 @@ import Head from "next/head";
 import { Router } from "next/router";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
-import SuperTokensReact, { SuperTokensWrapper } from "supertokens-auth-react";
+import SuperTokensReact from "supertokens-auth-react";
+import  { SuperTokensWrapper } from "supertokens-auth-react";
+import { canHandleRoute, getRoutingComponent } from "supertokens-auth-react/ui";
+import { ThirdPartyEmailPasswordPreBuiltUI } from "supertokens-auth-react/recipe/thirdpartyemailpassword/prebuiltui";
+import { EmailVerificationPreBuiltUI } from "supertokens-auth-react/recipe/emailverification/prebuiltui";
 
 import { frontendConfig } from "../../config/frontendConfig";
 
