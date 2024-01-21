@@ -3,7 +3,7 @@ package permissions
 import (
 	"fmt"
 
-	users_domain "showplanner.io/pkg/domains/users/notifications"
+	"showplanner.io/pkg/notifications"
 	"showplanner.io/pkg/utils"
 
 	"github.com/supertokens/supertokens-golang/ingredients/emaildelivery"
@@ -76,7 +76,7 @@ func InitSupertokens() error {
 
 							if resp.OK != nil {
 								// Post sign up logic
-								users_domain.SendEmailToNewUser(email)
+								notifications.SendEmailToNewUserAndAdmin(email)
 							}
 
 							return resp, err
@@ -102,7 +102,7 @@ func InitSupertokens() error {
 
 								if resp.OK.CreatedNewUser {
 									// Post sign up logic
-									users_domain.SendEmailToNewUser(email)
+									notifications.SendEmailToNewUserAndAdmin(email)
 								} else {
 									// Post sign in
 								}

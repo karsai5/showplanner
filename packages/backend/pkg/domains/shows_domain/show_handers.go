@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/users"
+	"showplanner.io/pkg/domains/users_domain"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
@@ -89,13 +89,13 @@ var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostS
 		role.Initialise(showId)
 	}
 
-	err = users.AddToShow(showId, userId)
+	err = users_domain.AddToShow(showId, userId)
 	if err != nil {
 		slog.Error(err.Error())
 		return &operations.PostShowsInternalServerError{}
 	}
 
-	err = users.AddManagerToShow(showId, userId)
+	err = users_domain.AddManagerToShow(showId, userId)
 	if err != nil {
 		slog.Error(err.Error())
 		return &operations.PostShowsInternalServerError{}

@@ -1,4 +1,4 @@
-package people
+package people_domain
 
 import (
 	"errors"
@@ -11,7 +11,9 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/domains/users_domain"
 	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/notifications"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
 )
@@ -46,11 +48,29 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 			ReasonForCrewing:      p.ReasonForCrewing,
 		}
 
+		_, getPersonError := database.GetPerson(uuid)
 		_, err = database.UpdatePerson(person)
 
 		if err != nil {
 			slog.Error(fmt.Errorf("Error updating personal details: %w", err).Error())
 			return &operations.PostMeInternalServerError{}
+		}
+
+		if getPersonError != nil && errors.Is(getPersonError, gorm.ErrRecordNotFound) {
+
+			user, err := users_domain.GetUserById(userId)
+			if err != nil {
+				slog.Error(fmt.Errorf("While sending new admin user notification: %w", err).Error())
+			}
+
+			notifications.SendAdminNewUserEmailNotification(notifications.AdminNewUserEmailNotification{
+				Email:            user.Email,
+				FirstName:        person.FirstName,
+				LastName:         person.LastName,
+				HearAboutUs:      person.HearAboutUs,
+				PreviousWork:     person.PreviousWork,
+				ReasonForCrewing: person.ReasonForCrewing,
+			})
 		}
 
 		return &operations.PostMeOK{}
@@ -102,7 +122,5 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 		return middleware.ResponderFunc(func(w http.ResponseWriter, p runtime.Producer) {
 			w.Write([]byte(calendarString))
 		})
-
-		// return &operations.GetPublicCalendarIDOK{Payload: calendarString}
 	})
 }

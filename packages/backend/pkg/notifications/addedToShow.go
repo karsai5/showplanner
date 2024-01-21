@@ -1,8 +1,9 @@
-package users_domain
+package notifications
 
 import (
 	"fmt"
-	"showplanner.io/pkg/notifications"
+	"log/slog"
+
 	"showplanner.io/pkg/utils"
 )
 
@@ -21,14 +22,14 @@ The most important thing is to now check out the full schedule and fill in your 
 You can checkout the schedule and fill in your availabilities at %s/shows/%s 
 
 Linus`, email.ShowName, frontendUrl, email.ShowSlug)
-	err := notifications.SendEmail(notifications.Email{
+	err := SendEmail(Email{
 		ToEmail: email.Email,
 		Subject: fmt.Sprintf("You've been added to the show '%s'", email.ShowName),
 		Body:    body,
 	})
 
 	if err != nil {
-		fmt.Println("EMAIL: There was an error sending welcome to show email: " + err.Error())
+		slog.Error("EMAIL: There was an error sending welcome to show email: " + err.Error())
 	}
-	fmt.Println("EMAIL: welcome to show sent")
+	slog.Info("EMAIL: welcome to show sent")
 }

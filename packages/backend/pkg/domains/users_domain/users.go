@@ -1,10 +1,10 @@
-package users
+package users_domain
 
 import (
 	"fmt"
 
 	"showplanner.io/pkg/database"
-	users_domain "showplanner.io/pkg/domains/users/notifications"
+	"showplanner.io/pkg/notifications"
 	"showplanner.io/pkg/permissions"
 
 	uuid "github.com/satori/go.uuid"
@@ -42,7 +42,7 @@ func AddToShow(showId string, userId string) (err error) {
 		return err
 	}
 
-	go users_domain.SendWelcomeToShowEmail(users_domain.WelcomeToShowEmail{
+	notifications.SendWelcomeToShowEmail(notifications.WelcomeToShowEmail{
 		Email:    user.Email,
 		ShowName: show.Name,
 		ShowSlug: show.Slug,

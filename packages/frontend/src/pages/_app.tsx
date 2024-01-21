@@ -11,10 +11,7 @@ import { Router } from "next/router";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
 import SuperTokensReact from "supertokens-auth-react";
-import  { SuperTokensWrapper } from "supertokens-auth-react";
-import { canHandleRoute, getRoutingComponent } from "supertokens-auth-react/ui";
-import { ThirdPartyEmailPasswordPreBuiltUI } from "supertokens-auth-react/recipe/thirdpartyemailpassword/prebuiltui";
-import { EmailVerificationPreBuiltUI } from "supertokens-auth-react/recipe/emailverification/prebuiltui";
+import { SuperTokensWrapper } from "supertokens-auth-react";
 
 import { frontendConfig } from "../../config/frontendConfig";
 
@@ -39,6 +36,18 @@ function MyApp({ Component }: AppPropsWithLayout) {
 
   return (
     <SuperTokensWrapper>
+      <ToastContainer
+        position="top-center"
+        autoClose={8000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        transition={Zoom}
+      />
       <QueryClientProvider client={queryClient}>
         <ConfirmationModalWrapper>
           {getLayout(
@@ -52,18 +61,6 @@ function MyApp({ Component }: AppPropsWithLayout) {
                 />
                 <title>ShowPlanner</title>
               </Head>
-              <ToastContainer
-                position="top-center"
-                autoClose={8000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                transition={Zoom}
-              />
 
               {loading ? (
                 <progress className="progress w-full"></progress>

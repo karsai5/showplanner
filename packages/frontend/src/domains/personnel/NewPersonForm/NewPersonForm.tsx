@@ -5,8 +5,7 @@ import FormattedTextInput from "core/components/fields/FormattedTextInput";
 import TextArea from "core/components/fields/TextArea";
 import Input from "core/components/fields/TextInput";
 import { showToastError } from "core/utils/errors";
-import { useRouter } from "next/router";
-import React, { FC, ReactNode, useEffect, useState } from "react";
+import React, { FC, ReactNode } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -203,7 +202,8 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({onSuccess}) => {
         errors={errors}
         className="h-20 mb-4"
       />
-      <button type="submit" className={cc({ loading: mutation.isLoading }, "btn btn-block")}>
+      <button type="submit" className={"btn btn-block"}>
+        {mutation.isLoading && <span className="loading loading-spinner"></span>}
         Save
       </button>
     </form>

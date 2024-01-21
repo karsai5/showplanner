@@ -5,7 +5,7 @@ package restapi
 import (
 	"crypto/tls"
 
-	"showplanner.io/pkg/domains/people"
+	"showplanner.io/pkg/domains/people_domain"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/middleware"
 	"showplanner.io/pkg/restapi/operations"
@@ -46,7 +46,7 @@ func configureAPI(api *operations.GoBackendAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	getHandlers(api)
-	people.SetupHandlers(api)
+	people_domain.SetupHandlers(api)
 
 	api.PreServerShutdown = func() {}
 
