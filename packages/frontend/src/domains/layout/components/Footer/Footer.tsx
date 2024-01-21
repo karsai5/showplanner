@@ -6,7 +6,7 @@ export const Footer = () => {
         <p>
           <span className="font-medium">Made by Linus Karsai</span>
           <br />
-          Built in his spare time, mind the bugs!{" "}
+          Built in my spare time, mind the bugs!{" "}
         </p>
         <p className="max-w-sm">
           If you&apos;re interested in supporting the ShowPlanner, consider{" "}
@@ -15,24 +15,6 @@ export const Footer = () => {
           </a>
           .
         </p>
-      </div>
-      <div>
-        <span className="footer-title">Links</span>
-        <a
-          className="link link-hover"
-          href="https://github.com/showplanner/showplanner"
-        >
-          Github
-        </a>
-        <a
-          className="link link-hover"
-          href="https://wiki.communitycrewing.com/index.php/ShowPlanner"
-        >
-          Wiki
-        </a>
-        <a className="link link-hover" href="https://discord.gg/RGMdwDSXXn">
-          Discord
-        </a>
       </div>
       <div>
         <span className="footer-title">Funds</span>
