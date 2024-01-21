@@ -16,5 +16,5 @@ COPY Makefile ./
 
 EXPOSE 8080
 
-CMD ["make", "serve-with-wait"]
+CMD ["make", "serve-in-container"]
 

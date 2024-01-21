@@ -97,10 +97,12 @@
     "@types/react-input-mask": "^3.0.2",
     "@types/react-places-autocomplete": "^7.2.9",
     "@types/styled-components": "^5.1.25",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
     "autoprefixer": "^10.4.13",
     "babel-loader": "^8.2.5",
     "chromatic": "^6.6.3",
-    "eslint": "8.17.0",
+    "eslint": "^8.56.0",
     "eslint-config-next": "^14.0.4",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.26.0",
@@ -116,7 +118,7 @@
     "sass": "^1.58.0",
     "storybook": "^7.6.6",
     "tailwindcss": "3.4.1",
-    "typescript": "^4.8.4"
+    "typescript": "^5.3.3"
   },
   "resolutions": {
     "postcss": "^8.4.18"

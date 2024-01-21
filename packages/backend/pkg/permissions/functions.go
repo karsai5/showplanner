@@ -32,6 +32,11 @@ func UserId(r *http.Request) string {
 	return sessionContainer.GetUserID()
 }
 
+func GetUser(r *http.Request) string {
+	sessionContainer := session.GetSessionFromRequestContext(r.Context())
+	return sessionContainer.GetUserID()
+}
+
 func HasPermission(r *http.Request, permission string) (bool, error) {
 	sessionContainer := session.GetSessionFromRequestContext(r.Context())
 

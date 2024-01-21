@@ -1,10 +1,11 @@
 package main
 
 import (
-	"showplanner.io/pkg/domains/users"
-	"showplanner.io/pkg/permissions"
 	"strconv"
 	"strings"
+
+	"showplanner.io/pkg/domains/users"
+	"showplanner.io/pkg/permissions"
 
 	"github.com/supertokens/supertokens-golang/recipe/userroles"
 	"github.com/urfave/cli/v2"
@@ -41,50 +42,6 @@ func ListRoles() *cli.Command {
 	}
 }
 
-func AddRole() *cli.Command {
-	return &cli.Command{
-		Name:  "add-role",
-		Usage: "add a new role",
-		Flags: []cli.Flag{
-			&cli.StringFlag{
-				Name:     "role",
-				Usage:    "name of the role",
-				Required: true,
-			},
-			&cli.StringFlag{
-				Name:     "permission",
-				Usage:    "permission string",
-				Required: true,
-			},
-		},
-		Action: func(ctx *cli.Context) error {
-			role := ctx.String("role")
-			permission := ctx.String("permission")
-
-			err := permissions.InitSupertokens()
-			if err != nil {
-				return err
-			}
-
-			response, err := userroles.CreateNewRoleOrAddPermissions(role, []string{
-				permission,
-			})
-
-			if err == nil {
-				if response.OK.CreatedNewRole {
-					println("New role created!")
-				} else {
-					println("Role updated")
-				}
-				return nil
-			}
-
-			println("Error creating role: " + err.Error())
-			return err
-		},
-	}
-}
-
 func MakeAdmin() *cli.Command {
 	return &cli.Command{
 		Name:  "add-admin",
@@ -99,7 +56,11 @@ func MakeAdmin() *cli.Command {
 		Action: func(ctx *cli.Context) error {
 			permissions.InitSupertokens()
 			email := ctx.String("email")
-			return users.GiveRole("admin", email)
+			user, err := users.GetuserByEmail(email)
+			if err != nil {
+				return err
+			}
+			return users.GiveRole("admin", user.ID)
 		},
 	}
 }
@@ -124,7 +85,11 @@ func AddToShow() *cli.Command {
 			permissions.InitSupertokens()
 			email := ctx.String("email")
 			showId := ctx.String("showId")
-			return users.AddToShow(showId, email)
+			user, err := users.GetuserByEmail(email)
+			if err != nil {
+				return err
+			}
+			return users.AddToShow(showId, user.ID)
 		},
 	}
 }
@@ -149,7 +114,11 @@ func GiveRole() *cli.Command {
 			permissions.InitSupertokens()
 			email := ctx.String("email")
 			role := ctx.String("role")
-			return users.GiveRole(role, email)
+			user, err := users.GetuserByEmail(email)
+			if err != nil {
+				return err
+			}
+			return users.GiveRole(role, user.ID)
 		},
 	}
 }

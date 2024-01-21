@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+
 	"showplanner.io/pkg/notifications"
 
 	"github.com/urfave/cli/v2"
@@ -14,7 +15,6 @@ func main() {
 			ListShows(),
 			AddShow(),
 			ListRoles(),
-			AddRole(),
 			MakeAdmin(),
 			GiveRole(),
 			AddToShow(),

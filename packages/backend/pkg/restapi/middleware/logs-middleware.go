@@ -1,7 +1,8 @@
 package middleware
 
 import (
-	"log"
+	"fmt"
+	"log/slog"
 	"net/http"
 	"time"
 )
@@ -19,5 +20,5 @@ func (ve *Logs) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	ve.handler.ServeHTTP(w, r)
 
-	log.Printf("%s %s %v", r.Method, r.URL.Path, time.Since(start))
+	slog.Info(fmt.Sprintf("%s %s %v", r.Method, r.URL.Path, time.Since(start)))
 }

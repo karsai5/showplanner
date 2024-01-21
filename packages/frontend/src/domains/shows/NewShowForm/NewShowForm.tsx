@@ -36,9 +36,10 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
       toast.error("Something went wrong creating new show");
       console.error("Could not create show", e);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ["AssignedShowsList"] });
       toast.success("Succesfully created a new show");
+      // axios.post("
       reset();
       if (onSuccess) {
         onSuccess();

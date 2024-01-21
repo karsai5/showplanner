@@ -1,6 +1,5 @@
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 import { useUserId } from "core/permissions";
-import { useSession } from "domains/shows/lib/helpers";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 
 export const Calendar: React.FC = () => {

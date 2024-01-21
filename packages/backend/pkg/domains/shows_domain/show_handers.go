@@ -2,9 +2,11 @@ package shows_domain
 
 import (
 	"log/slog"
+	"strconv"
 	"strings"
 
 	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/domains/users"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
@@ -51,6 +53,7 @@ var GetShowsSlugSummaryHandler = operations.GetShowsShowSlugSummaryHandlerFunc(f
 
 var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostShowsParams) middleware.Responder {
 
+	userId := permissions.UserId(psp.HTTPRequest)
 	hasPermission, err := permissions.AddShow.HasPermission(psp.HTTPRequest)
 
 	if err != nil {
@@ -79,6 +82,23 @@ var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostS
 				Message: &message,
 			},
 		}
+	}
+
+	showId := strconv.FormatUint(uint64(show.ID), 10)
+	for _, role := range permissions.ShowRoles {
+		role.Initialise(showId)
+	}
+
+	err = users.AddToShow(showId, userId)
+	if err != nil {
+		slog.Error(err.Error())
+		return &operations.PostShowsInternalServerError{}
+	}
+
+	err = users.AddManagerToShow(showId, userId)
+	if err != nil {
+		slog.Error(err.Error())
+		return &operations.PostShowsInternalServerError{}
 	}
 
 	return &operations.PostShowsOK{

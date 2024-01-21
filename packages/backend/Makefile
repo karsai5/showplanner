@@ -10,6 +10,11 @@ generate:
 
 build: build-cli build-server
 
+build-image:
+	docker build --platform="linux/amd64" -t karsai5/showplanner-backend:latest .
+publish: build-image
+	docker push karsai5/showplanner-backend:latest
+
 build-server:
 	go build ./cmd/go-backend-server
 build-cli:
@@ -17,13 +22,12 @@ build-cli:
 
 serve:
 	./go-backend-server --host localhost --port 8080
+	
+serve-in-container:
+	./go-backend-server --host '' --port 8080
 
 test:
 	go test ./...
-
-serve-with-wait:
-	sleep 5 
-	make serve
 
 lint:
 	golangci-lint run
