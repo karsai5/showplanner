@@ -20,7 +20,8 @@ The most important thing is to now check out the full schedule and fill in your 
 
 You can checkout the schedule and fill in your availabilities at %s/shows/%s 
 
-Linus`, email.ShowName, config.FRONTEND_URL, email.ShowSlug)
+The ShowPlanner Team`, email.ShowName, config.FRONTEND_URL, email.ShowSlug)
+
 	err := SendEmail(Email{
 		ToEmail: email.Email,
 		Subject: fmt.Sprintf("You've been added to the show '%s'", email.ShowName),

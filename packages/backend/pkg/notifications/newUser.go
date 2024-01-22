@@ -21,16 +21,19 @@ func SendEmailToNewUserAndAdmin(email string) {
 	fmt.Println("EMAIL: New user email sent")
 }
 
-var sendEmailToNewUserBody = `Welcome to the ShowPlanner! The goal of the ShowPlanner is to reduce the number of spreadsheets and overhead required to organise people for a show.
+var setupCalendarLink = fmt.Sprintf(`%s/me/calendar`, config.FRONTEND_URL)
+var sendEmailToNewUserBody = fmt.Sprintf(`Welcome to the ShowPlanner! The goal of the ShowPlanner is to reduce the number of spreadsheets and overhead required to organise people for a show.
 
 As a user it should help you to! Using the ShowPlanner means you'll always have access to the most up to date schedule and roster for any show you're working on.
 
-At the moment you won't be assigned to any shows. But don't worry, Tess or Linus would have gotten an email notifying them that you've signed up and when they add you to a show you'll get an email notifying you.
+At the moment you won't be assigned to any shows. But don't worry, the ShowPlanner team will have gotten an email notifying them that you've signed up and when they add you to a show you'll get an email notifying you.
+
+In the meantime you can setup you calendar to subscribe to the ShowPlanner so that all the events for shows you're apart of will automatically appear. Head over to %s for instructions on how to set it up.
 
 Until then sit tight, and welcome!
 
-Linus
-`
+The ShowPlanner Team
+`, setupCalendarLink)
 
 type AdminNewUserEmailNotification struct {
 	Email            string

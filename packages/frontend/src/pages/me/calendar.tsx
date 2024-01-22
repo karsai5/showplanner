@@ -8,7 +8,7 @@ export const Calendar: React.FC = () => {
   const calendarUrl = `${API_URL}/public/calendar/${userId}`;
   return <SessionAuth>
     <div className="prose">
-      <h1>Calendar</h1>
+      <h1>Calendar Subscription</h1>
       <p>Subscribing to the calendar means that you have the most up to date information about events. The calendar URL is specific to you, so you will only see shows that you are a part of. As you get added to more shows events will automatically appear in your calendar.</p>
       <p>It&apos;s easiest to setup the subscription on a computer.</p>
 
