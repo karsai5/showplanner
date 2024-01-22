@@ -72,11 +72,11 @@ const getInitiaValueForSidebarOpen = (): boolean => {
 
   const res = localStorage.getItem(SIDEBAR_OPEN)
   switch (res) {
-    case "false":
-      return false;
-    default:
     case "true":
       return true;
+    default:
+    case "false":
+      return false;
   }
 }
 
