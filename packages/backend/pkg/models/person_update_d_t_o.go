@@ -27,10 +27,6 @@ type PersonUpdateDTO struct {
 	// Required: true
 	Dob *string `json:"dob"`
 
-	// email
-	// Required: true
-	Email *string `json:"email"`
-
 	// emergency name
 	// Required: true
 	EmergencyName *string `json:"emergencyName"`
@@ -48,7 +44,7 @@ type PersonUpdateDTO struct {
 	FirstName *string `json:"firstName"`
 
 	// hear about us
-	HearAboutUs string `json:"hearAboutUs,omitempty"`
+	HearAboutUs *string `json:"hearAboutUs,omitempty"`
 
 	// last name
 	// Required: true
@@ -58,17 +54,20 @@ type PersonUpdateDTO struct {
 	// Required: true
 	Phone *string `json:"phone"`
 
+	// preferred name
+	PreferredName *string `json:"preferredName,omitempty"`
+
 	// previous work
-	PreviousWork string `json:"previousWork,omitempty"`
+	PreviousWork *string `json:"previousWork,omitempty"`
 
 	// pronoun
-	Pronoun string `json:"pronoun,omitempty"`
+	Pronoun *string `json:"pronoun,omitempty"`
 
 	// reason for crewing
-	ReasonForCrewing string `json:"reasonForCrewing,omitempty"`
+	ReasonForCrewing *string `json:"reasonForCrewing,omitempty"`
 
 	// wwc
-	Wwc string `json:"wwc,omitempty"`
+	Wwc *string `json:"wwc,omitempty"`
 }
 
 // Validate validates this person update d t o
@@ -80,10 +79,6 @@ func (m *PersonUpdateDTO) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateDob(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateEmail(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -129,15 +124,6 @@ func (m *PersonUpdateDTO) validateAllergies(formats strfmt.Registry) error {
 func (m *PersonUpdateDTO) validateDob(formats strfmt.Registry) error {
 
 	if err := validate.Required("dob", "body", m.Dob); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *PersonUpdateDTO) validateEmail(formats strfmt.Registry) error {
-
-	if err := validate.Required("email", "body", m.Email); err != nil {
 		return err
 	}
 

@@ -17,6 +17,7 @@ const FormattedTextInput: FC<{
   label?: ReactNode;
   showRequired?: boolean;
   helpText?: ReactNode;
+  className?: string;
 }> = ({
   errors,
   loading,
@@ -28,11 +29,12 @@ const FormattedTextInput: FC<{
   type = "text",
   label,
   helpText,
+  className,
 }) => {
   const error = errors[register.name] as FieldError;
 
   return (
-    <div className="form-control w-full">
+    <div className={cc("form-control w-full", className)}>
       {label && (
         <label className="label">
           <span className="label-text-alt">

@@ -31,7 +31,7 @@ export const MeContextWrapper: React.FC<{ children: React.ReactNode }> = ({ chil
     return <LoadingBox />
   }
 
-  if ((error as ResponseError)?.response.status == 404) {
+  if ((error as ResponseError)?.response?.status == 404) {
     return <>
       <WelcomeModal />
       <NewPersonForm onSuccess={() => refetch()} />

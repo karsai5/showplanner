@@ -15,7 +15,7 @@ type Inputs = {
   pronoun: string;
   firstname: string;
   lastname: string;
-  email: string;
+  preferredName: string;
   phone: string;
   wwc: string;
   dob: string;
@@ -42,9 +42,10 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({onSuccess}) => {
   const mutation = useMutation<any, unknown, Inputs>({
     mutationFn: (formData) => api.mePost({
       personalDetails: {
+        pronoun: formData.pronoun,
         firstName: formData.firstname,
         lastName: formData.lastname,
-        email: formData.email,
+        preferredName: formData.preferredName,
         phone: formData.phone,
         wwc: formData.wwc,
         dob: formData.dob,
@@ -76,7 +77,7 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({onSuccess}) => {
     <form data-testid="NewPersonForm" onSubmit={handleSubmit(onSubmit)}>
       <p className="mb-2 text-lg font-bold">Personal details</p>
       <Row>
-        <select className="select select-bordered" {...register("pronoun")}>
+        <select className="select select-bordered md:mt-8" {...register("pronoun")}>
           <option disabled selected>
             Pronoun
           </option>
@@ -90,34 +91,30 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({onSuccess}) => {
           register={register("firstname", { required: true })}
           placeholder="First name"
           errors={errors}
+          label="This is the name that will appear in programs"
           showRequired
         />
         <Input
           register={register("lastname", { required: true })}
           placeholder="Last name"
           errors={errors}
+          className="md:mt-8"
           showRequired
         />
       </Row>
       <Row>
         <Input
-          register={register("email", {
-            required: true,
-            pattern: {
-              value:
-                /^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$/,
-              message: "Must be an email",
-            },
-          })}
-          placeholder="Email"
+          register={register("preferredName")}
+          placeholder="Preferred name"
           errors={errors}
-          showRequired
+          label="The name you would want people to refer to you when backstage"
         />
         <FormattedTextInput
           register={register("phone", { required: true })}
           placeholder="Phone"
           errors={errors}
           mask="0499 999 999"
+          className="md:mt-8"
           showRequired
         />
       </Row>

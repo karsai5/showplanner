@@ -622,7 +622,6 @@ func init() {
       "required": [
         "firstName",
         "lastName",
-        "email",
         "phone",
         "dob",
         "allergies",
@@ -635,9 +634,6 @@ func init() {
           "type": "string"
         },
         "dob": {
-          "type": "string"
-        },
-        "email": {
           "type": "string"
         },
         "emergencyName": {
@@ -653,7 +649,8 @@ func init() {
           "type": "string"
         },
         "hearAboutUs": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "lastName": {
           "type": "string"
@@ -661,17 +658,25 @@ func init() {
         "phone": {
           "type": "string"
         },
+        "preferredName": {
+          "type": "string",
+          "x-nullable": true
+        },
         "previousWork": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "pronoun": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "reasonForCrewing": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "wwc": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         }
       }
     },
@@ -1413,7 +1418,6 @@ func init() {
       "required": [
         "firstName",
         "lastName",
-        "email",
         "phone",
         "dob",
         "allergies",
@@ -1426,9 +1430,6 @@ func init() {
           "type": "string"
         },
         "dob": {
-          "type": "string"
-        },
-        "email": {
           "type": "string"
         },
         "emergencyName": {
@@ -1444,7 +1445,8 @@ func init() {
           "type": "string"
         },
         "hearAboutUs": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "lastName": {
           "type": "string"
@@ -1452,17 +1454,25 @@ func init() {
         "phone": {
           "type": "string"
         },
+        "preferredName": {
+          "type": "string",
+          "x-nullable": true
+        },
         "previousWork": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "pronoun": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "reasonForCrewing": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "wwc": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         }
       }
     },

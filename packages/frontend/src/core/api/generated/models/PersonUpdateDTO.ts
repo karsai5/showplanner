@@ -24,7 +24,7 @@ export interface PersonUpdateDTO {
      * @type {string}
      * @memberof PersonUpdateDTO
      */
-    pronoun?: string;
+    pronoun?: string | null;
     /**
      * 
      * @type {string}
@@ -42,7 +42,7 @@ export interface PersonUpdateDTO {
      * @type {string}
      * @memberof PersonUpdateDTO
      */
-    email: string;
+    preferredName?: string | null;
     /**
      * 
      * @type {string}
@@ -54,7 +54,7 @@ export interface PersonUpdateDTO {
      * @type {string}
      * @memberof PersonUpdateDTO
      */
-    wwc?: string;
+    wwc?: string | null;
     /**
      * 
      * @type {string}
@@ -90,19 +90,19 @@ export interface PersonUpdateDTO {
      * @type {string}
      * @memberof PersonUpdateDTO
      */
-    hearAboutUs?: string;
+    hearAboutUs?: string | null;
     /**
      * 
      * @type {string}
      * @memberof PersonUpdateDTO
      */
-    previousWork?: string;
+    previousWork?: string | null;
     /**
      * 
      * @type {string}
      * @memberof PersonUpdateDTO
      */
-    reasonForCrewing?: string;
+    reasonForCrewing?: string | null;
 }
 
 /**
@@ -112,7 +112,6 @@ export function instanceOfPersonUpdateDTO(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "firstName" in value;
     isInstance = isInstance && "lastName" in value;
-    isInstance = isInstance && "email" in value;
     isInstance = isInstance && "phone" in value;
     isInstance = isInstance && "dob" in value;
     isInstance = isInstance && "allergies" in value;
@@ -136,7 +135,7 @@ export function PersonUpdateDTOFromJSONTyped(json: any, ignoreDiscriminator: boo
         'pronoun': !exists(json, 'pronoun') ? undefined : json['pronoun'],
         'firstName': json['firstName'],
         'lastName': json['lastName'],
-        'email': json['email'],
+        'preferredName': !exists(json, 'preferredName') ? undefined : json['preferredName'],
         'phone': json['phone'],
         'wwc': !exists(json, 'wwc') ? undefined : json['wwc'],
         'dob': json['dob'],
@@ -162,7 +161,7 @@ export function PersonUpdateDTOToJSON(value?: PersonUpdateDTO | null): any {
         'pronoun': value.pronoun,
         'firstName': value.firstName,
         'lastName': value.lastName,
-        'email': value.email,
+        'preferredName': value.preferredName,
         'phone': value.phone,
         'wwc': value.wwc,
         'dob': value.dob,

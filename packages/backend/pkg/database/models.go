@@ -56,20 +56,21 @@ type Person struct {
 	UpdatedAt time.Time
 	DeletedAt *time.Time `gorm:"index"`
 
-	Pronoun               string
+	Pronoun               *string
 	FirstName             string
 	LastName              string
+	PreferredName         *string
 	Email                 string
 	Phone                 string
-	WWC                   string
+	WWC                   *string
 	DOB                   string
 	Allergies             string
 	EmergencyPhone        string
 	EmergencyName         string
 	EmergencyRelationship string
-	HearAboutUs           string
-	PreviousWork          string
-	ReasonForCrewing      string
+	HearAboutUs           *string
+	PreviousWork          *string
+	ReasonForCrewing      *string
 
 	Shows []Show `gorm:"many2many:show_people;"`
 }

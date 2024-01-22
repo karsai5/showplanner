@@ -39,9 +39,9 @@ type AdminNewUserEmailNotification struct {
 	Email            string
 	FirstName        string
 	LastName         string
-	HearAboutUs      string
-	PreviousWork     string
-	ReasonForCrewing string
+	HearAboutUs      *string
+	PreviousWork     *string
+	ReasonForCrewing *string
 }
 
 func SendAdminNewUserEmailNotification(details AdminNewUserEmailNotification) {
@@ -51,9 +51,9 @@ func SendAdminNewUserEmailNotification(details AdminNewUserEmailNotification) {
 	adminNewUserEmailNotificationBody := fmt.Sprintf(`name: %s %s
 email: %s
 
-how did they hear about us: %s
-previous work: %s
-reason for crewing: %s
+how did they hear about us: %v
+previous work: %v
+reason for crewing: %v
 		`, details.FirstName, details.LastName, details.Email, details.HearAboutUs, details.PreviousWork, details.ReasonForCrewing)
 
 	err := SendEmail(Email{

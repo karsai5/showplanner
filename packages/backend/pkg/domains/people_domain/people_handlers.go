@@ -20,6 +20,14 @@ import (
 func SetupHandlers(api *operations.GoBackendAPI) {
 	api.PostMeHandler = operations.PostMeHandlerFunc(func(params operations.PostMeParams) middleware.Responder {
 		userId, err := permissions.GetUserId(params.HTTPRequest)
+
+		if err != nil {
+			slog.Error("Could not update me details", "err", err)
+			return &operations.GetMeInternalServerError{}
+		}
+
+		user, err := permissions.GetUserById(userId)
+
 		if err != nil {
 			slog.Error("Could not update me details", "err", err)
 			return &operations.GetMeInternalServerError{}
@@ -32,7 +40,8 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 			Pronoun:               p.Pronoun,
 			FirstName:             *p.FirstName,
 			LastName:              *p.LastName,
-			Email:                 *p.Email,
+			PreferredName:         p.PreferredName,
+			Email:                 user.Email,
 			Phone:                 *p.Phone,
 			WWC:                   p.Wwc,
 			DOB:                   *p.Dob,
