@@ -70,7 +70,6 @@ const NavList: React.FC<{ className?: string }> = ({ className }) => (
   <ul className={className}>
     <li>
       <Link href="/tools/showtimer">
-        <ClockIcon />
         ShowTimer
       </Link>
     </li>

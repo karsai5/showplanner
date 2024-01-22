@@ -3,6 +3,7 @@ import { HasPermission, PERMISSION } from "core/permissions";
 import NewShowForm from "domains/shows/NewShowForm/NewShowForm";
 import { AssignedShowBoxGrid } from "domains/shows/ShowBoxGrid/AssignedShowBoxGrid";
 import Head from "next/head";
+import Link from "next/link";
 import { useEffect } from "react";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import Session from "supertokens-auth-react/recipe/session"
@@ -16,9 +17,12 @@ const Shows = () => {
       </Head>
       <div className="flex justify-between items-center">
         <h1 className="text-2xl mb-4 font-bold">Shows</h1>
+        <div className="flex gap-2">
         <HasPermission permission={PERMISSION.addShow}>
           <AddShowButton />
         </HasPermission>
+        <Link className="btn" href="/me/calendar">Subscribe to calendar</Link>
+        </div>
       </div>
       <AssignedShowBoxGrid />
     </SessionAuth>
