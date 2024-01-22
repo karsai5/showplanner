@@ -14,11 +14,16 @@ import { PermissionClaim } from "supertokens-auth-react/recipe/userroles"
 
 import { ShowSummaryContext } from "./lib/summaryContext";
 
+
 export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const api = getApi();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(getInitiaValueForSidebarOpen());
+  const handleSidebar = (value: boolean) => {
+    setSidebarOpen(value);
+    storeValueForSidebarOpen(value);
+  }
   const {
     query: { slug },
   } = useRouter();
@@ -35,7 +40,7 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
   return (
     <SessionAuth>
       <div className="flex flex-col h-screen">
-        <Nav mobile={{ toggleSidebar: () => setSidebarOpen(!sidebarOpen) }} />
+        <Nav mobile={{ toggleSidebar: () => handleSidebar(!sidebarOpen) }} />
         {isLoading && <LoadingBox className="flex-1" />}
         {isError && <ErrorBox>Something went wrong getting show</ErrorBox>}
         {show && <SessionAuth
@@ -57,3 +62,27 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
     </SessionAuth>
   );
 };
+
+const SIDEBAR_OPEN = "sidebarOpen";
+
+const getInitiaValueForSidebarOpen = (): boolean => {
+  if (typeof window === "undefined") {
+    return true;
+  }
+
+  const res = localStorage.getItem(SIDEBAR_OPEN)
+  switch (res) {
+    case "false":
+      return false;
+    default:
+    case "true":
+      return true;
+  }
+}
+
+const storeValueForSidebarOpen = (value: boolean) => {
+  if (typeof window === "undefined") {
+    return;
+  }
+  localStorage.setItem(SIDEBAR_OPEN, `${value}`);
+}

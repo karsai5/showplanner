@@ -1,23 +1,22 @@
 const donateLink = "https://ko-fi.com/linuskarsai";
 export const Footer = () => {
   return (
-    <footer className="footer p-10 bg-base-200 text-base-content">
+    <footer className="footer p-6 bg-base-200 text-base-content">
       <div>
         <p>
           <span className="font-medium">Made by Linus Karsai</span>
           <br />
           Built in my spare time, mind the bugs!{" "}
         </p>
-        <p className="max-w-sm">
-          If you&apos;re interested in supporting the ShowPlanner, consider{" "}
-          <a className="link" href={donateLink}>
-            donating to its upkeep
-          </a>
-          .
-        </p>
       </div>
       <div>
-        <span className="footer-title">Funds</span>
+        <div>
+          <p className="max-w-sm">
+            If you&apos;re interested in supporting the ShowPlanner, consider <a className="link" href={donateLink}>donating to its upkeep</a>.
+          </p>
+        </div>
+      </div>
+      <div>
         <a href={donateLink} target="_blank" rel="noreferrer">
           <img
             height="36"

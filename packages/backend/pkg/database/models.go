@@ -45,8 +45,8 @@ type Show struct {
 
 type Availability struct {
 	gorm.Model
-	PersonID  uuid.UUID `gorm:"uniqueIndex:unique_availability`
-	EventID   uint      `gorm:"uniqueIndex:unique_availability`
+	PersonID  uuid.UUID `gorm:"uniqueIndex:unique_a`
+	EventID   uint      `gorm:"uniqueIndex:unique_a`
 	Available bool
 }
 

@@ -51,7 +51,7 @@ const ShowPage = () => {
           <div className="flex justify-between items-center">
             <H2>{showName} - Schedule </H2>
           </div>
-          {events && <EventTable events={events} hideHeaders={["Location", "Note"]} />}
+          {events && <EventTable events={events} hideNote hideLocation />}
         </div>
       </div>
     </>

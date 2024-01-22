@@ -8,7 +8,7 @@ import (
 
 func GetAvailability(userId uuid.UUID, eventId uint) (*Availability, error) {
 	var availabilities []Availability
-	res := db.Where("user_id = ? AND event_id = ?", userId, eventId).Find(&availabilities)
+	res := db.Where("person_id = ? AND event_id = ?", userId, eventId).Find(&availabilities)
 
 	if len(availabilities) > 1 {
 		return nil, errors.New("Too many availabilities returned")

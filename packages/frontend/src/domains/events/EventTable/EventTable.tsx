@@ -9,7 +9,7 @@ import { displayDate } from "domains/events/lib/displayDate";
 import { processEvents } from "domains/events/lib/processEvents";
 import sortBy from "lodash/sortBy";
 import Image from "next/image";
-import { FC, Fragment } from "react";
+import { FC, Fragment, ReactNode } from "react";
 
 dayjs.extend(advancedFormat);
 
@@ -29,133 +29,96 @@ const GapRow = ({ length }: { length: number }) => (
 export type FieldOptions = {
   header: string;
   position: "left" | "right";
-  render: FC<{event: ScheduleEventDTO}>;
+  render: FC<{ event: ScheduleEventDTO }>;
   className?: (event: ScheduleEventDTO) => string | string;
   noPadding?: boolean;
 };
 
 export const EventTable: React.FC<{
   events: Array<ScheduleEventDTO>;
-  extraFieldOptions?: Array<FieldOptions>;
-  hideHeaders?: Array<string>;
-}> = ({ events, extraFieldOptions, hideHeaders = [] }) => {
+  leftColums?: (e: ScheduleEventDTO) => ReactNode,
+  leftHeaders?: ReactNode,
+  rightColums?: (e: ScheduleEventDTO) => ReactNode,
+  rightHeaders?: ReactNode,
+  numberOfExtraHeaders?: number;
+  hideLocation?: boolean;
+  hideNote?: boolean;
+}> = ({ events, leftColums, leftHeaders = null, rightColums, rightHeaders = null, numberOfExtraHeaders = 0,
+  hideLocation = false, hideNote = false }) => {
 
-  const leftExtraFieldOptions =
-    extraFieldOptions?.filter((option) => option.position === "left") || [];
-  const rightExtraFieldOptions =
-    extraFieldOptions?.filter((option) => option.position === "right") || [];
+    const { dates, groupedEvents } = processEvents<ScheduleEventDTO>(events);
 
-  const headers = [
-    "Date",
-    ...leftExtraFieldOptions.map((option) => option.header),
-    ...Object.values(eventTableDefaultHeaders),
-    ...rightExtraFieldOptions.map((option) => option.header),
-  ].filter(h => !hideHeaders.includes(h));
-
-  const { dates, groupedEvents } = processEvents<ScheduleEventDTO>(events);
-
-  return (
-    <div className="w-full overflow-x-auto">
-      <table className="table w-full mt-6">
-        <thead>
-          <tr>
-            {headers.map((h, i) => (
-              <th key={i}>{h}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {dates.map((date) => {
-            const thisGroupEvents = sortBy(
-              groupedEvents[date.date.toString()],
-              "start", "curtainsUp"
-            );
-            return (
-              <Fragment key={date.date.toString()}>
-                {thisGroupEvents.map((e, i) => {
-                  return (
-                    <tr
-                      key={e.id}
-                      className="last:border-b first:border-t border-slate-200"
-                    >
-                      {i === 0 && (
-                        <Td className="whitespace-nowrap" rowSpan={thisGroupEvents.length}>
-                          {displayDate(e.start)}
-                        </Td>
-                      )}
-                      {leftExtraFieldOptions.map((option) => (
-                        <Td
-                          key={e.id}
-                          className={cc(getClassNameFromOption(option, e), "relative", {
-                            ["p-0"]: option.noPadding
-                          })}
-                        >
-                          {option.render({event: e})}
-                        </Td>
-                      ))}
-                      <Td>
-                        <div className="flex gap-1 items-center">
-                          {e.curtainsUp && (
-                            <div className="mr-2 w-5">
-                              <Image
-                                alt="Theatre"
-                                src={theatreIcons}
-                                height="20"
-                                width="20"
-                              />
-                            </div>
-                          )}
-                          <span className="whitespace-nowrap">{e.name}</span>
-                        </div>
-                      </Td>
-                      <Td className="whitespace-nowrap">
-                        {getTimeRangeWithCurtainsUp(
-                          e.start,
-                          e.end,
-                          e.curtainsUp as any
+    return (
+      <div className="w-full">
+        <table className="table w-full">
+          <thead>
+            <tr>
+              <th>Date</th>
+              {leftHeaders}
+              <th>Name</th>
+              <th>Time</th>
+              {!hideLocation && <th>Location</th>}
+              {!hideNote && <th>Note</th>}
+              {rightHeaders}
+            </tr>
+          </thead>
+          <tbody>
+            {dates.map((date) => {
+              const thisGroupEvents = sortBy(
+                groupedEvents[date.date.toString()],
+                "start", "curtainsUp"
+              );
+              return (
+                <Fragment key={date.date.toString()}>
+                  {thisGroupEvents.map((e, i) => {
+                    return (
+                      <tr
+                        key={e.id}
+                        className="last:border-b first:border-t border-slate-200"
+                      >
+                        {i === 0 && (
+                          <Td className="whitespace-nowrap" rowSpan={thisGroupEvents.length}>
+                            {displayDate(e.start)}
+                          </Td>
                         )}
-                      </Td>
-                      {headers.includes(eventTableDefaultHeaders.Location) &&
+                        {leftColums && leftColums(e)}
                         <Td>
-                          {e.address && <div className="min-w-60"><Address address={e?.address} /></div>}
-                        </Td>}
-                      {headers.includes(eventTableDefaultHeaders.Note) &&
-                        <Td>{e.shortnote}</Td>}
-                      {rightExtraFieldOptions.map((option) => (
-                        <Td
-                          key={e.id}
-                          className={getClassNameFromOption(option, e)}
-                        >
-                          {option.render({event: e})}
+                          <div className="flex gap-1 items-center">
+                            {e.curtainsUp && (
+                              <div className="mr-2 w-5">
+                                <Image
+                                  alt="Theatre"
+                                  src={theatreIcons}
+                                  height="20"
+                                  width="20"
+                                />
+                              </div>
+                            )}
+                            <span className="whitespace-nowrap">{e.name}</span>
+                          </div>
                         </Td>
-                      ))}
-                    </tr>
-                  );
-                })}
-                {date.gapAfter && <GapRow length={headers.length} />}
-              </Fragment>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
-};
-
-const getClassNameFromOption = (
-  option: FieldOptions,
-  event: ScheduleEventDTO
-) => {
-  const className = option.className;
-  switch (typeof className) {
-    case "function":
-      return className(event);
-    case "string":
-      return className;
-    default:
-      return undefined;
-  }
-};
+                        <Td className="whitespace-nowrap">
+                          {getTimeRangeWithCurtainsUp(
+                            e.start,
+                            e.end,
+                            e.curtainsUp as any
+                          )}
+                        </Td>
+                        {!hideLocation && <Td>{e.address && <div className="min-w-60"><Address address={e?.address} /></div>}</Td>}
+                        {!hideNote && <Td>{e.shortnote}</Td>}
+                        {rightColums && rightColums(e)}
+                      </tr>
+                    );
+                  })}
+                  {date.gapAfter && <GapRow length={4 + numberOfExtraHeaders} />}
+                </Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
 
 const Td: React.FC<{
   children: React.ReactNode;

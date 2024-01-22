@@ -2,22 +2,38 @@ import { ScheduleEventDTO } from "core/api/generated";
 import { PERMISSION, showPermission, useHasPermission } from "core/permissions";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
 
-import { AvailabiltyDropdown } from "./components/AvailabilityDropdown";
+import { AvailabilityDropdown } from "./components/AvailabilityDropdown";
 import { EventTable, FieldOptions } from "./EventTable";
 import { CloneEventModal } from "./modals/CloneEventModal";
 import { DeleteEventModal } from "./modals/DeleteEventModal";
 import { EditEventModal } from "./modals/EditEventModal";
 
 export const Schedule: React.FC<React.ComponentProps<typeof EventTable>> = (props) => {
-  const extraFieldOptions = [Availability, ...(props.extraFieldOptions || [])]
   const show = useShowSummary();
-  const hasPermission = useHasPermission();
+  const canEditEvents = useHasPermission()(showPermission(show.id, PERMISSION.addEvents))
 
-  if (hasPermission(showPermission(show.id, PERMISSION.addEvents))) {
-    extraFieldOptions.push(adminButtonsOption)
-  }
-
-  return <EventTable {...props} extraFieldOptions={extraFieldOptions} />
+  return <EventTable {...props}
+    leftHeaders={<>
+      <th>Availability</th>
+    </>}
+    leftColums={(e) => <>
+      <td className="border-l border-slate-200 relative">
+        <AvailabilityDropdown event={e} />
+      </td>
+    </>}
+    rightHeaders={<>
+      {canEditEvents &&
+        <th>Edit</th>
+      }
+    </>}
+    rightColums={(e) => <>
+      {canEditEvents &&
+        <td className="border border-slate-200 relative">
+          <AdminButtons event={e} />
+        </td>
+      }
+    </>}
+  />
 }
 
 const AdminButtons: React.FC<{ event: ScheduleEventDTO }> = ({ event }) => {
@@ -26,18 +42,4 @@ const AdminButtons: React.FC<{ event: ScheduleEventDTO }> = ({ event }) => {
     <CloneEventModal event={event} />
     <DeleteEventModal event={event} />
   </div>
-}
-
-const adminButtonsOption: FieldOptions = {
-  header: "Edit",
-  position: 'right',
-  render: AdminButtons,
-}
-
-
-const Availability: FieldOptions = {
-  header: "Availability",
-  position: 'left',
-  noPadding: true,
-  render: AvailabiltyDropdown
 }

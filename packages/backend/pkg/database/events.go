@@ -1,6 +1,10 @@
 package database
 
-import uuid "github.com/satori/go.uuid"
+import (
+	"log/slog"
+
+	uuid "github.com/satori/go.uuid"
+)
 
 func CreateEvent(event Event) (Event, error) {
 	res := db.Create(&event)
@@ -21,8 +25,9 @@ func GetEvents(showId uint) ([]Event, error) {
 }
 
 func GetEventsWithAvailabilityForUser(showId uint, userId uuid.UUID) ([]Event, error) {
+	slog.Info("get events with availabilities", "userId", userId)
 	var events []Event
-	res := db.Preload("Availabilities", "user_id = ?", userId).Where("show_id = ?", showId).Find(&events)
+	res := db.Preload("Availabilities", "person_id = ?", userId).Where("show_id = ?", showId).Find(&events)
 
 	return events, res.Error
 }

@@ -24,26 +24,20 @@ const ShowPage = () => {
       <Head>
         <title>Schedule - {show.name} - ShowPlanner</title>
       </Head>
-      <div className="flex flex-col gap-4 sm:flex-row justify-between">
-        <div>
-          <div className="flex justify-between items-center">
-            <H2>{show.name} - Schedule </H2>
-            <div className="flex gap-2">
-              <HasPermission showId={show.id} permission={PERMISSION.personnel}>
-                <Link href={`${show.slug}/public`} target="_blank" className="btn btn-ghost">
-                  Public schedule
-                </Link>
-              </HasPermission>
-              <HasPermission showId={show.id} permission={PERMISSION.addEvents}>
-                <AddEventButton showId={show.id} />
-              </HasPermission>
-            </div>
-          </div>
-          {isError && <ErrorBox>Could not get shows</ErrorBox>}
-          {isLoading && <progress className="progress w-56"></progress>}
-          {events && <Schedule events={events} />}
+      <div className="flex flex-col justify-between sm:flex-row gap-4">
+        <H2 className="mb-4">{show.name} - Schedule </H2>
+        <div className="flex gap-2 mb-4">
+          <HasPermission showId={show.id} permission={PERMISSION.addEvents}>
+            <AddEventButton showId={show.id} />
+          </HasPermission>
+          <Link href={`${show.slug}/public`} target="_blank" className="btn">
+            Public schedule
+          </Link>
         </div>
       </div>
+      {isError && <ErrorBox>Could not get shows</ErrorBox>}
+      {isLoading && <progress className="progress w-56"></progress>}
+      {events && <Schedule events={events} />}
     </>
   );
 };
