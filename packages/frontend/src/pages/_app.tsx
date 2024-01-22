@@ -12,6 +12,7 @@ import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
 import SuperTokensReact from "supertokens-auth-react";
 import { SuperTokensWrapper } from "supertokens-auth-react";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { frontendConfig } from "../../config/frontendConfig";
 
@@ -71,6 +72,7 @@ function MyApp({ Component }: AppPropsWithLayout) {
           )}
         </ConfirmationModalWrapper>
       </QueryClientProvider>
+      <SpeedInsights/>
     </SuperTokensWrapper>
   );
 }
