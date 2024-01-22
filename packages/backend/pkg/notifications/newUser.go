@@ -5,6 +5,7 @@ import (
 	"log/slog"
 
 	"showplanner.io/pkg/config"
+	"showplanner.io/pkg/logger"
 )
 
 func SendEmailToNewUserAndAdmin(email string) {
@@ -63,7 +64,7 @@ reason for crewing: %v
 	})
 
 	if err != nil {
-		slog.Error(fmt.Errorf("Error sending new user email: %w", err).Error())
+		logger.Error("Error sending new user email", err)
 	}
 
 	slog.Info("EMAIL: Admin notificatino of new user sent")

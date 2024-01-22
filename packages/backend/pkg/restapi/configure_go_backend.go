@@ -4,8 +4,10 @@ package restapi
 
 import (
 	"crypto/tls"
+	"fmt"
 
 	"showplanner.io/pkg/domains/people_domain"
+	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/middleware"
 	"showplanner.io/pkg/restapi/operations"
@@ -24,7 +26,8 @@ func configureFlags(api *operations.GoBackendAPI) {
 
 func configureAPI(api *operations.GoBackendAPI) http.Handler {
 	initSentry()
-	setupSlog()
+
+	logger.Error("something went wrong", fmt.Errorf("OH NOES"))
 
 	err := permissions.InitSupertokens()
 

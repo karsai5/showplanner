@@ -5,6 +5,7 @@ import (
 	"log/slog"
 
 	"showplanner.io/pkg/config"
+	"showplanner.io/pkg/logger"
 )
 
 type WelcomeToShowEmail struct {
@@ -29,7 +30,7 @@ The ShowPlanner Team`, email.ShowName, config.FRONTEND_URL, email.ShowSlug)
 	})
 
 	if err != nil {
-		slog.Error("EMAIL: There was an error sending welcome to show email: " + err.Error())
+		logger.Error("Could not sent welcome email", err)
 	}
 	slog.Info("EMAIL: welcome to show sent")
 }

@@ -2,9 +2,9 @@ package permissions
 
 import (
 	"fmt"
-	"log/slog"
 
 	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/notifications"
 
 	uuid "github.com/satori/go.uuid"
@@ -107,26 +107,17 @@ func GiveRole(role string, userId uuid.UUID) error {
 	sessionHandles, err := session.GetAllSessionHandlesForUser(user.ID, nil)
 
 	if err != nil {
-		slog.Error(fmt.Sprintf("Could not get sessions for %s", user.Email))
+		logger.Error(fmt.Sprintf("Could not get sessions for %s", user.Email), err)
 	}
 
 	for _, currSessionHandle := range sessionHandles {
-
-		/* we can do the following with the currSessionHandle:
-		 * - revoke this session
-		 * - change access token payload or session data
-		 * - fetch access token payload or session data
-		 */
-		slog.Info("Update session: " + currSessionHandle)
-		res, err := session.FetchAndSetClaim(currSessionHandle, userrolesclaims.UserRoleClaim)
+		_, err := session.FetchAndSetClaim(currSessionHandle, userrolesclaims.UserRoleClaim)
 		if err != nil {
-			slog.Error("Could not fetch and set roles")
-		} else {
-			slog.Info(fmt.Sprintf("Updated %v", res))
+			logger.Error("Could not fetch and set roles", err)
 		}
 		_, err = session.FetchAndSetClaim(currSessionHandle, userrolesclaims.PermissionClaim)
 		if err != nil {
-			slog.Error("Could not fetch and set permissions")
+			logger.Error("Could not fetch and set permissions", err)
 		}
 	}
 

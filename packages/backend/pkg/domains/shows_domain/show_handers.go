@@ -1,11 +1,11 @@
 package shows_domain
 
 import (
-	"log/slog"
 	"strconv"
 	"strings"
 
 	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
@@ -16,14 +16,14 @@ import (
 var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetShowsParams) middleware.Responder {
 	userId, err := permissions.GetUserId(params.HTTPRequest)
 	if err != nil {
-		slog.Error("Could not get shows", "err", err.Error())
+		logger.Error("Could not get shows", err)
 		return &operations.PostShowsInternalServerError{}
 	}
 
 	shows, err := database.GetShowsForUser(userId)
 
 	if err != nil {
-		slog.Error("Could not get shows: " + err.Error())
+		logger.Error("Could not get shows", err)
 		return &operations.PostShowsInternalServerError{}
 	}
 
@@ -99,13 +99,13 @@ var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostS
 
 	err = permissions.AddToShow(showId, userId)
 	if err != nil {
-		slog.Error(err.Error())
+		logger.Error("Could not add person to show", err)
 		return &operations.PostShowsInternalServerError{}
 	}
 
 	err = permissions.AddManagerToShow(showId, userId)
 	if err != nil {
-		slog.Error(err.Error())
+		logger.Error("Could not add manager to show", err)
 		return &operations.PostShowsInternalServerError{}
 	}
 

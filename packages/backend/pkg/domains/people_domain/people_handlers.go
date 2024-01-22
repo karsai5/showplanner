@@ -2,8 +2,6 @@ package people_domain
 
 import (
 	"errors"
-	"fmt"
-	"log/slog"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -11,6 +9,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/notifications"
 	"showplanner.io/pkg/permissions"
@@ -22,14 +21,14 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 		userId, err := permissions.GetUserId(params.HTTPRequest)
 
 		if err != nil {
-			slog.Error("Could not update me details", "err", err)
+			logger.Error("Could not update me details", err)
 			return &operations.GetMeInternalServerError{}
 		}
 
 		user, err := permissions.GetUserById(userId)
 
 		if err != nil {
-			slog.Error("Could not update me details", "err", err)
+			logger.Error("Could not update me details", err)
 			return &operations.GetMeInternalServerError{}
 		}
 
@@ -58,7 +57,7 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 		_, err = database.UpdatePerson(person)
 
 		if err != nil {
-			slog.Error(fmt.Errorf("Error updating personal details: %w", err).Error())
+			logger.Error("Could not update me details", err)
 			return &operations.PostMeInternalServerError{}
 		}
 
@@ -66,7 +65,7 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 
 			user, err := permissions.GetUserById(userId)
 			if err != nil {
-				slog.Error(fmt.Errorf("While sending new admin user notification: %w", err).Error())
+				logger.Error("Could not send admin new user notification", err)
 			}
 
 			notifications.SendAdminNewUserEmailNotification(notifications.AdminNewUserEmailNotification{
@@ -85,7 +84,7 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 	api.GetMeHandler = operations.GetMeHandlerFunc(func(params operations.GetMeParams) middleware.Responder {
 		userId, err := permissions.GetUserId(params.HTTPRequest)
 		if err != nil {
-			slog.Error("Could not get me details", "err", err)
+			logger.Error("Could not get me detaisl", err)
 			return &operations.GetMeInternalServerError{}
 		}
 
@@ -95,7 +94,7 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return &operations.GetMeNotFound{}
 			}
-			slog.Error(fmt.Errorf("Error getting me details: %w", err).Error())
+			logger.Error("Could not get me details", err)
 			return &operations.GetMeInternalServerError{}
 		}
 
@@ -110,14 +109,14 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 	api.GetPublicCalendarIDHandler = operations.GetPublicCalendarIDHandlerFunc(func(params operations.GetPublicCalendarIDParams) middleware.Responder {
 		userId, err := uuid.FromString(params.ID)
 		if err != nil {
-			slog.Error("Error getting calendar", "err", err)
+			logger.Error("Error getting calendar", err)
 			return &operations.GetMeInternalServerError{}
 		}
 
 		calendarString, err := createCalendarForPerson(userId)
 
 		if err != nil {
-			slog.Error(fmt.Errorf("Error getting calendar: %w", err).Error())
+			logger.Error("Error getting calendar", err)
 			return &operations.GetMeInternalServerError{}
 		}
 

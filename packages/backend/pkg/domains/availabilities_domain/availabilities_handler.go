@@ -1,10 +1,9 @@
 package availabilities_domain
 
 import (
-	"log/slog"
-
 	"showplanner.io/pkg/convert"
 	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
@@ -15,7 +14,7 @@ import (
 var HandleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(params operations.PostAvailabilitiesParams) middleware.Responder {
 	userId, err := permissions.GetUserId(params.HTTPRequest)
 	if err != nil {
-		slog.Error("While updating availabilites", "err", err)
+		logger.Error("Could not udpate availabilities", err)
 		return &operations.PostAvailabilitiesInternalServerError{}
 	}
 

@@ -49,9 +49,6 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/samber/lo v1.38.1 // indirect
-	github.com/samber/slog-common v0.15.0 // indirect
-	github.com/samber/slog-sentry/v2 v2.4.0 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/twilio/twilio-go v0.26.0 // indirect
