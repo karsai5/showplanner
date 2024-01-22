@@ -44,8 +44,9 @@ func createCalendarForPerson(id uuid.UUID) (_ string, err error) {
 			if e.End != nil {
 				event.SetEndAt(*e.End)
 			}
+			event.SetSummary(fmt.Sprintf("%s", show.Name))
 			if e.Name != nil {
-				event.SetSummary(*e.Name)
+				event.SetSummary(fmt.Sprintf("%s - %s", *e.Name, show.Name))
 			}
 			if e.Address != nil {
 				event.SetLocation(*e.Address)
