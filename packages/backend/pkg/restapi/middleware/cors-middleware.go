@@ -2,15 +2,16 @@ package middleware
 
 import (
 	"net/http"
-	"showplanner.io/pkg/utils"
 	"strings"
+
+	"showplanner.io/pkg/config"
 
 	"github.com/supertokens/supertokens-golang/supertokens"
 )
 
 func CorsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, r *http.Request) {
-		writer.Header().Set("Access-Control-Allow-Origin", utils.GetEnvVariable("FRONTEND_URL", true))
+		writer.Header().Set("Access-Control-Allow-Origin", config.FRONTEND_URL)
 		writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
 		if r.Method == "OPTIONS" {

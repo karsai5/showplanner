@@ -9,7 +9,6 @@ import (
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/middleware"
 	"showplanner.io/pkg/restapi/operations"
-	"showplanner.io/pkg/utils"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -36,10 +35,6 @@ func configureAPI(api *operations.GoBackendAPI) http.Handler {
 	initialiseRoles()
 
 	api.ServeError = errors.ServeError
-
-	if utils.IsDev() {
-		api.UseSwaggerUI()
-	}
 
 	api.JSONConsumer = runtime.JSONConsumer()
 

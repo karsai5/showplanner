@@ -2,9 +2,11 @@ package database
 
 import (
 	"errors"
+
+	uuid "github.com/satori/go.uuid"
 )
 
-func GetAvailability(userId string, eventId uint) (*Availability, error) {
+func GetAvailability(userId uuid.UUID, eventId uint) (*Availability, error) {
 	var availabilities []Availability
 	res := db.Where("user_id = ? AND event_id = ?", userId, eventId).Find(&availabilities)
 
@@ -23,14 +25,14 @@ func GetAvailability(userId string, eventId uint) (*Availability, error) {
 	return &availabilities[0], res.Error
 }
 
-func UpdateAvailability(userId string, eventId uint, available bool) (*Availability, error) {
+func UpdateAvailability(userId uuid.UUID, eventId uint, available bool) (*Availability, error) {
 	existingAvailability, err := GetAvailability(userId, eventId)
 	if err != nil {
 		return nil, err
 	}
 
 	newAvailability := Availability{
-		UserID:    userId,
+		PersonID:  userId,
 		EventID:   eventId,
 		Available: available,
 	}

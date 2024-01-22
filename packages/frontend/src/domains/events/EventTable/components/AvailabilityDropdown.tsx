@@ -19,7 +19,7 @@ export const AvailabiltyDropdown: React.FC<{ event: ScheduleEventDTO }> = ({ eve
     mutationFn: (bool) => api.availabilitiesPost({
       availability: {
         eventId: event.id,
-        userId: userId || '',
+        personId: userId || '',
         available: bool,
       }
     }),

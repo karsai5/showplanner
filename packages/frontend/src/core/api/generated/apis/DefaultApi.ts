@@ -73,6 +73,10 @@ export interface MePostRequest {
     personalDetails?: PersonUpdateDTO;
 }
 
+export interface PublicCalendarIdGetRequest {
+    id: string;
+}
+
 export interface PublicScheduleGetRequest {
     showSlug: string;
 }
@@ -262,6 +266,42 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async mePost(requestParameters: MePostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.mePostRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Healthcheck endpoint
+     * Healthcheck
+     */
+    async publicCalendarIdGetRaw(requestParameters: PublicCalendarIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling publicCalendarIdGet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/public/calendar/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        if (this.isJsonMime(response.headers.get('content-type'))) {
+            return new runtime.JSONApiResponse<string>(response);
+        } else {
+            return new runtime.TextApiResponse(response) as any;
+        }
+    }
+
+    /**
+     * Healthcheck endpoint
+     * Healthcheck
+     */
+    async publicCalendarIdGet(requestParameters: PublicCalendarIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.publicCalendarIdGetRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

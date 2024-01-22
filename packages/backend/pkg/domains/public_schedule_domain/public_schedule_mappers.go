@@ -1,9 +1,9 @@
 package public_schedule_domain
 
 import (
+	"showplanner.io/pkg/convert"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/models"
-	"showplanner.io/pkg/utils"
 
 	"github.com/go-openapi/strfmt"
 )
@@ -21,11 +21,11 @@ func mapEventToEventPublicDTO(e database.Event) models.EventPublicDTO {
 	start := strfmt.DateTime(e.Start)
 
 	me := models.EventPublicDTO{
-		ID:         utils.GetIdPointer(e.ID),
+		ID:         convert.UintToInt64(e.ID),
 		ShowID:     int64(e.ShowID),
 		Start:      &start,
-		CurtainsUp: utils.GetDateTime(e.CurtainsUp),
-		End:        utils.GetDateTime(e.End),
+		CurtainsUp: convert.TimeToDateTime(e.CurtainsUp),
+		End:        convert.TimeToDateTime(e.End),
 		NameRaw:    e.Name,
 		Name:       e.Name,
 	}

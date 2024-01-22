@@ -3,11 +3,13 @@ import { getApi } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { ShowBox } from "domains/shows/ShowBox/ShowBox";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import missingImg from "./missing.png";
 
 export const AssignedShowBoxGrid: React.FC = () => {
   const api = getApi();
+  const router = useRouter();
   const { data: shows, isLoading, isError } = useQuery(
     ["ShowList"],
     () => {

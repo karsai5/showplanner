@@ -30,7 +30,7 @@ export interface AvailabilityDTO {
      * @type {string}
      * @memberof AvailabilityDTO
      */
-    userId: string;
+    personId: string;
     /**
      * 
      * @type {boolean}
@@ -45,7 +45,7 @@ export interface AvailabilityDTO {
 export function instanceOfAvailabilityDTO(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "eventId" in value;
-    isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "personId" in value;
     isInstance = isInstance && "available" in value;
 
     return isInstance;
@@ -62,7 +62,7 @@ export function AvailabilityDTOFromJSONTyped(json: any, ignoreDiscriminator: boo
     return {
         
         'eventId': json['eventId'],
-        'userId': json['userId'],
+        'personId': json['personId'],
         'available': json['available'],
     };
 }
@@ -77,7 +77,7 @@ export function AvailabilityDTOToJSON(value?: AvailabilityDTO | null): any {
     return {
         
         'eventId': value.eventId,
-        'userId': value.userId,
+        'personId': value.personId,
         'available': value.available,
     };
 }

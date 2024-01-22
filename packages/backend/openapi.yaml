@@ -424,13 +424,14 @@ definitions:
     properties:
       eventId:
         type: integer
-      userId:
+      personId:
         type: string
+        format: uuid
       available:
         type: boolean
     required:
       - eventId
-      - userId
+      - personId
       - available
   MeDetailsDTO:
     type: object

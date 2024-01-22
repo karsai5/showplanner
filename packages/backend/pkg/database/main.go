@@ -5,7 +5,7 @@ import (
 	"log"
 	"sync"
 
-	"showplanner.io/pkg/utils"
+	"showplanner.io/pkg/config"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
@@ -38,11 +38,11 @@ func getSQLiteDatabase() *gorm.DB {
 }
 
 func getPostgresDatabase() *gorm.DB {
-	host := utils.GetEnvVariable("POSTGRES_HOST", true)
-	user := utils.GetEnvVariable("POSTGRES_USER", true)
-	database := utils.GetEnvVariable("POSTGRES_DB", true)
-	password := utils.GetEnvVariable("POSTGRES_PASSWORD", true)
-	tz := utils.GetEnvVariable("POSTGRES_TIMEZONE", true)
+	host := config.POSTGRES_HOST
+	user := config.POSTGRES_USER
+	database := config.POSTGRES_DB
+	password := config.POSTGRES_PASSWORD
+	tz := config.POSTGRES_TIMEZONE
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=%s", host, user, password, database, tz)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
@@ -54,7 +54,7 @@ func getPostgresDatabase() *gorm.DB {
 
 func initDB() *gorm.DB {
 	var db *gorm.DB
-	pg_host := utils.GetEnvVariable("POSTGRES_HOST", false)
+	pg_host := config.POSTGRES_HOST
 	if pg_host != "" {
 		db = getPostgresDatabase()
 	} else {

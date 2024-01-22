@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 
-	"showplanner.io/pkg/utils"
+	"showplanner.io/pkg/config"
 )
 
 func SendEmailToNewUserAndAdmin(email string) {
@@ -43,7 +43,7 @@ type AdminNewUserEmailNotification struct {
 
 func SendAdminNewUserEmailNotification(details AdminNewUserEmailNotification) {
 
-	email := utils.GetEnvVariable("ADMIN_EMAIL", true)
+	email := config.ADMIN_EMAIL
 
 	adminNewUserEmailNotificationBody := fmt.Sprintf(`name: %s %s
 email: %s

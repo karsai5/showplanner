@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/users_domain"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
@@ -15,8 +14,13 @@ import (
 )
 
 var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetShowsParams) middleware.Responder {
+	userId, err := permissions.GetUserId(params.HTTPRequest)
+	if err != nil {
+		slog.Error("Could not get shows", "err", err.Error())
+		return &operations.PostShowsInternalServerError{}
+	}
 
-	shows, err := database.GetShowsForCurrentUser(params.HTTPRequest)
+	shows, err := database.GetShowsForUser(userId)
 
 	if err != nil {
 		slog.Error("Could not get shows: " + err.Error())
@@ -53,7 +57,11 @@ var GetShowsSlugSummaryHandler = operations.GetShowsShowSlugSummaryHandlerFunc(f
 
 var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostShowsParams) middleware.Responder {
 
-	userId := permissions.UserId(psp.HTTPRequest)
+	userId, err := permissions.GetUserId(psp.HTTPRequest)
+	if err != nil {
+		return &operations.PostShowsInternalServerError{}
+	}
+
 	hasPermission, err := permissions.AddShow.HasPermission(psp.HTTPRequest)
 
 	if err != nil {
@@ -89,13 +97,13 @@ var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostS
 		role.Initialise(showId)
 	}
 
-	err = users_domain.AddToShow(showId, userId)
+	err = permissions.AddToShow(showId, userId)
 	if err != nil {
 		slog.Error(err.Error())
 		return &operations.PostShowsInternalServerError{}
 	}
 
-	err = users_domain.AddManagerToShow(showId, userId)
+	err = permissions.AddManagerToShow(showId, userId)
 	if err != nil {
 		slog.Error(err.Error())
 		return &operations.PostShowsInternalServerError{}

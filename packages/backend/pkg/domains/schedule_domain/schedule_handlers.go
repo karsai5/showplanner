@@ -14,7 +14,7 @@ var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operation
 	showId := uint(params.ShowID)
 
 	hasPermission, err := permissions.ViewEvents.HasPermission(showId, params.HTTPRequest)
-	userId := permissions.UserId(params.HTTPRequest)
+	userId, err := permissions.GetUserId(params.HTTPRequest)
 
 	if err != nil {
 		println("error", err.Error())

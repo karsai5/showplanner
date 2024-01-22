@@ -3,7 +3,7 @@ package events_domain
 import (
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/models"
-	"showplanner.io/pkg/utils"
+	"showplanner.io/pkg/convert"
 	"sort"
 	"strconv"
 	"time"
@@ -58,11 +58,11 @@ func MapEventToEventDTO(e database.Event) models.EventDTO {
 	start := strfmt.DateTime(e.Start)
 
 	me := models.EventDTO{
-		ID:         utils.GetIdPointer(e.ID),
+		ID:         convert.UintToInt64(e.ID),
 		ShowID:     int64(e.ShowID),
 		Start:      &start,
-		CurtainsUp: utils.GetDateTime(e.CurtainsUp),
-		End:        utils.GetDateTime(e.End),
+		CurtainsUp: convert.TimeToDateTime(e.CurtainsUp),
+		End:        convert.TimeToDateTime(e.End),
 		NameRaw:    e.Name,
 		Name:       e.Name,
 		Shortnote:  e.ShortNote,

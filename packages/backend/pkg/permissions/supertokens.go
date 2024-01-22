@@ -3,8 +3,8 @@ package permissions
 import (
 	"fmt"
 
+	"showplanner.io/pkg/config"
 	"showplanner.io/pkg/notifications"
-	"showplanner.io/pkg/utils"
 
 	"github.com/supertokens/supertokens-golang/ingredients/emaildelivery"
 	"github.com/supertokens/supertokens-golang/recipe/dashboard"
@@ -22,30 +22,30 @@ func InitSupertokens() error {
 
 	apiBasePath := "/auth"
 	websiteBasePath := "/auth"
-	cookieDomain := utils.GetEnvVariable("COOKIE_DOMAIN", true)
+	cookieDomain := config.COOKIE_DOMAIN
 
-	smtpUsername := utils.GetEnvVariable("SMTP_USER", true)
+	smtpUsername := config.SMTP_USER
 	smtpSettings := emaildelivery.SMTPSettings{
-		Host: utils.GetEnvVariable("SMTP_HOST", true),
+		Host: config.SMTP_HOST,
 		From: emaildelivery.SMTPFrom{
 			Name:  "ShowPlanner.io",
 			Email: "noreply@showplanner.io",
 		},
 		Port:     587,
 		Username: &smtpUsername,
-		Password: utils.GetEnvVariable("SMTP_PASS", true),
+		Password: config.SMTP_PASS,
 		Secure:   false,
 	}
 
 	return supertokens.Init(supertokens.TypeInput{
 		Supertokens: &supertokens.ConnectionInfo{
-			ConnectionURI: utils.GetEnvVariable("SUPERTOKENS_URL", true),
-			APIKey:        utils.GetEnvVariable("API_KEY", true),
+			ConnectionURI: config.SUPERTOKENS_URL,
+			APIKey:        config.API_KEY,
 		},
 		AppInfo: supertokens.AppInfo{
 			AppName:         "Showplanner",
-			APIDomain:       utils.GetEnvVariable("API_URL", true),
-			WebsiteDomain:   utils.GetEnvVariable("FRONTEND_URL", true),
+			APIDomain:       config.API_URL,
+			WebsiteDomain:   config.FRONTEND_URL,
 			APIBasePath:     &apiBasePath,
 			WebsiteBasePath: &websiteBasePath,
 		},
@@ -120,8 +120,8 @@ func InitSupertokens() error {
 							ThirdPartyId: "google",
 							Clients: []tpmodels.ProviderClientConfig{
 								{
-									ClientID:     utils.GetEnvVariable("GOOGLE_ID", false),
-									ClientSecret: utils.GetEnvVariable("GOOGLE_SECRET", false),
+									ClientID:     config.GOOGLE_ID,
+									ClientSecret: config.GOOGLE_SECRET,
 								},
 							},
 						},
@@ -132,7 +132,7 @@ func InitSupertokens() error {
 				CookieDomain: &cookieDomain,
 			}), // initializes session features
 			dashboard.Init(&dashboardmodels.TypeInput{
-				Admins: &[]string{utils.GetEnvVariable("ADMIN_EMAIL", true)},
+				Admins: &[]string{config.ADMIN_EMAIL},
 			}),
 		},
 	})

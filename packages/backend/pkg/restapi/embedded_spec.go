@@ -429,7 +429,7 @@ func init() {
       "type": "object",
       "required": [
         "eventId",
-        "userId",
+        "personId",
         "available"
       ],
       "properties": {
@@ -439,8 +439,9 @@ func init() {
         "eventId": {
           "type": "integer"
         },
-        "userId": {
-          "type": "string"
+        "personId": {
+          "type": "string",
+          "format": "uuid"
         }
       }
     },
@@ -1219,7 +1220,7 @@ func init() {
       "type": "object",
       "required": [
         "eventId",
-        "userId",
+        "personId",
         "available"
       ],
       "properties": {
@@ -1229,8 +1230,9 @@ func init() {
         "eventId": {
           "type": "integer"
         },
-        "userId": {
-          "type": "string"
+        "personId": {
+          "type": "string",
+          "format": "uuid"
         }
       }
     },

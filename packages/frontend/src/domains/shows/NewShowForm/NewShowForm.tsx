@@ -2,9 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
 import { getApi } from "core/api";
 import Input from "core/components/fields/TextInput";
-import React, { FC } from "react";
+import { useRefreshToken } from "pages/me/refresh";
+import React, { FC, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import Session from "supertokens-auth-react/recipe/session"
 
 type Inputs = {
   name: string;
@@ -22,6 +24,7 @@ interface NewShowFormProps {
 const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
   const queryClient = useQueryClient();
   const api = getApi();
+  const refresh = useRefreshToken()
 
   const {
     register,
@@ -43,6 +46,7 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
       if (onSuccess) {
         onSuccess();
       }
+      refresh();
     },
   });
 
@@ -82,8 +86,9 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
       />
       <button
         type="submit"
-        className={cc({ loading: mutation.isLoading }, "btn btn-block")}
+        className="btn btn-block"
       >
+        {mutation.isLoading && <span className="loading loading-spinner"></span>}
         Create show
       </button>
     </form>

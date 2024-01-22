@@ -27,9 +27,10 @@ type AvailabilityDTO struct {
 	// Required: true
 	EventID *int64 `json:"eventId"`
 
-	// user Id
+	// person Id
 	// Required: true
-	UserID *string `json:"userId"`
+	// Format: uuid
+	PersonID *strfmt.UUID `json:"personId"`
 }
 
 // Validate validates this availability d t o
@@ -44,7 +45,7 @@ func (m *AvailabilityDTO) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateUserID(formats); err != nil {
+	if err := m.validatePersonID(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -72,9 +73,13 @@ func (m *AvailabilityDTO) validateEventID(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *AvailabilityDTO) validateUserID(formats strfmt.Registry) error {
+func (m *AvailabilityDTO) validatePersonID(formats strfmt.Registry) error {
 
-	if err := validate.Required("userId", "body", m.UserID); err != nil {
+	if err := validate.Required("personId", "body", m.PersonID); err != nil {
+		return err
+	}
+
+	if err := validate.FormatOf("personId", "body", "uuid", m.PersonID.String(), formats); err != nil {
 		return err
 	}
 

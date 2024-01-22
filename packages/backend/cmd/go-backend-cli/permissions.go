@@ -4,7 +4,6 @@ import (
 	"strconv"
 	"strings"
 
-	"showplanner.io/pkg/domains/users_domain"
 	"showplanner.io/pkg/permissions"
 
 	"github.com/supertokens/supertokens-golang/recipe/userroles"
@@ -56,11 +55,11 @@ func MakeAdmin() *cli.Command {
 		Action: func(ctx *cli.Context) error {
 			permissions.InitSupertokens()
 			email := ctx.String("email")
-			user, err := users_domain.GetuserByEmail(email)
+			userId, err := permissions.GetUserIdByEmail(email)
 			if err != nil {
 				return err
 			}
-			return users_domain.GiveRole("admin", user.ID)
+			return permissions.GiveRole("admin", userId)
 		},
 	}
 }
@@ -85,11 +84,11 @@ func AddToShow() *cli.Command {
 			permissions.InitSupertokens()
 			email := ctx.String("email")
 			showId := ctx.String("showId")
-			user, err := users_domain.GetuserByEmail(email)
+			userId, err := permissions.GetUserIdByEmail(email)
 			if err != nil {
 				return err
 			}
-			return users_domain.AddToShow(showId, user.ID)
+			return permissions.AddToShow(showId, userId)
 		},
 	}
 }
@@ -114,11 +113,11 @@ func GiveRole() *cli.Command {
 			permissions.InitSupertokens()
 			email := ctx.String("email")
 			role := ctx.String("role")
-			user, err := users_domain.GetuserByEmail(email)
+			userId, err := permissions.GetUserIdByEmail(email)
 			if err != nil {
 				return err
 			}
-			return users_domain.GiveRole(role, user.ID)
+			return permissions.GiveRole(role, userId)
 		},
 	}
 }

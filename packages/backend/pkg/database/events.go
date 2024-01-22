@@ -1,5 +1,7 @@
 package database
 
+import uuid "github.com/satori/go.uuid"
+
 func CreateEvent(event Event) (Event, error) {
 	res := db.Create(&event)
 	return event, res.Error
@@ -18,7 +20,7 @@ func GetEvents(showId uint) ([]Event, error) {
 	return events, res.Error
 }
 
-func GetEventsWithAvailabilityForUser(showId uint, userId string) ([]Event, error) {
+func GetEventsWithAvailabilityForUser(showId uint, userId uuid.UUID) ([]Event, error) {
 	var events []Event
 	res := db.Preload("Availabilities", "user_id = ?", userId).Where("show_id = ?", showId).Find(&events)
 

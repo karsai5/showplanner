@@ -6,7 +6,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
-	"showplanner.io/pkg/utils"
+	"showplanner.io/pkg/convert"
 )
 
 type Event struct {
@@ -23,7 +23,7 @@ type Event struct {
 }
 
 func (e *Event) GetCurtainsUp() *strfmt.DateTime {
-	return utils.GetDateTime(e.CurtainsUp)
+	return convert.TimeToDateTime(e.CurtainsUp)
 }
 
 func (e *Event) SetName(name string) {
@@ -45,8 +45,8 @@ type Show struct {
 
 type Availability struct {
 	gorm.Model
-	UserID    string `gorm:"uniqueIndex:unique_availability`
-	EventID   uint   `gorm:"uniqueIndex:unique_availability`
+	PersonID  uuid.UUID `gorm:"uniqueIndex:unique_availability`
+	EventID   uint      `gorm:"uniqueIndex:unique_availability`
 	Available bool
 }
 

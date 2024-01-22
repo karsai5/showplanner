@@ -6,12 +6,10 @@ import (
 
 	ics "github.com/arran4/golang-ical"
 	uuid "github.com/satori/go.uuid"
+	"showplanner.io/pkg/config"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/events_domain"
-	"showplanner.io/pkg/utils"
 )
-
-var frontendUrl = utils.GetEnvVariable("FRONTEND_URL", true)
 
 func createCalendarForPerson(id uuid.UUID) (_ string, err error) {
 	defer func() {
@@ -20,7 +18,7 @@ func createCalendarForPerson(id uuid.UUID) (_ string, err error) {
 		}
 	}()
 
-	shows, err := database.GetShowsWithEventsForUser(id)
+	shows, err := database.GetShowsForUser(id)
 
 	if err != nil {
 		return "", err
@@ -42,7 +40,7 @@ func createCalendarForPerson(id uuid.UUID) (_ string, err error) {
 			event.SetDtStampTime(time.Now())
 			event.SetModifiedAt(time.Now())
 			event.SetStartAt(e.Start)
-			event.SetURL(fmt.Sprintf("%s/shows/%s", frontendUrl, show.Slug))
+			event.SetURL(fmt.Sprintf("%s/shows/%s", config.FRONTEND_URL, show.Slug))
 			if e.End != nil {
 				event.SetEndAt(*e.End)
 			}

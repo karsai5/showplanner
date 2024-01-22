@@ -3,8 +3,9 @@ import { HasPermission, PERMISSION } from "core/permissions";
 import NewShowForm from "domains/shows/NewShowForm/NewShowForm";
 import { AssignedShowBoxGrid } from "domains/shows/ShowBoxGrid/AssignedShowBoxGrid";
 import Head from "next/head";
+import { useEffect } from "react";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
-import Session from "supertokens-auth-react/recipe/session";
+import Session from "supertokens-auth-react/recipe/session"
 import { PermissionClaim } from "supertokens-auth-react/recipe/userroles"
 
 const Shows = () => {
