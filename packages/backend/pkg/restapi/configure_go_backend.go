@@ -23,8 +23,8 @@ func configureFlags(api *operations.GoBackendAPI) {
 }
 
 func configureAPI(api *operations.GoBackendAPI) http.Handler {
-
 	initSentry()
+	setupSlog()
 
 	err := permissions.InitSupertokens()
 
