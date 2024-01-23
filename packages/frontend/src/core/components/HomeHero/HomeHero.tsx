@@ -14,11 +14,9 @@ const HomeHero: FC<HomeHeroProps> = () => {
     <div className="hero relative h-full">
       <div className="hero-content text-center text-neutral-content bg-white rounded-md p-6">
         <div className="max-w-md prose">
-          <h1 className="mb-5 text-5xl font-bold">
-            Welcome to the ShowPlanner
-          </h1>
-          <Image src={imageSrc} objectFit="scale-down" alt="People chaotically organising paper" />
-          <p className="mb-5">
+          <h2>Welcome to the ShowPlanner</h2>
+          <Image src={imageSrc} className="m-0 mr-auto ml-auto" height="200" alt="People chaotically organising paper" />
+          <p className="mb-5 mt-0">
             Tired of dozens of complicated spreadsheets? Use the ShowPlanner to handle schedules, availabilities and rostering.
           </p>
           {!session.loading && !session.doesSessionExist && (
