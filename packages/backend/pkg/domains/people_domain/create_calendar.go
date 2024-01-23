@@ -14,7 +14,7 @@ import (
 func createCalendarForPerson(id uuid.UUID) (_ string, err error) {
 	defer func() {
 		if err != nil {
-			err = fmt.Errorf("in creating ical string: %w", err)
+			err = fmt.Errorf("in creating calednar for '%s': %w", id.String(), err)
 		}
 	}()
 

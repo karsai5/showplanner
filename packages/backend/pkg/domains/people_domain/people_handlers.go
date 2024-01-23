@@ -115,9 +115,12 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 
 		calendarString, err := createCalendarForPerson(userId)
 
+		if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+			return &operations.GetPublicCalendarIDNotFound{}
+		}
 		if err != nil {
 			logger.Error("Error getting calendar", err)
-			return &operations.GetMeInternalServerError{}
+			return &operations.GetPublicCalendarIDInternalServerError{}
 		}
 
 		return middleware.ResponderFunc(func(w http.ResponseWriter, p runtime.Producer) {
