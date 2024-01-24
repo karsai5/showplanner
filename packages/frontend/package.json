@@ -10,7 +10,7 @@
     "generate": "npx @openapitools/openapi-generator-cli generate -i ../backend/openapi.yaml -g typescript-fetch -o src/core/api/generated",
     "test": "jest --watch",
     "test:ci": "jest --ci",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build"
   },
   "dependencies": {

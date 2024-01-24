@@ -9,3 +9,5 @@ const config = new Configuration({
 export const getApi = (): DefaultApi => {
   return new DefaultApi(config);
 }
+
+export const api = new DefaultApi(config);

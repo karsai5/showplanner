@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import cc from "classnames";
-import { getApi } from "core/api";
+import { api } from "core/api";
 import FormattedTextInput from "core/components/fields/FormattedTextInput";
 import TextArea from "core/components/fields/TextArea";
 import Input from "core/components/fields/TextInput";
@@ -19,6 +19,7 @@ type Inputs = {
   phone: string;
   wwc: string;
   dob: string;
+  manualPronoun: string;
   allergies: string;
   emergencyPhone: string;
   emergencyName: string;
@@ -30,34 +31,41 @@ type Inputs = {
   publishedAt: Date;
 };
 
-const api = getApi();
-
-const NewPersonForm: FC<{ onSuccess?: () => void }> = ({onSuccess}) => {
+const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch
   } = useForm<Inputs>();
 
+  const pronoun = watch('pronoun');
+
   const mutation = useMutation<any, unknown, Inputs>({
-    mutationFn: (formData) => api.mePost({
-      personalDetails: {
-        pronoun: formData.pronoun,
-        firstName: formData.firstname,
-        lastName: formData.lastname,
-        preferredName: formData.preferredName,
-        phone: formData.phone,
-        wwc: formData.wwc,
-        dob: formData.dob,
-        allergies: formData.allergies,
-        emergencyName: formData.emergencyName,
-        emergencyRelationship: formData.emergencyRelationship,
-        emergencyPhone: formData.emergencyPhone,
-        hearAboutUs: formData.hearAboutUs,
-        previousWork: formData.previousWork,
-        reasonForCrewing: formData.reasonForCrewing,
+    mutationFn: (formData) => {
+      let finalPronoun = formData.pronoun;
+      if (finalPronoun === "Other") {
+        finalPronoun = formData.manualPronoun
       }
-    }),
+      return api.mePost({
+        personalDetails: {
+          pronoun: finalPronoun,
+          firstName: formData.firstname,
+          lastName: formData.lastname,
+          preferredName: formData.preferredName,
+          phone: formData.phone,
+          wwc: formData.wwc,
+          dob: formData.dob,
+          allergies: formData.allergies,
+          emergencyName: formData.emergencyName,
+          emergencyRelationship: formData.emergencyRelationship,
+          emergencyPhone: formData.emergencyPhone,
+          hearAboutUs: formData.hearAboutUs,
+          previousWork: formData.previousWork,
+          reasonForCrewing: formData.reasonForCrewing,
+        }
+      });
+    },
     onError: (e) => {
       showToastError("Something went wrong updating personal details.", e);
     },
@@ -77,15 +85,27 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({onSuccess}) => {
     <form data-testid="NewPersonForm" onSubmit={handleSubmit(onSubmit)}>
       <p className="mb-2 text-lg font-bold">Personal details</p>
       <Row>
-        <select className="select select-bordered md:mt-8" {...register("pronoun")}>
-          <option disabled selected>
-            Pronoun
-          </option>
-          <option>She/Her</option>
-          <option>He/Him</option>
-          <option>They/Them</option>
-          <option>Other</option>
-        </select>
+        <label className={cc({ ["md:w-24"]: pronoun === "Other" }, "form-control")}>
+          <div className="label">
+            <span className="label-text-alt">Pronoun</span>
+          </div>
+          <select className="select select-bordered" {...register("pronoun")} >
+            <option>She/Her</option>
+            <option>He/Him</option>
+            <option>They/Them</option>
+            <option value="Other">Other</option>
+            <option value="null">Rather not say</option>
+          </select>
+        </label>
+
+        {pronoun === "Other" &&
+          <div className="md:mt-8 md:w-28 w-full">
+            <Input
+              register={register("manualPronoun", { required: false })}
+              placeholder="Pronoun"
+              errors={errors}
+            />
+          </div>}
 
         <Input
           register={register("firstname", { required: true })}
@@ -162,17 +182,20 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({onSuccess}) => {
         <Input
           register={register("emergencyName", { required: true })}
           placeholder="Name"
+          label="Emergency contact name"
           errors={errors}
           showRequired
         />
         <FormattedTextInput
           register={register("emergencyPhone", { required: true })}
           placeholder="Phone"
+          label="Emergency contact phone"
           errors={errors}
           mask="0499 999 999"
           showRequired
         />
         <Input
+          label="Relationship to emergency contact"
           register={register("emergencyRelationship", { required: true })}
           placeholder="Relation (parent, sibling, partner etc.)"
           errors={errors}

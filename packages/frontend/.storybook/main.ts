@@ -8,14 +8,16 @@ const config: StorybookConfig = {
     "@storybook/addon-onboarding",
     "@storybook/addon-interactions",
     "@storybook/addon-themes",
-    "@storybook/themes"
+    "@storybook/themes",
+    'storybook-addon-module-mock',
   ],
   framework: {
     name: "@storybook/nextjs",
-    options: {},
+    options: {},  
   },
   docs: {
     autodocs: "tag",
   },
 };
 export default config;
+

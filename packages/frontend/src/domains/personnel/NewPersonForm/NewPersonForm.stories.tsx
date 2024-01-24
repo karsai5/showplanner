@@ -1,5 +1,6 @@
 /* eslint-disable */
 import NewPersonForm from "./NewPersonForm";
+import React from "react";
 
 export default {
   title: "NewPersonForm",

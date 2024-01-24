@@ -31,39 +31,40 @@ const FormattedTextInput: FC<{
   helpText,
   className,
 }) => {
-  const error = errors[register.name] as FieldError;
+    const error = errors[register.name] as FieldError;
+    const id = `input-${register.name}`
 
-  return (
-    <div className={cc("form-control w-full", className)}>
-      {label && (
+    return (
+      <div className={cc("form-control w-full", className)}>
+        {label && (
+          <label className="label" htmlFor={id}>
+            <span className="label-text-alt">
+              {label}
+              {showRequired ? " *" : ""}
+            </span>
+          </label>
+        )}
+        <InputMask
+          id={id} type={type}
+          placeholder={`${placeholder}${showRequired ? "*" : ""}`}
+          className={cc({ ["input-error"]: !!error }, "input input-bordered")}
+          disabled={loading}
+          mask={mask}
+          maskChar={maskChar}
+          {...register}
+        />
         <label className="label">
-          <span className="label-text-alt">
-            {label}
-            {showRequired ? " *" : ""}
-          </span>
+          {!!error && (
+            <span className="label-text-alt text-warning">
+              {getErrorMessage(error)}
+            </span>
+          )}
+          {!!helpText && !error && (
+            <span className="label-text-alt">{helpText}</span>
+          )}
         </label>
-      )}
-      <InputMask
-        type={type}
-        placeholder={`${placeholder}${showRequired ? "*" : ""}`}
-        className={cc({ ["input-error"]: !!error }, "input input-bordered")}
-        disabled={loading}
-        mask={mask}
-        maskChar={maskChar}
-        {...register}
-      />
-      <label className="label">
-        {!!error && (
-          <span className="label-text-alt text-warning">
-            {getErrorMessage(error)}
-          </span>
-        )}
-        {!!helpText && !error && (
-          <span className="label-text-alt">{helpText}</span>
-        )}
-      </label>
-    </div>
-  );
-};
+      </div>
+    );
+  };
 
 export default FormattedTextInput;
