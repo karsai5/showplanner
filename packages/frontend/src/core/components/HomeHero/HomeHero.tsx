@@ -26,6 +26,7 @@ const HomeHero: FC<HomeHeroProps> = () => {
               </Link>
             </>
           )}
+          <p>Interested in organising your next show with the ShowPlanner? Reach out by filling in <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLScECbLQKaO33JURBgheSSo6f2IUGsrxiDS66nKLdxK0ZvXdOg/viewform">this form</a>.</p>
         </div>
       </div>
     </div>
