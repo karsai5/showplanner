@@ -26,6 +26,7 @@
     "@sentry/nextjs": "^7.93.0",
     "@showplanner/common": "^2.0.0",
     "@tanstack/react-query": "^4.10.3",
+    "@tanstack/react-query-devtools": "^5.17.21",
     "@tanstack/react-table": "^8.5.15",
     "@types/uuid": "^9.0.0",
     "@vercel/speed-insights": "^1.0.6",

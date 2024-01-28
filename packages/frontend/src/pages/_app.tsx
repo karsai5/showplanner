@@ -13,10 +13,22 @@ import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
 import SuperTokensReact from "supertokens-auth-react";
 import { SuperTokensWrapper } from "supertokens-auth-react";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import { frontendConfig } from "../../config/frontendConfig";
+import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 
-const queryClient = new QueryClient();
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      networkMode: 'always'
+    },
+    mutations: {
+      networkMode: 'always'
+    }
+  }
+});
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -64,13 +76,14 @@ function MyApp({ Component }: AppPropsWithLayout) {
               </Head>
 
               {loading ? (
-                <progress className="progress w-full"></progress>
+                <LoadingBox/>
               ) : (
                 <Component />
               )}
             </MeContextWrapper>
           )}
         </ConfirmationModalWrapper>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
       <SpeedInsights/>
     </SuperTokensWrapper>
