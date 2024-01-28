@@ -1,6 +1,7 @@
 package permissions
 
 var ViewEvents = ShowPermission{perm: "view-events"}
+var Rostering = ShowPermission{perm: "rostering"}
 var AddEvents = ShowPermission{perm: "add-events"}
 var ManagePersonnel = ShowPermission{perm: "personnel"}
 
@@ -15,7 +16,7 @@ var Admin = GeneralRole{
 var ShowManager = ShowRole{
 	Name:        "Manager",
 	key:         "manager",
-	Permissions: []ShowPermission{ViewEvents, AddEvents, ManagePersonnel},
+	Permissions: []ShowPermission{ViewEvents, AddEvents, ManagePersonnel, Rostering},
 }
 
 var ShowMember = ShowRole{

@@ -3,12 +3,13 @@ import { getApi } from "core/api";
 import { AccessDenied } from "core/components/AccessDenied/AccessDenied";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
+import { useBreakpoint } from "core/hooks/useBreakpoint";
 import { PERMISSION, showPermission } from "core/permissions";
 import { Footer } from "domains/layout/components/Footer";
 import { Nav } from "domains/layout/components/Nav";
 import Sidebar from "domains/shows/Sidebar/Sidebar";
 import { useRouter } from "next/router";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import { PermissionClaim } from "supertokens-auth-react/recipe/userroles"
 
@@ -20,6 +21,16 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
 }) => {
   const api = getApi();
   const [sidebarOpen, setSidebarOpen] = useState(getInitiaValueForSidebarOpen());
+  const isSmall = useBreakpoint("sm");
+
+  useEffect(() => {
+    if (isSmall) {
+      setSidebarOpen(getInitiaValueForSidebarOpen())
+    } else {
+      setSidebarOpen(true)
+    }
+  }, [isSmall]);
+
   const handleSidebar = (value: boolean) => {
     setSidebarOpen(value);
     storeValueForSidebarOpen(value);
@@ -47,15 +58,15 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
           accessDeniedScreen={AccessDenied}
           overrideGlobalClaimValidators={(globalValidators) => [...globalValidators,
           PermissionClaim.validators.includes(showPermission(show?.id, PERMISSION.viewEvents))]}>
-          <Sidebar isOpen={sidebarOpen}>
-            <div className="p-6 h-full overflow-auto flex-grow">
-              {show && (
-                <ShowSummaryContext.Provider value={show}>
+          {show && (
+            <ShowSummaryContext.Provider value={show}>
+              <Sidebar isOpen={sidebarOpen}>
+                <div className="p-6 h-full overflow-auto flex-grow">
                   {children}
-                </ShowSummaryContext.Provider>
-              )}
-            </div>
-          </Sidebar>
+                </div>
+              </Sidebar>
+            </ShowSummaryContext.Provider>
+          )}
         </SessionAuth>}
         <Footer />
       </div>

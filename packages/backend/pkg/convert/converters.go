@@ -34,3 +34,20 @@ func UUIDToStrmFmtUUID(id uuid.UUID) *strfmt.UUID {
 	convertedUUID := strfmt.UUID(id.String())
 	return &convertedUUID
 }
+
+func MapArray[X any, Y any](items []X, fn func(X) Y) []Y {
+	array := []Y{}
+	for _, item := range items {
+		array = append(array, fn(item))
+	}
+	return array
+}
+
+func MapArrayOfPointer[X any, Y any](items []X, fn func(X) Y) []*Y {
+	array := []*Y{}
+	for _, item := range items {
+		mappedItem := fn(item)
+		array = append(array, &mappedItem)
+	}
+	return array
+}

@@ -1,6 +1,8 @@
 apis/DefaultApi.ts
 apis/index.ts
 index.ts
+models/AvailabilitiesDTO.ts
+models/AvailabilitiesDTOEventsInner.ts
 models/AvailabilityDTO.ts
 models/CreateEventDTO.ts
 models/CreateShowDTO.ts
@@ -9,6 +11,7 @@ models/EventPublicDTO.ts
 models/HealthCheck.ts
 models/MeDetailsDTO.ts
 models/ModelError.ts
+models/PersonSummaryDTO.ts
 models/PersonUpdateDTO.ts
 models/PublicScheduleGet200Response.ts
 models/ScheduleEventDTO.ts

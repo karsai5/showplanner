@@ -16,3 +16,20 @@ func mapToAvailabilityDTO(availability database.Availability) *models.Availabili
 	}
 	return &dto
 }
+
+func mapPerson(person database.Person) models.PersonSummaryDTO {
+	return models.PersonSummaryDTO{
+		FirstName: person.FirstName,
+		ID:        *convert.UUIDToStrmFmtUUID(person.ID),
+		LastName:  person.LastName,
+	}
+}
+
+func findAvailability(availabilities []database.Availability, personId strfmt.UUID) *models.AvailabilityDTO {
+	for i := range availabilities {
+		if availabilities[i].PersonID.String() == personId.String() {
+			return mapToAvailabilityDTO(availabilities[i])
+		}
+	}
+	return nil
+}

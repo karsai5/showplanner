@@ -15,6 +15,7 @@
 
 import * as runtime from '../runtime';
 import type {
+  AvailabilitiesDTO,
   AvailabilityDTO,
   CreateEventDTO,
   CreateShowDTO,
@@ -28,6 +29,8 @@ import type {
   ShowSummaryDTO,
 } from '../models/index';
 import {
+    AvailabilitiesDTOFromJSON,
+    AvailabilitiesDTOToJSON,
     AvailabilityDTOFromJSON,
     AvailabilityDTOToJSON,
     CreateEventDTOFromJSON,
@@ -51,6 +54,10 @@ import {
     ShowSummaryDTOFromJSON,
     ShowSummaryDTOToJSON,
 } from '../models/index';
+
+export interface AvailabilitiesGetRequest {
+    showId: number;
+}
 
 export interface AvailabilitiesPostRequest {
     availability?: AvailabilityDTO;
@@ -97,6 +104,40 @@ export interface ShowsShowSlugSummaryGetRequest {
  * 
  */
 export class DefaultApi extends runtime.BaseAPI {
+
+    /**
+     * Returns availabilities for all the members of a show
+     */
+    async availabilitiesGetRaw(requestParameters: AvailabilitiesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AvailabilitiesDTO>> {
+        if (requestParameters.showId === null || requestParameters.showId === undefined) {
+            throw new runtime.RequiredError('showId','Required parameter requestParameters.showId was null or undefined when calling availabilitiesGet.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.showId !== undefined) {
+            queryParameters['showId'] = requestParameters.showId;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/availabilities`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AvailabilitiesDTOFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns availabilities for all the members of a show
+     */
+    async availabilitiesGet(requestParameters: AvailabilitiesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AvailabilitiesDTO> {
+        const response = await this.availabilitiesGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Create or update availability

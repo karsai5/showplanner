@@ -212,6 +212,25 @@ paths:
           schema:
             $ref: '#/definitions/ShowSummaryDTO'
   /availabilities:
+    get:
+      parameters:
+        - in: query
+          required: true
+          name: showId
+          type: integer
+          description: ID of the show to get events from
+      summary: Returns availabilities for all the members of a show
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/AvailabilitiesDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
     post:
       summary: Create or update availability
       produces:
@@ -387,6 +406,25 @@ definitions:
         availability:
           x-nullable: true
           $ref: '#/definitions/AvailabilityDTO'
+  AvailabilitiesDTO:
+    type: object
+    properties:
+      people:
+        type: array
+        items:
+          $ref: '#/definitions/PersonSummaryDTO'
+      events:
+        type: array
+        items:
+          allOf: 
+          - $ref: '#/definitions/EventDTO'
+          - type: object
+            properties:
+              availabilities: 
+                x-nullable: true
+                type: array
+                items:
+                  $ref: '#/definitions/AvailabilityDTO'
   EventDTO:
     properties:
       id:
@@ -439,6 +477,16 @@ definitions:
       firstName:
         type: string
       email:
+        type: string
+  PersonSummaryDTO:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      firstName:
+        type: string
+      lastName:
         type: string
   PersonUpdateDTO:
     type: object

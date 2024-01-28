@@ -12,3 +12,9 @@ func GetPerson(id uuid.UUID) (Person, error) {
 	res := db.First(&person, id)
 	return person, res.Error
 }
+
+func GetPeopleAssignedToShow(id uint) ([]Person, error) {
+	show := Show{}
+	res := db.Preload("People").Find(&show, id)
+	return show.People, res.Error
+}

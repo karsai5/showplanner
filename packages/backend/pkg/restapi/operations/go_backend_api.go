@@ -49,6 +49,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		DeleteEventsIDHandler: DeleteEventsIDHandlerFunc(func(params DeleteEventsIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation DeleteEventsID has not yet been implemented")
 		}),
+		GetAvailabilitiesHandler: GetAvailabilitiesHandlerFunc(func(params GetAvailabilitiesParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetAvailabilities has not yet been implemented")
+		}),
 		GetMeHandler: GetMeHandlerFunc(func(params GetMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetMe has not yet been implemented")
 		}),
@@ -126,6 +129,8 @@ type GoBackendAPI struct {
 
 	// DeleteEventsIDHandler sets the operation handler for the delete events ID operation
 	DeleteEventsIDHandler DeleteEventsIDHandler
+	// GetAvailabilitiesHandler sets the operation handler for the get availabilities operation
+	GetAvailabilitiesHandler GetAvailabilitiesHandler
 	// GetMeHandler sets the operation handler for the get me operation
 	GetMeHandler GetMeHandler
 	// GetPublicCalendarIDHandler sets the operation handler for the get public calendar ID operation
@@ -232,6 +237,9 @@ func (o *GoBackendAPI) Validate() error {
 
 	if o.DeleteEventsIDHandler == nil {
 		unregistered = append(unregistered, "DeleteEventsIDHandler")
+	}
+	if o.GetAvailabilitiesHandler == nil {
+		unregistered = append(unregistered, "GetAvailabilitiesHandler")
 	}
 	if o.GetMeHandler == nil {
 		unregistered = append(unregistered, "GetMeHandler")
@@ -363,6 +371,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
 	}
 	o.handlers["DELETE"]["/events/{id}"] = NewDeleteEventsID(o.context, o.DeleteEventsIDHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/availabilities"] = NewGetAvailabilities(o.context, o.GetAvailabilitiesHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

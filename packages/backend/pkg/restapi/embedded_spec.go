@@ -31,6 +31,35 @@ func init() {
   "basePath": "/v1",
   "paths": {
     "/availabilities": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns availabilities for all the members of a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get events from",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AvailabilitiesDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      },
       "post": {
         "produces": [
           "application/json"
@@ -425,6 +454,39 @@ func init() {
     }
   },
   "definitions": {
+    "AvailabilitiesDTO": {
+      "type": "object",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/EventDTO"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "availabilities": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/AvailabilityDTO"
+                    },
+                    "x-nullable": true
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "people": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PersonSummaryDTO"
+          }
+        }
+      }
+    },
     "AvailabilityDTO": {
       "type": "object",
       "required": [
@@ -613,6 +675,21 @@ func init() {
           "type": "string"
         },
         "firstName": {
+          "type": "string"
+        }
+      }
+    },
+    "PersonSummaryDTO": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "lastName": {
           "type": "string"
         }
       }
@@ -764,6 +841,41 @@ func init() {
   "basePath": "/v1",
   "paths": {
     "/availabilities": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns availabilities for all the members of a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get events from",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AvailabilitiesDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
       "post": {
         "produces": [
           "application/json"
@@ -1221,6 +1333,42 @@ func init() {
     }
   },
   "definitions": {
+    "AvailabilitiesDTO": {
+      "type": "object",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AvailabilitiesDTOEventsItems0"
+          }
+        },
+        "people": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PersonSummaryDTO"
+          }
+        }
+      }
+    },
+    "AvailabilitiesDTOEventsItems0": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/EventDTO"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "availabilities": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AvailabilityDTO"
+              },
+              "x-nullable": true
+            }
+          }
+        }
+      ]
+    },
     "AvailabilityDTO": {
       "type": "object",
       "required": [
@@ -1409,6 +1557,21 @@ func init() {
           "type": "string"
         },
         "firstName": {
+          "type": "string"
+        }
+      }
+    },
+    "PersonSummaryDTO": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "lastName": {
           "type": "string"
         }
       }

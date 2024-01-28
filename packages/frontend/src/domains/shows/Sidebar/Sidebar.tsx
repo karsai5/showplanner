@@ -1,9 +1,12 @@
 import cc from "classnames";
 import {
-  CalendarIcon,
+  CalendarIcon, DocumentCheckIcon,
 } from "core/components/Icons";
+import { HasPermission, PERMISSION } from "core/permissions";
 import { useShowSlugFromUrl } from "domains/shows/lib/helpers";
+import { useShowSummary } from "domains/shows/lib/summaryContext";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import React, { FC, ReactNode, useState } from "react";
 
 import styles from "./Sidebar.module.scss";
@@ -23,6 +26,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, children }) => {
   const [state] = useState(STATE.collapsed);
   const collapsed = state === STATE.collapsed;
   const slug = useShowSlugFromUrl();
+  const show = useShowSummary();
   return (
     <div className="flex flex-grow">
       {isOpen && (
@@ -35,6 +39,14 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, children }) => {
                 name={"Schedule"}
                 icon={<CalendarIcon />}
               />
+              <HasPermission showId={show.id} permission={PERMISSION.rostering}>
+                <Item
+                  url={`/shows/${slug}/availabilities`}
+                  collapsed={collapsed}
+                  name={"Availabilities"}
+                  icon={<DocumentCheckIcon />}
+                />
+              </HasPermission>
             </ul>
           </div>
         </div>
@@ -50,9 +62,11 @@ const Item: React.FC<{
   name: string;
   icon: React.ReactNode;
 }> = ({ url, collapsed, name, icon }) => {
+  const path = usePathname();
+  const active = path === url;
   return (
     <li>
-      <Link href={url}>
+      <Link href={url} className={cc({ active: active })}>
         <div
           className={cc({ tooltip: collapsed }, "tooltip-right z-50")}
           data-tip={name}

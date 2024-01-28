@@ -1,8 +1,6 @@
 package database
 
 import (
-	"log/slog"
-
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -25,9 +23,15 @@ func GetEvents(showId uint) ([]Event, error) {
 }
 
 func GetEventsWithAvailabilityForUser(showId uint, userId uuid.UUID) ([]Event, error) {
-	slog.Info("get events with availabilities", "userId", userId)
 	var events []Event
 	res := db.Preload("Availabilities", "person_id = ?", userId).Where("show_id = ?", showId).Find(&events)
+
+	return events, res.Error
+}
+
+func GetEventsWithAvailabilities(showId uint) ([]Event, error) {
+	var events []Event
+	res := db.Preload("Availabilities").Where("show_id = ?", showId).Find(&events)
 
 	return events, res.Error
 }

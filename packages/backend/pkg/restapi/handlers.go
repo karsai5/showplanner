@@ -1,7 +1,6 @@
 package restapi
 
 import (
-	"showplanner.io/pkg/domains/availabilities_domain"
 	"showplanner.io/pkg/domains/events_domain"
 	"showplanner.io/pkg/domains/healthcheck"
 	"showplanner.io/pkg/domains/public_schedule_domain"
@@ -23,6 +22,4 @@ func getHandlers(api *operations.GoBackendAPI) {
 
 	api.GetScheduleHandler = schedule_domain.GetScheduleHandler
 	api.GetPublicScheduleHandler = public_schedule_domain.GetPublicScheduleHandler
-
-	api.PostAvailabilitiesHandler = availabilities_domain.HandleUpdateAvailability
 }
