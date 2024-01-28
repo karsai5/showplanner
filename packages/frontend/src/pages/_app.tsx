@@ -2,7 +2,9 @@ import "styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { MeContextWrapper } from "core/components/MeContext/MeContext";
 import { ConfirmationModalWrapper } from "core/components/Modal/ConfirmationModal";
 import { DefaultLayout } from "domains/layout/DefaultLayout";
@@ -13,10 +15,8 @@ import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { ToastContainer, Zoom } from "react-toastify";
 import SuperTokensReact from "supertokens-auth-react";
 import { SuperTokensWrapper } from "supertokens-auth-react";
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import { frontendConfig } from "../../config/frontendConfig";
-import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 
 
 const queryClient = new QueryClient({

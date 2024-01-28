@@ -1,14 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
+import cc from 'classnames';
 import { api } from "core/api";
+import { AvailabilitiesDTOEventsInner } from "core/api/generated";
 import { AccessDenied } from "core/components/AccessDenied/AccessDenied";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
+import { GapRow, Td } from "core/components/tables/tables";
 import { H2 } from "core/components/Typography";
+import { getTimeRangeWithCurtainsUp,TimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
 import { PERMISSION, showPermission } from "core/permissions";
 import dayjs from "dayjs";
+import { getBgColor, getStringFromBoolean } from "domains/availabilities/helpers";
+import theatreIcons from "domains/events/images/theatre.png";
+import { displayDate } from "domains/events/lib/displayDate";
+import { processEvents } from "domains/events/lib/processEvents";
 import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
+import sortBy from "lodash/sortBy";
 import Head from "next/head";
-import React from "react";
+import Image from "next/image";
+import React, { Fragment } from "react";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import { PermissionClaim } from "supertokens-auth-react/recipe/userroles"
 
@@ -42,26 +52,52 @@ const AvailabilitiesTable: React.FC<{ showId: number }> = ({ showId }) => {
     return <progress className="progress w-56"></progress>
   }
   if (data) {
+    const { dates, groupedEvents } = processEvents<AvailabilitiesDTOEventsInner>(data.events);
     return <div className="overflow-x-auto">
-      <table className="table">
-        {/* head */}
+      <table className="table table-sm w-full">
         <thead>
           <tr>
+            <th></th>
             <th></th>
             {data.people?.map(p => <th key={p.id}>{p.firstName} {p.lastName}</th>)}
           </tr>
         </thead>
         <tbody>
-          {data.events?.map(e => {
-            return <tr key={e.id}>
-              <th>{dayjs(e.start).toString()}</th>
-              {e.availabilities?.map((a, i) => {
-                if (a === null) {
-                  return <td key={i}>Unknown</td>
-                }
-                return <td key={i}>{a.available ? 'Yes' : 'No'}</td>
-              })}
-            </tr>
+          {dates.map((date) => {
+            const thisGroupEvents = sortBy(
+              groupedEvents[date.date.toString()],
+              "start", "curtainsUp"
+            );
+            return (
+              <Fragment key={date.date.toString()}>
+                {thisGroupEvents.map((e, i) => {
+                  return (
+                    <tr
+                      key={e.id}
+                      className="last:border-b first:border-t border-slate-200"
+                    >
+                      {i === 0 && (
+                        <Td className="whitespace-nowrap w-20" rowSpan={thisGroupEvents.length}>
+                          {displayDate(e.start)}
+                        </Td>
+                      )}
+                      <Td className="w-40">
+                        <TimeRangeWithCurtainsUp event={e} />
+                      </Td>
+                      {e.availabilities?.map((a, i) => {
+                        if (a === null) {
+                          return <Td key={i}>Unknown</Td>
+                        }
+                        return <Td key={i}
+                          className={cc(getBgColor(getStringFromBoolean(a.available)))} >{a.available ? 'Yes' : 'No'}
+                        </Td>
+                      })}
+                    </tr>
+                  );
+                })}
+                {date.gapAfter && <GapRow length={4} />}
+              </Fragment>
+            );
           })}
         </tbody>
       </table>

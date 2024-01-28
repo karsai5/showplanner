@@ -45,6 +45,7 @@ var handleGetAvailabilities = operations.GetAvailabilitiesHandlerFunc(func(param
 	// 2. create availabilities array in order of people
 
 	mappedEvents := []*models.AvailabilitiesDTOEventsItems0{}
+
 	for _, event := range events {
 		availabilities := []*models.AvailabilityDTO{}
 		for _, person := range mappedPeople {
@@ -55,6 +56,8 @@ var handleGetAvailabilities = operations.GetAvailabilitiesHandlerFunc(func(param
 			Availabilities: availabilities,
 		})
 	}
+
+	events_domain.NameEventsWithCurtainsUp(mappedEvents)
 
 	dto := models.AvailabilitiesDTO{
 		People: mappedPeople,

@@ -1,7 +1,8 @@
 import cc from "classnames";
 import { ScheduleEventDTO } from "core/api/generated";
 import Address from "core/components/Address/Address";
-import { getTimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
+import { GapRow, Td } from "core/components/tables/tables";
+import { getTimeRangeWithCurtainsUp,TimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import theatreIcons from "domains/events/images/theatre.png";
@@ -19,12 +20,6 @@ export enum eventTableDefaultHeaders {
   Location = "Location",
   Note = "Note",
 }
-
-const GapRow = ({ length }: { length: number }) => (
-  <tr>
-    <td colSpan={length}></td>
-  </tr>
-);
 
 export type FieldOptions = {
   header: string;
@@ -50,13 +45,12 @@ export const EventTable: React.FC<{
 
     return (
       <div className="w-full">
-        <table className="table w-full">
+        <table className="table w-full table-sm">
           <thead>
             <tr>
               <th>Date</th>
+              <th>Event</th>
               {leftHeaders}
-              <th>Name</th>
-              <th>Time</th>
               {!hideLocation && <th>Location</th>}
               {!hideNote && <th>Note</th>}
               {rightHeaders}
@@ -81,29 +75,10 @@ export const EventTable: React.FC<{
                             {displayDate(e.start)}
                           </Td>
                         )}
-                        {leftColums && leftColums(e)}
                         <Td>
-                          <div className="flex gap-1 items-center">
-                            {e.curtainsUp && (
-                              <div className="mr-2 w-5">
-                                <Image
-                                  alt="Theatre"
-                                  src={theatreIcons}
-                                  height="20"
-                                  width="20"
-                                />
-                              </div>
-                            )}
-                            <span className="whitespace-nowrap">{e.name}</span>
-                          </div>
+                          <TimeRangeWithCurtainsUp event={e} />
                         </Td>
-                        <Td className="whitespace-nowrap">
-                          {getTimeRangeWithCurtainsUp(
-                            e.start,
-                            e.end,
-                            e.curtainsUp as any
-                          )}
-                        </Td>
+                        {leftColums && leftColums(e)}
                         {!hideLocation && <Td>{e.address && <div className="min-w-60"><Address address={e?.address} /></div>}</Td>}
                         {!hideNote && <Td>{e.shortnote}</Td>}
                         {rightColums && rightColums(e)}
@@ -120,17 +95,3 @@ export const EventTable: React.FC<{
     );
   };
 
-const Td: React.FC<{
-  children: React.ReactNode;
-  rowSpan?: number;
-  className?: string;
-}> = ({ children, rowSpan, className }) => {
-  return (
-    <td
-      className={cc("border-l border-slate-200 last:border-r", className)}
-      rowSpan={rowSpan}
-    >
-      {children}
-    </td>
-  );
-};
