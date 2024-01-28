@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import cc from 'classnames';
 import { getApi } from "core/api";
 import { AvailabilityDTO, ScheduleEventDTO } from "core/api/generated";
@@ -15,6 +15,7 @@ export const AvailabilityDropdown: React.FC<{ event: ScheduleEventDTO }> = ({ ev
 
   const [value, setValue] = useState<string>(getStringFromBoolean(event.availability?.available));
   const userId = useUserId();
+  const queryClient = useQueryClient();
   const mutation = useMutation<AvailabilityDTO, any, boolean>({
     mutationFn: (bool) => api.availabilitiesPost({
       availability: {
@@ -29,6 +30,7 @@ export const AvailabilityDropdown: React.FC<{ event: ScheduleEventDTO }> = ({ ev
     },
     onSuccess: (a) => {
       setValue(getStringFromBoolean(a.available));
+      queryClient.invalidateQueries({ queryKey: ["EventsList", event.showId] });
     },
   });
 
