@@ -9,6 +9,17 @@ on:
       - 'main'
 
 jobs:
+  deploy-backend:
+    runs-on: ubintu-latest
+    steps:
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: whoami
   build-backend:
     runs-on: ubuntu-latest
     steps:
