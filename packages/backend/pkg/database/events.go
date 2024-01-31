@@ -42,6 +42,12 @@ func GetEvent(id uint) (Event, error) {
 	return existingEvent, res.Error
 }
 
+func GetEventWithShow(id uint) (Event, error) {
+	existingEvent := Event{}
+	res := db.Preload("Show").First(&existingEvent, id)
+	return existingEvent, res.Error
+}
+
 func DeleteEvent(id uint) error {
 	res := db.Delete(&Event{}, id)
 	return res.Error
