@@ -2,23 +2,12 @@
 version: '3.1'
 
 services:
-  server:
-    build: .
-    environment:
-      - API_KEY=some-key
-      - POSTGRES_HOST=db
-      - POSTGRES_USER=showplanner
-      - POSTGRES_DB=showplanner
-      - POSTGRES_PASSWORD=showplanner
-      - POSTGRES_TIMEZONE=Australia/Sydney
-      - API_URL=https://localhost:8080
-      - FRONTEND_URL=http://localhost:3000
-      - SUPERTOKENS_URL=http://supertokens:3567
-    ports:
-      - 8080:8080
+  nginx:
+    build: nginx-local
     depends_on:
       db:
         condition: service_healthy
+    network_mode: "host"
   supertokens:
     image: registry.supertokens.io/supertokens/supertokens-postgresql:7.0
     restart: always
@@ -37,7 +26,7 @@ services:
     image: postgres
     restart: always
     ports:
-      - 5444:5432
+      - 5432:5432
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: admin
@@ -60,5 +49,28 @@ services:
     restart: always
     ports:
       - 3568:8080
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.1
+    logging:
+      driver: none
+    restart: unless-stopped
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: confluentinc/cp-kafka:7.3.1
+    logging:
+      driver: none
+    restart: unless-stopped
+    ports:
+      - 9092:9092
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
 volumes:
   database_volume:

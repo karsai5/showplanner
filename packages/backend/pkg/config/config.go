@@ -5,9 +5,9 @@ var IsProd = APP_ENV == "PROD"
 var IsDev = APP_ENV != "PROD"
 
 // Emails
-var SMTP_HOST = getEnvVariable("SMTP_HOST", true)
-var SMTP_USER = getEnvVariable("SMTP_USER", true)
-var SMTP_PASS = getEnvVariable("SMTP_PASS", true)
+var SMTP_HOST = getEnvVariable("SMTP_HOST", IsProd)
+var SMTP_USER = getEnvVariable("SMTP_USER", IsProd)
+var SMTP_PASS = getEnvVariable("SMTP_PASS", IsProd)
 
 // Database
 var POSTGRES_HOST = getEnvVariable("POSTGRES_HOST", false)
