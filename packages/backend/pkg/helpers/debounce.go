@@ -6,7 +6,7 @@
 // Package debounce provides a debouncer func. The most typical use case would be
 // the user typing a text into a form; the UI needs an update, but let's wait for
 // a break.
-package debounce
+package helpers
 
 import (
 	"sync"
@@ -18,7 +18,7 @@ import (
 // for the given duration.
 // The debounced function can be invoked with different functions, if needed,
 // the last one will win.
-func New(after time.Duration) func(f func()) {
+func CreateDebouncer(after time.Duration) func(f func()) {
 	d := &debouncer{after: after}
 
 	return func(f func()) {

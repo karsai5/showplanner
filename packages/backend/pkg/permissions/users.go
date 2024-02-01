@@ -3,9 +3,12 @@ package permissions
 import (
 	"fmt"
 
+	"showplanner.io/pkg/convert"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
-	"showplanner.io/pkg/notifications"
+	"showplanner.io/pkg/postoffice"
+	"showplanner.io/pkg/postoffice/letters"
+	"showplanner.io/pkg/postoffice/topics"
 
 	uuid "github.com/satori/go.uuid"
 	"github.com/supertokens/supertokens-golang/recipe/session"
@@ -39,10 +42,11 @@ func AddToShow(showId string, userId uuid.UUID) (err error) {
 		return err
 	}
 
-	notifications.SendWelcomeToShowEmail(notifications.WelcomeToShowEmail{
+	postoffice.PublishLetter(topics.UserAddedToShow, letters.UserAddedToShowLetter{
 		Email:    user.Email,
 		ShowName: show.Name,
 		ShowSlug: show.Slug,
+		ShowId:   convert.UintToString(&show.ID),
 	})
 	return nil
 }
@@ -77,10 +81,33 @@ func GetUserByEmail(email string) (user tpepmodels.User, err error) {
 	return users[0], nil
 }
 
+func GetUsersThatHavePermission(role string) (users []tpepmodels.User, err error) {
+	roles, err := userroles.GetRolesThatHavePermission(role)
+	if err != nil {
+		return users, err
+	}
+
+	for _, role := range roles.OK.Roles {
+		usersWithRole, err := userroles.GetUsersThatHaveRole("public", role)
+		if err != nil {
+			return users, err
+		}
+		for _, userId := range usersWithRole.OK.Users {
+			user, err := thirdpartyemailpassword.GetUserById(userId)
+			if err != nil {
+				return users, err
+			}
+			users = append(users, *user)
+		}
+	}
+
+	return users, err
+}
+
 func GetUserById(id uuid.UUID) (*tpepmodels.User, error) {
 	user, err := thirdpartyemailpassword.GetUserById(id.String())
 	if err != nil {
-		return user, fmt.Errorf("Error getting email with id %s: %w", id, err)
+		return user, fmt.Errorf("Error getting user with id %s: %w", id, err)
 	}
 
 	return user, nil

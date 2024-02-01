@@ -4,7 +4,9 @@ import (
 	"fmt"
 
 	"showplanner.io/pkg/config"
-	"showplanner.io/pkg/notifications"
+	"showplanner.io/pkg/postoffice"
+	"showplanner.io/pkg/postoffice/letters"
+	"showplanner.io/pkg/postoffice/topics"
 
 	"github.com/supertokens/supertokens-golang/ingredients/emaildelivery"
 	"github.com/supertokens/supertokens-golang/recipe/dashboard"
@@ -76,7 +78,9 @@ func InitSupertokens() error {
 
 							if resp.OK != nil {
 								// Post sign up logic
-								notifications.SendEmailToNewUserAndAdmin(email)
+								postoffice.PublishLetter(topics.NewUser, letters.NewUserLetter{
+									Email: email,
+								})
 							}
 
 							return resp, err
@@ -102,7 +106,9 @@ func InitSupertokens() error {
 
 								if resp.OK.CreatedNewUser {
 									// Post sign up logic
-									notifications.SendEmailToNewUserAndAdmin(email)
+									postoffice.PublishLetter(topics.NewUser, letters.NewUserLetter{
+										Email: email,
+									})
 								} else {
 									// Post sign in
 								}

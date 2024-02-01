@@ -1,15 +1,15 @@
-package notifications
+package userlifecycle_mailbox
 
 import (
 	"fmt"
-	"log/slog"
 
 	"showplanner.io/pkg/config"
-	"showplanner.io/pkg/logger"
+	"showplanner.io/pkg/notifications"
+	"showplanner.io/pkg/postoffice/letters"
 )
 
-func SendEmailToNewUserAndAdmin(email string) {
-	err := SendEmail(Email{
+func sendEmailToNewUser(email string) error {
+	err := notifications.SendEmail(notifications.Email{
 		ToEmail: email,
 		Subject: "Welcome to the ShowPlanner!",
 		Body:    sendEmailToNewUserBody,
@@ -17,9 +17,10 @@ func SendEmailToNewUserAndAdmin(email string) {
 
 	if err != nil {
 		fmt.Println("EMAIL: Error sending new user email")
+		return err
 	}
 
-	fmt.Println("EMAIL: New user email sent")
+	return nil
 }
 
 var setupCalendarLink = fmt.Sprintf(`%s/me/calendar`, config.FRONTEND_URL)
@@ -36,36 +37,27 @@ Until then sit tight, and welcome!
 The ShowPlanner Team
 `, setupCalendarLink)
 
-type AdminNewUserEmailNotification struct {
-	Email            string
-	FirstName        string
-	LastName         string
-	HearAboutUs      *string
-	PreviousWork     *string
-	ReasonForCrewing *string
-}
-
-func SendAdminNewUserEmailNotification(details AdminNewUserEmailNotification) {
+func sendAdminNewUserEmailNotification(details letters.UserFilledInProfileLetter) error {
 
 	email := config.ADMIN_EMAIL
 
 	adminNewUserEmailNotificationBody := fmt.Sprintf(`name: %s %s
 email: %s
 
-how did they hear about us: %v
-previous work: %v
-reason for crewing: %v
+how did they hear about us: %s
+previous work: %s
+reason for crewing: %s
 		`, details.FirstName, details.LastName, details.Email, details.HearAboutUs, details.PreviousWork, details.ReasonForCrewing)
 
-	err := SendEmail(Email{
+	err := notifications.SendEmail(notifications.Email{
 		ToEmail: email,
 		Subject: "New Person",
 		Body:    adminNewUserEmailNotificationBody,
 	})
 
 	if err != nil {
-		logger.Error("Error sending new user email", err)
+		return err
 	}
 
-	slog.Info("EMAIL: Admin notificatino of new user sent")
+	return nil
 }

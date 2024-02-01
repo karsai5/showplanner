@@ -9,6 +9,8 @@ var SMTP_HOST = getEnvVariable("SMTP_HOST", IsProd)
 var SMTP_USER = getEnvVariable("SMTP_USER", IsProd)
 var SMTP_PASS = getEnvVariable("SMTP_PASS", IsProd)
 
+var KAFKA_URL = getEnvVariable("KAFKA_URL", true)
+
 // Database
 var POSTGRES_HOST = getEnvVariable("POSTGRES_HOST", false)
 var POSTGRES_USER = getEnvVariable("POSTGRES_USER", true)

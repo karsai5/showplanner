@@ -11,8 +11,10 @@ import (
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
-	"showplanner.io/pkg/notifications"
 	"showplanner.io/pkg/permissions"
+	"showplanner.io/pkg/postoffice"
+	"showplanner.io/pkg/postoffice/letters"
+	"showplanner.io/pkg/postoffice/topics"
 	"showplanner.io/pkg/restapi/operations"
 )
 
@@ -68,13 +70,13 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 				logger.Error("Could not send admin new user notification", err)
 			}
 
-			notifications.SendAdminNewUserEmailNotification(notifications.AdminNewUserEmailNotification{
+			postoffice.PublishLetter(topics.UserFilledInProfile, letters.UserFilledInProfileLetter{
 				Email:            user.Email,
 				FirstName:        person.FirstName,
 				LastName:         person.LastName,
-				HearAboutUs:      person.HearAboutUs,
-				PreviousWork:     person.PreviousWork,
-				ReasonForCrewing: person.ReasonForCrewing,
+				HearAboutUs:      *person.HearAboutUs,
+				PreviousWork:     *person.PreviousWork,
+				ReasonForCrewing: *person.ReasonForCrewing,
 			})
 		}
 

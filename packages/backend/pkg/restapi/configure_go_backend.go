@@ -7,7 +7,8 @@ import (
 
 	"showplanner.io/pkg/domains/availabilities_domain"
 	"showplanner.io/pkg/domains/people_domain"
-	"showplanner.io/pkg/events"
+	"showplanner.io/pkg/notifications/availabilities_mailbox"
+	"showplanner.io/pkg/notifications/userlifecycle_mailbox"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/middleware"
 	"showplanner.io/pkg/restapi/operations"
@@ -26,8 +27,9 @@ func configureFlags(api *operations.GoBackendAPI) {
 
 func configureAPI(api *operations.GoBackendAPI) http.Handler {
 	initSentry()
-	
-	go events.SetupEvents()
+
+	go userlifecycle_mailbox.Setup()
+	go availabilities_mailbox.Setup()
 
 	err := permissions.InitSupertokens()
 

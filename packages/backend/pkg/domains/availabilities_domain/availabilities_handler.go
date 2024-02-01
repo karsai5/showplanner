@@ -4,10 +4,12 @@ import (
 	"showplanner.io/pkg/convert"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/events_domain"
-	"showplanner.io/pkg/events"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
+	"showplanner.io/pkg/postoffice"
+	"showplanner.io/pkg/postoffice/letters"
+	"showplanner.io/pkg/postoffice/topics"
 	"showplanner.io/pkg/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -105,8 +107,7 @@ var handleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(par
 		return &operations.PostAvailabilitiesInternalServerError{}
 	}
 
-	events.PublishRawAvailability(events.UpdatedAvailabilityRawEvent{
-		BaseEvent:    events.BaseEvent{},
+	postoffice.PublishLetter(topics.UpdatedAvailability, letters.UpdatedAvailabilityLetter{
 		UserId:       userId,
 		EventId:      event.ID,
 		Availability: false,
