@@ -8,7 +8,6 @@ import (
 	"github.com/ThreeDotsLabs/watermill/message"
 	"github.com/ThreeDotsLabs/watermill/message/router/middleware"
 	"github.com/ThreeDotsLabs/watermill/message/router/plugin"
-	uuid "github.com/satori/go.uuid"
 	"showplanner.io/pkg/helpers"
 	"showplanner.io/pkg/postoffice"
 	"showplanner.io/pkg/postoffice/letters"
@@ -36,7 +35,7 @@ func Setup() {
 	router.AddNoPublisherHandler(
 		"email_new_user",
 		topics.NewUser,
-		postoffice.CreateSubscriber(uuid.NewV4().String()),
+		postoffice.CreateSubscriber("email_new_user"),
 		func(msg *message.Message) error {
 			letter := letters.NewUserLetter{}
 
@@ -51,7 +50,7 @@ func Setup() {
 	router.AddNoPublisherHandler(
 		"email_admin_about_filled_in_profile",
 		topics.UserFilledInProfile,
-		postoffice.CreateSubscriber(uuid.NewV4().String()),
+		postoffice.CreateSubscriber("email_admin_about_filled_in_profile"),
 		func(msg *message.Message) error {
 			letter := letters.UserFilledInProfileLetter{}
 
@@ -67,7 +66,7 @@ func Setup() {
 	router.AddNoPublisherHandler(
 		"email_user_added_to_show",
 		topics.UserAddedToShow,
-		postoffice.CreateSubscriber(uuid.NewV4().String()),
+		postoffice.CreateSubscriber("email_user_added_to_show"),
 		func(msg *message.Message) error {
 			letter := letters.UserAddedToShowLetter{}
 
