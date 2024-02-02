@@ -9,7 +9,7 @@ export const useModal = (initialState: boolean = false) => {
   return { isOpen, setIsOpen, open, close, Modal };
 };
 
-interface NewShowModalProps {
+export interface NewShowModalProps {
   children: React.ReactNode;
   title?: string;
   close: () => void;

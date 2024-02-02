@@ -1,6 +1,5 @@
 import { getRequiredEnvVariable } from "core/utils/envVariables";
 import Router from "next/router";
-import EmailVerification from "supertokens-auth-react/recipe/emailverification";
 import Session from "supertokens-auth-react/recipe/session";
 import ThirdPartyEmailPasswordReact from "supertokens-auth-react/recipe/thirdpartyemailpassword";
 
@@ -28,6 +27,7 @@ export const frontendConfig = () => {
         sessionTokenBackendDomain: getRequiredEnvVariable(process.env.NEXT_PUBLIC_COOKIE_DOMAIN),
       }),
     ],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     windowHandler: (oI: any) => {
       return {
         ...oI,

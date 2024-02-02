@@ -32,7 +32,7 @@ export const TimeRangeWithCurtainsUp: React.FC<{
 }> = ({ event }) => {
   const { start, end, curtainsUp, name } = event;
 
-  let timeRange = getTimeRangeString(start, end);
+  const timeRange = getTimeRangeString(start, end);
   return <div className="flex gap-1">
     {curtainsUp && (
       <div className="mr-2 w-5 self-center">

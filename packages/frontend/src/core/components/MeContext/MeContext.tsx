@@ -4,7 +4,6 @@ import { ResponseError } from "core/api/generated";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import NewPersonForm from "domains/personnel/NewPersonForm/NewPersonForm";
 import WelcomeModal from "domains/personnel/WelcomeModal/WelcomeModal";
-import { useSession } from "domains/shows/lib/helpers";
 import { useEffect } from "react";
 import Session from "supertokens-auth-react/recipe/session";
 

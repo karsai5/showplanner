@@ -20,7 +20,7 @@ const ButtonRow: React.FC<Props & { timerKey: keyof Timers }> = ({
   const thisTimer = timers[timerKey];
   const handleStart = () => setTimers({ [timerKey]: moment() });
   const handleReset = () => setTimers({ [timerKey]: null });
-  const handleUpdate = (newDate: any) =>
+  const handleUpdate = (newDate: Date) =>
     setTimers({ [timerKey]: moment(newDate) });
   return (
     <div className="form-control w-full">

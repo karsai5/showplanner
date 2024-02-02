@@ -1,13 +1,13 @@
 import cc from "classnames";
 import { FC } from "react";
-import { FieldError, UseFormRegisterReturn } from "react-hook-form";
+import { FieldError, FieldErrors, UseFormRegisterReturn } from "react-hook-form";
 
 import { getErrorMessage } from "./helpers";
 
 const TextArea: FC<{
-  register: UseFormRegisterReturn<any>;
+  register: UseFormRegisterReturn;
   placeholder: string;
-  errors: any;
+  errors: FieldErrors;
   loading?: boolean;
   showRequired?: boolean;
   className?: string;

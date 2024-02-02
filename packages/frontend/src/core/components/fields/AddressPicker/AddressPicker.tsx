@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import cc from "classnames";
 import { googleMapsLoader } from "core/maps/maps";
 import React, { FC, useEffect, useState } from "react";

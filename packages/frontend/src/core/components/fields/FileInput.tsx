@@ -16,7 +16,7 @@ const FileInput: React.FC<{
       return;
     }
 
-    var formData = new FormData();
+    const formData = new FormData();
     formData.append("files", file);
 
     try {

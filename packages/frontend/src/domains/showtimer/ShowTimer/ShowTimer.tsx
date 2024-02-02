@@ -3,9 +3,8 @@ import { ClipboardIcon, EmailIcon } from "core/components/Icons";
 import { useCopyToClipboard } from "core/hooks/useCopyToClipboard";
 import { NextButton } from "domains/showtimer/buttons/NextButton";
 import { ChronoButton } from "domains/showtimer/ChronoButton";
-import { EditorState as DraftJSEditorState, EditorState } from "draft-js";
 import moment, { Moment } from "moment";
-import React, { createContext, useEffect, useRef, useState } from "react";
+import React, { createContext, FC, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import { Beginners } from "./Beginners";
@@ -31,7 +30,7 @@ export const emptyTimers: Timers = {
   orchestraEnd: null,
 };
 
-const rehydrateTimers = (timers: any) => {
+const rehydrateTimers = (timers: string | undefined) => {
   if (timers) {
     const parsedTimers = JSON.parse(timers);
     Object.keys(parsedTimers).forEach((key) => {
@@ -43,14 +42,13 @@ const rehydrateTimers = (timers: any) => {
   return emptyTimers;
 };
 
-export const ConfettiContext = createContext<(options: any) => void>(() => {});
+export const ConfettiContext = createContext<(options: confetti.Options) => void>(() => {});
 
-export const ShowTimer: React.FunctionComponent<{}> = () => {
-  const [_value, copy] = useCopyToClipboard();
+export const ShowTimer: FC = () => {
+  const [, copy] = useCopyToClipboard();
   const initialTimers = rehydrateTimers(undefined);
 
   const [timers, unsafeSetTimers] = useState<Timers>(initialTimers);
-  const editorStateRef = useRef<DraftJSEditorState | undefined>(undefined);
   const phase = calculateCurrentPhase(timers);
 
   useEffect(() => {
@@ -58,10 +56,10 @@ export const ShowTimer: React.FunctionComponent<{}> = () => {
   }, []);
 
   const sendEmailOfTimes = () =>
-    window.open(getMailToLink(timers, editorStateRef.current));
+    window.open(getMailToLink(timers));
 
   const copyTimes = async () => {
-    if (await copy(getTimersAndNotesSummary(timers, editorStateRef.current))) {
+    if (await copy(getTimersAndNotesSummary(timers))) {
       toast.success("Copied summary to clipboard for sharing");
     } else {
       toast.error("Could not copy summary. Try sending as an email instead.");
@@ -117,7 +115,6 @@ export const ShowTimer: React.FunctionComponent<{}> = () => {
 
 const getTimersAndNotesSummary = (
   timers: Timers,
-  editorState?: EditorState
 ) => {
   const formatTime = (value: Moment | null) =>
     value ? moment(value).format("hh:mma") : "";
@@ -186,9 +183,9 @@ const getTimersAndNotesSummary = (
   return body;
 };
 
-const getMailToLink = (timers: Timers, editorState?: EditorState) => {
+const getMailToLink = (timers: Timers) => {
   const encodedBody = encodeURIComponent(
-    getTimersAndNotesSummary(timers, editorState)
+    getTimersAndNotesSummary(timers)
   );
   const href = `mailto:?subject=Show%20Times&body=${encodedBody}`;
   return href;

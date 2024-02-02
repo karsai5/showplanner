@@ -90,9 +90,9 @@ const TimerDisplay: React.FC<{ start: Moment | null }> = ({ start }) => {
   const length = moment.utc(diff);
   return (
     <span className="countdown">
-      <span style={{ "--value": length.hours() } as any}></span>:
-      <span style={{ "--value": length.minutes() } as any}></span>:
-      <span style={{ "--value": length.seconds() } as any}></span>
+      <span style={{ ["--value"]: length.hours() } as React.CSSProperties}></span>:
+      <span style={{ "--value": length.minutes() } as React.CSSProperties}></span>:
+      <span style={{ "--value": length.seconds() } as React.CSSProperties}></span>
     </span>
   );
 };
@@ -113,8 +113,8 @@ const BigClock: React.FC<Props> = ({ phase, timers }) => {
   return (
     <BigTimeWithLabel label="Current time" secondaryLabel={phase}>
       <span className="countdown ">
-        <span style={{ "--value": now.format("h") } as any}></span>:
-        <span style={{ "--value": now.format("mm") } as any}></span>
+        <span style={{ "--value": now.format("h") } as React.CSSProperties}></span>:
+        <span style={{ "--value": now.format("mm") } as React.CSSProperties}></span>
         {now.format("a")}
       </span>
     </BigTimeWithLabel>
@@ -153,8 +153,8 @@ export const SmallTimeWithLabel: React.FC<{
       <div>
         <div className="font-bold">{label}</div>
         <span className="countdown">
-          <span style={{ "--value": length.format("HH") } as any}></span>:
-          <span style={{ "--value": length.format("mm") } as any}></span>
+          <span style={{ "--value": length.format("HH") } as React.CSSProperties}></span>:
+          <span style={{ "--value": length.format("mm") } as React.CSSProperties}></span>
         </span>
       </div>
       {secondaryLabel && <div className="text-slate-500">{secondaryLabel}</div>}

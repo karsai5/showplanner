@@ -1,14 +1,14 @@
 import cc from "classnames";
 import { FC } from "react";
-import { FieldError, UseFormRegisterReturn } from "react-hook-form";
+import {  FieldErrors, UseFormRegisterReturn } from "react-hook-form";
 
 import { getErrorMessage } from "./helpers";
 
 const Input: FC<{
-  register: UseFormRegisterReturn<any>;
+  register: UseFormRegisterReturn;
   placeholder?: string;
   label?: string;
-  errors: any;
+  errors: FieldErrors;
   loading?: boolean;
   showRequired?: boolean;
   type?: string;
@@ -27,7 +27,7 @@ const Input: FC<{
 }) => {
   const name = register.name;
   const id = `input-${name}`;
-  const error = errors[name] as FieldError;
+  const error = errors[name];
   return (
     <div className={cc("form-control w-full", className)}>
       {label && (

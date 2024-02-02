@@ -1,8 +1,6 @@
 import {
-  ArchiveBoxIcon,
   BarsThreeLeft,
   BarsThreeRight,
-  ClockIcon,
 } from "core/components/Icons";
 import { useBreakpoint } from "core/hooks/useBreakpoint";
 import Link from "next/link";
@@ -111,30 +109,31 @@ const AuthItems: React.FC = () => {
   );
 };
 
-const DropdownExample = () => {
-  return (
-    <li tabIndex={0}>
-      <a>
-        <ArchiveBoxIcon />
-        Toolbox
-        <svg
-          className="fill-current"
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-        >
-          <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
-        </svg>
-      </a>
-      <ul className="p-2 bg-base-100">
-        <li>
-          <a>
-            <ClockIcon />
-            ShowTimer
-          </a>
-        </li>
-      </ul>
-    </li>
-  );
-};
+// DROPDOWN example
+// const DropdownExample = () => {
+//   return (
+//     <li tabIndex={0}>
+//       <a>
+//         <ArchiveBoxIcon />
+//         Toolbox
+//         <svg
+//           className="fill-current"
+//           xmlns="http://www.w3.org/2000/svg"
+//           width="20"
+//           height="20"
+//           viewBox="0 0 24 24"
+//         >
+//           <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
+//         </svg>
+//       </a>
+//       <ul className="p-2 bg-base-100">
+//         <li>
+//           <a>
+//             <ClockIcon />
+//             ShowTimer
+//           </a>
+//         </li>
+//       </ul>
+//     </li>
+//   );
+// };

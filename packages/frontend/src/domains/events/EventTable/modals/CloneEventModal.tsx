@@ -14,7 +14,7 @@ export const CloneEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
   const { Modal, open, close, isOpen } = useModal();
   const [newEvent, setNewEvent] = useState<EventDTO | undefined>();
 
-  const mutation = useMutation<EventDTO>({
+  const mutation = useMutation<EventDTO, Error>({
     mutationFn: () => {
       if (isNil(event.showId)) {
         throw new Error("Show id is missing");

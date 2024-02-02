@@ -1,15 +1,12 @@
-import cc from "classnames";
 import { ScheduleEventDTO } from "core/api/generated";
 import Address from "core/components/Address/Address";
 import { GapRow, Td } from "core/components/tables/tables";
-import { getTimeRangeWithCurtainsUp,TimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
+import { TimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
-import theatreIcons from "domains/events/images/theatre.png";
 import { displayDate } from "domains/events/lib/displayDate";
 import { processEvents } from "domains/events/lib/processEvents";
 import sortBy from "lodash/sortBy";
-import Image from "next/image";
 import { FC, Fragment, ReactNode } from "react";
 
 dayjs.extend(advancedFormat);

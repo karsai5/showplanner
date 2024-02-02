@@ -34,7 +34,7 @@ export const Beginners: React.FunctionComponent<
     if (storedTime) {
       setInitialTime(new Date(storedTime));
     }
-  });
+  }, []);
 
   const [curtainsUp, setCurtainsUp] = useState<Date | undefined>(initialTime);
   const [nowPerSecond, setNow] = useState(moment());
@@ -74,7 +74,7 @@ export const Beginners: React.FunctionComponent<
       <TimeTill label="Beginners" time={beginners} diff={diffTillBeginners} />
       <TimeTill
         label="Curtains up"
-        time={curtainsUp as any}
+        time={moment(curtainsUp)}
         diff={diffTillCurtainsUp}
         className="mb-4"
       />
@@ -115,11 +115,11 @@ export const TimeTill: React.FC<{
         {timeLeft && lessThanFiveMinutes && (
           <span className="countdown">
             <span
-              style={{ "--value": moment.utc(diff).format("mm") } as any}
+              style={{ "--value": moment.utc(diff).format("mm") } as React.CSSProperties}
             ></span>
             :
             <span
-              style={{ "--value": moment.utc(diff).format("ss") } as any}
+              style={{ "--value": moment.utc(diff).format("ss") } as React.CSSProperties}
             ></span>
           </span>
         )}

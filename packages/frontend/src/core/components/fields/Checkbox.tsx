@@ -1,13 +1,13 @@
 import cc from "classnames";
 import { FC } from "react";
-import { FieldError, UseFormRegisterReturn } from "react-hook-form";
+import { FieldError, FieldErrors, UseFormRegisterReturn } from "react-hook-form";
 
 import { getErrorMessage } from "./helpers";
 
 const Input: FC<{
-  register: UseFormRegisterReturn<any>;
+  register: UseFormRegisterReturn;
   label: string;
-  errors: any;
+  errors: FieldErrors;
   helpText?: string;
 }> = ({ errors, register, helpText, label }) => {
   const name = register.name;

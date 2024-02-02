@@ -1,1 +1,1 @@
-export const isNil = (foo: any) => foo === undefined || foo === null;
+export const isNil = (foo: unknown) => foo === undefined || foo === null;

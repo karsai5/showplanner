@@ -1,12 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import cc from "classnames";
 import { getApi } from "core/api";
 import Input from "core/components/fields/TextInput";
 import { useRefreshToken } from "pages/me/refresh";
-import React, { FC, useEffect } from "react";
+import React, { FC} from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import Session from "supertokens-auth-react/recipe/session"
 
 type Inputs = {
   name: string;
@@ -14,7 +12,7 @@ type Inputs = {
   slug: string;
   bannerimage: string;
   publishedAt: Date;
-  crews: Array<String>;
+  crews: Array<string>;
 };
 
 interface NewShowFormProps {
@@ -33,8 +31,8 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
     reset,
   } = useForm<Inputs>();
 
-  const mutation = useMutation<any, unknown, Inputs>({
-    mutationFn: (data: any) => api.showsPost({ show: data }),
+  const mutation = useMutation<unknown, unknown, Inputs>({
+    mutationFn: (data) => api.showsPost({ show: data }),
     onError: (e) => {
       toast.error("Something went wrong creating new show");
       console.error("Could not create show", e);

@@ -13,7 +13,7 @@ export const AvailabilityDropdown: React.FC<{ event: ScheduleEventDTO }> = ({ ev
   const [value, setValue] = useState<string>(getStringFromBoolean(event.availability?.available));
   const userId = useUserId();
   const queryClient = useQueryClient();
-  const mutation = useMutation<AvailabilityDTO, any, boolean>({
+  const mutation = useMutation<AvailabilityDTO, unknown, boolean>({
     mutationFn: (bool) => api.availabilitiesPost({
       availability: {
         eventId: event.id,

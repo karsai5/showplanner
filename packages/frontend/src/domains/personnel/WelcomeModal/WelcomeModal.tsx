@@ -1,6 +1,6 @@
 import cc from "classnames";
 import Image from "next/image";
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 
 import heroImage from "./stairs.png";
 

@@ -10,7 +10,7 @@ import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
 import Head from "next/head";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, ReactElement } from "react";
 
 const ShowPage = () => {
   const api = getApi();
@@ -55,7 +55,7 @@ const AddEventButton: FC<{ showId: number }> = ({ showId }) => {
 
 };
 
-ShowPage.getLayout = (page: any) => (
+ShowPage.getLayout = (page: ReactElement) => (
   <LayoutWithShowSidebar>{page}</LayoutWithShowSidebar>
 );
 

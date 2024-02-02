@@ -14,7 +14,7 @@ export const NextButton: React.FC<
     sendEmailOfTimes: () => void;
     phase: Phase;
   }>
-> = ({ timers, setTimers, phase: currentPhase, sendEmailOfTimes }) => {
+> = ({ timers, setTimers, phase: currentPhase }) => {
   const callback = (key: keyof Timers) => () => {
     setTimers({ [key]: moment() });
   };

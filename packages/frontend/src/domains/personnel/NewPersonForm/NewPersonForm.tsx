@@ -11,7 +11,6 @@ import { toast } from "react-toastify";
 
 type Inputs = {
   avatar: string;
-  profilepicture: any;
   pronoun: string;
   firstname: string;
   lastname: string;
@@ -41,7 +40,7 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
 
   const pronoun = watch('pronoun');
 
-  const mutation = useMutation<any, unknown, Inputs>({
+  const mutation = useMutation<unknown, Error, Inputs>({
     mutationFn: (formData) => {
       let finalPronoun = formData.pronoun;
       if (finalPronoun === "Other") {
@@ -239,11 +238,6 @@ const Row: React.FC<{ children: ReactNode; className?: string }> = ({
       {children}
     </div>
   );
-};
-
-const reloadSession = () => {
-  const event = new Event("visibilitychange");
-  document.dispatchEvent(event);
 };
 
 export default NewPersonForm;

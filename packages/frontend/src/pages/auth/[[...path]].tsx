@@ -1,11 +1,11 @@
 import { LayoutWithBackgroundImage } from "domains/layout/LayoutWithBackgroundImage";
 import dynamic from "next/dynamic";
-import React, { useEffect } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { redirectToAuth } from "supertokens-auth-react";
 import { ThirdPartyEmailPasswordPreBuiltUI } from "supertokens-auth-react/recipe/thirdpartyemailpassword/prebuiltui";
 import { canHandleRoute, getRoutingComponent } from "supertokens-auth-react/ui";
 
-const SuperTokensComponentNoSSR = dynamic<{}>(
+const SuperTokensComponentNoSSR = dynamic<object>(
   new Promise((res) =>
     res(() => getRoutingComponent([ThirdPartyEmailPasswordPreBuiltUI]))
   ),
@@ -27,7 +27,7 @@ const Auth = () => {
   );
 };
 
-Auth.getLayout = (page: any) => (
+Auth.getLayout = (page: ReactElement) => (
   <LayoutWithBackgroundImage>{page}</LayoutWithBackgroundImage>
 );
 

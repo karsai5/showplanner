@@ -6,7 +6,7 @@ import { HasPermission, PERMISSION } from "core/permissions";
 import { useShowSlugFromUrl } from "domains/shows/lib/helpers";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React, { FC, ReactNode, useState } from "react";
 
 import styles from "./Sidebar.module.scss";

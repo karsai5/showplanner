@@ -1,14 +1,17 @@
 {
   "extends": [
+    "eslint:recommended",
     "next/core-web-vitals",
     "plugin:storybook/recommended",
-    "prettier"
+    "prettier",
+    "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "simple-import-sort",
     "import",
-    "no-relative-import-paths"
+    "no-relative-import-paths",
+    "@typescript-eslint"
   ],
   "rules": {
     "simple-import-sort/imports": "error",

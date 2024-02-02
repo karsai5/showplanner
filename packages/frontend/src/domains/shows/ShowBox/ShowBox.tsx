@@ -1,7 +1,6 @@
 import cc from "classnames";
 import ColorHash from "color-hash";
 import { ShowSummaryDTO } from "core/api/generated";
-import dayjs, { Dayjs } from "dayjs";
 import Link from "next/link";
 
 const colorHash = new ColorHash();
@@ -10,33 +9,8 @@ type Props = {
   show: ShowSummaryDTO;
 };
 
-const getDateString = (date: Dayjs) => {
-  if (dayjs().isSame(date, "year")) {
-    return date.format("MMM");
-  }
-  return date.format("MMM (YYYY)");
-};
-
-export const getDates = (paramStart: any, paramEnd: any) => {
-  if (!paramStart || !paramEnd) {
-    return null;
-  }
-  const start = dayjs(paramStart);
-  const end = dayjs(paramEnd);
-  if (start.isSame(end, "month")) {
-    if (dayjs().isSame(start, "year")) {
-      return start.format("MMM");
-    }
-    return start.format("MMM (YYYY)");
-  }
-  return `${getDateString(start)} - ${getDateString(end)}`;
-};
-
 export const ShowBox: React.FunctionComponent<Props> = (props) => {
   const { show } = props;
-  const start = dayjs();
-  const end = dayjs();
-  const dates = getDates(start, end);
 
   const pastEvent = false;
   const showCount = 0;

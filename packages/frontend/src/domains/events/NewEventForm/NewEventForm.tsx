@@ -66,7 +66,7 @@ const NewEventForm: FC<{
     setValue("end", formatTime(t.add(DEFAULT_POST_SHOW_DURATION, 'h')))
   }
 
-  const mutation = useMutation<any, unknown, Inputs>({
+  const mutation = useMutation<unknown, unknown, Inputs>({
     mutationFn: (form) => {
       if (!event) {
         return api.eventsPost({

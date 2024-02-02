@@ -7,13 +7,13 @@ import { ReactNode } from "react";
 import Session from "supertokens-auth-react/recipe/session";
 import { PermissionClaim } from "supertokens-auth-react/recipe/userroles"
 
-var client = jwksClient({
+const client = jwksClient({
   jwksUri: `${getRequiredEnvVariable(process.env.NEXT_PUBLIC_SUPERTOKENS_URL)}/auth/jwt/jwks.json`,
 });
 
 function getKey(header: JwtHeader, callback: SigningKeyCallback) {
   client.getSigningKey(header.kid, function(err, key) {
-    var signingKey = key?.getPublicKey();
+    const signingKey = key?.getPublicKey();
     callback(err, signingKey);
   });
 }
@@ -84,14 +84,14 @@ export const getLoggedIn = async (ctx: GetServerSidePropsContext) => {
 }
 
 export const useHasPermission = () => {
-  let claimValue = Session.useClaimValue(PermissionClaim)
+  const claimValue = Session.useClaimValue(PermissionClaim)
 
   return (permission: string) => {
 
     if (claimValue.loading || !claimValue.doesSessionExist) {
       return false;
     }
-    let permissions = claimValue?.value;
+    const permissions = claimValue?.value;
 
     return (Array.isArray(permissions) && permissions.includes(permission));
   }

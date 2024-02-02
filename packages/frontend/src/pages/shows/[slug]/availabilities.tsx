@@ -6,19 +6,16 @@ import { AccessDenied } from "core/components/AccessDenied/AccessDenied";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { GapRow, Td } from "core/components/tables/tables";
 import { H2 } from "core/components/Typography";
-import { getTimeRangeWithCurtainsUp,TimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
+import { TimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
 import { PERMISSION, showPermission } from "core/permissions";
-import dayjs from "dayjs";
 import { getBgColor, getStringFromBoolean } from "domains/availabilities/helpers";
-import theatreIcons from "domains/events/images/theatre.png";
 import { displayDate } from "domains/events/lib/displayDate";
 import { processEvents } from "domains/events/lib/processEvents";
 import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
 import sortBy from "lodash/sortBy";
 import Head from "next/head";
-import Image from "next/image";
-import React, { Fragment } from "react";
+import React, { Fragment, ReactElement } from "react";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import { PermissionClaim } from "supertokens-auth-react/recipe/userroles"
 
@@ -106,7 +103,7 @@ const AvailabilitiesTable: React.FC<{ showId: number }> = ({ showId }) => {
   return null
 }
 
-ShowPage.getLayout = (page: any) => (
+ShowPage.getLayout = (page: ReactElement) => (
   <LayoutWithShowSidebar>{page}</LayoutWithShowSidebar>
 );
 

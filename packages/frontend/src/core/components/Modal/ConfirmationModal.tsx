@@ -1,7 +1,7 @@
 import cc from "classnames";
-import React, { ReactNode, useContext, useState } from "react";
+import React, {  useContext, useState } from "react";
 
-import { useModal } from "./Modal";
+import { NewShowModalProps, useModal } from "./Modal";
 
 type ShowModal = (title: string, message: string, onYes: () => void) => void;
 const ConfirmationModalContext = React.createContext<{
@@ -11,7 +11,7 @@ const ConfirmationModalContext = React.createContext<{
   onYes: () => void;
 }>({ title: "", message: "", showModal: () => {}, onYes: () => {} });
 
-const ConfirmationModal: React.FC<{ Modal: any; isOpen: any; close: any }> = ({
+const ConfirmationModal: React.FC<{ Modal: React.FC<NewShowModalProps>; isOpen: boolean; close: () => void }> = ({
   Modal,
   isOpen,
   close,

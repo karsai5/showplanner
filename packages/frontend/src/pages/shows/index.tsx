@@ -4,7 +4,6 @@ import NewShowForm from "domains/shows/NewShowForm/NewShowForm";
 import { AssignedShowBoxGrid } from "domains/shows/ShowBoxGrid/AssignedShowBoxGrid";
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect } from "react";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import Session from "supertokens-auth-react/recipe/session"
 import { PermissionClaim } from "supertokens-auth-react/recipe/userroles"
@@ -31,12 +30,12 @@ const Shows = () => {
 
 const AddShowButton = () => {
   const { Modal, open, close, isOpen } = useModal();
-  let claimValue = Session.useClaimValue(PermissionClaim)
+  const claimValue = Session.useClaimValue(PermissionClaim)
 
   if (claimValue.loading || !claimValue.doesSessionExist) {
     return null;
   }
-  let permissions = claimValue?.value;
+  const permissions = claimValue?.value;
 
   if (Array.isArray(permissions) && permissions.includes("add-show")) {
     return (<>

@@ -1,15 +1,15 @@
 import cc from "classnames";
 import React, { ReactNode } from "react";
 import { FC } from "react";
-import { FieldError, UseFormRegisterReturn } from "react-hook-form";
+import { FieldError, FieldErrors, UseFormRegisterReturn } from "react-hook-form";
 import InputMask from "react-input-mask";
 
 import { getErrorMessage } from "./helpers";
 
 const FormattedTextInput: FC<{
-  register: UseFormRegisterReturn<any>;
+  register: UseFormRegisterReturn;
   placeholder: string;
-  errors: any;
+  errors: FieldErrors;
   mask: string;
   maskChar?: string;
   type?: string;

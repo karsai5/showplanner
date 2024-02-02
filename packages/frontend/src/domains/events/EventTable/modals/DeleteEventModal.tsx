@@ -4,14 +4,13 @@ import { EventDTO } from "core/api/generated";
 import { useModal } from "core/components/Modal/Modal";
 import { showToastError } from "core/utils/errors";
 import { isNil } from "core/utils/isNil";
-import { useState } from "react";
 
 export const DeleteEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
   const api = getApi();
   const queryClient = useQueryClient();
   const { Modal, open, close, isOpen } = useModal();
 
-  const mutation = useMutation({
+  const mutation = useMutation<unknown, Error>({
     mutationFn: () => {
       if (isNil(event.showId)) {
         throw new Error("Show id is missing");

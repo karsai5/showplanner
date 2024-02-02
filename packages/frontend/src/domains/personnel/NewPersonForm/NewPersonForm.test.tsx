@@ -42,7 +42,7 @@ const fillInDefaultValues = async (user: UserEvent) => {
 
 describe("<NewPersonForm />", () => {
   beforeEach(() => {
-    (api.mePost as any).mockClear();
+    (api.mePost as jest.Mock).mockClear();
   });
   test("it should mount", () => {
     render(

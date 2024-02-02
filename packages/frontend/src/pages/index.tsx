@@ -3,6 +3,7 @@ import { getLoggedIn } from "core/permissions";
 import { LayoutWithBackgroundImage } from "domains/layout/LayoutWithBackgroundImage";
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
+import { ReactElement } from "react";
 
 const Home = () => {
   return (
@@ -15,7 +16,7 @@ const Home = () => {
     </>
   );
 };
-Home.getLayout = (page: any) => (
+Home.getLayout = (page: ReactElement) => (
   <LayoutWithBackgroundImage>{page}</LayoutWithBackgroundImage>
 );
 

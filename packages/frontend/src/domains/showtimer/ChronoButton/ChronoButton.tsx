@@ -3,7 +3,7 @@ import { ClockIcon, PauseIcon, PlayIcon } from "core/components/Icons";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { useEffect, useState } from "react";
-import { useLongPress } from "use-long-press";
+import { CallableContextResult, useLongPress } from "use-long-press";
 
 dayjs.extend(duration);
 
@@ -36,7 +36,6 @@ export const ChronoButton: React.FC<{ id?: string; className?: string }> = ({
     getInitialValue(localStorageKey(key));
   });
 
-  const [holding, setHolding] = useState(false);
   const [interval, saveInterval] = useState<NodeJS.Timer | undefined>(
     undefined
   );
@@ -80,15 +79,12 @@ export const ChronoButton: React.FC<{ id?: string; className?: string }> = ({
 
   const bind = useLongPress(
     () => {
-      setHolding(false);
       resetTimer();
     },
     {
       onCancel: () => {
-        setHolding(false);
         handleClickOnRuningTimer();
       },
-      onStart: () => setHolding(true),
       threshold: 1500,
     }
   );
@@ -115,7 +111,7 @@ export const ChronoButton: React.FC<{ id?: string; className?: string }> = ({
 };
 
 const RunningTimer: React.FC<{
-  bind: any;
+  bind: CallableContextResult<object, unknown>;
   milliseconds: number;
   className?: string;
 }> = ({ bind, milliseconds, className }) => {
@@ -140,13 +136,13 @@ const RunningTimer: React.FC<{
         <span className="countdown">
           <span
             style={
-              { "--value": dayjs.duration(milliseconds).format("mm") } as any
+              { "--value": dayjs.duration(milliseconds).format("mm") } as React.CSSProperties
             }
           ></span>
           :
           <span
             style={
-              { "--value": dayjs.duration(milliseconds).format("ss") } as any
+              { "--value": dayjs.duration(milliseconds).format("ss") } as React.CSSProperties
             }
           ></span>
         </span>
@@ -156,7 +152,7 @@ const RunningTimer: React.FC<{
 };
 
 const PausedTimer: React.FC<{
-  bind: any;
+  bind: CallableContextResult<object, unknown>;
   milliseconds: number;
   className?: string;
 }> = ({ bind, milliseconds, className }) => {
@@ -181,13 +177,13 @@ const PausedTimer: React.FC<{
         <span className="countdown">
           <span
             style={
-              { "--value": dayjs.duration(milliseconds).format("mm") } as any
+              { "--value": dayjs.duration(milliseconds).format("mm") } as React.CSSProperties
             }
           ></span>
           :
           <span
             style={
-              { "--value": dayjs.duration(milliseconds).format("ss") } as any
+              { "--value": dayjs.duration(milliseconds).format("ss") } as React.CSSProperties
             }
           ></span>
         </span>
@@ -196,7 +192,7 @@ const PausedTimer: React.FC<{
   );
 };
 
-const DormantTimer: React.FC<{ onClick: any; className?: string }> = ({
+const DormantTimer: React.FC<{ onClick: () => void; className?: string }> = ({
   onClick,
   className,
 }) => (

@@ -3,7 +3,7 @@ import { PERMISSION, showPermission, useHasPermission } from "core/permissions";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
 
 import { AvailabilityDropdown } from "./components/AvailabilityDropdown";
-import { EventTable, FieldOptions } from "./EventTable";
+import { EventTable}  from "./EventTable";
 import { CloneEventModal } from "./modals/CloneEventModal";
 import { DeleteEventModal } from "./modals/DeleteEventModal";
 import { EditEventModal } from "./modals/EditEventModal";
