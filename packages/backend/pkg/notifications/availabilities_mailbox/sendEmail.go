@@ -42,37 +42,34 @@ func sendEmailNotificationOfAvailabilities() {
 	groupedUpdates := make(map[uint][]string)
 	showNames := make(map[uint]string)
 	for _, l := range cachedLetters {
-		groupedUpdates[l.ShowId] = helpers.RemoveDuplicate(append(groupedUpdates[l.ShowId], l.Name))
+		groupedUpdates[l.ShowId] = helpers.RemoveDuplicate(append(groupedUpdates[l.ShowId], fmt.Sprintf(" - %s", l.Name)))
 		showNames[l.ShowId] = l.ShowName
 	}
 
 	emailBodies := make(map[uint]string)
 	for id, name := range showNames {
-		emailBodies[id] = fmt.Sprintf("%s\nUpdated by the following people: %s\n", name, strings.Join(groupedUpdates[id], ", "))
+		emailBodies[id] = fmt.Sprintf("The following people have changed their availabilities for %s: \n\n%s", name, strings.Join(groupedUpdates[id], "\n"))
 	}
 
-	peopleToEmail := make(map[string][]uint)
-	for id, _ := range showNames {
+	showToMangersEmails := make(map[uint][]string)
+	for id := range showNames {
 		users, err := permissions.GetUsersThatHavePermission(permissions.Rostering.Permission(convert.UintToString(&id)))
 		if err != nil {
 			slog.Error("Couldn't get users with permission")
 			return
 		}
 		for _, u := range users {
-			peopleToEmail[u.Email] = append(peopleToEmail[u.Email], id)
+			showToMangersEmails[id] = append(showToMangersEmails[id], u.Email)
 		}
 	}
 
-	for email, shows := range peopleToEmail {
-		body := "The following shows have had their availabilities updated\n\n"
-		for _, showId := range shows {
-			body = body + emailBodies[showId]
-		}
+	for showId, emails := range showToMangersEmails {
 		notifications.SendEmail(notifications.Email{
-			ToEmail: email,
-			Subject: "Availabilities Updated",
-			Body:    body,
+			ToEmail: strings.Join(emails, ", "),
+			Subject: fmt.Sprintf("[%s] Availabilities updated", showNames[showId]),
+			Body:    emailBodies[showId],
 		})
 	}
+
 	cachedLetters = []letters.UpdatedAvailabilityEnrichedLetter{}
 }
