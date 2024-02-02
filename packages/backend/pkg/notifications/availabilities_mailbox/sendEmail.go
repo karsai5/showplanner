@@ -74,4 +74,5 @@ func sendEmailNotificationOfAvailabilities() {
 			Body:    body,
 		})
 	}
+	cachedLetters = []letters.UpdatedAvailabilityEnrichedLetter{}
 }
