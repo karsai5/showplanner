@@ -13,17 +13,6 @@ type UpdatedAvailabilityLetter struct {
 	Availability bool
 }
 
-type UpdatedAvailabilityEnrichedLetter struct {
-	BaseLetter
-	UserId        uuid.UUID
-	Name          string
-	ShowId        uint
-	ShowName      string
-	EventId       uint
-	EventDateTime string
-	Availability  bool
-}
-
 type UserFilledInProfileLetter struct {
 	Email            string
 	FirstName        string
