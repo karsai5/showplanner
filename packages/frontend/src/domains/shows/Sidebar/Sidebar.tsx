@@ -1,6 +1,6 @@
 import cc from "classnames";
 import {
-  CalendarIcon, DocumentCheckIcon,
+  CalendarIcon, DocumentCheckIcon, UsersIcon,
 } from "core/components/Icons";
 import { HasPermission, PERMISSION } from "core/permissions";
 import { useShowSlugFromUrl } from "domains/shows/lib/helpers";
@@ -45,6 +45,14 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, children }) => {
                   collapsed={collapsed}
                   name={"Availabilities"}
                   icon={<DocumentCheckIcon />}
+                />
+              </HasPermission>
+              <HasPermission showId={show.id} permission={PERMISSION.personnel}>
+                <Item
+                  url={`/shows/${slug}/people`}
+                  collapsed={collapsed}
+                  name={"People"}
+                  icon={<UsersIcon />}
                 />
               </HasPermission>
             </ul>
