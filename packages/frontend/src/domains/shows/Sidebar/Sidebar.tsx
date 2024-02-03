@@ -1,6 +1,8 @@
 import cc from "classnames";
 import {
-  CalendarIcon, DocumentCheckIcon, UsersIcon,
+  CalendarIcon,
+  DocumentCheckIcon,
+  UsersIcon,
 } from "core/components/Icons";
 import { HasPermission, PERMISSION } from "core/permissions";
 import { useShowSlugFromUrl } from "domains/shows/lib/helpers";

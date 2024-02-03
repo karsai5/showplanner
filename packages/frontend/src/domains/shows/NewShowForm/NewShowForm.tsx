@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getApi } from "core/api";
 import Input from "core/components/fields/TextInput";
 import { useRefreshToken } from "pages/me/refresh";
-import React, { FC} from "react";
+import React, { FC } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -22,7 +22,7 @@ interface NewShowFormProps {
 const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
   const queryClient = useQueryClient();
   const api = getApi();
-  const refresh = useRefreshToken()
+  const refresh = useRefreshToken();
 
   const {
     register,
@@ -82,11 +82,10 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
         showRequired
         helpText="The url slug is what people will see in the url when accessing the show. e.g. /shows/wicked"
       />
-      <button
-        type="submit"
-        className="btn btn-block"
-      >
-        {mutation.isLoading && <span className="loading loading-spinner"></span>}
+      <button type="submit" className="btn btn-block">
+        {mutation.isLoading && (
+          <span className="loading loading-spinner"></span>
+        )}
         Create show
       </button>
     </form>

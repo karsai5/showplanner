@@ -115,11 +115,19 @@ export const TimeTill: React.FC<{
         {timeLeft && lessThanFiveMinutes && (
           <span className="countdown">
             <span
-              style={{ "--value": moment.utc(diff).format("mm") } as React.CSSProperties}
+              style={
+                {
+                  "--value": moment.utc(diff).format("mm"),
+                } as React.CSSProperties
+              }
             ></span>
             :
             <span
-              style={{ "--value": moment.utc(diff).format("ss") } as React.CSSProperties}
+              style={
+                {
+                  "--value": moment.utc(diff).format("ss"),
+                } as React.CSSProperties
+              }
             ></span>
           </span>
         )}

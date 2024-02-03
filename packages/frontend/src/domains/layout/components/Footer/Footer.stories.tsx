@@ -7,9 +7,7 @@ export default {
   component: Footer,
   decorators: [
     (Story) => {
-      return (
-        <Story />
-      );
+      return <Story />;
     },
   ],
 } as ComponentMeta<typeof Footer>;

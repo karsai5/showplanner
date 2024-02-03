@@ -12,25 +12,28 @@ const show: ShowDTO = {
   id: 1,
   name: "",
   company: "",
-  slug: ""
-}
+  slug: "",
+};
 
-export const New = () => (<ShowSummaryContext.Provider value={show}>
-  <NewShowForm onSuccess={() => { } } showId={0} />
-</ShowSummaryContext.Provider>);
-
+export const New = () => (
+  <ShowSummaryContext.Provider value={show}>
+    <NewShowForm onSuccess={() => {}} showId={0} />
+  </ShowSummaryContext.Provider>
+);
 
 const event: EventDTO = {
   id: 0,
-  start: dayjs('2023-12-01 18:00').toDate(),
-  end: dayjs('2023-12-01 22:00').toDate(),
-  curtainsUp: dayjs('2023-12-01 19:30').toDate(),
-  name: 'Show 2',
-  nameRaw: 'Test name',
-  shortnote: 'Short note',
-  address: '12 smith st'
-}
+  start: dayjs("2023-12-01 18:00").toDate(),
+  end: dayjs("2023-12-01 22:00").toDate(),
+  curtainsUp: dayjs("2023-12-01 19:30").toDate(),
+  name: "Show 2",
+  nameRaw: "Test name",
+  shortnote: "Short note",
+  address: "12 smith st",
+};
 
-export const Edit = () => (<ShowSummaryContext.Provider value={show}>
-  <NewShowForm onSuccess={() => { } } event={event} showId={0} />
-</ShowSummaryContext.Provider>);
+export const Edit = () => (
+  <ShowSummaryContext.Provider value={show}>
+    <NewShowForm onSuccess={() => {}} event={event} showId={0} />
+  </ShowSummaryContext.Provider>
+);

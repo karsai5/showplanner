@@ -17,8 +17,13 @@ const ShowPage = () => {
   return (
     <SessionAuth
       accessDeniedScreen={AccessDenied}
-      overrideGlobalClaimValidators={(globalValidators) => [...globalValidators,
-      PermissionClaim.validators.includes(showPermission(show?.id, PERMISSION.personnel))]}>
+      overrideGlobalClaimValidators={(globalValidators) => [
+        ...globalValidators,
+        PermissionClaim.validators.includes(
+          showPermission(show?.id, PERMISSION.personnel)
+        ),
+      ]}
+    >
       <Head>
         <title>People - {show.name} - ShowPlanner</title>
       </Head>
@@ -31,30 +36,37 @@ const ShowPage = () => {
 };
 
 const PeopleTable: React.FC<{ showId: number }> = ({ showId }) => {
-  const { data, isLoading, isError } = useQuery(["personnel", showId], () => api.personnelGet({ showId }))
+  const { data, isLoading, isError } = useQuery(["personnel", showId], () =>
+    api.personnelGet({ showId })
+  );
   if (isLoading) {
-    return <LoadingBox />
+    return <LoadingBox />;
   }
   if (isError) {
-    return <ErrorBox>Could not load people</ErrorBox>
+    return <ErrorBox>Could not load people</ErrorBox>;
   }
   if (data) {
-    return <table className="table">
-      <thead>
-        <tr>
-          <th>Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.people?.map(person => <tr key={person.id}>
-          <td>{person.firstName} {person.lastName}</td>
-        </tr>)}
-      </tbody>
-    </table>
+    return (
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.people?.map((person) => (
+            <tr key={person.id}>
+              <td>
+                {person.firstName} {person.lastName}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
   }
   return null;
-}
-
+};
 
 ShowPage.getLayout = (page: ReactElement) => (
   <LayoutWithShowSidebar>{page}</LayoutWithShowSidebar>

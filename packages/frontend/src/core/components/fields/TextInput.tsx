@@ -1,6 +1,6 @@
 import cc from "classnames";
 import { FC } from "react";
-import {  FieldErrors, UseFormRegisterReturn } from "react-hook-form";
+import { FieldErrors, UseFormRegisterReturn } from "react-hook-form";
 
 import { getErrorMessage } from "./helpers";
 

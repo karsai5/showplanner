@@ -10,11 +10,12 @@ export default {
 
 export const Default = () => {
   SuperTokensReact.init(frontendConfig());
-  return <SuperTokensWrapper>
-    <HomeHero />
-  </SuperTokensWrapper>;
-}
-  ;
+  return (
+    <SuperTokensWrapper>
+      <HomeHero />
+    </SuperTokensWrapper>
+  );
+};
 
 Default.story = {
   name: "default",

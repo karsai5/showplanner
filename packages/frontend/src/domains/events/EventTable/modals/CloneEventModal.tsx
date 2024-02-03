@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import cc from 'classnames';
+import cc from "classnames";
 import { getApi } from "core/api";
 import { EventDTO } from "core/api/generated";
 import { useModal } from "core/components/Modal/Modal";
@@ -28,8 +28,8 @@ export const CloneEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
           address: event.address,
           shortnote: event.shortnote,
           name: event.nameRaw,
-        }
-      })
+        },
+      });
     },
     onError: (e) => {
       showToastError("Could not clone event", e);
@@ -44,16 +44,28 @@ export const CloneEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
   if (!event.showId) {
     return null;
   }
-  return (<>
-    <Modal isOpen={isOpen} close={close} title="Edit event">
-      <NewEventForm onSuccess={close} event={newEvent} showId={event.showId} />
-    </Modal>
-    <button className={cc("link relative", { ['btn-disabled']: mutation.isLoading })} onClick={() => mutation.mutate()}>
-      <div className={cc({ ["opacity-40"]: mutation.isLoading })}>Clone</div>
-      {mutation.isLoading && <div className="absolute top-1 bottom-0 right-0 left-0">
-        <span className="loading loading-dots loading-xs"></span>
-      </div>}
-    </button>
-  </>);
-}
-
+  return (
+    <>
+      <Modal isOpen={isOpen} close={close} title="Edit event">
+        <NewEventForm
+          onSuccess={close}
+          event={newEvent}
+          showId={event.showId}
+        />
+      </Modal>
+      <button
+        className={cc("link relative", {
+          ["btn-disabled"]: mutation.isLoading,
+        })}
+        onClick={() => mutation.mutate()}
+      >
+        <div className={cc({ ["opacity-40"]: mutation.isLoading })}>Clone</div>
+        {mutation.isLoading && (
+          <div className="absolute top-1 bottom-0 right-0 left-0">
+            <span className="loading loading-dots loading-xs"></span>
+          </div>
+        )}
+      </button>
+    </>
+  );
+};

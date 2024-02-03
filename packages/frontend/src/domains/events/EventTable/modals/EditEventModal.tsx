@@ -7,13 +7,14 @@ export const EditEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
   if (!event.showId) {
     return null;
   }
-  return (<>
-    <button className="link" onClick={open}>
-      Edit
-    </button>
-    <Modal isOpen={isOpen} close={close} title="Add a new show">
-      <NewEventForm onSuccess={close} event={event} showId={event.showId} />
-    </Modal>
-  </>);
-}
-
+  return (
+    <>
+      <button className="link" onClick={open}>
+        Edit
+      </button>
+      <Modal isOpen={isOpen} close={close} title="Add a new show">
+        <NewEventForm onSuccess={close} event={event} showId={event.showId} />
+      </Modal>
+    </>
+  );
+};

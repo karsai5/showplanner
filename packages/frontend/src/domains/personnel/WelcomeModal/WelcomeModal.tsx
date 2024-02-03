@@ -10,7 +10,7 @@ const WelcomeModal = () => {
     <div className={cc("modal", { ["modal-open"]: isOpen })}>
       <div className="modal-box">
         <h3 className="font-bold text-lg">Welcome to the ShowPlanner!</h3>
-        <Image height="200" className="mx-auto" src={heroImage} alt=""/>
+        <Image height="200" className="mx-auto" src={heroImage} alt="" />
         <p className="py-4">
           Hi there, thanks for signing up to use the ShowPlanner! Before you can
           acess the site we just need to setup the rest of your profile.

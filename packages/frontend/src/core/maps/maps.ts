@@ -11,6 +11,6 @@ export const getStaticMap = (lat?: number | null, lng?: number | null) => {
 export const googleMapsScriptUrl = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places`;
 
 export const googleMapsLoader = new Loader({
-  apiKey: API_KEY || '',
-  version: 'weekly'
+  apiKey: API_KEY || "",
+  version: "weekly",
 });

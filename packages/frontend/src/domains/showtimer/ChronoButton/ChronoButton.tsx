@@ -136,13 +136,17 @@ const RunningTimer: React.FC<{
         <span className="countdown">
           <span
             style={
-              { "--value": dayjs.duration(milliseconds).format("mm") } as React.CSSProperties
+              {
+                "--value": dayjs.duration(milliseconds).format("mm"),
+              } as React.CSSProperties
             }
           ></span>
           :
           <span
             style={
-              { "--value": dayjs.duration(milliseconds).format("ss") } as React.CSSProperties
+              {
+                "--value": dayjs.duration(milliseconds).format("ss"),
+              } as React.CSSProperties
             }
           ></span>
         </span>
@@ -177,13 +181,17 @@ const PausedTimer: React.FC<{
         <span className="countdown">
           <span
             style={
-              { "--value": dayjs.duration(milliseconds).format("mm") } as React.CSSProperties
+              {
+                "--value": dayjs.duration(milliseconds).format("mm"),
+              } as React.CSSProperties
             }
           ></span>
           :
           <span
             style={
-              { "--value": dayjs.duration(milliseconds).format("ss") } as React.CSSProperties
+              {
+                "--value": dayjs.duration(milliseconds).format("ss"),
+              } as React.CSSProperties
             }
           ></span>
         </span>

@@ -41,7 +41,10 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
             <p>{show.company}</p>
           </div>
           <div className="card-actions">
-            <Link href={`/shows/${show.slug}`} className="btn btn-block btn-outline">
+            <Link
+              href={`/shows/${show.slug}`}
+              className="btn btn-block btn-outline"
+            >
               View schedule
             </Link>
             {/* <div className="">{dates ? dates : "No dates yet"}</div> */}

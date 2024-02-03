@@ -12,7 +12,11 @@ export const Footer = () => {
       <div>
         <div>
           <p className="max-w-sm">
-            If you&apos;re interested in supporting the ShowPlanner, consider <a className="link" href={donateLink}>donating to its upkeep</a>.
+            If you&apos;re interested in supporting the ShowPlanner, consider{" "}
+            <a className="link" href={donateLink}>
+              donating to its upkeep
+            </a>
+            .
           </p>
         </div>
       </div>

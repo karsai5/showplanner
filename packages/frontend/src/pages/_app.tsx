@@ -2,8 +2,8 @@ import "styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { MeContextWrapper } from "core/components/MeContext/MeContext";
 import { ConfirmationModalWrapper } from "core/components/Modal/ConfirmationModal";
@@ -18,16 +18,15 @@ import { SuperTokensWrapper } from "supertokens-auth-react";
 
 import { frontendConfig } from "../../config/frontendConfig";
 
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      networkMode: 'always'
+      networkMode: "always",
     },
     mutations: {
-      networkMode: 'always'
-    }
-  }
+      networkMode: "always",
+    },
+  },
 });
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
@@ -45,7 +44,8 @@ if (typeof window !== "undefined") {
 
 function MyApp({ Component }: AppPropsWithLayout) {
   const loading = usePageLoading();
-  const getLayout = Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>);
+  const getLayout =
+    Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>);
 
   return (
     <SuperTokensWrapper>
@@ -75,17 +75,13 @@ function MyApp({ Component }: AppPropsWithLayout) {
                 <title>ShowPlanner</title>
               </Head>
 
-              {loading ? (
-                <LoadingBox/>
-              ) : (
-                <Component />
-              )}
+              {loading ? <LoadingBox /> : <Component />}
             </MeContextWrapper>
           )}
         </ConfirmationModalWrapper>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-      <SpeedInsights/>
+      <SpeedInsights />
     </SuperTokensWrapper>
   );
 }

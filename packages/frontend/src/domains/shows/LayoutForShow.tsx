@@ -11,42 +11,40 @@ import Sidebar from "domains/shows/Sidebar/Sidebar";
 import { useRouter } from "next/router";
 import { ReactNode, useEffect, useState } from "react";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
-import { PermissionClaim } from "supertokens-auth-react/recipe/userroles"
+import { PermissionClaim } from "supertokens-auth-react/recipe/userroles";
 
 import { ShowSummaryContext } from "./lib/summaryContext";
-
 
 export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const api = getApi();
-  const [sidebarOpen, setSidebarOpen] = useState(getInitiaValueForSidebarOpen());
+  const [sidebarOpen, setSidebarOpen] = useState(
+    getInitiaValueForSidebarOpen()
+  );
   const isSmall = useBreakpoint("sm");
 
   useEffect(() => {
     if (isSmall) {
-      setSidebarOpen(getInitiaValueForSidebarOpen())
+      setSidebarOpen(getInitiaValueForSidebarOpen());
     } else {
-      setSidebarOpen(true)
+      setSidebarOpen(true);
     }
   }, [isSmall]);
 
   const handleSidebar = (value: boolean) => {
     setSidebarOpen(value);
     storeValueForSidebarOpen(value);
-  }
+  };
   const {
     query: { slug },
   } = useRouter();
-  const { data: show, isLoading, isError } = useQuery(
-    ["Show", slug],
-    () => {
-      if (!slug) {
-        return null;
-      }
-      return api.showsShowSlugSummaryGet({ showSlug: slug as string });
+  const { data: show, isLoading, isError } = useQuery(["Show", slug], () => {
+    if (!slug) {
+      return null;
     }
-  );
+    return api.showsShowSlugSummaryGet({ showSlug: slug as string });
+  });
 
   return (
     <SessionAuth>
@@ -54,20 +52,27 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
         <Nav mobile={{ toggleSidebar: () => handleSidebar(!sidebarOpen) }} />
         {isLoading && <LoadingBox className="flex-1" />}
         {isError && <ErrorBox>Something went wrong getting show</ErrorBox>}
-        {show && <SessionAuth
-          accessDeniedScreen={AccessDenied}
-          overrideGlobalClaimValidators={(globalValidators) => [...globalValidators,
-          PermissionClaim.validators.includes(showPermission(show?.id, PERMISSION.viewEvents))]}>
-          {show && (
-            <ShowSummaryContext.Provider value={show}>
-              <Sidebar isOpen={sidebarOpen}>
-                <div className="p-6 h-full overflow-auto flex-grow">
-                  {children}
-                </div>
-              </Sidebar>
-            </ShowSummaryContext.Provider>
-          )}
-        </SessionAuth>}
+        {show && (
+          <SessionAuth
+            accessDeniedScreen={AccessDenied}
+            overrideGlobalClaimValidators={(globalValidators) => [
+              ...globalValidators,
+              PermissionClaim.validators.includes(
+                showPermission(show?.id, PERMISSION.viewEvents)
+              ),
+            ]}
+          >
+            {show && (
+              <ShowSummaryContext.Provider value={show}>
+                <Sidebar isOpen={sidebarOpen}>
+                  <div className="p-6 h-full overflow-auto flex-grow">
+                    {children}
+                  </div>
+                </Sidebar>
+              </ShowSummaryContext.Provider>
+            )}
+          </SessionAuth>
+        )}
         <Footer />
       </div>
     </SessionAuth>
@@ -81,7 +86,7 @@ const getInitiaValueForSidebarOpen = (): boolean => {
     return true;
   }
 
-  const res = localStorage.getItem(SIDEBAR_OPEN)
+  const res = localStorage.getItem(SIDEBAR_OPEN);
   switch (res) {
     case "true":
       return true;
@@ -89,11 +94,11 @@ const getInitiaValueForSidebarOpen = (): boolean => {
     case "false":
       return false;
   }
-}
+};
 
 const storeValueForSidebarOpen = (value: boolean) => {
   if (typeof window === "undefined") {
     return;
   }
   localStorage.setItem(SIDEBAR_OPEN, `${value}`);
-}
+};

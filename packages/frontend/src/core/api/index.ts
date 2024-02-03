@@ -1,4 +1,4 @@
-import { Configuration, DefaultApi } from "./generated"
+import { Configuration, DefaultApi } from "./generated";
 
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -8,6 +8,6 @@ const config = new Configuration({
 
 export const getApi = (): DefaultApi => {
   return new DefaultApi(config);
-}
+};
 
 export const api = new DefaultApi(config);

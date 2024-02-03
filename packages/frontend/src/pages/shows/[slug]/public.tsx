@@ -17,26 +17,30 @@ const ShowPage = () => {
       if (!slug) {
         return null;
       }
-      const { showName, events } = await api.publicScheduleGet({ showSlug: slug as string });
+      const { showName, events } = await api.publicScheduleGet({
+        showSlug: slug as string,
+      });
       return { showName, events };
     }
   );
 
   if (isLoading || isError || !data) {
-    return <>
-      <Head>
-        <title>Schedule - ShowPlanner</title>
-      </Head>
-      <div className="flex flex-col gap-4 sm:flex-row justify-between">
-        <div>
-          <div className="flex justify-between items-center">
-            <H2> Schedule </H2>
+    return (
+      <>
+        <Head>
+          <title>Schedule - ShowPlanner</title>
+        </Head>
+        <div className="flex flex-col gap-4 sm:flex-row justify-between">
+          <div>
+            <div className="flex justify-between items-center">
+              <H2> Schedule </H2>
+            </div>
+            {isError && <ErrorBox>Could not get shows</ErrorBox>}
+            {isLoading && <progress className="progress w-56"></progress>}
           </div>
-          {isError && <ErrorBox>Could not get shows</ErrorBox>}
-          {isLoading && <progress className="progress w-56"></progress>}
         </div>
-      </div>
-    </>
+      </>
+    );
   }
 
   const { showName, events } = data;

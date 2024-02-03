@@ -1,4 +1,3 @@
-
 export const YES = "YES";
 export const NO = "NO";
 export const UNKNOWN = "UNKNOWN";
@@ -14,7 +13,7 @@ export const getBgColor = (value: string) => {
     default:
       return "";
   }
-}
+};
 
 export const getBooleanFromString = (value: string) => {
   switch (value) {
@@ -27,7 +26,7 @@ export const getBooleanFromString = (value: string) => {
     default:
       throw new Error(`Value cannot be transformed: ${value}`);
   }
-}
+};
 
 export const getStringFromBoolean = (value: boolean | undefined) => {
   switch (value) {
@@ -36,8 +35,8 @@ export const getStringFromBoolean = (value: boolean | undefined) => {
     case false:
       return NO;
     case undefined:
-      return UNKNOWN
+      return UNKNOWN;
     default:
       throw new Error(`Value cannot be transformed: ${value}`);
   }
-}
+};

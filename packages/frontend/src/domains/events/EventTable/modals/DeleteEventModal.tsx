@@ -15,7 +15,7 @@ export const DeleteEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
       if (isNil(event.showId)) {
         throw new Error("Show id is missing");
       }
-      return api.eventsIdDelete({id: event.id})
+      return api.eventsIdDelete({ id: event.id });
     },
     onError: (e) => {
       showToastError("Could not delete event", e);
@@ -29,17 +29,29 @@ export const DeleteEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
   if (!event.showId) {
     return null;
   }
-  return (<>
-    <Modal isOpen={isOpen} close={close} title={`Delete event: ${event.name}`}>
-      <p className="mb-4">Are you sure you want to delete this event?</p>
-      <div className="flex justify-center gap-2">
-      <button className="btn btn-error w-20" onClick={() => mutation.mutate()}>Yes</button>
-      <button className="btn w-20" onClick={() => close()}>No</button>
-      </div>
-    </Modal>
-    <button className="link relative" onClick={() => open()}>
-      Delete
-    </button>
-  </>);
-}
-
+  return (
+    <>
+      <Modal
+        isOpen={isOpen}
+        close={close}
+        title={`Delete event: ${event.name}`}
+      >
+        <p className="mb-4">Are you sure you want to delete this event?</p>
+        <div className="flex justify-center gap-2">
+          <button
+            className="btn btn-error w-20"
+            onClick={() => mutation.mutate()}
+          >
+            Yes
+          </button>
+          <button className="btn w-20" onClick={() => close()}>
+            No
+          </button>
+        </div>
+      </Modal>
+      <button className="link relative" onClick={() => open()}>
+        Delete
+      </button>
+    </>
+  );
+};

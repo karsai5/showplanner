@@ -35,16 +35,16 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
     register,
     handleSubmit,
     formState: { errors },
-    watch
+    watch,
   } = useForm<Inputs>();
 
-  const pronoun = watch('pronoun');
+  const pronoun = watch("pronoun");
 
   const mutation = useMutation<unknown, Error, Inputs>({
     mutationFn: (formData) => {
       let finalPronoun = formData.pronoun;
       if (finalPronoun === "Other") {
-        finalPronoun = formData.manualPronoun
+        finalPronoun = formData.manualPronoun;
       }
       return api.mePost({
         personalDetails: {
@@ -62,7 +62,7 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
           hearAboutUs: formData.hearAboutUs,
           previousWork: formData.previousWork,
           reasonForCrewing: formData.reasonForCrewing,
-        }
+        },
       });
     },
     onError: (e) => {
@@ -84,11 +84,13 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
     <form data-testid="NewPersonForm" onSubmit={handleSubmit(onSubmit)}>
       <p className="mb-2 text-lg font-bold">Personal details</p>
       <Row>
-        <label className={cc({ ["md:w-24"]: pronoun === "Other" }, "form-control")}>
+        <label
+          className={cc({ ["md:w-24"]: pronoun === "Other" }, "form-control")}
+        >
           <div className="label">
             <span className="label-text-alt">Pronoun</span>
           </div>
-          <select className="select select-bordered" {...register("pronoun")} >
+          <select className="select select-bordered" {...register("pronoun")}>
             <option>She/Her</option>
             <option>He/Him</option>
             <option>They/Them</option>
@@ -97,14 +99,15 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
           </select>
         </label>
 
-        {pronoun === "Other" &&
+        {pronoun === "Other" && (
           <div className="md:mt-8 md:w-28 w-full">
             <Input
               register={register("manualPronoun", { required: false })}
               placeholder="Pronoun"
               errors={errors}
             />
-          </div>}
+          </div>
+        )}
 
         <Input
           register={register("firstname", { required: true })}
@@ -222,7 +225,9 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
         className="h-20 mb-4"
       />
       <button type="submit" className={"btn btn-block"}>
-        {mutation.isLoading && <span className="loading loading-spinner"></span>}
+        {mutation.isLoading && (
+          <span className="loading loading-spinner"></span>
+        )}
         Save
       </button>
     </form>

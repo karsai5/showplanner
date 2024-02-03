@@ -1,7 +1,4 @@
-import {
-  BarsThreeLeft,
-  BarsThreeRight,
-} from "core/components/Icons";
+import { BarsThreeLeft, BarsThreeRight } from "core/components/Icons";
 import { useBreakpoint } from "core/hooks/useBreakpoint";
 import Link from "next/link";
 import Session from "supertokens-auth-react/recipe/session";
@@ -67,9 +64,7 @@ const Title = () => (
 const NavList: React.FC<{ className?: string }> = ({ className }) => (
   <ul className={className}>
     <li>
-      <Link href="/tools/showtimer">
-        ShowTimer
-      </Link>
+      <Link href="/tools/showtimer">ShowTimer</Link>
     </li>
     <AuthItems />
   </ul>
@@ -86,24 +81,22 @@ const AuthItems: React.FC = () => {
   }
 
   if (session.doesSessionExist) {
-    return (<>
-      <li>
-        <Link href="/shows">
-          Shows
-        </Link>
-      </li>
-      <li>
-        <a onClick={onLogout}>Log out</a>
-      </li>
-    </>)
+    return (
+      <>
+        <li>
+          <Link href="/shows">Shows</Link>
+        </li>
+        <li>
+          <a onClick={onLogout}>Log out</a>
+        </li>
+      </>
+    );
   }
 
   return (
     <>
       <li>
-        <Link href="/auth">
-          Log in
-        </Link>
+        <Link href="/auth">Log in</Link>
       </li>
     </>
   );

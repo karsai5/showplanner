@@ -31,9 +31,9 @@ const AddressPicker: FC<AddressPickerProps> = ({
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     googleMapsLoader.load().then(async () => {
-      await google.maps.importLibrary('places');
+      await google.maps.importLibrary("places");
       setLoading(false);
-    })
+    });
   });
 
   const handleChange = (address: any, lat?: number, lng?: number) => {
@@ -59,15 +59,20 @@ const AddressPicker: FC<AddressPickerProps> = ({
         onChange={handleChange}
         onSelect={handleSelect}
       >
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading: suggestionsLoading }) => (
+        {({
+          getInputProps,
+          suggestions,
+          getSuggestionItemProps,
+          loading: suggestionsLoading,
+        }) => (
           <>
             <div className="dropdown dropdown-bottom dropdown-open w-full">
-              {suggestionsLoading && <span className="loading loading-spinner loading-sm absolute top-3 right-3 text-slate-400"></span>}
+              {suggestionsLoading && (
+                <span className="loading loading-spinner loading-sm absolute top-3 right-3 text-slate-400"></span>
+              )}
               {label && (
                 <label className="label">
-                  <span className="label-text-alt">
-                    {label}
-                  </span>
+                  <span className="label-text-alt">{label}</span>
                 </label>
               )}
               <input
@@ -100,16 +105,16 @@ const ShowSuggestions: React.FC<{
 }> = ({ suggestions, getSuggestionItemProps }) => {
   return (
     <>
-      <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full">
+      <ul
+        tabIndex={0}
+        className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full"
+      >
         {suggestions.map((suggestion) => {
           return (
-            <li
-              key={suggestion.id}
-              {...getSuggestionItemProps(suggestion, {
-
-              })}
-            >
-              <a className={cc({ ['btn-active']: suggestion.active })}>{suggestion.description}</a>
+            <li key={suggestion.id} {...getSuggestionItemProps(suggestion, {})}>
+              <a className={cc({ ["btn-active"]: suggestion.active })}>
+                {suggestion.description}
+              </a>
             </li>
           );
         })}

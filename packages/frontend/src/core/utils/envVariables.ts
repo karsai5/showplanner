@@ -3,5 +3,4 @@ export const getRequiredEnvVariable = (value: string | undefined): string => {
     throw new Error(`Missing required environment variable`);
   }
   return value;
-}
-
+};

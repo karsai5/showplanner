@@ -23,13 +23,13 @@ Home.getLayout = (page: ReactElement) => (
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const isLoggedIn = await getLoggedIn(context);
 
-  if(isLoggedIn) {
+  if (isLoggedIn) {
     return {
       redirect: {
-        destination: '/shows',
-        permanent: false
-      }
-    }
+        destination: "/shows",
+        permanent: false,
+      },
+    };
   }
 
   return { props: {} };

@@ -1,4 +1,4 @@
-import cc from 'classnames';
+import cc from "classnames";
 
 export const Td: React.FC<{
   children: React.ReactNode;
@@ -20,4 +20,3 @@ export const GapRow = ({ length }: { length: number }) => (
     <td colSpan={length}></td>
   </tr>
 );
-

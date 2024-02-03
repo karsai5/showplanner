@@ -4,4 +4,3 @@ export const GRAPHQL_URL = `${API_URL}/graphql`;
 if (!API_URL) {
   console.warn("No API URL defined");
 }
-

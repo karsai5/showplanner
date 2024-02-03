@@ -44,15 +44,16 @@ const ShowPage = () => {
 
 const AddEventButton: FC<{ showId: number }> = ({ showId }) => {
   const { Modal, open, close, isOpen } = useModal();
-  return <>
-    <button className="btn mb-2" onClick={open}>
-      Add event
-    </button>
-    <Modal isOpen={isOpen} close={close} title="Add a new show">
-      <NewEventForm onSuccess={close} showId={showId} />
-    </Modal>
-  </>
-
+  return (
+    <>
+      <button className="btn mb-2" onClick={open}>
+        Add event
+      </button>
+      <Modal isOpen={isOpen} close={close} title="Add a new show">
+        <NewEventForm onSuccess={close} showId={showId} />
+      </Modal>
+    </>
+  );
 };
 
 ShowPage.getLayout = (page: ReactElement) => (

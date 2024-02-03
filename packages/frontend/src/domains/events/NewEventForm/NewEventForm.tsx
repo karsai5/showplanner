@@ -6,13 +6,13 @@ import AddressPicker from "core/components/fields/AddressPicker/AddressPicker";
 import Input from "core/components/fields/TextInput";
 import { getStaticMap } from "core/maps/maps";
 import dayjs, { Dayjs } from "dayjs";
-import customParseFormat from 'dayjs/plugin/customParseFormat';
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import Image from "next/image";
 import React, { FC } from "react";
 import { useController, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
-dayjs.extend(customParseFormat)
+dayjs.extend(customParseFormat);
 
 const DEFAULT_PRE_SHOW_DURATION = 1.5;
 const DEFAULT_POST_SHOW_DURATION = 3.5;
@@ -28,15 +28,15 @@ type Inputs = {
     lat: number | null;
     lng: number | null;
     address: string;
-  },
-  name: string,
-  shortNote: string,
+  };
+  name: string;
+  shortNote: string;
 };
 
 const NewEventForm: FC<{
   onSuccess?: () => void;
-  event?: EventDTO,
-  showId: number,
+  event?: EventDTO;
+  showId: number;
 }> = ({ onSuccess, event, showId }) => {
   const queryClient = useQueryClient();
   const api = getApi();
@@ -50,21 +50,21 @@ const NewEventForm: FC<{
     watch,
     setValue,
   } = useForm<Inputs>({
-    defaultValues: getDefaultValues(event)
+    defaultValues: getDefaultValues(event),
   });
 
   const addressControl = useController({ name: "address", control });
-  const address = watch('address');
-  const curtainsUp = watch('curtainsUp');
+  const address = watch("address");
+  const curtainsUp = watch("curtainsUp");
 
   const setDefaultStartAndEnd = () => {
-    const t = getDayJsTime('2020-01-01', curtainsUp);
+    const t = getDayJsTime("2020-01-01", curtainsUp);
     if (!t) {
       return;
     }
-    setValue("start", formatTime(t.subtract(DEFAULT_PRE_SHOW_DURATION, 'h')))
-    setValue("end", formatTime(t.add(DEFAULT_POST_SHOW_DURATION, 'h')))
-  }
+    setValue("start", formatTime(t.subtract(DEFAULT_PRE_SHOW_DURATION, "h")));
+    setValue("end", formatTime(t.add(DEFAULT_POST_SHOW_DURATION, "h")));
+  };
 
   const mutation = useMutation<unknown, unknown, Inputs>({
     mutationFn: (form) => {
@@ -77,9 +77,9 @@ const NewEventForm: FC<{
             curtainsUp: getDateTime(form.date, form.curtainsUp),
             address: form.address?.address,
             shortnote: form.shortNote,
-            name: form.name
-          }
-        })
+            name: form.name,
+          },
+        });
       } else {
         return api.eventsIdPost({
           id: event.id,
@@ -90,9 +90,9 @@ const NewEventForm: FC<{
             curtainsUp: getDateTime(form.date, form.curtainsUp),
             address: form.address?.address,
             shortnote: form.shortNote,
-            name: form.name
+            name: form.name,
           },
-        })
+        });
       }
     },
     onError: (e) => {
@@ -145,7 +145,10 @@ const NewEventForm: FC<{
         />
 
         <div className="tooltip tooltip-left" data-tip={AUTO_START_END_TOOLTIP}>
-          <button className="btn mt-8" type="button" disabled={!curtainsUp}
+          <button
+            className="btn mt-8"
+            type="button"
+            disabled={!curtainsUp}
             onClick={() => setDefaultStartAndEnd()}
           >
             Auto start/end
@@ -153,11 +156,7 @@ const NewEventForm: FC<{
         </div>
       </div>
 
-      <Input
-        label="Event name"
-        register={register("name")}
-        errors={errors}
-      />
+      <Input label="Event name" register={register("name")} errors={errors} />
 
       <Input
         label="Note"
@@ -173,8 +172,14 @@ const NewEventForm: FC<{
         label="Address"
       />
       {address?.lat && (
-        <a className="cursor-pointer" rel="noreferrer" target="_blank"
-          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address.address)}`}>
+        <a
+          className="cursor-pointer"
+          rel="noreferrer"
+          target="_blank"
+          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+            address.address
+          )}`}
+        >
           <div className="flex justify-center mb-4">
             <Image
               alt={`map of ${address.address}`}
@@ -197,7 +202,9 @@ const NewEventForm: FC<{
 };
 
 export default NewEventForm;
-const getDefaultValues = (event: EventDTO | undefined): Partial<Inputs> | undefined => {
+const getDefaultValues = (
+  event: EventDTO | undefined
+): Partial<Inputs> | undefined => {
   if (!event) {
     return undefined;
   }
@@ -207,20 +214,20 @@ const getDefaultValues = (event: EventDTO | undefined): Partial<Inputs> | undefi
     end: event.end ? formatTime(dayjs(event.end)) : "",
     curtainsUp: event.curtainsUp ? formatTime(dayjs(event.curtainsUp)) : "",
     date: formatDate(dayjs(event.start)),
-    name: event.nameRaw || '',
-    shortNote: event.shortnote || '',
+    name: event.nameRaw || "",
+    shortNote: event.shortnote || "",
     address: {
       lat: null,
       lng: null,
-      address: event.address || '',
-    }
+      address: event.address || "",
+    },
   };
 
   return defaultValues;
-}
+};
 
-const formatTime = (t: Dayjs) => t.format('HH:mm');
-const formatDate = (d: Dayjs) => d.format('YYYY-MM-DD');
+const formatTime = (t: Dayjs) => t.format("HH:mm");
+const formatDate = (d: Dayjs) => d.format("YYYY-MM-DD");
 
 const getRequiredDateTime = (date: string, time: string) => {
   const result = getDateTime(date, time);
@@ -228,15 +235,15 @@ const getRequiredDateTime = (date: string, time: string) => {
     throw new Error("date or time missing");
   }
   return result;
-}
+};
 
 const getDateTime = (date: string, time: string) => {
   return getDayJsTime(date, time)?.toDate();
-}
+};
 
 const getDayJsTime = (date: string, time: string) => {
   if (!date || !time) {
     return undefined;
   }
-  return dayjs(`${date} ${time}`, 'YYYY-MM-DD HH:mm');
-}
+  return dayjs(`${date} ${time}`, "YYYY-MM-DD HH:mm");
+};

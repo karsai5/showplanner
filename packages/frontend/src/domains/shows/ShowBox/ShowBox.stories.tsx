@@ -24,10 +24,9 @@ const show: ShowSummaryDTO = {
   id: 0,
   name: "🎙️Jersey Boys",
   company: "Willoughby Theatre Company",
-  slug: "jersey"
-}
-
-Simple.args = {
-  show: show
+  slug: "jersey",
 };
 
+Simple.args = {
+  show: show,
+};

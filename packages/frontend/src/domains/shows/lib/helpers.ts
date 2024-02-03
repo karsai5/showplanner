@@ -13,6 +13,5 @@ export const useSession = () => {
   if (session.loading) {
     throw new Error("Tried to access session while it was loading");
   }
-  return session
-}
-
+  return session;
+};

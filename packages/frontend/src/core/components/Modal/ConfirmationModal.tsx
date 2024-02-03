@@ -1,5 +1,5 @@
 import cc from "classnames";
-import React, {  useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { NewShowModalProps, useModal } from "./Modal";
 
@@ -11,11 +11,11 @@ const ConfirmationModalContext = React.createContext<{
   onYes: () => void;
 }>({ title: "", message: "", showModal: () => {}, onYes: () => {} });
 
-const ConfirmationModal: React.FC<{ Modal: React.FC<NewShowModalProps>; isOpen: boolean; close: () => void }> = ({
-  Modal,
-  isOpen,
-  close,
-}) => {
+const ConfirmationModal: React.FC<{
+  Modal: React.FC<NewShowModalProps>;
+  isOpen: boolean;
+  close: () => void;
+}> = ({ Modal, isOpen, close }) => {
   const context = useContext(ConfirmationModalContext);
   return (
     <>

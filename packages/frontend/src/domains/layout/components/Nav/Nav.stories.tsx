@@ -11,9 +11,7 @@ export default {
   component: Nav,
   decorators: [
     (Story) => {
-      return (
-          <Story />
-      );
+      return <Story />;
     },
   ],
 } as ComponentMeta<typeof Nav>;

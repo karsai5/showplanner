@@ -16,12 +16,7 @@ const Address: FC<AddressProps> = ({ address }) => {
   }
 
   return (
-    <a
-      className="link"
-      target="_blank"
-      href={getUrl(address)}
-      rel="noreferrer"
-    >
+    <a className="link" target="_blank" href={getUrl(address)} rel="noreferrer">
       {address}
     </a>
   );

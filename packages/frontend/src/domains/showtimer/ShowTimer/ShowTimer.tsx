@@ -42,7 +42,9 @@ const rehydrateTimers = (timers: string | undefined) => {
   return emptyTimers;
 };
 
-export const ConfettiContext = createContext<(options: confetti.Options) => void>(() => {});
+export const ConfettiContext = createContext<
+  (options: confetti.Options) => void
+>(() => {});
 
 export const ShowTimer: FC = () => {
   const [, copy] = useCopyToClipboard();
@@ -55,8 +57,7 @@ export const ShowTimer: FC = () => {
     window.localStorage.getItem(TIMERS_KEY);
   }, []);
 
-  const sendEmailOfTimes = () =>
-    window.open(getMailToLink(timers));
+  const sendEmailOfTimes = () => window.open(getMailToLink(timers));
 
   const copyTimes = async () => {
     if (await copy(getTimersAndNotesSummary(timers))) {
@@ -113,13 +114,15 @@ export const ShowTimer: FC = () => {
   );
 };
 
-const getTimersAndNotesSummary = (
-  timers: Timers,
-) => {
+const getTimersAndNotesSummary = (timers: Timers) => {
   const formatTime = (value: Moment | null) =>
     value ? moment(value).format("hh:mma") : "";
-  const { actTwoLength, intervalLength, showLength, actOneLength } =
-    getShowLengths(timers);
+  const {
+    actTwoLength,
+    intervalLength,
+    showLength,
+    actOneLength,
+  } = getShowLengths(timers);
 
   const {
     houseOpen,
@@ -184,9 +187,7 @@ const getTimersAndNotesSummary = (
 };
 
 const getMailToLink = (timers: Timers) => {
-  const encodedBody = encodeURIComponent(
-    getTimersAndNotesSummary(timers)
-  );
+  const encodedBody = encodeURIComponent(getTimersAndNotesSummary(timers));
   const href = `mailto:?subject=Show%20Times&body=${encodedBody}`;
   return href;
 };
