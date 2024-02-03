@@ -23,6 +23,7 @@ import type {
   HealthCheck,
   MeDetailsDTO,
   PersonUpdateDTO,
+  PersonnelDTO,
   PublicScheduleGet200Response,
   ScheduleEventDTO,
   ShowDTO,
@@ -45,6 +46,8 @@ import {
     MeDetailsDTOToJSON,
     PersonUpdateDTOFromJSON,
     PersonUpdateDTOToJSON,
+    PersonnelDTOFromJSON,
+    PersonnelDTOToJSON,
     PublicScheduleGet200ResponseFromJSON,
     PublicScheduleGet200ResponseToJSON,
     ScheduleEventDTOFromJSON,
@@ -78,6 +81,10 @@ export interface EventsPostRequest {
 
 export interface MePostRequest {
     personalDetails?: PersonUpdateDTO;
+}
+
+export interface PersonnelGetRequest {
+    showId: number;
 }
 
 export interface PublicCalendarIdGetRequest {
@@ -307,6 +314,40 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async mePost(requestParameters: MePostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.mePostRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Returns people for a show
+     */
+    async personnelGetRaw(requestParameters: PersonnelGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PersonnelDTO>> {
+        if (requestParameters.showId === null || requestParameters.showId === undefined) {
+            throw new runtime.RequiredError('showId','Required parameter requestParameters.showId was null or undefined when calling personnelGet.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.showId !== undefined) {
+            queryParameters['showId'] = requestParameters.showId;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/personnel`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PersonnelDTOFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns people for a show
+     */
+    async personnelGet(requestParameters: PersonnelGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PersonnelDTO> {
+        const response = await this.personnelGetRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

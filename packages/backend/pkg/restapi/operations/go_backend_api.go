@@ -55,6 +55,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetMeHandler: GetMeHandlerFunc(func(params GetMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetMe has not yet been implemented")
 		}),
+		GetPersonnelHandler: GetPersonnelHandlerFunc(func(params GetPersonnelParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetPersonnel has not yet been implemented")
+		}),
 		GetPublicCalendarIDHandler: GetPublicCalendarIDHandlerFunc(func(params GetPublicCalendarIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPublicCalendarID has not yet been implemented")
 		}),
@@ -133,6 +136,8 @@ type GoBackendAPI struct {
 	GetAvailabilitiesHandler GetAvailabilitiesHandler
 	// GetMeHandler sets the operation handler for the get me operation
 	GetMeHandler GetMeHandler
+	// GetPersonnelHandler sets the operation handler for the get personnel operation
+	GetPersonnelHandler GetPersonnelHandler
 	// GetPublicCalendarIDHandler sets the operation handler for the get public calendar ID operation
 	GetPublicCalendarIDHandler GetPublicCalendarIDHandler
 	// GetPublicHealthHandler sets the operation handler for the get public health operation
@@ -243,6 +248,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.GetMeHandler == nil {
 		unregistered = append(unregistered, "GetMeHandler")
+	}
+	if o.GetPersonnelHandler == nil {
+		unregistered = append(unregistered, "GetPersonnelHandler")
 	}
 	if o.GetPublicCalendarIDHandler == nil {
 		unregistered = append(unregistered, "GetPublicCalendarIDHandler")
@@ -379,6 +387,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/me"] = NewGetMe(o.context, o.GetMeHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/personnel"] = NewGetPersonnel(o.context, o.GetPersonnelHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

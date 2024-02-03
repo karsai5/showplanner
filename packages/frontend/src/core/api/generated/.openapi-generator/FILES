@@ -13,6 +13,7 @@ models/MeDetailsDTO.ts
 models/ModelError.ts
 models/PersonSummaryDTO.ts
 models/PersonUpdateDTO.ts
+models/PersonnelDTO.ts
 models/PublicScheduleGet200Response.ts
 models/ScheduleEventDTO.ts
 models/ShowDTO.ts

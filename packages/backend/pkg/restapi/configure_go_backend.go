@@ -7,6 +7,7 @@ import (
 
 	"showplanner.io/pkg/domains/availabilities_domain"
 	"showplanner.io/pkg/domains/people_domain"
+	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/notifications/availabilities_mailbox"
 	"showplanner.io/pkg/notifications/userlifecycle_mailbox"
 	"showplanner.io/pkg/permissions"
@@ -48,6 +49,7 @@ func configureAPI(api *operations.GoBackendAPI) http.Handler {
 	getHandlers(api)
 	people_domain.SetupHandlers(api)
 	availabilities_domain.SetupHandlers(api)
+	personnel_domain.SetupHandlers(api)
 
 	api.PreServerShutdown = func() {}
 

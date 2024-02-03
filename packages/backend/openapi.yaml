@@ -211,6 +211,26 @@ paths:
           description: "Show"
           schema:
             $ref: '#/definitions/ShowSummaryDTO'
+  /personnel:
+    get:
+      parameters:
+        - in: query
+          required: true
+          name: showId
+          type: integer
+          description: ID of the show to get people for
+      summary: Returns people for a show
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/PersonnelDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
   /availabilities:
     get:
       parameters:
@@ -406,6 +426,13 @@ definitions:
         availability:
           x-nullable: true
           $ref: '#/definitions/AvailabilityDTO'
+  PersonnelDTO:
+    type: object
+    properties:
+      people:
+        type: array
+        items:
+          $ref: '#/definitions/PersonSummaryDTO'
   AvailabilitiesDTO:
     type: object
     properties:

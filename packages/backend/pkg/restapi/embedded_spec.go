@@ -238,6 +238,37 @@ func init() {
         }
       }
     },
+    "/personnel": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns people for a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get people for",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PersonnelDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/public/calendar/{id}": {
       "get": {
         "description": "Healthcheck endpoint",
@@ -757,6 +788,17 @@ func init() {
         }
       }
     },
+    "PersonnelDTO": {
+      "type": "object",
+      "properties": {
+        "people": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PersonSummaryDTO"
+          }
+        }
+      }
+    },
     "ScheduleEventDTO": {
       "allOf": [
         {
@@ -1077,6 +1119,43 @@ func init() {
           },
           "500": {
             "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/personnel": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns people for a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get people for",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PersonnelDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -1636,6 +1715,17 @@ func init() {
         "wwc": {
           "type": "string",
           "x-nullable": true
+        }
+      }
+    },
+    "PersonnelDTO": {
+      "type": "object",
+      "properties": {
+        "people": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PersonSummaryDTO"
+          }
         }
       }
     },

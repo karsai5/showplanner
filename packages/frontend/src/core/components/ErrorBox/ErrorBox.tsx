@@ -7,7 +7,7 @@ interface ErrorBoxProps {
 
 const ErrorBox: FC<ErrorBoxProps> = ({ children }) => (
   <div className="alert alert-error mb-4">
-    <div>
+    <div className="flex gap-3">
       <CrossIcon />
       <span>{children}</span>
     </div>

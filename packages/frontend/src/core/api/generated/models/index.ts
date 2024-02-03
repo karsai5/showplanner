@@ -12,6 +12,7 @@ export * from './MeDetailsDTO';
 export * from './ModelError';
 export * from './PersonSummaryDTO';
 export * from './PersonUpdateDTO';
+export * from './PersonnelDTO';
 export * from './PublicScheduleGet200Response';
 export * from './ScheduleEventDTO';
 export * from './ShowDTO';
