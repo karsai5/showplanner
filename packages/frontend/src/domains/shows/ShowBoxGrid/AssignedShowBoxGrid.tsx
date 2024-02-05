@@ -36,9 +36,9 @@ export const AssignedShowBoxGrid: React.FC = () => {
           <div>
             <h2 className="mb-2">Sad Chef!</h2>
             <p>
-              You have no shows assigned to you. Ask a show manager to add you
-              to a show so that it appears on this page.
+              You have no shows assigned to you. The ShowPlanner team will have gotten an email letting them know that you&apos;ve signed up. Sit tight for now and you&apos;ll get an email once you&apos;ve been assigned to a show.
             </p>
+            <p className="text-sm text-slate-500">This app is built in my spare time, so sometimes it takes a day or two to get added to a show.</p>
           </div>
         </div>
       )}
