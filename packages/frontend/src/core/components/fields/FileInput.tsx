@@ -1,13 +1,12 @@
-import { useAuthenticatedAxiosClient } from "core/config";
 import { ChangeEvent, useState } from "react";
 import { toast } from "react-toastify";
 
 const FileInput: React.FC<{
   onChange: (id: string) => void;
   label: string;
-}> = ({ onChange, label }) => {
+}> = ({ label }) => {
   const [loading, setLoading] = useState(false);
-  const client = useAuthenticatedAxiosClient();
+  // const client = useAuthenticatedAxiosClient();
 
   const saveFile = async (event: ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
@@ -20,10 +19,10 @@ const FileInput: React.FC<{
     formData.append("files", file);
 
     try {
-      const result = await client.post("/upload", formData);
-      if (onChange) {
-        onChange(result.data?.[0]?.id);
-      }
+      // const result = await client.post("/upload", formData);
+      // if (onChange) {
+      //   onChange(result.data?.[0]?.id);
+      // }
     } catch (e) {
       toast.error("Failed to upload file");
       console.error("Failed to upload file", e);

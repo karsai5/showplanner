@@ -1,6 +1,6 @@
-import { Configuration, DefaultApi } from "./generated";
+import { API_URL } from "core/config";
 
-export const API_URL = process.env.NEXT_PUBLIC_API_URL;
+import { Configuration, DefaultApi } from "./generated";
 
 const config = new Configuration({
   basePath: API_URL,
