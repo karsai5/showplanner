@@ -14,8 +14,9 @@ export interface NewShowModalProps {
   title?: string;
   close: () => void;
   isOpen: boolean;
+  className?: string;
 }
-const Modal: FC<NewShowModalProps> = ({ children, title, close, isOpen }) => {
+const Modal: FC<NewShowModalProps> = ({ children, title, close, isOpen, className }) => {
   return (
     <Dialog
       open={isOpen}
@@ -23,7 +24,7 @@ const Modal: FC<NewShowModalProps> = ({ children, title, close, isOpen }) => {
       as="div"
       className={cc("modal modal-bottom sm:modal-middle", {
         ["modal-open"]: isOpen,
-      })}
+      }, className)}
     >
       <Dialog.Panel className="modal-box flex flex-col">
         <button

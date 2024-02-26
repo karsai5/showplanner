@@ -55,8 +55,11 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetMeHandler: GetMeHandlerFunc(func(params GetMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetMe has not yet been implemented")
 		}),
-		GetPersonnelHandler: GetPersonnelHandlerFunc(func(params GetPersonnelParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetPersonnel has not yet been implemented")
+		GetPersonnelAssignableHandler: GetPersonnelAssignableHandlerFunc(func(params GetPersonnelAssignableParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetPersonnelAssignable has not yet been implemented")
+		}),
+		GetPersonnelAssignedHandler: GetPersonnelAssignedHandlerFunc(func(params GetPersonnelAssignedParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetPersonnelAssigned has not yet been implemented")
 		}),
 		GetPublicCalendarIDHandler: GetPublicCalendarIDHandlerFunc(func(params GetPublicCalendarIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPublicCalendarID has not yet been implemented")
@@ -87,6 +90,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		}),
 		PostMeHandler: PostMeHandlerFunc(func(params PostMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostMe has not yet been implemented")
+		}),
+		PostPersonnelAssignHandler: PostPersonnelAssignHandlerFunc(func(params PostPersonnelAssignParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostPersonnelAssign has not yet been implemented")
 		}),
 		PostShowsHandler: PostShowsHandlerFunc(func(params PostShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostShows has not yet been implemented")
@@ -136,8 +142,10 @@ type GoBackendAPI struct {
 	GetAvailabilitiesHandler GetAvailabilitiesHandler
 	// GetMeHandler sets the operation handler for the get me operation
 	GetMeHandler GetMeHandler
-	// GetPersonnelHandler sets the operation handler for the get personnel operation
-	GetPersonnelHandler GetPersonnelHandler
+	// GetPersonnelAssignableHandler sets the operation handler for the get personnel assignable operation
+	GetPersonnelAssignableHandler GetPersonnelAssignableHandler
+	// GetPersonnelAssignedHandler sets the operation handler for the get personnel assigned operation
+	GetPersonnelAssignedHandler GetPersonnelAssignedHandler
 	// GetPublicCalendarIDHandler sets the operation handler for the get public calendar ID operation
 	GetPublicCalendarIDHandler GetPublicCalendarIDHandler
 	// GetPublicHealthHandler sets the operation handler for the get public health operation
@@ -158,6 +166,8 @@ type GoBackendAPI struct {
 	PostEventsIDHandler PostEventsIDHandler
 	// PostMeHandler sets the operation handler for the post me operation
 	PostMeHandler PostMeHandler
+	// PostPersonnelAssignHandler sets the operation handler for the post personnel assign operation
+	PostPersonnelAssignHandler PostPersonnelAssignHandler
 	// PostShowsHandler sets the operation handler for the post shows operation
 	PostShowsHandler PostShowsHandler
 
@@ -249,8 +259,11 @@ func (o *GoBackendAPI) Validate() error {
 	if o.GetMeHandler == nil {
 		unregistered = append(unregistered, "GetMeHandler")
 	}
-	if o.GetPersonnelHandler == nil {
-		unregistered = append(unregistered, "GetPersonnelHandler")
+	if o.GetPersonnelAssignableHandler == nil {
+		unregistered = append(unregistered, "GetPersonnelAssignableHandler")
+	}
+	if o.GetPersonnelAssignedHandler == nil {
+		unregistered = append(unregistered, "GetPersonnelAssignedHandler")
 	}
 	if o.GetPublicCalendarIDHandler == nil {
 		unregistered = append(unregistered, "GetPublicCalendarIDHandler")
@@ -281,6 +294,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.PostMeHandler == nil {
 		unregistered = append(unregistered, "PostMeHandler")
+	}
+	if o.PostPersonnelAssignHandler == nil {
+		unregistered = append(unregistered, "PostPersonnelAssignHandler")
 	}
 	if o.PostShowsHandler == nil {
 		unregistered = append(unregistered, "PostShowsHandler")
@@ -390,7 +406,11 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/personnel"] = NewGetPersonnel(o.context, o.GetPersonnelHandler)
+	o.handlers["GET"]["/personnel/assignable"] = NewGetPersonnelAssignable(o.context, o.GetPersonnelAssignableHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/personnel/assigned"] = NewGetPersonnelAssigned(o.context, o.GetPersonnelAssignedHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
@@ -431,6 +451,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/me"] = NewPostMe(o.context, o.PostMeHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/personnel/assign"] = NewPostPersonnelAssign(o.context, o.PostPersonnelAssignHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
@@ -92,18 +93,18 @@ var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostS
 		}
 	}
 
-	showId := strconv.FormatUint(uint64(show.ID), 10)
+	showIdString := strconv.FormatUint(uint64(show.ID), 10)
 	for _, role := range permissions.ShowRoles {
-		role.Initialise(showId)
+		role.Initialise(showIdString)
 	}
 
-	err = permissions.AddToShow(showId, userId)
+	err = personnel_domain.AddToShow(int64(show.ID), userId)
 	if err != nil {
 		logger.Error("Could not add person to show", err)
 		return &operations.PostShowsInternalServerError{}
 	}
 
-	err = permissions.AddManagerToShow(showId, userId)
+	err = permissions.AddManagerToShow(showIdString, userId)
 	if err != nil {
 		logger.Error("Could not add manager to show", err)
 		return &operations.PostShowsInternalServerError{}

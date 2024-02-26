@@ -19,7 +19,7 @@ const ConfirmationModal: React.FC<{
   const context = useContext(ConfirmationModalContext);
   return (
     <>
-      <Modal isOpen={isOpen} close={close} title={context.title}>
+      <Modal isOpen={isOpen} close={close} title={context.title} className="z-50">
         <p className="my-2">{context.message}</p>
         <div className="pt-4 flex gap-2">
           <button
@@ -66,8 +66,8 @@ export const ConfirmationModalWrapper: React.FC<{
           onYes: state.onYes,
         }}
       >
-        <ConfirmationModal Modal={Modal} close={close} isOpen={isOpen} />
         {children}
+        <ConfirmationModal Modal={Modal} close={close} isOpen={isOpen} />
       </ConfirmationModalContext.Provider>
     </>
   );

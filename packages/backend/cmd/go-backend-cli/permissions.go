@@ -4,6 +4,7 @@ import (
 	"strconv"
 	"strings"
 
+	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/permissions"
 
 	"github.com/supertokens/supertokens-golang/recipe/userroles"
@@ -83,12 +84,15 @@ func AddToShow() *cli.Command {
 		Action: func(ctx *cli.Context) error {
 			permissions.InitSupertokens()
 			email := ctx.String("email")
-			showId := ctx.String("showId")
+			showId, err := strconv.ParseInt(ctx.String("showId"), 10, 64)
+			if err != nil {
+				return err
+			}
 			userId, err := permissions.GetUserIdByEmail(email)
 			if err != nil {
 				return err
 			}
-			return permissions.AddToShow(showId, userId)
+			return personnel_domain.AddToShow(showId, userId)
 		},
 	}
 }

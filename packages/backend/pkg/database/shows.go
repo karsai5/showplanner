@@ -43,7 +43,7 @@ func GetShowBySlug(slug string) (Show, error) {
 	return show, res.Error
 }
 
-func GetShowById(showId string) (Show, error) {
+func GetShowById(showId int64) (Show, error) {
 	show := Show{}
 	res := db.First(&show, showId)
 

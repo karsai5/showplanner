@@ -3,12 +3,7 @@ package permissions
 import (
 	"fmt"
 
-	"showplanner.io/pkg/convert"
-	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
-	"showplanner.io/pkg/postoffice"
-	"showplanner.io/pkg/postoffice/letters"
-	"showplanner.io/pkg/postoffice/topics"
 
 	uuid "github.com/satori/go.uuid"
 	"github.com/supertokens/supertokens-golang/recipe/session"
@@ -17,39 +12,6 @@ import (
 	"github.com/supertokens/supertokens-golang/recipe/userroles"
 	"github.com/supertokens/supertokens-golang/recipe/userroles/userrolesclaims"
 )
-
-func AddToShow(showId string, userId uuid.UUID) (err error) {
-	defer func() {
-		if err != nil {
-			err = fmt.Errorf("while adding person to show: %w", err)
-		}
-	}()
-
-	user, err := GetUserById(userId)
-	if err != nil {
-		return err
-	}
-
-	show, err := database.GetShowById(showId)
-	if err != nil {
-		return err
-	}
-
-	database.AddPersonToShow(show.ID, userId)
-
-	err = GiveRole(ShowMember.Key(showId), userId)
-	if err != nil {
-		return err
-	}
-
-	postoffice.PublishLetter(topics.UserAddedToShow, letters.UserAddedToShowLetter{
-		Email:    user.Email,
-		ShowName: show.Name,
-		ShowSlug: show.Slug,
-		ShowId:   convert.UintToString(&show.ID),
-	})
-	return nil
-}
 
 func GetUserIdByEmail(email string) (uuid.UUID, error) {
 	user, err := GetUserByEmail(email)
@@ -123,6 +85,10 @@ func GiveRole(role string, userId uuid.UUID) error {
 
 	if err != nil {
 		return fmt.Errorf("Could not give %s role %s: %w", userId, role, err)
+	}
+
+	if user == nil {
+		return fmt.Errorf("Could not find user with id %s", userId)
 	}
 
 	response, err := userroles.AddRoleToUser("public", user.ID, role)
