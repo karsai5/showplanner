@@ -1,5 +1,5 @@
-import { Icon } from "semantic-ui-react";
-import styled from "styled-components";
+import { Icon } from 'semantic-ui-react';
+import styled from 'styled-components';
 
 const NoBreakLink = styled.a`
   white-space: nowrap;

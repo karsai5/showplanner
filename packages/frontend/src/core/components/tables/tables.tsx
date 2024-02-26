@@ -1,4 +1,4 @@
-import cc from "classnames";
+import cc from 'classnames';
 
 export const Td: React.FC<{
   children: React.ReactNode;
@@ -7,7 +7,7 @@ export const Td: React.FC<{
 }> = ({ children, rowSpan, className }) => {
   return (
     <td
-      className={cc("border-l border-slate-200 last:border-r", className)}
+      className={cc('border-l border-slate-200 last:border-r', className)}
       rowSpan={rowSpan}
     >
       {children}

@@ -1,10 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import { getApi } from "core/api";
-import ErrorBox from "core/components/ErrorBox/ErrorBox";
-import { H2 } from "core/components/Typography";
-import { EventTable } from "domains/events/EventTable";
-import Head from "next/head";
-import { useRouter } from "next/router";
+import { useQuery } from '@tanstack/react-query';
+import { getApi } from 'core/api';
+import ErrorBox from 'core/components/ErrorBox/ErrorBox';
+import { H2 } from 'core/components/Typography';
+import { EventTable } from 'domains/events/EventTable';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 const ShowPage = () => {
   const api = getApi();
@@ -12,7 +12,7 @@ const ShowPage = () => {
     query: { slug },
   } = useRouter();
   const { data, isLoading, isError } = useQuery(
-    ["EventsListPublic", slug],
+    ['EventsListPublic', slug],
     async () => {
       if (!slug) {
         return null;
@@ -21,7 +21,7 @@ const ShowPage = () => {
         showSlug: slug as string,
       });
       return { showName, events };
-    }
+    },
   );
 
   if (isLoading || isError || !data) {

@@ -1,1 +1,1 @@
-export { ShowTimer } from "./ShowTimer";
+export { ShowTimer } from './ShowTimer';

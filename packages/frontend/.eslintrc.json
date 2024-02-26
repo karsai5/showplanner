@@ -20,10 +20,7 @@
     "no-console": [
       "error",
       {
-        "allow": [
-          "warn",
-          "error"
-        ]
+        "allow": ["warn", "error"]
       }
     ],
     "no-relative-import-paths/no-relative-import-paths": [
@@ -33,21 +30,13 @@
   },
   "overrides": [
     {
-      "files": [
-        "*.ts",
-        "*.tsx",
-        "*.js"
-      ],
+      "files": ["*.ts", "*.tsx", "*.js"],
       "processor": "@graphql-eslint/graphql"
     },
     {
-      "files": [
-        "*.graphql"
-      ],
+      "files": ["*.graphql"],
       "parser": "@graphql-eslint/eslint-plugin",
-      "plugins": [
-        "@graphql-eslint"
-      ],
+      "plugins": ["@graphql-eslint"],
       "rules": {
         "@graphql-eslint/known-type-names": "error"
       }

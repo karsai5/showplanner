@@ -1,13 +1,13 @@
-import cc from "classnames";
-import Image from "next/image";
-import React, { useState } from "react";
+import cc from 'classnames';
+import Image from 'next/image';
+import React, { useState } from 'react';
 
-import heroImage from "./stairs.png";
+import heroImage from './stairs.png';
 
 const WelcomeModal = () => {
   const [isOpen, setIsOpen] = useState(true);
   return (
-    <div className={cc("modal", { ["modal-open"]: isOpen })}>
+    <div className={cc('modal', { ['modal-open']: isOpen })}>
       <div className="modal-box">
         <h3 className="font-bold text-lg">Welcome to the ShowPlanner!</h3>
         <Image height="200" className="mx-auto" src={heroImage} alt="" />

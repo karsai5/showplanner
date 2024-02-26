@@ -1,12 +1,12 @@
-import { useModal } from "core/components/Modal/Modal";
-import { HasPermission, PERMISSION } from "core/permissions";
-import NewShowForm from "domains/shows/NewShowForm/NewShowForm";
-import { AssignedShowBoxGrid } from "domains/shows/ShowBoxGrid/AssignedShowBoxGrid";
-import Head from "next/head";
-import Link from "next/link";
-import { SessionAuth } from "supertokens-auth-react/recipe/session";
-import Session from "supertokens-auth-react/recipe/session";
-import { PermissionClaim } from "supertokens-auth-react/recipe/userroles";
+import { useModal } from 'core/components/Modal/Modal';
+import { HasPermission, PERMISSION } from 'core/permissions';
+import NewShowForm from 'domains/shows/NewShowForm/NewShowForm';
+import { AssignedShowBoxGrid } from 'domains/shows/ShowBoxGrid/AssignedShowBoxGrid';
+import Head from 'next/head';
+import Link from 'next/link';
+import { SessionAuth } from 'supertokens-auth-react/recipe/session';
+import Session from 'supertokens-auth-react/recipe/session';
+import { PermissionClaim } from 'supertokens-auth-react/recipe/userroles';
 
 const Shows = () => {
   return (
@@ -39,7 +39,7 @@ const AddShowButton = () => {
   }
   const permissions = claimValue?.value;
 
-  if (Array.isArray(permissions) && permissions.includes("add-show")) {
+  if (Array.isArray(permissions) && permissions.includes('add-show')) {
     return (
       <>
         <button className="btn mb-2" onClick={open}>

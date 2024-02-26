@@ -1,4 +1,4 @@
-import { Moment } from "moment";
+import { Moment } from 'moment';
 
 export type Timers = {
   actOneStart: Moment | null;
@@ -15,26 +15,26 @@ export type Timers = {
 };
 
 export const TimerLabels = {
-  actOneStart: "Act one start",
-  intervalStart: "Interval start",
-  intervalEnd: "Act two start",
-  actTwoEnd: "Curtains down",
+  actOneStart: 'Act one start',
+  intervalStart: 'Interval start',
+  intervalEnd: 'Act two start',
+  actTwoEnd: 'Curtains down',
 
-  houseOpen: "House open",
-  fohClearance: "FOH clearance",
+  houseOpen: 'House open',
+  fohClearance: 'FOH clearance',
 
-  intervalFohClearance: "Interval FOH clearance",
-  bowsStart: "Bows start",
-  orchestraEnd: "Orchestra end",
+  intervalFohClearance: 'Interval FOH clearance',
+  bowsStart: 'Bows start',
+  orchestraEnd: 'Orchestra end',
 };
 
 export enum Phase {
-  beginners = "Beginners",
-  actOne = "Act One",
-  interval = "Interval",
-  actTwo = "Act Two",
-  postShow = "Post show",
-  unknown = "Unknown",
+  beginners = 'Beginners',
+  actOne = 'Act One',
+  interval = 'Interval',
+  actTwo = 'Act Two',
+  postShow = 'Post show',
+  unknown = 'Unknown',
 }
 
 export const calculateCurrentPhase = (timers: Timers) => {

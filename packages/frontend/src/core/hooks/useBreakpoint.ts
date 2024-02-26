@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-type Size = "sm" | "md" | "lg" | "xl" | "2xl";
+type Size = 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
 const getSize = (size: Size) => {
   switch (size) {
-    case "sm":
+    case 'sm':
       return 640;
-    case "md":
+    case 'md':
       return 768;
-    case "lg":
+    case 'lg':
       return 1024;
-    case "xl":
+    case 'xl':
       return 1280;
-    case "2xl":
+    case '2xl':
       return 1536;
   }
 };
@@ -31,12 +31,12 @@ export const useBreakpoint = (size: Size) => {
       }
     }
 
-    window.addEventListener("resize", handleWindowResize);
+    window.addEventListener('resize', handleWindowResize);
 
     handleWindowResize();
 
     return () => {
-      window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener('resize', handleWindowResize);
     };
   }, []);
 

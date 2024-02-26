@@ -2,11 +2,11 @@ export const Pronoun: React.FunctionComponent<
   React.PropsWithChildren<{ pronoun?: string }>
 > = ({ pronoun }) => {
   switch (pronoun) {
-    case "him":
+    case 'him':
       return <>Him/He</>;
-    case "her":
+    case 'her':
       return <>Her/She</>;
-    case "them":
+    case 'them':
       return <>Them/They</>;
     default:
       return <>{pronoun}</>;

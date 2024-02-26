@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from "../runtime";
+import { exists, mapValues } from '../runtime';
 /**
  *
  * @export
@@ -56,8 +56,8 @@ export interface Event {
  */
 export function instanceOfEvent(value: object): boolean {
   let isInstance = true;
-  isInstance = isInstance && "id" in value;
-  isInstance = isInstance && "start" in value;
+  isInstance = isInstance && 'id' in value;
+  isInstance = isInstance && 'start' in value;
 
   return isInstance;
 }
@@ -68,19 +68,19 @@ export function EventFromJSON(json: any): Event {
 
 export function EventFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean
+  ignoreDiscriminator: boolean,
 ): Event {
   if (json === undefined || json === null) {
     return json;
   }
   return {
-    id: json["id"],
-    shortnote: !exists(json, "shortnote") ? undefined : json["shortnote"],
-    start: new Date(json["start"]),
-    curtainsUp: !exists(json, "curtainsUp")
+    id: json['id'],
+    shortnote: !exists(json, 'shortnote') ? undefined : json['shortnote'],
+    start: new Date(json['start']),
+    curtainsUp: !exists(json, 'curtainsUp')
       ? undefined
-      : new Date(json["curtainsUp"]),
-    end: !exists(json, "end") ? undefined : new Date(json["end"]),
+      : new Date(json['curtainsUp']),
+    end: !exists(json, 'end') ? undefined : new Date(json['end']),
   };
 }
 

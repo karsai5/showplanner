@@ -1,15 +1,15 @@
-import { LayoutWithBackgroundImage } from "domains/layout/LayoutWithBackgroundImage";
-import dynamic from "next/dynamic";
-import React, { ReactElement, useEffect } from "react";
-import { redirectToAuth } from "supertokens-auth-react";
-import { ThirdPartyEmailPasswordPreBuiltUI } from "supertokens-auth-react/recipe/thirdpartyemailpassword/prebuiltui";
-import { canHandleRoute, getRoutingComponent } from "supertokens-auth-react/ui";
+import { LayoutWithBackgroundImage } from 'domains/layout/LayoutWithBackgroundImage';
+import dynamic from 'next/dynamic';
+import React, { ReactElement, useEffect } from 'react';
+import { redirectToAuth } from 'supertokens-auth-react';
+import { ThirdPartyEmailPasswordPreBuiltUI } from 'supertokens-auth-react/recipe/thirdpartyemailpassword/prebuiltui';
+import { canHandleRoute, getRoutingComponent } from 'supertokens-auth-react/ui';
 
 const SuperTokensComponentNoSSR = dynamic<object>(
   new Promise((res) =>
-    res(() => getRoutingComponent([ThirdPartyEmailPasswordPreBuiltUI]))
+    res(() => getRoutingComponent([ThirdPartyEmailPasswordPreBuiltUI])),
   ),
-  { ssr: false }
+  { ssr: false },
 );
 
 const Auth = () => {

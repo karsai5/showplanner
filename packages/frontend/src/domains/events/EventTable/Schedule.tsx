@@ -1,19 +1,19 @@
-import { ScheduleEventDTO } from "core/api/generated";
-import { PERMISSION, showPermission, useHasPermission } from "core/permissions";
-import { useShowSummary } from "domains/shows/lib/summaryContext";
+import { ScheduleEventDTO } from 'core/api/generated';
+import { PERMISSION, showPermission, useHasPermission } from 'core/permissions';
+import { useShowSummary } from 'domains/shows/lib/summaryContext';
 
-import { AvailabilityDropdown } from "./components/AvailabilityDropdown";
-import { EventTable } from "./EventTable";
-import { CloneEventModal } from "./modals/CloneEventModal";
-import { DeleteEventModal } from "./modals/DeleteEventModal";
-import { EditEventModal } from "./modals/EditEventModal";
+import { AvailabilityDropdown } from './components/AvailabilityDropdown';
+import { EventTable } from './EventTable';
+import { CloneEventModal } from './modals/CloneEventModal';
+import { DeleteEventModal } from './modals/DeleteEventModal';
+import { EditEventModal } from './modals/EditEventModal';
 
 export const Schedule: React.FC<React.ComponentProps<typeof EventTable>> = (
-  props
+  props,
 ) => {
   const show = useShowSummary();
   const canEditEvents = useHasPermission()(
-    showPermission(show.id, PERMISSION.addEvents)
+    showPermission(show.id, PERMISSION.addEvents),
   );
 
   return (

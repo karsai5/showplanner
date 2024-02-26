@@ -1,7 +1,7 @@
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
-import { useUserId } from "core/permissions";
-import Link from "next/link";
-import { SessionAuth } from "supertokens-auth-react/recipe/session";
+import { useUserId } from 'core/permissions';
+import Link from 'next/link';
+import { SessionAuth } from 'supertokens-auth-react/recipe/session';
 
 export const Calendar: React.FC = () => {
   const userId = useUserId();
@@ -21,14 +21,14 @@ export const Calendar: React.FC = () => {
         <h2>How to subscribe via Google Calendar</h2>
         <ol className="list-decimal">
           <li>
-            On your computer, open{" "}
+            On your computer, open{' '}
             <Link href="https://calendar.google.com/calendar">
-              {" "}
+              {' '}
               Google Calendar.
             </Link>
           </li>
           <li>
-            On the left, next to &quot;Other calendars,&quot; click{" "}
+            On the left, next to &quot;Other calendars,&quot; click{' '}
             <code>+</code> then <code>From URL</code>.
           </li>
           <li>
@@ -46,7 +46,7 @@ export const Calendar: React.FC = () => {
         <ol className="list-decimal">
           <li>On your macbook, open the Calendar app</li>
           <li>
-            In Calendar, choose <code>File</code> &gt;{" "}
+            In Calendar, choose <code>File</code> &gt;{' '}
             <code>New Calendar Subscription</code>
           </li>
           <li>

@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getApi } from "core/api";
-import { EventDTO } from "core/api/generated";
-import { useModal } from "core/components/Modal/Modal";
-import { showToastError } from "core/utils/errors";
-import { isNil } from "core/utils/isNil";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { getApi } from 'core/api';
+import { EventDTO } from 'core/api/generated';
+import { useModal } from 'core/components/Modal/Modal';
+import { showToastError } from 'core/utils/errors';
+import { isNil } from 'core/utils/isNil';
 
 export const DeleteEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
   const api = getApi();
@@ -13,15 +13,15 @@ export const DeleteEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
   const mutation = useMutation<unknown, Error>({
     mutationFn: () => {
       if (isNil(event.showId)) {
-        throw new Error("Show id is missing");
+        throw new Error('Show id is missing');
       }
       return api.eventsIdDelete({ id: event.id });
     },
     onError: (e) => {
-      showToastError("Could not delete event", e);
+      showToastError('Could not delete event', e);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["EventsList", event.showId] });
+      queryClient.invalidateQueries({ queryKey: ['EventsList', event.showId] });
       close();
     },
   });

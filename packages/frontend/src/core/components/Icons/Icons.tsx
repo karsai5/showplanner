@@ -1,4 +1,4 @@
-import cc from "classnames";
+import cc from 'classnames';
 // All these icons come from https://heroicons.com/
 
 export const ArchiveBoxIcon: React.FC<{ className?: string }> = ({
@@ -10,7 +10,7 @@ export const ArchiveBoxIcon: React.FC<{ className?: string }> = ({
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -27,7 +27,7 @@ export const UserIcon: React.FC<{ className?: string }> = ({ className }) => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -44,7 +44,7 @@ export const ClockIcon: React.FC<{ className?: string }> = ({ className }) => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -61,7 +61,7 @@ export const CrossIcon: React.FC<{ className?: string }> = ({ className }) => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -80,7 +80,7 @@ export const CalendarIcon: React.FC<{ className?: string }> = ({
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -97,7 +97,7 @@ export const PlayIcon: React.FC<{ className?: string }> = ({ className }) => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -114,7 +114,7 @@ export const PauseIcon: React.FC<{ className?: string }> = ({ className }) => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -131,7 +131,7 @@ export const EmailIcon: React.FC<{ className?: string }> = ({ className }) => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -150,7 +150,7 @@ export const ClipboardIcon: React.FC<{ className?: string }> = ({
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -167,7 +167,7 @@ export const PencilIcon: React.FC<{ className?: string }> = ({ className }) => (
     viewBox="0 0 24 24"
     strokeWidth="1.5"
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -186,7 +186,7 @@ export const BarsThreeLeft: React.FC<{ className?: string }> = ({
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -205,7 +205,7 @@ export const BarsThreeRight: React.FC<{ className?: string }> = ({
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -222,7 +222,7 @@ export const BarsThree: React.FC<{ className?: string }> = ({ className }) => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -239,7 +239,7 @@ export const UsersIcon: React.FC<{ className?: string }> = ({ className }) => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -258,7 +258,7 @@ export const DocumentCheckIcon: React.FC<{ className?: string }> = ({
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -275,7 +275,7 @@ export const PlusIcon: React.FC<{ className?: string }> = ({ className }) => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"
@@ -292,7 +292,7 @@ export const TrashIcon: React.FC<{ className?: string }> = ({ className }) => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={cc("w-6 h-6", className)}
+    className={cc('w-6 h-6', className)}
   >
     <path
       strokeLinecap="round"

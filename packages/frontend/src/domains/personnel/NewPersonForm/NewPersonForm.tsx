@@ -1,13 +1,13 @@
-import { useMutation } from "@tanstack/react-query";
-import cc from "classnames";
-import { api } from "core/api";
-import FormattedTextInput from "core/components/fields/FormattedTextInput";
-import TextArea from "core/components/fields/TextArea";
-import Input from "core/components/fields/TextInput";
-import { showToastError } from "core/utils/errors";
-import React, { FC, ReactNode } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
+import { useMutation } from '@tanstack/react-query';
+import cc from 'classnames';
+import { api } from 'core/api';
+import FormattedTextInput from 'core/components/fields/FormattedTextInput';
+import TextArea from 'core/components/fields/TextArea';
+import Input from 'core/components/fields/TextInput';
+import { showToastError } from 'core/utils/errors';
+import React, { FC, ReactNode } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 type Inputs = {
   avatar: string;
@@ -38,12 +38,12 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
     watch,
   } = useForm<Inputs>();
 
-  const pronoun = watch("pronoun");
+  const pronoun = watch('pronoun');
 
   const mutation = useMutation<unknown, Error, Inputs>({
     mutationFn: (formData) => {
       let finalPronoun = formData.pronoun;
-      if (finalPronoun === "Other") {
+      if (finalPronoun === 'Other') {
         finalPronoun = formData.manualPronoun;
       }
       return api.mePost({
@@ -66,13 +66,13 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
       });
     },
     onError: (e) => {
-      showToastError("Something went wrong updating personal details.", e);
+      showToastError('Something went wrong updating personal details.', e);
     },
     onSuccess: () => {
       if (onSuccess) {
         onSuccess();
       }
-      toast.success("Personal data successfully updated.");
+      toast.success('Personal data successfully updated.');
     },
   });
 
@@ -85,12 +85,12 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
       <p className="mb-2 text-lg font-bold">Personal details</p>
       <Row>
         <label
-          className={cc({ ["md:w-24"]: pronoun === "Other" }, "form-control")}
+          className={cc({ ['md:w-24']: pronoun === 'Other' }, 'form-control')}
         >
           <div className="label">
             <span className="label-text-alt">Pronoun</span>
           </div>
-          <select className="select select-bordered" {...register("pronoun")}>
+          <select className="select select-bordered" {...register('pronoun')}>
             <option>She/Her</option>
             <option>He/Him</option>
             <option>They/Them</option>
@@ -99,10 +99,10 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
           </select>
         </label>
 
-        {pronoun === "Other" && (
+        {pronoun === 'Other' && (
           <div className="md:mt-8 md:w-28 w-full">
             <Input
-              register={register("manualPronoun", { required: false })}
+              register={register('manualPronoun', { required: false })}
               placeholder="Pronoun"
               errors={errors}
             />
@@ -110,14 +110,14 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
         )}
 
         <Input
-          register={register("firstname", { required: true })}
+          register={register('firstname', { required: true })}
           placeholder="First name"
           errors={errors}
           label="This is the name that will appear in programs"
           showRequired
         />
         <Input
-          register={register("lastname", { required: true })}
+          register={register('lastname', { required: true })}
           placeholder="Last name"
           errors={errors}
           className="md:mt-8"
@@ -126,13 +126,13 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
       </Row>
       <Row>
         <Input
-          register={register("preferredName")}
+          register={register('preferredName')}
           placeholder="Preferred name"
           errors={errors}
           label="The name you would want people to refer to you when backstage"
         />
         <FormattedTextInput
-          register={register("phone", { required: true })}
+          register={register('phone', { required: true })}
           placeholder="Phone"
           errors={errors}
           mask="0499 999 999"
@@ -144,7 +144,7 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
         <FormattedTextInput
           label={
             <>
-              You can apply for a WWC{" "}
+              You can apply for a WWC{' '}
               <a
                 href="https://www.service.nsw.gov.au/transaction/apply-for-a-working-with-children-check"
                 className="link"
@@ -152,10 +152,10 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
                 at this website.
               </a>
               <br /> Only required if you&apos;re over 18 and doing a show with
-              minors.{" "}
+              minors.{' '}
             </>
           }
-          register={register("wwc")}
+          register={register('wwc')}
           placeholder="Working with Children Check number"
           errors={errors}
           mask="*** ********"
@@ -163,7 +163,7 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
         <Input
           label="Date of birth"
           type="date"
-          register={register("dob", { required: true })}
+          register={register('dob', { required: true })}
           placeholder="Date of birth (DD/MM/YYYY)"
           errors={errors}
           className="justify-end"
@@ -172,7 +172,7 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
       </Row>
       <Row>
         <TextArea
-          register={register("allergies", { required: true })}
+          register={register('allergies', { required: true })}
           placeholder="Allergies and/or medical conditions"
           errors={errors}
           showRequired
@@ -182,14 +182,14 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
       <p className="mb-2 mt-4 text-lg font-bold">Emergency Contact Details</p>
       <Row>
         <Input
-          register={register("emergencyName", { required: true })}
+          register={register('emergencyName', { required: true })}
           placeholder="Name"
           label="Emergency contact name"
           errors={errors}
           showRequired
         />
         <FormattedTextInput
-          register={register("emergencyPhone", { required: true })}
+          register={register('emergencyPhone', { required: true })}
           placeholder="Phone"
           label="Emergency contact phone"
           errors={errors}
@@ -198,7 +198,7 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
         />
         <Input
           label="Relationship to emergency contact"
-          register={register("emergencyRelationship", { required: true })}
+          register={register('emergencyRelationship', { required: true })}
           placeholder="Relation (parent, sibling, partner etc.)"
           errors={errors}
           showRequired
@@ -207,24 +207,24 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
 
       <p className="mb-2 text-lg font-bold">Other</p>
       <TextArea
-        register={register("hearAboutUs")}
+        register={register('hearAboutUs')}
         placeholder="How did you hear about us?"
         errors={errors}
         className="h-20 mb-4"
       />
       <TextArea
-        register={register("previousWork")}
+        register={register('previousWork')}
         placeholder="Previous work or experience"
         errors={errors}
         className="h-20 mb-4"
       />
       <TextArea
-        register={register("reasonForCrewing")}
+        register={register('reasonForCrewing')}
         placeholder="What are your reasons for doing community crewing? Are there any goals you hope to accomplish (meeting new people, getting professional work etc.)"
         errors={errors}
         className="h-20 mb-4"
       />
-      <button type="submit" className={"btn btn-block"}>
+      <button type="submit" className={'btn btn-block'}>
         {mutation.isLoading && (
           <span className="loading loading-spinner"></span>
         )}
@@ -239,7 +239,7 @@ const Row: React.FC<{ children: ReactNode; className?: string }> = ({
   className,
 }) => {
   return (
-    <div className={cc("flex flex-col gap-2 md:flex-row", className)}>
+    <div className={cc('flex flex-col gap-2 md:flex-row', className)}>
       {children}
     </div>
   );

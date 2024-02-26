@@ -1,28 +1,28 @@
-import { useQuery } from "@tanstack/react-query";
-import { getApi } from "core/api";
-import { AccessDenied } from "core/components/AccessDenied/AccessDenied";
-import ErrorBox from "core/components/ErrorBox/ErrorBox";
-import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
-import { useBreakpoint } from "core/hooks/useBreakpoint";
-import { PERMISSION, showPermission } from "core/permissions";
-import { Footer } from "domains/layout/components/Footer";
-import { Nav } from "domains/layout/components/Nav";
-import Sidebar from "domains/shows/Sidebar/Sidebar";
-import { useRouter } from "next/router";
-import { ReactNode, useEffect, useState } from "react";
-import { SessionAuth } from "supertokens-auth-react/recipe/session";
-import { PermissionClaim } from "supertokens-auth-react/recipe/userroles";
+import { useQuery } from '@tanstack/react-query';
+import { getApi } from 'core/api';
+import { AccessDenied } from 'core/components/AccessDenied/AccessDenied';
+import ErrorBox from 'core/components/ErrorBox/ErrorBox';
+import { LoadingBox } from 'core/components/LoadingBox/LoadingBox';
+import { useBreakpoint } from 'core/hooks/useBreakpoint';
+import { PERMISSION, showPermission } from 'core/permissions';
+import { Footer } from 'domains/layout/components/Footer';
+import { Nav } from 'domains/layout/components/Nav';
+import Sidebar from 'domains/shows/Sidebar/Sidebar';
+import { useRouter } from 'next/router';
+import { ReactNode, useEffect, useState } from 'react';
+import { SessionAuth } from 'supertokens-auth-react/recipe/session';
+import { PermissionClaim } from 'supertokens-auth-react/recipe/userroles';
 
-import { ShowSummaryContext } from "./lib/summaryContext";
+import { ShowSummaryContext } from './lib/summaryContext';
 
 export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const api = getApi();
   const [sidebarOpen, setSidebarOpen] = useState(
-    getInitiaValueForSidebarOpen()
+    getInitiaValueForSidebarOpen(),
   );
-  const isSmall = useBreakpoint("sm");
+  const isSmall = useBreakpoint('sm');
 
   useEffect(() => {
     if (isSmall) {
@@ -39,7 +39,11 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
   const {
     query: { slug },
   } = useRouter();
-  const { data: show, isLoading, isError } = useQuery(["Show", slug], () => {
+  const {
+    data: show,
+    isLoading,
+    isError,
+  } = useQuery(['Show', slug], () => {
     if (!slug) {
       return null;
     }
@@ -58,7 +62,7 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
             overrideGlobalClaimValidators={(globalValidators) => [
               ...globalValidators,
               PermissionClaim.validators.includes(
-                showPermission(show?.id, PERMISSION.viewEvents)
+                showPermission(show?.id, PERMISSION.viewEvents),
               ),
             ]}
           >
@@ -79,25 +83,25 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
   );
 };
 
-const SIDEBAR_OPEN = "sidebarOpen";
+const SIDEBAR_OPEN = 'sidebarOpen';
 
 const getInitiaValueForSidebarOpen = (): boolean => {
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return true;
   }
 
   const res = localStorage.getItem(SIDEBAR_OPEN);
   switch (res) {
-    case "true":
+    case 'true':
       return true;
     default:
-    case "false":
+    case 'false':
       return false;
   }
 };
 
 const storeValueForSidebarOpen = (value: boolean) => {
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return;
   }
   localStorage.setItem(SIDEBAR_OPEN, `${value}`);

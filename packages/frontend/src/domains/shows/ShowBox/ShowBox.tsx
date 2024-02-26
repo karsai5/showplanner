@@ -1,7 +1,7 @@
-import cc from "classnames";
-import ColorHash from "color-hash";
-import { ShowSummaryDTO } from "core/api/generated";
-import Link from "next/link";
+import cc from 'classnames';
+import ColorHash from 'color-hash';
+import { ShowSummaryDTO } from 'core/api/generated';
+import Link from 'next/link';
 
 const colorHash = new ColorHash();
 
@@ -21,7 +21,7 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
           {
             grayscale: pastEvent,
           },
-          "card card-compact w-full sm:w-80 bg-base-100 shadow-xl"
+          'card card-compact w-full sm:w-80 bg-base-100 shadow-xl',
         )}
       >
         <figure className="relative h-40">

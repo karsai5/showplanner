@@ -1,11 +1,11 @@
-import { BarsThreeLeft, BarsThreeRight } from "core/components/Icons";
-import { useBreakpoint } from "core/hooks/useBreakpoint";
-import Link from "next/link";
-import Session from "supertokens-auth-react/recipe/session";
-import { signOut } from "supertokens-auth-react/recipe/thirdpartyemailpassword";
+import { BarsThreeLeft, BarsThreeRight } from 'core/components/Icons';
+import { useBreakpoint } from 'core/hooks/useBreakpoint';
+import Link from 'next/link';
+import Session from 'supertokens-auth-react/recipe/session';
+import { signOut } from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
 
 export const Nav: React.FC<{ mobile?: MobileNavProps }> = ({ mobile }) => {
-  const isSmall = useBreakpoint("sm");
+  const isSmall = useBreakpoint('sm');
 
   if (isSmall) {
     return <MobileNav {...mobile} />;
@@ -73,7 +73,7 @@ const NavList: React.FC<{ className?: string }> = ({ className }) => (
 const AuthItems: React.FC = () => {
   async function onLogout() {
     await signOut();
-    window.location.href = "/";
+    window.location.href = '/';
   }
   const session = Session.useSessionContext();
   if (session.loading) {

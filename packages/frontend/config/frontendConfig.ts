@@ -1,16 +1,20 @@
-import { getRequiredEnvVariable } from "core/utils/envVariables";
-import Router from "next/router";
-import Session from "supertokens-auth-react/recipe/session";
-import ThirdPartyEmailPasswordReact from "supertokens-auth-react/recipe/thirdpartyemailpassword";
+import { getRequiredEnvVariable } from 'core/utils/envVariables';
+import Router from 'next/router';
+import Session from 'supertokens-auth-react/recipe/session';
+import ThirdPartyEmailPasswordReact from 'supertokens-auth-react/recipe/thirdpartyemailpassword';
 
 export const frontendConfig = () => {
   return {
     appInfo: {
-      appName: "Showplanner",
-      apiDomain: getRequiredEnvVariable(process.env.NEXT_PUBLIC_SUPERTOKENS_URL),
-      websiteDomain: getRequiredEnvVariable(process.env.NEXT_PUBLIC_FRONTEND_URL),
-      apiBasePath: "/auth",
-      websiteBasePath: "/auth",
+      appName: 'Showplanner',
+      apiDomain: getRequiredEnvVariable(
+        process.env.NEXT_PUBLIC_SUPERTOKENS_URL,
+      ),
+      websiteDomain: getRequiredEnvVariable(
+        process.env.NEXT_PUBLIC_FRONTEND_URL,
+      ),
+      apiBasePath: '/auth',
+      websiteBasePath: '/auth',
     },
     recipeList: [
       ThirdPartyEmailPasswordReact.init({
@@ -24,7 +28,9 @@ export const frontendConfig = () => {
         },
       }),
       Session.init({
-        sessionTokenBackendDomain: getRequiredEnvVariable(process.env.NEXT_PUBLIC_COOKIE_DOMAIN),
+        sessionTokenBackendDomain: getRequiredEnvVariable(
+          process.env.NEXT_PUBLIC_COOKIE_DOMAIN,
+        ),
       }),
     ],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,10 +40,10 @@ export const frontendConfig = () => {
         location: {
           ...oI.location,
           setHref: (href: string) => {
-            Router.push(href)
+            Router.push(href);
           },
         },
-      }
+      };
     },
   };
 };

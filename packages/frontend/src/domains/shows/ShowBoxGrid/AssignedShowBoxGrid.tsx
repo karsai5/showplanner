@@ -1,14 +1,18 @@
-import { useQuery } from "@tanstack/react-query";
-import { getApi } from "core/api";
-import ErrorBox from "core/components/ErrorBox/ErrorBox";
-import { ShowBox } from "domains/shows/ShowBox/ShowBox";
-import Image from "next/image";
+import { useQuery } from '@tanstack/react-query';
+import { getApi } from 'core/api';
+import ErrorBox from 'core/components/ErrorBox/ErrorBox';
+import { ShowBox } from 'domains/shows/ShowBox/ShowBox';
+import Image from 'next/image';
 
-import missingImg from "./missing.png";
+import missingImg from './missing.png';
 
 export const AssignedShowBoxGrid: React.FC = () => {
   const api = getApi();
-  const { data: shows, isLoading, isError } = useQuery(["ShowList"], () => {
+  const {
+    data: shows,
+    isLoading,
+    isError,
+  } = useQuery(['ShowList'], () => {
     return api.showsGet();
   });
 
@@ -36,9 +40,15 @@ export const AssignedShowBoxGrid: React.FC = () => {
           <div>
             <h2 className="mb-2">Sad Chef!</h2>
             <p>
-              You have no shows assigned to you. The ShowPlanner team will have gotten an email letting them know that you&apos;ve signed up. Sit tight for now and you&apos;ll get an email once you&apos;ve been assigned to a show.
+              You have no shows assigned to you. The ShowPlanner team will have
+              gotten an email letting them know that you&apos;ve signed up. Sit
+              tight for now and you&apos;ll get an email once you&apos;ve been
+              assigned to a show.
             </p>
-            <p className="text-sm text-slate-500">This app is built in my spare time, so sometimes it takes a day or two to get added to a show.</p>
+            <p className="text-sm text-slate-500">
+              This app is built in my spare time, so sometimes it takes a day or
+              two to get added to a show.
+            </p>
           </div>
         </div>
       )}

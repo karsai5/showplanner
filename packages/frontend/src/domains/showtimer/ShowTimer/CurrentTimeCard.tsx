@@ -1,7 +1,7 @@
-import moment, { Moment } from "moment";
-import { useEffect, useState } from "react";
+import moment, { Moment } from 'moment';
+import { useEffect, useState } from 'react';
 
-import { Phase, Timers } from "./types";
+import { Phase, Timers } from './types';
 
 type Props = {
   timers: Timers;
@@ -18,21 +18,21 @@ type PhaseDescription = {
 const phaseDescriptions: Array<PhaseDescription> = [
   {
     phase: Phase.actOne,
-    label: "Act one",
-    start: "actOneStart",
-    end: "intervalStart",
+    label: 'Act one',
+    start: 'actOneStart',
+    end: 'intervalStart',
   },
   {
     phase: Phase.interval,
-    label: "Interval",
-    start: "intervalStart",
-    end: "intervalEnd",
+    label: 'Interval',
+    start: 'intervalStart',
+    end: 'intervalEnd',
   },
   {
     phase: Phase.actTwo,
-    label: "Act two",
-    start: "intervalEnd",
-    end: "actTwoEnd",
+    label: 'Act two',
+    start: 'intervalEnd',
+    end: 'actTwoEnd',
   },
 ];
 
@@ -55,7 +55,7 @@ export const CurrentTimeCard: React.FC<Props> = ({ timers, phase }) => {
   const showDiff = moment(timers.actTwoEnd || now).diff(timers.actOneStart);
 
   const finishedPhases = phaseDescriptions.filter(
-    (pd) => timers[pd.start] && timers[pd.end]
+    (pd) => timers[pd.start] && timers[pd.end],
   );
 
   return (
@@ -91,15 +91,15 @@ const TimerDisplay: React.FC<{ start: Moment | null }> = ({ start }) => {
   return (
     <span className="countdown">
       <span
-        style={{ ["--value"]: length.hours() } as React.CSSProperties}
+        style={{ ['--value']: length.hours() } as React.CSSProperties}
       ></span>
       :
       <span
-        style={{ "--value": length.minutes() } as React.CSSProperties}
+        style={{ '--value': length.minutes() } as React.CSSProperties}
       ></span>
       :
       <span
-        style={{ "--value": length.seconds() } as React.CSSProperties}
+        style={{ '--value': length.seconds() } as React.CSSProperties}
       ></span>
     </span>
   );
@@ -112,7 +112,7 @@ const BigClock: React.FC<Props> = ({ phase, timers }) => {
     return (
       <BigTimeWithLabel
         label={currentPhaseTimer.label}
-        secondaryLabel={timers[currentPhaseTimer.start]?.format("h:mma")}
+        secondaryLabel={timers[currentPhaseTimer.start]?.format('h:mma')}
       >
         <TimerDisplay start={timers[currentPhaseTimer.start]} />
       </BigTimeWithLabel>
@@ -122,13 +122,13 @@ const BigClock: React.FC<Props> = ({ phase, timers }) => {
     <BigTimeWithLabel label="Current time" secondaryLabel={phase}>
       <span className="countdown ">
         <span
-          style={{ "--value": now.format("h") } as React.CSSProperties}
+          style={{ '--value': now.format('h') } as React.CSSProperties}
         ></span>
         :
         <span
-          style={{ "--value": now.format("mm") } as React.CSSProperties}
+          style={{ '--value': now.format('mm') } as React.CSSProperties}
         ></span>
-        {now.format("a")}
+        {now.format('a')}
       </span>
     </BigTimeWithLabel>
   );
@@ -167,11 +167,11 @@ export const SmallTimeWithLabel: React.FC<{
         <div className="font-bold">{label}</div>
         <span className="countdown">
           <span
-            style={{ "--value": length.format("HH") } as React.CSSProperties}
+            style={{ '--value': length.format('HH') } as React.CSSProperties}
           ></span>
           :
           <span
-            style={{ "--value": length.format("mm") } as React.CSSProperties}
+            style={{ '--value': length.format('mm') } as React.CSSProperties}
           ></span>
         </span>
       </div>

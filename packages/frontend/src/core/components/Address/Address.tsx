@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
 interface AddressProps {
   address?: string;
@@ -6,7 +6,7 @@ interface AddressProps {
 
 const getUrl = (address: string) => {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    address
+    address,
   )}`;
 };
 

@@ -12,13 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from "../runtime";
-import type { AvailabilityDTO } from "./AvailabilityDTO";
+import { exists, mapValues } from '../runtime';
+import type { AvailabilityDTO } from './AvailabilityDTO';
 import {
   AvailabilityDTOFromJSON,
   AvailabilityDTOFromJSONTyped,
   AvailabilityDTOToJSON,
-} from "./AvailabilityDTO";
+} from './AvailabilityDTO';
 
 /**
  *
@@ -93,53 +93,53 @@ export interface AvailabilitiesDTOEvents {
  */
 export function instanceOfAvailabilitiesDTOEvents(value: object): boolean {
   let isInstance = true;
-  isInstance = isInstance && "id" in value;
-  isInstance = isInstance && "start" in value;
+  isInstance = isInstance && 'id' in value;
+  isInstance = isInstance && 'start' in value;
 
   return isInstance;
 }
 
 export function AvailabilitiesDTOEventsFromJSON(
-  json: any
+  json: any,
 ): AvailabilitiesDTOEvents {
   return AvailabilitiesDTOEventsFromJSONTyped(json, false);
 }
 
 export function AvailabilitiesDTOEventsFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean
+  ignoreDiscriminator: boolean,
 ): AvailabilitiesDTOEvents {
   if (json === undefined || json === null) {
     return json;
   }
   return {
-    id: json["id"],
-    showId: !exists(json, "showId") ? undefined : json["showId"],
-    start: new Date(json["start"]),
-    name: !exists(json, "name") ? undefined : json["name"],
-    nameRaw: !exists(json, "nameRaw") ? undefined : json["nameRaw"],
-    shortnote: !exists(json, "shortnote") ? undefined : json["shortnote"],
-    address: !exists(json, "address") ? undefined : json["address"],
-    curtainsUp: !exists(json, "curtainsUp")
+    id: json['id'],
+    showId: !exists(json, 'showId') ? undefined : json['showId'],
+    start: new Date(json['start']),
+    name: !exists(json, 'name') ? undefined : json['name'],
+    nameRaw: !exists(json, 'nameRaw') ? undefined : json['nameRaw'],
+    shortnote: !exists(json, 'shortnote') ? undefined : json['shortnote'],
+    address: !exists(json, 'address') ? undefined : json['address'],
+    curtainsUp: !exists(json, 'curtainsUp')
       ? undefined
-      : json["curtainsUp"] === null
+      : json['curtainsUp'] === null
       ? null
-      : new Date(json["curtainsUp"]),
-    end: !exists(json, "end")
+      : new Date(json['curtainsUp']),
+    end: !exists(json, 'end')
       ? undefined
-      : json["end"] === null
+      : json['end'] === null
       ? null
-      : new Date(json["end"]),
-    availabilities: !exists(json, "availabilities")
+      : new Date(json['end']),
+    availabilities: !exists(json, 'availabilities')
       ? undefined
-      : json["availabilities"] === null
+      : json['availabilities'] === null
       ? null
-      : (json["availabilities"] as Array<any>).map(AvailabilityDTOFromJSON),
+      : (json['availabilities'] as Array<any>).map(AvailabilityDTOFromJSON),
   };
 }
 
 export function AvailabilitiesDTOEventsToJSON(
-  value?: AvailabilitiesDTOEvents | null
+  value?: AvailabilitiesDTOEvents | null,
 ): any {
   if (value === undefined) {
     return undefined;

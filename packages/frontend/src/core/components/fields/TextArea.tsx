@@ -1,12 +1,12 @@
-import cc from "classnames";
-import { FC } from "react";
+import cc from 'classnames';
+import { FC } from 'react';
 import {
   FieldError,
   FieldErrors,
   UseFormRegisterReturn,
-} from "react-hook-form";
+} from 'react-hook-form';
 
-import { getErrorMessage } from "./helpers";
+import { getErrorMessage } from './helpers';
 
 const TextArea: FC<{
   register: UseFormRegisterReturn;
@@ -21,11 +21,11 @@ const TextArea: FC<{
   return (
     <div className="form-control w-full">
       <textarea
-        placeholder={`${placeholder}${showRequired ? "*" : ""}`}
+        placeholder={`${placeholder}${showRequired ? '*' : ''}`}
         className={cc(
-          { ["input-error"]: !!error },
-          "input input-bordered",
-          className
+          { ['input-error']: !!error },
+          'input input-bordered',
+          className,
         )}
         disabled={loading}
         {...register}

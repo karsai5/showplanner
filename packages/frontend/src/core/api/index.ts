@@ -1,6 +1,6 @@
-import { API_URL } from "core/config";
+import { API_URL } from 'core/config';
 
-import { Configuration, DefaultApi } from "./generated";
+import { Configuration, DefaultApi } from './generated';
 
 const config = new Configuration({
   basePath: API_URL,

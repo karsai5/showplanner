@@ -1,15 +1,15 @@
-import * as cookie from "cookie";
-import { getRequiredEnvVariable } from "core/utils/envVariables";
-import JsonWebToken, { JwtHeader, SigningKeyCallback } from "jsonwebtoken";
-import jwksClient from "jwks-rsa";
-import { GetServerSidePropsContext } from "next/types";
-import { ReactNode } from "react";
-import Session from "supertokens-auth-react/recipe/session";
-import { PermissionClaim } from "supertokens-auth-react/recipe/userroles";
+import * as cookie from 'cookie';
+import { getRequiredEnvVariable } from 'core/utils/envVariables';
+import JsonWebToken, { JwtHeader, SigningKeyCallback } from 'jsonwebtoken';
+import jwksClient from 'jwks-rsa';
+import { GetServerSidePropsContext } from 'next/types';
+import { ReactNode } from 'react';
+import Session from 'supertokens-auth-react/recipe/session';
+import { PermissionClaim } from 'supertokens-auth-react/recipe/userroles';
 
 const client = jwksClient({
   jwksUri: `${getRequiredEnvVariable(
-    process.env.NEXT_PUBLIC_SUPERTOKENS_URL
+    process.env.NEXT_PUBLIC_SUPERTOKENS_URL,
   )}/auth/jwt/jwks.json`,
 });
 
@@ -21,12 +21,12 @@ function getKey(header: JwtHeader, callback: SigningKeyCallback) {
 }
 
 export const enum PERMISSION {
-  addEvents = "add-events",
-  viewEvents = "view-events",
-  personnel = "personnel",
-  rostering = "rostering",
+  addEvents = 'add-events',
+  viewEvents = 'view-events',
+  personnel = 'personnel',
+  rostering = 'rostering',
 
-  addShow = "add-show",
+  addShow = 'add-show',
 }
 
 type showIdType = string | number | undefined | null;
@@ -68,12 +68,12 @@ export const getDecodedJWT = async (ctx: GetServerSidePropsContext) => {
           if (err) {
             return reject(err);
           }
-          if (decoded === undefined || typeof decoded === "string") {
-            return reject(new Error("Decoded value incorrect type"));
+          if (decoded === undefined || typeof decoded === 'string') {
+            return reject(new Error('Decoded value incorrect type'));
           }
           resolve(decoded);
         });
-      }
+      },
     );
     return jwt;
   } catch (err) {

@@ -1,6 +1,6 @@
-import { SuperTokensWrapper } from "supertokens-auth-react";
+import { SuperTokensWrapper } from 'supertokens-auth-react';
 
-import HomeHero from "./HomeHero";
+import HomeHero from './HomeHero';
 
 export const Default = () => (
   <SuperTokensWrapper>

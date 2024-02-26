@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import { Footer } from "./components/Footer";
-import { Nav } from "./components/Nav";
+import { Footer } from './components/Footer';
+import { Nav } from './components/Nav';
 
 export const DefaultLayout: React.FC<{ children: ReactNode }> = ({
   children,

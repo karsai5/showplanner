@@ -1,7 +1,7 @@
-import cc from "classnames";
-import React, { useContext, useState } from "react";
+import cc from 'classnames';
+import React, { useContext, useState } from 'react';
 
-import { NewShowModalProps, useModal } from "./Modal";
+import { NewShowModalProps, useModal } from './Modal';
 
 type ShowModal = (title: string, message: string, onYes: () => void) => void;
 const ConfirmationModalContext = React.createContext<{
@@ -9,7 +9,7 @@ const ConfirmationModalContext = React.createContext<{
   message: string;
   showModal: ShowModal;
   onYes: () => void;
-}>({ title: "", message: "", showModal: () => {}, onYes: () => {} });
+}>({ title: '', message: '', showModal: () => {}, onYes: () => {} });
 
 const ConfirmationModal: React.FC<{
   Modal: React.FC<NewShowModalProps>;
@@ -19,12 +19,17 @@ const ConfirmationModal: React.FC<{
   const context = useContext(ConfirmationModalContext);
   return (
     <>
-      <Modal isOpen={isOpen} close={close} title={context.title} className="z-50">
+      <Modal
+        isOpen={isOpen}
+        close={close}
+        title={context.title}
+        className="z-50"
+      >
         <p className="my-2">{context.message}</p>
         <div className="pt-4 flex gap-2">
           <button
-            className={cc("btn btn-primary w-24", {
-              ["loading"]: false,
+            className={cc('btn btn-primary w-24', {
+              ['loading']: false,
             })}
             onClick={() => {
               context.onYes();
@@ -47,8 +52,8 @@ export const ConfirmationModalWrapper: React.FC<{
 }> = ({ children }) => {
   const { Modal, close, isOpen, open } = useModal();
   const [state, updateState] = useState({
-    title: "",
-    message: "",
+    title: '',
+    message: '',
     onYes: () => {},
   });
   const showModal: ShowModal = (title, message, onYes) => {

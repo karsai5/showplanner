@@ -1,14 +1,14 @@
 import '../src/styles/globals.css';
 import React from 'react';
-import type { Preview } from "@storybook/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { googleMapsLoader } from "../src/core/maps/maps";
+import type { Preview } from '@storybook/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { googleMapsLoader } from '../src/core/maps/maps';
 
-import { withThemeByDataAttribute } from "@storybook/addon-themes";
+import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: "^on[A-Z].*" },
+    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -28,14 +28,14 @@ const preview: Preview = {
     }),
     (Story) => {
       const queryClient = new QueryClient();
-      googleMapsLoader.load().then(() => google.maps.importLibrary('places'))
+      googleMapsLoader.load().then(() => google.maps.importLibrary('places'));
       return (
-          <QueryClientProvider client={queryClient}>
-            <Story />
-          </QueryClientProvider>
+        <QueryClientProvider client={queryClient}>
+          <Story />
+        </QueryClientProvider>
       );
     },
-  ]
+  ],
 };
 
 export default preview;

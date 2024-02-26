@@ -1,13 +1,13 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import { ShowTimer } from "./ShowTimer";
+import { ShowTimer } from './ShowTimer';
 
 export default {
   /* 👇 The title prop is optional.
    * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
    * to learn how to generate automatic titles
    */
-  title: "ShowTimer",
+  title: 'ShowTimer',
   component: ShowTimer,
 } as ComponentMeta<typeof ShowTimer>;
 

@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import cc from "classnames";
-import { googleMapsLoader } from "core/maps/maps";
-import React, { FC, useEffect, useState } from "react";
-import { UseControllerReturn } from "react-hook-form";
+import cc from 'classnames';
+import { googleMapsLoader } from 'core/maps/maps';
+import React, { FC, useEffect, useState } from 'react';
+import { UseControllerReturn } from 'react-hook-form';
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
   Suggestion,
-} from "react-places-autocomplete";
+} from 'react-places-autocomplete';
 
 export type AddressPickerReturn = {
   address: string;
@@ -31,7 +31,7 @@ const AddressPicker: FC<AddressPickerProps> = ({
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     googleMapsLoader.load().then(async () => {
-      await google.maps.importLibrary("places");
+      await google.maps.importLibrary('places');
       setLoading(false);
     });
   });
@@ -46,7 +46,7 @@ const AddressPicker: FC<AddressPickerProps> = ({
       .then((latLng) => {
         handleChange(address, latLng.lat, latLng.lng);
       })
-      .catch((error) => console.error("Error", error));
+      .catch((error) => console.error('Error', error));
   };
 
   if (loading) {
@@ -55,7 +55,7 @@ const AddressPicker: FC<AddressPickerProps> = ({
   return (
     <>
       <PlacesAutocomplete
-        value={control.field.value?.address || ""}
+        value={control.field.value?.address || ''}
         onChange={handleChange}
         onSelect={handleSelect}
       >
@@ -77,10 +77,10 @@ const AddressPicker: FC<AddressPickerProps> = ({
               )}
               <input
                 {...getInputProps({
-                  placeholder: placeholder || "Search Places ...",
+                  placeholder: placeholder || 'Search Places ...',
                   className: cc(
-                    "input input-bordered w-full location-search-input",
-                    className
+                    'input input-bordered w-full location-search-input',
+                    className,
                   ),
                 })}
                 onBlur={control.field.onBlur}
@@ -112,7 +112,7 @@ const ShowSuggestions: React.FC<{
         {suggestions.map((suggestion) => {
           return (
             <li key={suggestion.id} {...getSuggestionItemProps(suggestion, {})}>
-              <a className={cc({ ["btn-active"]: suggestion.active })}>
+              <a className={cc({ ['btn-active']: suggestion.active })}>
                 {suggestion.description}
               </a>
             </li>

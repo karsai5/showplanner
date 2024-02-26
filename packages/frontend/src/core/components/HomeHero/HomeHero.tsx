@@ -1,9 +1,9 @@
-import Image from "next/image";
-import Link from "next/link";
-import React, { FC } from "react";
-import Session from "supertokens-auth-react/recipe/session";
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { FC } from 'react';
+import Session from 'supertokens-auth-react/recipe/session';
 
-import imageSrc from "./hero.png";
+import imageSrc from './hero.png';
 
 interface HomeHeroProps {}
 
@@ -34,7 +34,7 @@ const HomeHero: FC<HomeHeroProps> = () => {
           )}
           <p>
             Interested in organising your next show with the ShowPlanner? Reach
-            out by filling in{" "}
+            out by filling in{' '}
             <a
               target="_blank"
               href="https://docs.google.com/forms/d/e/1FAIpQLScECbLQKaO33JURBgheSSo6f2IUGsrxiDS66nKLdxK0ZvXdOg/viewform"

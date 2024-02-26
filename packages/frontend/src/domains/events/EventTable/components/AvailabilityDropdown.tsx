@@ -1,8 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import cc from "classnames";
-import { getApi } from "core/api";
-import { AvailabilityDTO, ScheduleEventDTO } from "core/api/generated";
-import { useUserId } from "core/permissions";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import cc from 'classnames';
+import { getApi } from 'core/api';
+import { AvailabilityDTO, ScheduleEventDTO } from 'core/api/generated';
+import { useUserId } from 'core/permissions';
 import {
   getBgColor,
   getBooleanFromString,
@@ -10,9 +10,9 @@ import {
   NO,
   UNKNOWN,
   YES,
-} from "domains/rostering/helpers";
-import { useState } from "react";
-import { toast } from "react-toastify";
+} from 'domains/rostering/helpers';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 export const AvailabilityDropdown: React.FC<{ event: ScheduleEventDTO }> = ({
   event,
@@ -20,7 +20,7 @@ export const AvailabilityDropdown: React.FC<{ event: ScheduleEventDTO }> = ({
   const api = getApi();
 
   const [value, setValue] = useState<string>(
-    getStringFromBoolean(event.availability?.available)
+    getStringFromBoolean(event.availability?.available),
   );
   const userId = useUserId();
   const queryClient = useQueryClient();
@@ -29,17 +29,17 @@ export const AvailabilityDropdown: React.FC<{ event: ScheduleEventDTO }> = ({
       api.availabilitiesPost({
         availability: {
           eventId: event.id,
-          personId: userId || "",
+          personId: userId || '',
           available: bool,
         },
       }),
     onError: (e) => {
-      toast.error("Something went wrong updating availability");
-      console.error("Could not update availability", e);
+      toast.error('Something went wrong updating availability');
+      console.error('Could not update availability', e);
     },
     onSuccess: (a) => {
       setValue(getStringFromBoolean(a.available));
-      queryClient.invalidateQueries({ queryKey: ["EventsList", event.showId] });
+      queryClient.invalidateQueries({ queryKey: ['EventsList', event.showId] });
     },
   });
 
@@ -60,7 +60,7 @@ export const AvailabilityDropdown: React.FC<{ event: ScheduleEventDTO }> = ({
       <div
         className={cc(
           getBgColor(value),
-          "absolute top-0 bottom-0 left-0 right-0"
+          'absolute top-0 bottom-0 left-0 right-0',
         )}
       >
         <select

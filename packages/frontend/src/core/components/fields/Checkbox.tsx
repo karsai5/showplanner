@@ -1,12 +1,12 @@
-import cc from "classnames";
-import { FC } from "react";
+import cc from 'classnames';
+import { FC } from 'react';
 import {
   FieldError,
   FieldErrors,
   UseFormRegisterReturn,
-} from "react-hook-form";
+} from 'react-hook-form';
 
-import { getErrorMessage } from "./helpers";
+import { getErrorMessage } from './helpers';
 
 const Input: FC<{
   register: UseFormRegisterReturn;
@@ -21,7 +21,7 @@ const Input: FC<{
       <label className="label cursor-pointer justify-start">
         <input
           type="checkbox"
-          className={cc({ ["checkbox-error"]: !!error }, "checkbox")}
+          className={cc({ ['checkbox-error']: !!error }, 'checkbox')}
           {...register}
         />
         <span className="label-text pl-2">{label}</span>

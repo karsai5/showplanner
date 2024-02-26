@@ -1,8 +1,8 @@
-import cc from "classnames";
-import { emptyTimers } from "domains/showtimer/ShowTimer/ShowTimer";
-import { Timers } from "domains/showtimer/ShowTimer/types";
-import { useState } from "react";
-import { useLongPress } from "use-long-press";
+import cc from 'classnames';
+import { emptyTimers } from 'domains/showtimer/ShowTimer/ShowTimer';
+import { Timers } from 'domains/showtimer/ShowTimer/types';
+import { useState } from 'react';
+import { useLongPress } from 'use-long-press';
 
 export const ResetButton: React.FC<{
   setTimers: (updatedTimers: Partial<Timers>) => void;
@@ -20,11 +20,11 @@ export const ResetButton: React.FC<{
       onCancel: () => setHolding(false),
       onStart: () => setHolding(true),
       threshold: 1500,
-    }
+    },
   );
   return (
-    <button className={cc("btn", className)} {...bind()}>
-      {holding ? "Hold" : "Reset all timers"}
+    <button className={cc('btn', className)} {...bind()}>
+      {holding ? 'Hold' : 'Reset all timers'}
     </button>
   );
 };

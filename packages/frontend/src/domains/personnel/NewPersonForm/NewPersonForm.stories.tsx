@@ -1,13 +1,13 @@
 /* eslint-disable */
-import NewPersonForm from "./NewPersonForm";
-import React from "react";
+import NewPersonForm from './NewPersonForm';
+import React from 'react';
 
 export default {
-  title: "NewPersonForm",
+  title: 'NewPersonForm',
 };
 
 export const Default = () => <NewPersonForm />;
 
 Default.story = {
-  name: "default",
+  name: 'default',
 };

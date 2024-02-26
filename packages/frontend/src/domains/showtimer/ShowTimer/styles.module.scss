@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap');
 
 .container {
   margin-top: var(--chakra-sizes-4);
@@ -31,7 +31,7 @@
   .clock {
     line-height: 35px;
     font-size: var(--chakra-fontSizes-5xl);
-    font-family: "Ubuntu Mono", monospace;
+    font-family: 'Ubuntu Mono', monospace;
     font-weight: 700;
 
     display: flex;
@@ -60,7 +60,7 @@
   .bigTimer {
     line-height: 35px;
     font-size: var(--chakra-fontSizes-5xl) !important;
-    font-family: "Ubuntu Mono", monospace;
+    font-family: 'Ubuntu Mono', monospace;
     font-weight: 700;
   }
   .inProgressTimer {

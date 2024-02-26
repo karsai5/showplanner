@@ -1,23 +1,26 @@
-import { useQuery } from "@tanstack/react-query";
-import { getApi } from "core/api";
-import ErrorBox from "core/components/ErrorBox/ErrorBox";
-import { useModal } from "core/components/Modal/Modal";
-import { H2 } from "core/components/Typography";
-import { HasPermission, PERMISSION } from "core/permissions";
-import { Schedule } from "domains/events/EventTable/Schedule";
-import NewEventForm from "domains/events/NewEventForm/NewEventForm";
-import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
-import { useShowSummary } from "domains/shows/lib/summaryContext";
-import Head from "next/head";
-import Link from "next/link";
-import { FC, ReactElement } from "react";
+import { useQuery } from '@tanstack/react-query';
+import { getApi } from 'core/api';
+import ErrorBox from 'core/components/ErrorBox/ErrorBox';
+import { useModal } from 'core/components/Modal/Modal';
+import { H2 } from 'core/components/Typography';
+import { HasPermission, PERMISSION } from 'core/permissions';
+import { Schedule } from 'domains/events/EventTable/Schedule';
+import NewEventForm from 'domains/events/NewEventForm/NewEventForm';
+import { LayoutWithShowSidebar } from 'domains/shows/LayoutForShow';
+import { useShowSummary } from 'domains/shows/lib/summaryContext';
+import Head from 'next/head';
+import Link from 'next/link';
+import { FC, ReactElement } from 'react';
 
 const ShowPage = () => {
   const api = getApi();
   const show = useShowSummary();
-  const { data: events, isLoading, isError } = useQuery(
-    ["EventsList", show.id],
-    () => api.scheduleGet({ showId: show.id })
+  const {
+    data: events,
+    isLoading,
+    isError,
+  } = useQuery(['EventsList', show.id], () =>
+    api.scheduleGet({ showId: show.id }),
   );
   return (
     <>

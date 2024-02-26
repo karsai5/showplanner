@@ -1,5 +1,5 @@
-import cc from "classnames";
-import { ConfettiContext } from "domains/showtimer/ShowTimer/ShowTimer";
+import cc from 'classnames';
+import { ConfettiContext } from 'domains/showtimer/ShowTimer/ShowTimer';
 import {
   ButtonHTMLAttributes,
   DetailedHTMLProps,
@@ -7,10 +7,10 @@ import {
   useContext,
   useRef,
   useState,
-} from "react";
-import { useLongPress } from "use-long-press";
+} from 'react';
+import { useLongPress } from 'use-long-press';
 
-import styles from "./HoldButton.module.scss";
+import styles from './HoldButton.module.scss';
 
 export const HoldButton: React.FC<
   React.PropsWithChildren<{
@@ -77,24 +77,24 @@ export const HoldButton: React.FC<
       },
       onStart: () => setHolding(true),
       threshold: 1500,
-    }
+    },
   );
 
   return (
     <div
-      className={cc({ ["tooltip-open"]: showHelperText }, "tooltip w-full")}
+      className={cc({ ['tooltip-open']: showHelperText }, 'tooltip w-full')}
       data-tip={helperText}
     >
       <button
         {...bind()}
-        className={cc("btn btn-primary btn-block", className, {
-          ["shake shake-constant"]: shake && holding,
+        className={cc('btn btn-primary btn-block', className, {
+          ['shake shake-constant']: shake && holding,
           [styles.holding]: holding,
         })}
         ref={ref}
         {...buttonProps}
       >
-        {holding ? "Hold" : label}
+        {holding ? 'Hold' : label}
       </button>
     </div>
   );

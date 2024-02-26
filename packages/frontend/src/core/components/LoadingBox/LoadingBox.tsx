@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
 export const LoadingBox: FC<{ className?: string }> = ({ className }) => (
   <div className={className}>

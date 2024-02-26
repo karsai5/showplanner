@@ -1,30 +1,30 @@
-import "styles/globals.css";
-import "react-toastify/dist/ReactToastify.css";
+import 'styles/globals.css';
+import 'react-toastify/dist/ReactToastify.css';
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
-import { MeContextWrapper } from "core/components/MeContext/MeContext";
-import { ConfirmationModalWrapper } from "core/components/Modal/ConfirmationModal";
-import { DefaultLayout } from "domains/layout/DefaultLayout";
-import type { NextPage } from "next";
-import Head from "next/head";
-import { Router } from "next/router";
-import { ReactElement, ReactNode, useEffect, useState } from "react";
-import { ToastContainer, Zoom } from "react-toastify";
-import SuperTokensReact from "supertokens-auth-react";
-import { SuperTokensWrapper } from "supertokens-auth-react";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { LoadingBox } from 'core/components/LoadingBox/LoadingBox';
+import { MeContextWrapper } from 'core/components/MeContext/MeContext';
+import { ConfirmationModalWrapper } from 'core/components/Modal/ConfirmationModal';
+import { DefaultLayout } from 'domains/layout/DefaultLayout';
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import { Router } from 'next/router';
+import { ReactElement, ReactNode, useEffect, useState } from 'react';
+import { ToastContainer, Zoom } from 'react-toastify';
+import SuperTokensReact from 'supertokens-auth-react';
+import { SuperTokensWrapper } from 'supertokens-auth-react';
 
-import { frontendConfig } from "../../config/frontendConfig";
+import { frontendConfig } from '../../config/frontendConfig';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      networkMode: "always",
+      networkMode: 'always',
     },
     mutations: {
-      networkMode: "always",
+      networkMode: 'always',
     },
   },
 });
@@ -37,7 +37,7 @@ type AppPropsWithLayout = {
   Component: NextPageWithLayout;
 };
 
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   // we only want to call this init function on the frontend, so we check typeof window !== 'undefined'
   SuperTokensReact.init(frontendConfig());
 }
@@ -76,7 +76,7 @@ function MyApp({ Component }: AppPropsWithLayout) {
               </Head>
 
               {loading ? <LoadingBox /> : <Component />}
-            </MeContextWrapper>
+            </MeContextWrapper>,
           )}
         </ConfirmationModalWrapper>
         <ReactQueryDevtools initialIsOpen={false} />
@@ -95,13 +95,13 @@ const usePageLoading = () => {
     const end = () => {
       setLoading(false);
     };
-    Router.events.on("routeChangeStart", start);
-    Router.events.on("routeChangeComplete", end);
-    Router.events.on("routeChangeError", end);
+    Router.events.on('routeChangeStart', start);
+    Router.events.on('routeChangeComplete', end);
+    Router.events.on('routeChangeError', end);
     return () => {
-      Router.events.off("routeChangeStart", start);
-      Router.events.off("routeChangeComplete", end);
-      Router.events.off("routeChangeError", end);
+      Router.events.off('routeChangeStart', start);
+      Router.events.off('routeChangeComplete', end);
+      Router.events.off('routeChangeError', end);
     };
   }, []);
   return loading;

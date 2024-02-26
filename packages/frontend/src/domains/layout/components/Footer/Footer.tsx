@@ -1,4 +1,4 @@
-const donateLink = "https://ko-fi.com/linuskarsai";
+const donateLink = 'https://ko-fi.com/linuskarsai';
 export const Footer = () => {
   return (
     <footer className="footer p-6 bg-base-200 text-base-content">
@@ -6,13 +6,13 @@ export const Footer = () => {
         <p>
           <span className="font-medium">Made by Linus Karsai</span>
           <br />
-          Built in my spare time, mind the bugs!{" "}
+          Built in my spare time, mind the bugs!{' '}
         </p>
       </div>
       <div>
         <div>
           <p className="max-w-sm">
-            If you&apos;re interested in supporting the ShowPlanner, consider{" "}
+            If you&apos;re interested in supporting the ShowPlanner, consider{' '}
             <a className="link" href={donateLink}>
               donating to its upkeep
             </a>

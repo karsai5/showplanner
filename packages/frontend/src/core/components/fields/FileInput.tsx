@@ -1,5 +1,5 @@
-import { ChangeEvent, useState } from "react";
-import { toast } from "react-toastify";
+import { ChangeEvent, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const FileInput: React.FC<{
   onChange: (id: string) => void;
@@ -16,7 +16,7 @@ const FileInput: React.FC<{
     }
 
     const formData = new FormData();
-    formData.append("files", file);
+    formData.append('files', file);
 
     try {
       // const result = await client.post("/upload", formData);
@@ -24,8 +24,8 @@ const FileInput: React.FC<{
       //   onChange(result.data?.[0]?.id);
       // }
     } catch (e) {
-      toast.error("Failed to upload file");
-      console.error("Failed to upload file", e);
+      toast.error('Failed to upload file');
+      console.error('Failed to upload file', e);
     } finally {
       setLoading(false);
     }

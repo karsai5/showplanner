@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from "../runtime";
+import { exists, mapValues } from '../runtime';
 /**
  *
  * @export
@@ -44,9 +44,9 @@ export interface Show {
  */
 export function instanceOfShow(value: object): boolean {
   let isInstance = true;
-  isInstance = isInstance && "name" in value;
-  isInstance = isInstance && "company" in value;
-  isInstance = isInstance && "slug" in value;
+  isInstance = isInstance && 'name' in value;
+  isInstance = isInstance && 'company' in value;
+  isInstance = isInstance && 'slug' in value;
 
   return isInstance;
 }
@@ -57,15 +57,15 @@ export function ShowFromJSON(json: any): Show {
 
 export function ShowFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean
+  ignoreDiscriminator: boolean,
 ): Show {
   if (json === undefined || json === null) {
     return json;
   }
   return {
-    name: json["name"],
-    company: json["company"],
-    slug: json["slug"],
+    name: json['name'],
+    company: json['company'],
+    slug: json['slug'],
   };
 }
 

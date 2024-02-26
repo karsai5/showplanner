@@ -1,17 +1,17 @@
-export const YES = "YES";
-export const NO = "NO";
-export const UNKNOWN = "UNKNOWN";
+export const YES = 'YES';
+export const NO = 'NO';
+export const UNKNOWN = 'UNKNOWN';
 
 export const getBgColor = (value: string) => {
   switch (value) {
     case YES:
-      return "bg-green-300";
+      return 'bg-green-300';
     case NO:
-      return "bg-red-300";
+      return 'bg-red-300';
     case UNKNOWN:
-      return "bg-amber-300";
+      return 'bg-amber-300';
     default:
-      return "";
+      return '';
   }
 };
 

@@ -1,6 +1,6 @@
-import moment from "moment";
+import moment from 'moment';
 
-import { Timers } from "./types";
+import { Timers } from './types';
 
 export const getShowLengths = (timers: Timers) => {
   const showDiff = moment(timers.actTwoEnd).diff(timers.actOneStart);
@@ -13,9 +13,9 @@ export const getShowLengths = (timers: Timers) => {
     actOneDiff,
     intervalDiff,
     actTwoDiff,
-    actTwoLength: moment.utc(actTwoDiff).format("HH:mm:ss"),
-    intervalLength: moment.utc(intervalDiff).format("HH:mm:ss"),
-    showLength: moment.utc(showDiff).format("HH:mm:ss"),
-    actOneLength: moment.utc(actOneDiff).format("HH:mm:ss"),
+    actTwoLength: moment.utc(actTwoDiff).format('HH:mm:ss'),
+    intervalLength: moment.utc(intervalDiff).format('HH:mm:ss'),
+    showLength: moment.utc(showDiff).format('HH:mm:ss'),
+    actOneLength: moment.utc(actOneDiff).format('HH:mm:ss'),
   };
 };

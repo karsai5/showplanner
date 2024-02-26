@@ -1,17 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
-import { api } from "core/api";
-import ErrorBox from "core/components/ErrorBox/ErrorBox";
-import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
+import { useQuery } from '@tanstack/react-query';
+import { api } from 'core/api';
+import ErrorBox from 'core/components/ErrorBox/ErrorBox';
+import { LoadingBox } from 'core/components/LoadingBox/LoadingBox';
 
-export const PeopleTable: React.FC<{ 
-  showId: number,
-  className?: string,
-}> = ({ 
-  showId,
-  className,
-}) => {
-  const { data, isLoading, isError } = useQuery(["assigned-people", showId], () =>
-    api.personnelAssignedGet({ showId })
+export const PeopleTable: React.FC<{
+  showId: number;
+  className?: string;
+}> = ({ showId, className }) => {
+  const { data, isLoading, isError } = useQuery(
+    ['assigned-people', showId],
+    () => api.personnelAssignedGet({ showId }),
   );
   if (isLoading) {
     return <LoadingBox />;
@@ -22,22 +20,22 @@ export const PeopleTable: React.FC<{
   if (data) {
     return (
       <div className={className}>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.people?.map((person) => (
-            <tr key={person.id}>
-              <td>
-                {person.firstName} {person.lastName}
-              </td>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Name</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.people?.map((person) => (
+              <tr key={person.id}>
+                <td>
+                  {person.firstName} {person.lastName}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     );
   }
