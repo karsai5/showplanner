@@ -488,6 +488,45 @@ func init() {
         }
       }
     },
+    "/roles/{id}": {
+      "put": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Updates a role",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of role to update",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "The availability to create or update",
+            "name": "roleDetails",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/RoleUpdateDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/RoleDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/schedule": {
       "get": {
         "produces": [
@@ -1543,6 +1582,51 @@ func init() {
         ],
         "summary": "Creates a new role",
         "parameters": [
+          {
+            "description": "The availability to create or update",
+            "name": "roleDetails",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/RoleUpdateDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/RoleDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/roles/{id}": {
+      "put": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Updates a role",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of role to update",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
           {
             "description": "The availability to create or update",
             "name": "roleDetails",

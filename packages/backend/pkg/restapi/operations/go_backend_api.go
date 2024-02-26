@@ -103,6 +103,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		PostShowsHandler: PostShowsHandlerFunc(func(params PostShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostShows has not yet been implemented")
 		}),
+		PutRolesIDHandler: PutRolesIDHandlerFunc(func(params PutRolesIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation PutRolesID has not yet been implemented")
+		}),
 	}
 }
 
@@ -180,6 +183,8 @@ type GoBackendAPI struct {
 	PostRolesHandler PostRolesHandler
 	// PostShowsHandler sets the operation handler for the post shows operation
 	PostShowsHandler PostShowsHandler
+	// PutRolesIDHandler sets the operation handler for the put roles ID operation
+	PutRolesIDHandler PutRolesIDHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -316,6 +321,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.PostShowsHandler == nil {
 		unregistered = append(unregistered, "PostShowsHandler")
+	}
+	if o.PutRolesIDHandler == nil {
+		unregistered = append(unregistered, "PutRolesIDHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -483,6 +491,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/shows"] = NewPostShows(o.context, o.PostShowsHandler)
+	if o.handlers["PUT"] == nil {
+		o.handlers["PUT"] = make(map[string]http.Handler)
+	}
+	o.handlers["PUT"]["/roles/{id}"] = NewPutRolesID(o.context, o.PutRolesIDHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

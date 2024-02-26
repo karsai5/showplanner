@@ -52,7 +52,19 @@ func GetRoles(showId uint) ([]Role, error) {
 	return show.Roles, res.Error
 }
 
+func GetRole(roleId uint) (Role, error) {
+	role := Role{}
+	res := db.Find(&role, roleId)
+	return role, res.Error
+}
+
 func CreateRole(role Role) (Role, error) {
 	res := db.Create(&role)
+	return role, res.Error
+}
+
+func UpdateRole(id uint, role Role) (Role, error) {
+	updatedRole := Role{}
+	res := db.Where("ID = ?", id).Model(&updatedRole).Select("Name").Updates(role)
 	return role, res.Error
 }

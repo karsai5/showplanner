@@ -31,6 +31,7 @@ func mapToRoleDTO(role database.Role) models.RoleDTO {
 		person = convert.GetPointer(mapPerson(*role.Person))
 	}
 	return models.RoleDTO{
+		ID:     int64(role.ID),
 		Name:   role.Name,
 		Person: person,
 	}

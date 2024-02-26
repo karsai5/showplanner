@@ -31,7 +31,7 @@ const ShowPage = () => {
       <div className="flex flex-col justify-between sm:flex-row gap-4">
         <H2 className="mb-4">{show.name} - People</H2>
       </div>
-      <div className="flex flex-row gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1">
           <div className="flex justify-between">
             <H3>Roles</H3>

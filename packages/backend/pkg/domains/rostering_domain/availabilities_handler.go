@@ -1,6 +1,8 @@
 package rostering_domain
 
 import (
+	"log/slog"
+
 	"showplanner.io/pkg/convert"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/events_domain"
@@ -20,7 +22,46 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 	api.GetAvailabilitiesHandler = handleGetAvailabilities
 	api.PostRolesHandler = handleCreateRole
 	api.GetRolesHandler = handleGetRoles
+	api.PutRolesIDHandler = handleUpdateRole
 }
+
+func createLogErrorFunc(text string, response middleware.Responder) func(err *error) middleware.Responder {
+	return func(err *error) middleware.Responder {
+		if err != nil {
+			logger.Error(text, *err)
+		} else {
+			slog.Error(text)
+		}
+		return response
+	}
+}
+
+var handleUpdateRole = operations.PutRolesIDHandlerFunc(func(params operations.PutRolesIDParams) middleware.Responder {
+	logError := createLogErrorFunc("Updating role", &operations.PutRolesIDInternalServerError{})
+	role, err := database.GetRole(uint(params.ID))
+
+	if err != nil {
+		return logError(&err)
+	}
+
+	hasPerm, err := permissions.Rostering.HasPermission(role.ShowID, params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+	if !hasPerm {
+		return &operations.GetAvailabilitiesUnauthorized{}
+	}
+
+	role, err = database.UpdateRole(uint(params.ID), database.Role{
+		Name: params.RoleDetails.Name,
+	})
+
+	if err != nil {
+		return logError(&err)
+	}
+
+	return &operations.PutRolesIDOK{Payload: convert.GetPointer(mapToRoleDTO(role))}
+})
 
 var handleCreateRole = operations.PostRolesHandlerFunc(func(params operations.PostRolesParams) middleware.Responder {
 	hasPerm, err := permissions.Rostering.HasPermission(uint(params.RoleDetails.ShowID), params.HTTPRequest)

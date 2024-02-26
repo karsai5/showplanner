@@ -30,7 +30,7 @@ export interface RoleUpdateDTO {
      * @type {string}
      * @memberof RoleUpdateDTO
      */
-    personId?: string;
+    personId?: string | null;
     /**
      * 
      * @type {string}

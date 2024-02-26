@@ -14,6 +14,7 @@ const Input: FC<{
   type?: string;
   helpText?: string;
   className?: string;
+  sm?: boolean;
 }> = ({
   errors,
   loading,
@@ -24,40 +25,41 @@ const Input: FC<{
   helpText,
   label,
   className,
+  sm,
 }) => {
-  const name = register.name;
-  const id = `input-${name}`;
-  const error = errors[name];
-  return (
-    <div className={cc("form-control w-full", className)}>
-      {label && (
-        <label className="label" htmlFor={id}>
-          <span className="label-text-alt">
-            {label}
-            {showRequired ? " *" : ""}
-          </span>
+    const name = register.name;
+    const id = `input-${name}`;
+    const error = errors[name];
+    return (
+      <div className={cc("form-control w-full", className)}>
+        {label && (
+          <label className="label" htmlFor={id}>
+            <span className="label-text-alt">
+              {label}
+              {showRequired ? " *" : ""}
+            </span>
+          </label>
+        )}
+        <input
+          id={id}
+          type={type}
+          placeholder={`${placeholder}${showRequired ? " *" : ""}`}
+          className={cc({ ["input-error"]: !!error, ["input-sm"]: sm }, "input input-bordered")}
+          disabled={loading}
+          {...register}
+        />
+        <label className="label">
+          {!!error && (
+            <span className="label-text-alt text-warning">
+              {getErrorMessage(error)}
+            </span>
+          )}
+          {!!helpText && !error && (
+            <span className="label-text-alt">{helpText}</span>
+          )}
         </label>
-      )}
-      <input
-        id={id}
-        type={type}
-        placeholder={`${placeholder}${showRequired ? " *" : ""}`}
-        className={cc({ ["input-error"]: !!error }, "input input-bordered")}
-        disabled={loading}
-        {...register}
-      />
-      <label className="label">
-        {!!error && (
-          <span className="label-text-alt text-warning">
-            {getErrorMessage(error)}
-          </span>
-        )}
-        {!!helpText && !error && (
-          <span className="label-text-alt">{helpText}</span>
-        )}
-      </label>
-    </div>
-  );
-};
+      </div>
+    );
+  };
 
 export default Input;

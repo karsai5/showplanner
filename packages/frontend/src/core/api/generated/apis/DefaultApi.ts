@@ -114,6 +114,11 @@ export interface RolesGetRequest {
     showId: number;
 }
 
+export interface RolesIdPutRequest {
+    id: number;
+    roleDetails?: RoleUpdateDTO;
+}
+
 export interface RolesPostRequest {
     roleDetails?: RoleUpdateDTO;
 }
@@ -577,6 +582,39 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async rolesGet(requestParameters: RolesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<RoleDTO>> {
         const response = await this.rolesGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Updates a role
+     */
+    async rolesIdPutRaw(requestParameters: RolesIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RoleDTO>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling rolesIdPut.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/roles/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RoleUpdateDTOToJSON(requestParameters.roleDetails),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RoleDTOFromJSON(jsonValue));
+    }
+
+    /**
+     * Updates a role
+     */
+    async rolesIdPut(requestParameters: RolesIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RoleDTO> {
+        const response = await this.rolesIdPutRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
