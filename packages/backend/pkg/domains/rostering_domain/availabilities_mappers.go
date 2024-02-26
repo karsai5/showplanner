@@ -1,4 +1,4 @@
-package availabilities_domain
+package rostering_domain
 
 import (
 	"github.com/go-openapi/strfmt"
@@ -22,6 +22,17 @@ func mapPerson(person database.Person) models.PersonSummaryDTO {
 		FirstName: person.FirstName,
 		ID:        *convert.UUIDToStrmFmtUUID(person.ID),
 		LastName:  person.LastName,
+	}
+}
+
+func mapToRoleDTO(role database.Role) models.RoleDTO {
+	var person *models.PersonSummaryDTO
+	if role.Person != nil {
+		person = convert.GetPointer(mapPerson(*role.Person))
+	}
+	return models.RoleDTO{
+		Name:   role.Name,
+		Person: person,
 	}
 }
 

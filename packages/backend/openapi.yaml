@@ -275,6 +275,47 @@ paths:
           $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'
+  /roles:
+    post:
+      parameters:
+        - in: body
+          description: The availability to create or update
+          name: roleDetails
+          schema:
+            $ref: '#/definitions/RoleUpdateDTO'
+      summary: Creates a new role
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/RoleDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+    get:
+      parameters:
+        - in: query
+          required: true
+          name: showId
+          type: integer
+          description: ID of the show to get roles for
+      summary: Returns a list of roles
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RoleDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
   /availabilities:
     get:
       parameters:
@@ -549,6 +590,27 @@ definitions:
         type: string
       email:
         type: string
+  RoleUpdateDTO:
+    type: object
+    properties:
+      showId:
+        type: integer
+      personId:
+        x-nullable: true
+        type: string
+        format: uuid
+      name:
+        type: string
+  RoleDTO:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      person:
+        x-nullable: true
+        $ref: '#/definitions/PersonSummaryDTO'
   PersonSummaryDTO:
     type: object
     properties:

@@ -49,6 +49,8 @@ var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operation
 	events_domain.NameEventsWithCurtainsUp(scheduledEvents)
 
 	return &operations.GetScheduleOK{
+	
+
 		Payload: scheduledEvents,
 	}
 })

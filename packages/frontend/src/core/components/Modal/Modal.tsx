@@ -17,6 +17,9 @@ export interface NewShowModalProps {
   className?: string;
 }
 const Modal: FC<NewShowModalProps> = ({ children, title, close, isOpen, className }) => {
+  if (!isOpen) {
+    return null;
+  }
   return (
     <Dialog
       open={isOpen}

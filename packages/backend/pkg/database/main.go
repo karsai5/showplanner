@@ -81,5 +81,10 @@ func initDB() *gorm.DB {
 		panic("Failed to migrate person")
 	}
 
+	err = db.AutoMigrate(&Role{})
+	if err != nil {
+		panic("Failed to migrate role")
+	}
+
 	return db
 }

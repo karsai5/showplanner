@@ -45,3 +45,14 @@ func UpdateAvailability(userId uuid.UUID, eventId uint, available bool) (*Availa
 
 	return &newAvailability, res.Error
 }
+
+func GetRoles(showId uint) ([]Role, error) {
+	show := Show{}
+	res := db.Preload("Roles").Find(&show, showId)
+	return show.Roles, res.Error
+}
+
+func CreateRole(role Role) (Role, error) {
+	res := db.Create(&role)
+	return role, res.Error
+}

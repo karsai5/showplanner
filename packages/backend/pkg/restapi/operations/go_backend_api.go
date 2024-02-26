@@ -70,6 +70,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetPublicScheduleHandler: GetPublicScheduleHandlerFunc(func(params GetPublicScheduleParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPublicSchedule has not yet been implemented")
 		}),
+		GetRolesHandler: GetRolesHandlerFunc(func(params GetRolesParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetRoles has not yet been implemented")
+		}),
 		GetScheduleHandler: GetScheduleHandlerFunc(func(params GetScheduleParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetSchedule has not yet been implemented")
 		}),
@@ -93,6 +96,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		}),
 		PostPersonnelAssignHandler: PostPersonnelAssignHandlerFunc(func(params PostPersonnelAssignParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostPersonnelAssign has not yet been implemented")
+		}),
+		PostRolesHandler: PostRolesHandlerFunc(func(params PostRolesParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostRoles has not yet been implemented")
 		}),
 		PostShowsHandler: PostShowsHandlerFunc(func(params PostShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostShows has not yet been implemented")
@@ -152,6 +158,8 @@ type GoBackendAPI struct {
 	GetPublicHealthHandler GetPublicHealthHandler
 	// GetPublicScheduleHandler sets the operation handler for the get public schedule operation
 	GetPublicScheduleHandler GetPublicScheduleHandler
+	// GetRolesHandler sets the operation handler for the get roles operation
+	GetRolesHandler GetRolesHandler
 	// GetScheduleHandler sets the operation handler for the get schedule operation
 	GetScheduleHandler GetScheduleHandler
 	// GetShowsHandler sets the operation handler for the get shows operation
@@ -168,6 +176,8 @@ type GoBackendAPI struct {
 	PostMeHandler PostMeHandler
 	// PostPersonnelAssignHandler sets the operation handler for the post personnel assign operation
 	PostPersonnelAssignHandler PostPersonnelAssignHandler
+	// PostRolesHandler sets the operation handler for the post roles operation
+	PostRolesHandler PostRolesHandler
 	// PostShowsHandler sets the operation handler for the post shows operation
 	PostShowsHandler PostShowsHandler
 
@@ -274,6 +284,9 @@ func (o *GoBackendAPI) Validate() error {
 	if o.GetPublicScheduleHandler == nil {
 		unregistered = append(unregistered, "GetPublicScheduleHandler")
 	}
+	if o.GetRolesHandler == nil {
+		unregistered = append(unregistered, "GetRolesHandler")
+	}
 	if o.GetScheduleHandler == nil {
 		unregistered = append(unregistered, "GetScheduleHandler")
 	}
@@ -297,6 +310,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.PostPersonnelAssignHandler == nil {
 		unregistered = append(unregistered, "PostPersonnelAssignHandler")
+	}
+	if o.PostRolesHandler == nil {
+		unregistered = append(unregistered, "PostRolesHandler")
 	}
 	if o.PostShowsHandler == nil {
 		unregistered = append(unregistered, "PostShowsHandler")
@@ -426,6 +442,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
+	o.handlers["GET"]["/roles"] = NewGetRoles(o.context, o.GetRolesHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
 	o.handlers["GET"]["/schedule"] = NewGetSchedule(o.context, o.GetScheduleHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -455,6 +475,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/personnel/assign"] = NewPostPersonnelAssign(o.context, o.PostPersonnelAssignHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/roles"] = NewPostRoles(o.context, o.PostRolesHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

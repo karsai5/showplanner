@@ -40,6 +40,7 @@ type Show struct {
 	Company string
 	Slug    string `gorm:"unique"`
 	Events  []Event
+	Roles   []Role
 	People  []Person `gorm:"many2many:show_people;"`
 }
 
@@ -73,4 +74,13 @@ type Person struct {
 	ReasonForCrewing      *string
 
 	Shows []Show `gorm:"many2many:show_people;"`
+}
+
+type Role struct {
+	gorm.Model
+	ShowID   uint
+	Show     Show
+	PersonID *uuid.UUID
+	Person   *Person
+	Name     string
 }

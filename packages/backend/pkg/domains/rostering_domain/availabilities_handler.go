@@ -1,4 +1,4 @@
-package availabilities_domain
+package rostering_domain
 
 import (
 	"showplanner.io/pkg/convert"
@@ -18,7 +18,60 @@ import (
 func SetupHandlers(api *operations.GoBackendAPI) {
 	api.PostAvailabilitiesHandler = handleUpdateAvailability
 	api.GetAvailabilitiesHandler = handleGetAvailabilities
+	api.PostRolesHandler = handleCreateRole
+	api.GetRolesHandler = handleGetRoles
 }
+
+var handleCreateRole = operations.PostRolesHandlerFunc(func(params operations.PostRolesParams) middleware.Responder {
+	hasPerm, err := permissions.Rostering.HasPermission(uint(params.RoleDetails.ShowID), params.HTTPRequest)
+
+	if err != nil {
+		logger.Error("Creating role", err)
+		return &operations.GetAvailabilitiesInternalServerError{}
+	}
+	if !hasPerm {
+		return &operations.GetAvailabilitiesUnauthorized{}
+	}
+
+	role, err := database.CreateRole(database.Role{
+		ShowID:   uint(params.RoleDetails.ShowID),
+		PersonID: nil,
+		Name:     params.RoleDetails.Name,
+	})
+
+	if err != nil {
+		logger.Error("Creating role", err)
+		return &operations.GetRolesInternalServerError{}
+	}
+
+	mappedRole := mapToRoleDTO(role)
+	return &operations.PostRolesOK{Payload: &mappedRole}
+})
+
+var handleGetRoles = operations.GetRolesHandlerFunc(func(params operations.GetRolesParams) middleware.Responder {
+	hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)
+
+	if err != nil {
+		logger.Error("Getting availabilites", err)
+		return &operations.GetAvailabilitiesInternalServerError{}
+	}
+	if !hasPerm {
+		return &operations.GetAvailabilitiesUnauthorized{}
+	}
+
+	roles, err := database.GetRoles(uint(params.ShowID))
+
+	if err != nil {
+		logger.Error("Getting Roles", err)
+		return &operations.GetRolesInternalServerError{}
+	}
+
+	mappedRoles := convert.MapArrayOfPointer(roles, mapToRoleDTO)
+
+	return &operations.GetRolesOK{
+		Payload: mappedRoles,
+	}
+})
 
 var handleGetAvailabilities = operations.GetAvailabilitiesHandlerFunc(func(params operations.GetAvailabilitiesParams) middleware.Responder {
 	hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)

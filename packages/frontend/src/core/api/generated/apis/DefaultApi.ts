@@ -25,6 +25,8 @@ import type {
   PersonUpdateDTO,
   PersonnelDTO,
   PublicScheduleGet200Response,
+  RoleDTO,
+  RoleUpdateDTO,
   ScheduleEventDTO,
   ShowDTO,
   ShowSummaryDTO,
@@ -50,6 +52,10 @@ import {
     PersonnelDTOToJSON,
     PublicScheduleGet200ResponseFromJSON,
     PublicScheduleGet200ResponseToJSON,
+    RoleDTOFromJSON,
+    RoleDTOToJSON,
+    RoleUpdateDTOFromJSON,
+    RoleUpdateDTOToJSON,
     ScheduleEventDTOFromJSON,
     ScheduleEventDTOToJSON,
     ShowDTOFromJSON,
@@ -102,6 +108,14 @@ export interface PublicCalendarIdGetRequest {
 
 export interface PublicScheduleGetRequest {
     showSlug: string;
+}
+
+export interface RolesGetRequest {
+    showId: number;
+}
+
+export interface RolesPostRequest {
+    roleDetails?: RoleUpdateDTO;
 }
 
 export interface ScheduleGetRequest {
@@ -529,6 +543,69 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async publicScheduleGet(requestParameters: PublicScheduleGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PublicScheduleGet200Response> {
         const response = await this.publicScheduleGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Returns a list of roles
+     */
+    async rolesGetRaw(requestParameters: RolesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<RoleDTO>>> {
+        if (requestParameters.showId === null || requestParameters.showId === undefined) {
+            throw new runtime.RequiredError('showId','Required parameter requestParameters.showId was null or undefined when calling rolesGet.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.showId !== undefined) {
+            queryParameters['showId'] = requestParameters.showId;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/roles`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RoleDTOFromJSON));
+    }
+
+    /**
+     * Returns a list of roles
+     */
+    async rolesGet(requestParameters: RolesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<RoleDTO>> {
+        const response = await this.rolesGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates a new role
+     */
+    async rolesPostRaw(requestParameters: RolesPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RoleDTO>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/roles`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RoleUpdateDTOToJSON(requestParameters.roleDetails),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RoleDTOFromJSON(jsonValue));
+    }
+
+    /**
+     * Creates a new role
+     */
+    async rolesPost(requestParameters: RolesPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RoleDTO> {
+        const response = await this.rolesPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

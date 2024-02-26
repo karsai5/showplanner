@@ -14,6 +14,8 @@ export * from './PersonSummaryDTO';
 export * from './PersonUpdateDTO';
 export * from './PersonnelDTO';
 export * from './PublicScheduleGet200Response';
+export * from './RoleDTO';
+export * from './RoleUpdateDTO';
 export * from './ScheduleEventDTO';
 export * from './ShowDTO';
 export * from './ShowSummaryDTO';

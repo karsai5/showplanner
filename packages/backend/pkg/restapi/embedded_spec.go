@@ -424,6 +424,70 @@ func init() {
         }
       }
     },
+    "/roles": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns a list of roles",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get roles for",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RoleDTO"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      },
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Creates a new role",
+        "parameters": [
+          {
+            "description": "The availability to create or update",
+            "name": "roleDetails",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/RoleUpdateDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/RoleDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/schedule": {
       "get": {
         "produces": [
@@ -863,6 +927,37 @@ func init() {
           "items": {
             "$ref": "#/definitions/PersonSummaryDTO"
           }
+        }
+      }
+    },
+    "RoleDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "person": {
+          "x-nullable": true,
+          "$ref": "#/definitions/PersonSummaryDTO"
+        }
+      }
+    },
+    "RoleUpdateDTO": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "personId": {
+          "type": "string",
+          "format": "uuid",
+          "x-nullable": true
+        },
+        "showId": {
+          "type": "integer"
         }
       }
     },
@@ -1403,6 +1498,82 @@ func init() {
         }
       }
     },
+    "/roles": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns a list of roles",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get roles for",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/RoleDTO"
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Creates a new role",
+        "parameters": [
+          {
+            "description": "The availability to create or update",
+            "name": "roleDetails",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/RoleUpdateDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/RoleDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/schedule": {
       "get": {
         "produces": [
@@ -1872,6 +2043,37 @@ func init() {
           "items": {
             "$ref": "#/definitions/PersonSummaryDTO"
           }
+        }
+      }
+    },
+    "RoleDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "person": {
+          "x-nullable": true,
+          "$ref": "#/definitions/PersonSummaryDTO"
+        }
+      }
+    },
+    "RoleUpdateDTO": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "personId": {
+          "type": "string",
+          "format": "uuid",
+          "x-nullable": true
+        },
+        "showId": {
+          "type": "integer"
         }
       }
     },

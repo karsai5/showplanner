@@ -8,12 +8,12 @@ import { GapRow, Td } from "core/components/tables/tables";
 import { H2 } from "core/components/Typography";
 import { TimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
 import { PERMISSION, showPermission } from "core/permissions";
+import { displayDate } from "domains/events/lib/displayDate";
+import { processEvents } from "domains/events/lib/processEvents";
 import {
   getBgColor,
   getStringFromBoolean,
-} from "domains/availabilities/helpers";
-import { displayDate } from "domains/events/lib/displayDate";
-import { processEvents } from "domains/events/lib/processEvents";
+} from "domains/rostering/helpers";
 import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
 import sortBy from "lodash/sortBy";
