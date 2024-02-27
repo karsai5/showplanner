@@ -35,6 +35,19 @@ func UUIDToStrmFmtUUID(id uuid.UUID) *strfmt.UUID {
 	return &convertedUUID
 }
 
+func StrfmtUUIDToUUID(id *strfmt.UUID) *uuid.UUID {
+	if id == nil {
+		return nil
+	}
+
+	convertedUUID, err := uuid.FromString(id.String())
+	if err != nil {
+		panic("Could not convert UUID")
+	}
+
+	return &convertedUUID
+}
+
 func MapArray[X any, Y any](items []X, fn func(X) Y) []Y {
 	array := []Y{}
 	for _, item := range items {

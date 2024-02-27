@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 )
 
 func GetAvailability(userId uuid.UUID, eventId uint) (*Availability, error) {
@@ -47,9 +48,9 @@ func UpdateAvailability(userId uuid.UUID, eventId uint, available bool) (*Availa
 }
 
 func GetRoles(showId uint) ([]Role, error) {
-	show := Show{}
-	res := db.Preload("Roles").Find(&show, showId)
-	return show.Roles, res.Error
+	roles := []Role{}
+	res := db.Where("show_id = ?", showId).Preload("Person").Find(&roles)
+	return roles, res.Error
 }
 
 func GetRole(roleId uint) (Role, error) {
@@ -64,7 +65,11 @@ func CreateRole(role Role) (Role, error) {
 }
 
 func UpdateRole(id uint, role Role) (Role, error) {
-	updatedRole := Role{}
-	res := db.Where("ID = ?", id).Model(&updatedRole).Select("Name").Updates(role)
-	return role, res.Error
+	updatedRole := Role{
+		Model: gorm.Model{
+			ID: id,
+		},
+	}
+	res := db.Model(&updatedRole).Updates(role)
+	return updatedRole, res.Error
 }

@@ -1,8 +1,6 @@
 package rostering_domain
 
 import (
-	"log/slog"
-
 	"showplanner.io/pkg/convert"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/events_domain"
@@ -25,19 +23,8 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 	api.PutRolesIDHandler = handleUpdateRole
 }
 
-func createLogErrorFunc(text string, response middleware.Responder) func(err *error) middleware.Responder {
-	return func(err *error) middleware.Responder {
-		if err != nil {
-			logger.Error(text, *err)
-		} else {
-			slog.Error(text)
-		}
-		return response
-	}
-}
-
 var handleUpdateRole = operations.PutRolesIDHandlerFunc(func(params operations.PutRolesIDParams) middleware.Responder {
-	logError := createLogErrorFunc("Updating role", &operations.PutRolesIDInternalServerError{})
+	logError := logger.CreateLogErrorFunc("Updating role", &operations.PutRolesIDInternalServerError{})
 	role, err := database.GetRole(uint(params.ID))
 
 	if err != nil {
@@ -53,11 +40,20 @@ var handleUpdateRole = operations.PutRolesIDHandlerFunc(func(params operations.P
 	}
 
 	role, err = database.UpdateRole(uint(params.ID), database.Role{
-		Name: params.RoleDetails.Name,
+		Name:     params.RoleDetails.Name,
+		PersonID: convert.StrfmtUUIDToUUID(params.RoleDetails.PersonID),
 	})
 
 	if err != nil {
 		return logError(&err)
+	}
+
+	if role.PersonID != nil {
+		person, err := database.GetPerson(*role.PersonID)
+		if err != nil {
+			return logError(&err)
+		}
+		role.Person = convert.GetPointer(person)
 	}
 
 	return &operations.PutRolesIDOK{Payload: convert.GetPointer(mapToRoleDTO(role))}
@@ -90,11 +86,11 @@ var handleCreateRole = operations.PostRolesHandlerFunc(func(params operations.Po
 })
 
 var handleGetRoles = operations.GetRolesHandlerFunc(func(params operations.GetRolesParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting roles", &operations.GetAvailabilitiesInternalServerError{})
 	hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)
 
 	if err != nil {
-		logger.Error("Getting availabilites", err)
-		return &operations.GetAvailabilitiesInternalServerError{}
+		return logError(&err)
 	}
 	if !hasPerm {
 		return &operations.GetAvailabilitiesUnauthorized{}
@@ -103,8 +99,7 @@ var handleGetRoles = operations.GetRolesHandlerFunc(func(params operations.GetRo
 	roles, err := database.GetRoles(uint(params.ShowID))
 
 	if err != nil {
-		logger.Error("Getting Roles", err)
-		return &operations.GetRolesInternalServerError{}
+		return logError(&err)
 	}
 
 	mappedRoles := convert.MapArrayOfPointer(roles, mapToRoleDTO)
