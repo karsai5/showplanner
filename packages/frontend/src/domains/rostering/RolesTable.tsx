@@ -1,3 +1,5 @@
+import { Combobox, Transition } from '@headlessui/react'
+import { CheckIcon } from '@heroicons/react/20/solid'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from 'core/api';
 import { PersonSummaryDTO, RoleDTO } from 'core/api/generated';
@@ -8,10 +10,8 @@ import { LoadingBox } from 'core/components/LoadingBox/LoadingBox';
 import { showToastError } from 'core/utils/errors';
 import { useShowSummary } from 'domains/shows/lib/summaryContext';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { Fragment } from 'react'
-import { Combobox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
+import { useForm } from 'react-hook-form';
 
 export const RolesTable: React.FC<{
   className?: string;
