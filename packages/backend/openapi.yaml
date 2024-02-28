@@ -341,6 +341,26 @@ paths:
           $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'
+  /roster:
+    get:
+      parameters:
+        - in: query
+          required: true
+          name: showId
+          type: integer
+          description: ID of the show to get events from
+      summary: Returns roster for a show
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/RosterDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
   /availabilities:
     get:
       parameters:
@@ -562,6 +582,25 @@ definitions:
                 type: array
                 items:
                   $ref: '#/definitions/AvailabilityDTO'
+  RosterDTO:
+    type: object
+    properties:
+      roles:
+        type: array
+        items:
+          $ref: '#/definitions/RoleDTO'
+      events:
+        type: array
+        items:
+          allOf: 
+          - $ref: '#/definitions/EventDTO'
+          - type: object
+            properties:
+              assignments: 
+                x-nullable: true
+                type: array
+                items:
+                  $ref: '#/definitions/AssignedDTO'
   EventDTO:
     properties:
       id:
@@ -594,6 +633,19 @@ definitions:
     required:
       - id
       - start
+  AssignedDTO:
+    type: object
+    properties:
+      person:
+        $ref: '#/definitions/PersonSummaryDTO'
+      cover:
+        type: boolean
+      available:
+        type: boolean
+    required:
+      - person
+      - cover
+      - available
   AvailabilityDTO:
     type: object
     properties:

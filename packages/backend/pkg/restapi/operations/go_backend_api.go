@@ -73,6 +73,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetRolesHandler: GetRolesHandlerFunc(func(params GetRolesParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetRoles has not yet been implemented")
 		}),
+		GetRosterHandler: GetRosterHandlerFunc(func(params GetRosterParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetRoster has not yet been implemented")
+		}),
 		GetScheduleHandler: GetScheduleHandlerFunc(func(params GetScheduleParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetSchedule has not yet been implemented")
 		}),
@@ -163,6 +166,8 @@ type GoBackendAPI struct {
 	GetPublicScheduleHandler GetPublicScheduleHandler
 	// GetRolesHandler sets the operation handler for the get roles operation
 	GetRolesHandler GetRolesHandler
+	// GetRosterHandler sets the operation handler for the get roster operation
+	GetRosterHandler GetRosterHandler
 	// GetScheduleHandler sets the operation handler for the get schedule operation
 	GetScheduleHandler GetScheduleHandler
 	// GetShowsHandler sets the operation handler for the get shows operation
@@ -291,6 +296,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.GetRolesHandler == nil {
 		unregistered = append(unregistered, "GetRolesHandler")
+	}
+	if o.GetRosterHandler == nil {
+		unregistered = append(unregistered, "GetRosterHandler")
 	}
 	if o.GetScheduleHandler == nil {
 		unregistered = append(unregistered, "GetScheduleHandler")
@@ -451,6 +459,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/roles"] = NewGetRoles(o.context, o.GetRolesHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/roster"] = NewGetRoster(o.context, o.GetRosterHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

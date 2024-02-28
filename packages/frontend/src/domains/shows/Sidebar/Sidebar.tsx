@@ -1,6 +1,6 @@
+import { CalendarDaysIcon, HomeIcon } from '@heroicons/react/24/outline';
 import cc from 'classnames';
 import {
-  CalendarIcon,
   DocumentCheckIcon,
   UsersIcon,
 } from 'core/components/Icons';
@@ -39,7 +39,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, children }) => {
                 url={`/shows/${slug}`}
                 collapsed={collapsed}
                 name={'Schedule'}
-                icon={<CalendarIcon />}
+                icon={<HomeIcon className="h-6 w-6" />}
               />
               <HasPermission showId={show.id} permission={PERMISSION.rostering}>
                 <Item
@@ -55,6 +55,14 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, children }) => {
                   collapsed={collapsed}
                   name={'People'}
                   icon={<UsersIcon />}
+                />
+              </HasPermission>
+              <HasPermission showId={show.id} permission={PERMISSION.rostering}>
+                <Item
+                  url={`/shows/${slug}/roster`}
+                  collapsed={collapsed}
+                  name={'Roster'}
+                  icon={<CalendarDaysIcon className="h-6 w-6" />}
                 />
               </HasPermission>
             </ul>

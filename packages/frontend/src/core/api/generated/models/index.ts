@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './AssignedDTO';
 export * from './AvailabilitiesDTO';
 export * from './AvailabilitiesDTOEventsInner';
 export * from './AvailabilityDTO';
@@ -16,6 +17,8 @@ export * from './PersonnelDTO';
 export * from './PublicScheduleGet200Response';
 export * from './RoleDTO';
 export * from './RoleUpdateDTO';
+export * from './RosterDTO';
+export * from './RosterDTOEventsInner';
 export * from './ScheduleEventDTO';
 export * from './ShowDTO';
 export * from './ShowSummaryDTO';

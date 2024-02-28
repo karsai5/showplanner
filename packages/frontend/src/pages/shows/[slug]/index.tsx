@@ -25,10 +25,10 @@ const ShowPage = () => {
   return (
     <>
       <Head>
-        <title>Schedule - {show.name} - ShowPlanner</title>
+        <title>{show.name} - ShowPlanner</title>
       </Head>
       <div className="flex flex-col justify-between sm:flex-row gap-4">
-        <H2 className="mb-4">{show.name} - Schedule </H2>
+        <H2 className="mb-4">{show.name}</H2>
         <div className="flex gap-2 mb-4">
           <HasPermission showId={show.id} permission={PERMISSION.addEvents}>
             <AddEventButton showId={show.id} />

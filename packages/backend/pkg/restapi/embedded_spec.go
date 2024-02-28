@@ -527,6 +527,37 @@ func init() {
         }
       }
     },
+    "/roster": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns roster for a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get events from",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/RosterDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/schedule": {
       "get": {
         "produces": [
@@ -655,6 +686,25 @@ func init() {
     }
   },
   "definitions": {
+    "AssignedDTO": {
+      "type": "object",
+      "required": [
+        "person",
+        "cover",
+        "available"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "cover": {
+          "type": "boolean"
+        },
+        "person": {
+          "$ref": "#/definitions/PersonSummaryDTO"
+        }
+      }
+    },
     "AvailabilitiesDTO": {
       "type": "object",
       "properties": {
@@ -997,6 +1047,39 @@ func init() {
         },
         "showId": {
           "type": "integer"
+        }
+      }
+    },
+    "RosterDTO": {
+      "type": "object",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/EventDTO"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "assignments": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/AssignedDTO"
+                    },
+                    "x-nullable": true
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoleDTO"
+          }
         }
       }
     },
@@ -1658,6 +1741,43 @@ func init() {
         }
       }
     },
+    "/roster": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns roster for a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get events from",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/RosterDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/schedule": {
       "get": {
         "produces": [
@@ -1813,6 +1933,25 @@ func init() {
     }
   },
   "definitions": {
+    "AssignedDTO": {
+      "type": "object",
+      "required": [
+        "person",
+        "cover",
+        "available"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "cover": {
+          "type": "boolean"
+        },
+        "person": {
+          "$ref": "#/definitions/PersonSummaryDTO"
+        }
+      }
+    },
     "AvailabilitiesDTO": {
       "type": "object",
       "properties": {
@@ -2160,6 +2299,42 @@ func init() {
           "type": "integer"
         }
       }
+    },
+    "RosterDTO": {
+      "type": "object",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RosterDTOEventsItems0"
+          }
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RoleDTO"
+          }
+        }
+      }
+    },
+    "RosterDTOEventsItems0": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/EventDTO"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "assignments": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AssignedDTO"
+              },
+              "x-nullable": true
+            }
+          }
+        }
+      ]
     },
     "ScheduleEventDTO": {
       "allOf": [

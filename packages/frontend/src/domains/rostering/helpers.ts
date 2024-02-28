@@ -1,6 +1,6 @@
-export const YES = 'YES';
-export const NO = 'NO';
-export const UNKNOWN = 'UNKNOWN';
+export const YES = 'Yes';
+export const NO = 'No';
+export const UNKNOWN = 'Unknown';
 
 export const getBgColor = (value: string) => {
   switch (value) {
@@ -12,6 +12,18 @@ export const getBgColor = (value: string) => {
       return 'bg-amber-300';
     default:
       return '';
+  }
+};
+
+export const getBgColorForRoster = (b: boolean | undefined) => {
+  const value = b !== null ? getStringFromBoolean(b) : '';
+  switch (value) {
+    case YES:
+      return '';
+    case NO:
+      return 'bg-red-300';
+    default:
+      return 'bg-amber-300';
   }
 };
 
@@ -28,13 +40,14 @@ export const getBooleanFromString = (value: string) => {
   }
 };
 
-export const getStringFromBoolean = (value: boolean | undefined) => {
+export const getStringFromBoolean = (value: boolean | undefined | null) => {
   switch (value) {
     case true:
       return YES;
     case false:
       return NO;
     case undefined:
+    case null:
       return UNKNOWN;
     default:
       throw new Error(`Value cannot be transformed: ${value}`);

@@ -13,72 +13,85 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AssignedDTO } from './AssignedDTO';
+import {
+    AssignedDTOFromJSON,
+    AssignedDTOFromJSONTyped,
+    AssignedDTOToJSON,
+} from './AssignedDTO';
+
 /**
  * 
  * @export
- * @interface EventDTO
+ * @interface RosterDTOEventsInner
  */
-export interface EventDTO {
+export interface RosterDTOEventsInner {
     /**
      * 
      * @type {number}
-     * @memberof EventDTO
+     * @memberof RosterDTOEventsInner
      */
     id: number;
     /**
      * 
      * @type {number}
-     * @memberof EventDTO
+     * @memberof RosterDTOEventsInner
      */
     showId?: number;
     /**
      * 
      * @type {Date}
-     * @memberof EventDTO
+     * @memberof RosterDTOEventsInner
      */
     start: Date;
     /**
      * 
      * @type {string}
-     * @memberof EventDTO
+     * @memberof RosterDTOEventsInner
      */
     name?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof EventDTO
+     * @memberof RosterDTOEventsInner
      */
     nameRaw?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof EventDTO
+     * @memberof RosterDTOEventsInner
      */
     shortnote?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof EventDTO
+     * @memberof RosterDTOEventsInner
      */
     address?: string | null;
     /**
      * 
      * @type {Date}
-     * @memberof EventDTO
+     * @memberof RosterDTOEventsInner
      */
     curtainsUp?: Date | null;
     /**
      * 
      * @type {Date}
-     * @memberof EventDTO
+     * @memberof RosterDTOEventsInner
      */
     end?: Date | null;
+    /**
+     * 
+     * @type {Array<AssignedDTO>}
+     * @memberof RosterDTOEventsInner
+     */
+    assignments?: Array<AssignedDTO> | null;
 }
 
 /**
- * Check if a given object implements the EventDTO interface.
+ * Check if a given object implements the RosterDTOEventsInner interface.
  */
-export function instanceOfEventDTO(value: object): boolean {
+export function instanceOfRosterDTOEventsInner(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "start" in value;
@@ -86,11 +99,11 @@ export function instanceOfEventDTO(value: object): boolean {
     return isInstance;
 }
 
-export function EventDTOFromJSON(json: any): EventDTO {
-    return EventDTOFromJSONTyped(json, false);
+export function RosterDTOEventsInnerFromJSON(json: any): RosterDTOEventsInner {
+    return RosterDTOEventsInnerFromJSONTyped(json, false);
 }
 
-export function EventDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): EventDTO {
+export function RosterDTOEventsInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): RosterDTOEventsInner {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -105,10 +118,11 @@ export function EventDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'address': !exists(json, 'address') ? undefined : json['address'],
         'curtainsUp': !exists(json, 'curtainsUp') ? undefined : (json['curtainsUp'] === null ? null : new Date(json['curtainsUp'])),
         'end': !exists(json, 'end') ? undefined : (json['end'] === null ? null : new Date(json['end'])),
+        'assignments': !exists(json, 'assignments') ? undefined : (json['assignments'] === null ? null : (json['assignments'] as Array<any>).map(AssignedDTOFromJSON)),
     };
 }
 
-export function EventDTOToJSON(value?: EventDTO | null): any {
+export function RosterDTOEventsInnerToJSON(value?: RosterDTOEventsInner | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -126,6 +140,7 @@ export function EventDTOToJSON(value?: EventDTO | null): any {
         'address': value.address,
         'curtainsUp': value.curtainsUp === undefined ? undefined : (value.curtainsUp === null ? null : value.curtainsUp.toISOString()),
         'end': value.end === undefined ? undefined : (value.end === null ? null : value.end.toISOString()),
+        'assignments': value.assignments === undefined ? undefined : (value.assignments === null ? null : (value.assignments as Array<any>).map(AssignedDTOToJSON)),
     };
 }
 
