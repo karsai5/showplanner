@@ -14,7 +14,7 @@ import (
 
 // MeDetailsDTO me details d t o
 //
-// swagger:model MeDetailsDTO
+// swagger:model meDetailsDTO
 type MeDetailsDTO struct {
 
 	// email

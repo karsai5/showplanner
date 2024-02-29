@@ -71,7 +71,7 @@ func init() {
             "name": "availability",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/AvailabilityDTO"
+              "$ref": "./schemas/Rostering.yaml#/AvailabilityDTO"
             }
           }
         ],
@@ -79,7 +79,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/AvailabilityDTO"
+              "$ref": "./schemas/Rostering.yaml#/AvailabilityDTO"
             }
           },
           "401": {
@@ -103,7 +103,7 @@ func init() {
             "name": "event",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/CreateEventDTO"
+              "$ref": "./schemas/Event.yaml#/CreateEventDTO"
             }
           }
         ],
@@ -111,7 +111,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/EventDTO"
+              "$ref": "./schemas/Event.yaml#/EventDTO"
             }
           },
           "400": {
@@ -142,7 +142,7 @@ func init() {
             "name": "event",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/CreateEventDTO"
+              "$ref": "./schemas/Event.yaml#/CreateEventDTO"
             }
           }
         ],
@@ -150,7 +150,7 @@ func init() {
           "200": {
             "description": "Show",
             "schema": {
-              "$ref": "#/definitions/ShowDTO"
+              "$ref": "./schemas/Show.yaml#/ShowDTO"
             }
           },
           "401": {
@@ -200,7 +200,7 @@ func init() {
           "200": {
             "description": "Details about logged in user",
             "schema": {
-              "$ref": "#/definitions/MeDetailsDTO"
+              "$ref": "./schemas/People.yaml#/MeDetailsDTO"
             }
           },
           "404": {
@@ -221,7 +221,7 @@ func init() {
             "name": "personalDetails",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/PersonUpdateDTO"
+              "$ref": "./schemas/PersonUpdateDTO.yaml"
             }
           }
         ],
@@ -293,7 +293,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/PersonnelDTO"
+              "$ref": "./schemas/People.yaml#/ArrayOfPersonSummaryDTO"
             }
           },
           "401": {
@@ -324,7 +324,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/PersonnelDTO"
+              "$ref": "./schemas/People.yaml#/ArrayOfPersonSummaryDTO"
             }
           },
           "401": {
@@ -409,7 +409,7 @@ func init() {
                 "events": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/EventPublicDTO"
+                    "$ref": "./schemas/Event.yaml#/EventPublicDTO"
                   }
                 },
                 "showName": {
@@ -445,7 +445,7 @@ func init() {
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/RoleDTO"
+                "$ref": "./schemas/Role.yaml#/RoleDTO"
               }
             }
           },
@@ -468,7 +468,7 @@ func init() {
             "name": "roleDetails",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/RoleUpdateDTO"
+              "$ref": "./schemas/Role.yaml#/RoleUpdateDTO"
             }
           }
         ],
@@ -476,7 +476,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/RoleDTO"
+              "$ref": "./schemas/Role.yaml#/RoleDTO"
             }
           },
           "401": {
@@ -507,7 +507,7 @@ func init() {
             "name": "roleDetails",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/RoleUpdateDTO"
+              "$ref": "./schemas/Role.yaml#/RoleUpdateDTO"
             }
           }
         ],
@@ -515,7 +515,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/RoleDTO"
+              "$ref": "./schemas/Role.yaml#/RoleDTO"
             }
           },
           "401": {
@@ -579,7 +579,7 @@ func init() {
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/ScheduleEventDTO"
+                "$ref": "./schemas/Rostering.yaml#/ScheduleEventDTO"
               }
             }
           },
@@ -604,7 +604,7 @@ func init() {
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/ShowDTO"
+                "$ref": "./schemas/Show.yaml#/ShowDTO"
               }
             }
           },
@@ -627,7 +627,7 @@ func init() {
             "name": "show",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/CreateShowDTO"
+              "$ref": "./schemas/Show.yaml#/CreateShowDTO"
             }
           }
         ],
@@ -635,7 +635,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ShowDTO"
+              "$ref": "./schemas/Show.yaml#/ShowDTO"
             }
           },
           "400": {
@@ -669,7 +669,7 @@ func init() {
           "200": {
             "description": "Show",
             "schema": {
-              "$ref": "#/definitions/ShowSummaryDTO"
+              "$ref": "./schemas/Show.yaml#/ShowSummaryDTO"
             }
           },
           "401": {
@@ -701,7 +701,7 @@ func init() {
           "type": "boolean"
         },
         "person": {
-          "$ref": "#/definitions/PersonSummaryDTO"
+          "$ref": "./schemas/People.yaml#/PersonSummaryDTO"
         }
       }
     },
@@ -713,7 +713,7 @@ func init() {
           "items": {
             "allOf": [
               {
-                "$ref": "#/definitions/EventDTO"
+                "$ref": "./schemas/Event.yaml#/EventDTO"
               },
               {
                 "type": "object",
@@ -721,7 +721,7 @@ func init() {
                   "availabilities": {
                     "type": "array",
                     "items": {
-                      "$ref": "#/definitions/AvailabilityDTO"
+                      "$ref": "./schemas/Rostering.yaml#/AvailabilityDTO"
                     },
                     "x-nullable": true
                   }
@@ -733,83 +733,8 @@ func init() {
         "people": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/PersonSummaryDTO"
+            "$ref": "./schemas/People.yaml#/PersonSummaryDTO"
           }
-        }
-      }
-    },
-    "AvailabilityDTO": {
-      "type": "object",
-      "required": [
-        "eventId",
-        "personId",
-        "available"
-      ],
-      "properties": {
-        "available": {
-          "type": "boolean"
-        },
-        "eventId": {
-          "type": "integer"
-        },
-        "personId": {
-          "type": "string",
-          "format": "uuid"
-        }
-      }
-    },
-    "CreateEventDTO": {
-      "required": [
-        "showId",
-        "start"
-      ],
-      "properties": {
-        "address": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "curtainsUp": {
-          "type": "string",
-          "format": "date-time",
-          "x-nullable": true
-        },
-        "end": {
-          "type": "string",
-          "format": "date-time",
-          "x-nullable": true
-        },
-        "name": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "shortnote": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "showId": {
-          "type": "integer"
-        },
-        "start": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
-    "CreateShowDTO": {
-      "required": [
-        "name",
-        "company",
-        "slug"
-      ],
-      "properties": {
-        "company": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "slug": {
-          "type": "string"
         }
       }
     },
@@ -828,86 +753,6 @@ func init() {
         }
       }
     },
-    "EventDTO": {
-      "required": [
-        "id",
-        "start"
-      ],
-      "properties": {
-        "address": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "curtainsUp": {
-          "type": "string",
-          "format": "date-time",
-          "x-nullable": true
-        },
-        "end": {
-          "type": "string",
-          "format": "date-time",
-          "x-nullable": true
-        },
-        "id": {
-          "type": "integer"
-        },
-        "name": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "nameRaw": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "shortnote": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "showId": {
-          "type": "integer"
-        },
-        "start": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
-    "EventPublicDTO": {
-      "required": [
-        "id",
-        "start"
-      ],
-      "properties": {
-        "curtainsUp": {
-          "type": "string",
-          "format": "date-time",
-          "x-nullable": true
-        },
-        "end": {
-          "type": "string",
-          "format": "date-time",
-          "x-nullable": true
-        },
-        "id": {
-          "type": "integer"
-        },
-        "name": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "nameRaw": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "showId": {
-          "type": "integer"
-        },
-        "start": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
     "HealthCheck": {
       "type": "object",
       "required": [
@@ -919,137 +764,6 @@ func init() {
         }
       }
     },
-    "MeDetailsDTO": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string"
-        },
-        "firstName": {
-          "type": "string"
-        }
-      }
-    },
-    "PersonSummaryDTO": {
-      "type": "object",
-      "properties": {
-        "firstName": {
-          "type": "string"
-        },
-        "id": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "lastName": {
-          "type": "string"
-        }
-      }
-    },
-    "PersonUpdateDTO": {
-      "type": "object",
-      "required": [
-        "firstName",
-        "lastName",
-        "phone",
-        "dob",
-        "allergies",
-        "emergencyName",
-        "emergencyPhone",
-        "emergencyRelationship"
-      ],
-      "properties": {
-        "allergies": {
-          "type": "string"
-        },
-        "dob": {
-          "type": "string"
-        },
-        "emergencyName": {
-          "type": "string"
-        },
-        "emergencyPhone": {
-          "type": "string"
-        },
-        "emergencyRelationship": {
-          "type": "string"
-        },
-        "firstName": {
-          "type": "string"
-        },
-        "hearAboutUs": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "phone": {
-          "type": "string"
-        },
-        "preferredName": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "previousWork": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "pronoun": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "reasonForCrewing": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "wwc": {
-          "type": "string",
-          "x-nullable": true
-        }
-      }
-    },
-    "PersonnelDTO": {
-      "type": "object",
-      "properties": {
-        "people": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/PersonSummaryDTO"
-          }
-        }
-      }
-    },
-    "RoleDTO": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        },
-        "name": {
-          "type": "string"
-        },
-        "person": {
-          "x-nullable": true,
-          "$ref": "#/definitions/PersonSummaryDTO"
-        }
-      }
-    },
-    "RoleUpdateDTO": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "personId": {
-          "type": "string",
-          "format": "uuid",
-          "x-nullable": true
-        },
-        "showId": {
-          "type": "integer"
-        }
-      }
-    },
     "RosterDTO": {
       "type": "object",
       "properties": {
@@ -1058,7 +772,7 @@ func init() {
           "items": {
             "allOf": [
               {
-                "$ref": "#/definitions/EventDTO"
+                "$ref": "./schemas/Event.yaml#/EventDTO"
               },
               {
                 "type": "object",
@@ -1078,68 +792,8 @@ func init() {
         "roles": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/RoleDTO"
+            "$ref": "./schemas/Role.yaml#/RoleDTO"
           }
-        }
-      }
-    },
-    "ScheduleEventDTO": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/EventDTO"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "availability": {
-              "x-nullable": true,
-              "$ref": "#/definitions/AvailabilityDTO"
-            }
-          }
-        }
-      ]
-    },
-    "ShowDTO": {
-      "required": [
-        "id",
-        "name",
-        "company",
-        "slug"
-      ],
-      "properties": {
-        "company": {
-          "type": "string"
-        },
-        "id": {
-          "type": "integer"
-        },
-        "name": {
-          "type": "string"
-        },
-        "slug": {
-          "type": "string"
-        }
-      }
-    },
-    "ShowSummaryDTO": {
-      "required": [
-        "id",
-        "name",
-        "company",
-        "slug"
-      ],
-      "properties": {
-        "company": {
-          "type": "string"
-        },
-        "id": {
-          "type": "integer"
-        },
-        "name": {
-          "type": "string"
-        },
-        "slug": {
-          "type": "string"
         }
       }
     }
@@ -1213,7 +867,7 @@ func init() {
             "name": "availability",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/AvailabilityDTO"
+              "$ref": "#/definitions/availabilityDTO"
             }
           }
         ],
@@ -1221,7 +875,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/AvailabilityDTO"
+              "$ref": "#/definitions/availabilityDTO"
             }
           },
           "401": {
@@ -1248,7 +902,7 @@ func init() {
             "name": "event",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/CreateEventDTO"
+              "$ref": "#/definitions/createEventDTO"
             }
           }
         ],
@@ -1256,7 +910,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/EventDTO"
+              "$ref": "#/definitions/eventDTO"
             }
           },
           "400": {
@@ -1293,7 +947,7 @@ func init() {
             "name": "event",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/CreateEventDTO"
+              "$ref": "#/definitions/createEventDTO"
             }
           }
         ],
@@ -1301,7 +955,7 @@ func init() {
           "200": {
             "description": "Show",
             "schema": {
-              "$ref": "#/definitions/ShowDTO"
+              "$ref": "#/definitions/showDTO"
             }
           },
           "401": {
@@ -1366,7 +1020,7 @@ func init() {
           "200": {
             "description": "Details about logged in user",
             "schema": {
-              "$ref": "#/definitions/MeDetailsDTO"
+              "$ref": "#/definitions/meDetailsDTO"
             }
           },
           "404": {
@@ -1387,7 +1041,7 @@ func init() {
             "name": "personalDetails",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/PersonUpdateDTO"
+              "$ref": "#/definitions/personUpdateDTO"
             }
           }
         ],
@@ -1468,7 +1122,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/PersonnelDTO"
+              "$ref": "#/definitions/arrayOfPersonSummaryDTO"
             }
           },
           "401": {
@@ -1505,7 +1159,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/PersonnelDTO"
+              "$ref": "#/definitions/arrayOfPersonSummaryDTO"
             }
           },
           "401": {
@@ -1602,7 +1256,7 @@ func init() {
                 "events": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/EventPublicDTO"
+                    "$ref": "#/definitions/eventPublicDTO"
                   }
                 },
                 "showName": {
@@ -1641,7 +1295,7 @@ func init() {
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/RoleDTO"
+                "$ref": "#/definitions/roleDTO"
               }
             }
           },
@@ -1670,7 +1324,7 @@ func init() {
             "name": "roleDetails",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/RoleUpdateDTO"
+              "$ref": "#/definitions/roleUpdateDTO"
             }
           }
         ],
@@ -1678,7 +1332,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/RoleDTO"
+              "$ref": "#/definitions/roleDTO"
             }
           },
           "401": {
@@ -1715,7 +1369,7 @@ func init() {
             "name": "roleDetails",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/RoleUpdateDTO"
+              "$ref": "#/definitions/roleUpdateDTO"
             }
           }
         ],
@@ -1723,7 +1377,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/RoleDTO"
+              "$ref": "#/definitions/roleDTO"
             }
           },
           "401": {
@@ -1799,7 +1453,7 @@ func init() {
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/ScheduleEventDTO"
+                "$ref": "#/definitions/scheduleEventDTO"
               }
             }
           },
@@ -1830,7 +1484,7 @@ func init() {
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/ShowDTO"
+                "$ref": "#/definitions/showDTO"
               }
             }
           },
@@ -1859,7 +1513,7 @@ func init() {
             "name": "show",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/CreateShowDTO"
+              "$ref": "#/definitions/createShowDTO"
             }
           }
         ],
@@ -1867,7 +1521,7 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ShowDTO"
+              "$ref": "#/definitions/showDTO"
             }
           },
           "400": {
@@ -1907,7 +1561,7 @@ func init() {
           "200": {
             "description": "Show",
             "schema": {
-              "$ref": "#/definitions/ShowSummaryDTO"
+              "$ref": "#/definitions/showSummaryDTO"
             }
           },
           "401": {
@@ -1948,7 +1602,7 @@ func init() {
           "type": "boolean"
         },
         "person": {
-          "$ref": "#/definitions/PersonSummaryDTO"
+          "$ref": "#/definitions/personSummaryDTO"
         }
       }
     },
@@ -1964,7 +1618,7 @@ func init() {
         "people": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/PersonSummaryDTO"
+            "$ref": "#/definitions/personSummaryDTO"
           }
         }
       }
@@ -1972,7 +1626,7 @@ func init() {
     "AvailabilitiesDTOEventsItems0": {
       "allOf": [
         {
-          "$ref": "#/definitions/EventDTO"
+          "$ref": "#/definitions/eventDTO"
         },
         {
           "type": "object",
@@ -1980,7 +1634,7 @@ func init() {
             "availabilities": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/AvailabilityDTO"
+                "$ref": "#/definitions/availabilityDTO"
               },
               "x-nullable": true
             }
@@ -1988,7 +1642,80 @@ func init() {
         }
       ]
     },
-    "AvailabilityDTO": {
+    "Error": {
+      "type": "object",
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "HealthCheck": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "RosterDTO": {
+      "type": "object",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RosterDTOEventsItems0"
+          }
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/roleDTO"
+          }
+        }
+      }
+    },
+    "RosterDTOEventsItems0": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/eventDTO"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "assignments": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AssignedDTO"
+              },
+              "x-nullable": true
+            }
+          }
+        }
+      ]
+    },
+    "arrayOfPersonSummaryDTO": {
+      "type": "object",
+      "properties": {
+        "people": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/personSummaryDTO"
+          }
+        }
+      }
+    },
+    "availabilityDTO": {
       "type": "object",
       "required": [
         "eventId",
@@ -2008,7 +1735,7 @@ func init() {
         }
       }
     },
-    "CreateEventDTO": {
+    "createEventDTO": {
       "required": [
         "showId",
         "start"
@@ -2045,7 +1772,7 @@ func init() {
         }
       }
     },
-    "CreateShowDTO": {
+    "createShowDTO": {
       "required": [
         "name",
         "company",
@@ -2063,22 +1790,7 @@ func init() {
         }
       }
     },
-    "Error": {
-      "type": "object",
-      "required": [
-        "code",
-        "message"
-      ],
-      "properties": {
-        "code": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        }
-      }
-    },
-    "EventDTO": {
+    "eventDTO": {
       "required": [
         "id",
         "start"
@@ -2122,7 +1834,7 @@ func init() {
         }
       }
     },
-    "EventPublicDTO": {
+    "eventPublicDTO": {
       "required": [
         "id",
         "start"
@@ -2158,18 +1870,7 @@ func init() {
         }
       }
     },
-    "HealthCheck": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "message": {
-          "type": "string"
-        }
-      }
-    },
-    "MeDetailsDTO": {
+    "meDetailsDTO": {
       "type": "object",
       "properties": {
         "email": {
@@ -2180,7 +1881,7 @@ func init() {
         }
       }
     },
-    "PersonSummaryDTO": {
+    "personSummaryDTO": {
       "type": "object",
       "properties": {
         "firstName": {
@@ -2195,7 +1896,7 @@ func init() {
         }
       }
     },
-    "PersonUpdateDTO": {
+    "personUpdateDTO": {
       "type": "object",
       "required": [
         "firstName",
@@ -2258,18 +1959,7 @@ func init() {
         }
       }
     },
-    "PersonnelDTO": {
-      "type": "object",
-      "properties": {
-        "people": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/PersonSummaryDTO"
-          }
-        }
-      }
-    },
-    "RoleDTO": {
+    "roleDTO": {
       "type": "object",
       "properties": {
         "id": {
@@ -2279,12 +1969,11 @@ func init() {
           "type": "string"
         },
         "person": {
-          "x-nullable": true,
-          "$ref": "#/definitions/PersonSummaryDTO"
+          "$ref": "#/definitions/personSummaryDTO"
         }
       }
     },
-    "RoleUpdateDTO": {
+    "roleUpdateDTO": {
       "type": "object",
       "properties": {
         "name": {
@@ -2300,59 +1989,22 @@ func init() {
         }
       }
     },
-    "RosterDTO": {
-      "type": "object",
-      "properties": {
-        "events": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/RosterDTOEventsItems0"
-          }
-        },
-        "roles": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/RoleDTO"
-          }
-        }
-      }
-    },
-    "RosterDTOEventsItems0": {
+    "scheduleEventDTO": {
       "allOf": [
         {
-          "$ref": "#/definitions/EventDTO"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "assignments": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/AssignedDTO"
-              },
-              "x-nullable": true
-            }
-          }
-        }
-      ]
-    },
-    "ScheduleEventDTO": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/EventDTO"
+          "$ref": "#/definitions/eventDTO"
         },
         {
           "type": "object",
           "properties": {
             "availability": {
-              "x-nullable": true,
-              "$ref": "#/definitions/AvailabilityDTO"
+              "$ref": "#/definitions/availabilityDTO"
             }
           }
         }
       ]
     },
-    "ShowDTO": {
+    "showDTO": {
       "required": [
         "id",
         "name",
@@ -2374,7 +2026,7 @@ func init() {
         }
       }
     },
-    "ShowSummaryDTO": {
+    "showSummaryDTO": {
       "required": [
         "id",
         "name",

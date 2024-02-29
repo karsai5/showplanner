@@ -57,7 +57,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/ScheduleEventDTO'
+              $ref: './schemas/Rostering.yaml#/ScheduleEventDTO'
         401:
           $ref: '#/responses/Error'
         500:
@@ -72,7 +72,7 @@ paths:
           name: event
           description: The show to create
           schema:
-            $ref: '#/definitions/CreateEventDTO'
+            $ref: './schemas/Event.yaml#/CreateEventDTO'
 
       responses:
         500:
@@ -82,7 +82,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/EventDTO'
+            $ref: './schemas/Event.yaml#/EventDTO'
   /public/schedule:
     get:
       parameters:
@@ -105,7 +105,7 @@ paths:
               events:
                 type: array
                 items:
-                  $ref: '#/definitions/EventPublicDTO'
+                  $ref: './schemas/Event.yaml#/EventPublicDTO'
         500:
           $ref: '#/responses/Error'
   /events/{id}:
@@ -139,7 +139,7 @@ paths:
           name: event
           description: The show to create
           schema:
-            $ref: '#/definitions/CreateEventDTO'
+            $ref: './schemas/Event.yaml#/CreateEventDTO'
       produces:
         - application/json
       responses:
@@ -150,7 +150,7 @@ paths:
         200:
           description: "Show"
           schema:
-            $ref: '#/definitions/ShowDTO'
+            $ref: './schemas/Show.yaml#/ShowDTO'
   /shows:
     get:
       summary: Returns a list of shows
@@ -166,7 +166,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/ShowDTO'
+              $ref: './schemas/Show.yaml#/ShowDTO'
     post:
       summary: Creates a show
       consumes:
@@ -176,7 +176,7 @@ paths:
           name: show
           description: The show to create
           schema:
-            $ref: '#/definitions/CreateShowDTO'
+            $ref: './schemas/Show.yaml#/CreateShowDTO'
 
       responses:
         500:
@@ -188,7 +188,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/ShowDTO'
+            $ref: './schemas/Show.yaml#/ShowDTO'
   /shows/{showSlug}/summary:
     get:
       summary: Return details about a show
@@ -210,7 +210,7 @@ paths:
         200:
           description: "Show"
           schema:
-            $ref: '#/definitions/ShowSummaryDTO'
+            $ref: './schemas/Show.yaml#/ShowSummaryDTO'
   /personnel/assignable:
     get:
       parameters:
@@ -226,7 +226,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/PersonnelDTO'
+            $ref: './schemas/People.yaml#/ArrayOfPersonSummaryDTO'
         401:
           $ref: '#/responses/Error'
         500:
@@ -270,7 +270,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/PersonnelDTO'
+            $ref: './schemas/People.yaml#/ArrayOfPersonSummaryDTO'
         401:
           $ref: '#/responses/Error'
         500:
@@ -287,7 +287,7 @@ paths:
           description: The availability to create or update
           name: roleDetails
           schema:
-            $ref: '#/definitions/RoleUpdateDTO'
+            $ref: './schemas/Role.yaml#/RoleUpdateDTO'
       summary: Updates a role
       produces:
         - application/json
@@ -295,7 +295,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/RoleDTO'
+            $ref: './schemas/Role.yaml#/RoleDTO'
         401:
           $ref: '#/responses/Error'
         500:
@@ -307,7 +307,7 @@ paths:
           description: The availability to create or update
           name: roleDetails
           schema:
-            $ref: '#/definitions/RoleUpdateDTO'
+            $ref: './schemas/Role.yaml#/RoleUpdateDTO'
       summary: Creates a new role
       produces:
         - application/json
@@ -315,7 +315,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/RoleDTO'
+            $ref: './schemas/Role.yaml#/RoleDTO'
         401:
           $ref: '#/responses/Error'
         500:
@@ -336,7 +336,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/RoleDTO'
+              $ref: './schemas/Role.yaml#/RoleDTO'
         401:
           $ref: '#/responses/Error'
         500:
@@ -390,7 +390,7 @@ paths:
           name: availability
           description: The availability to create or update
           schema:
-            $ref: '#/definitions/AvailabilityDTO'
+            $ref: './schemas/Rostering.yaml#/AvailabilityDTO'
       responses:
         500:
           description: Internal server error
@@ -399,7 +399,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/AvailabilityDTO'
+            $ref: './schemas/Rostering.yaml#/AvailabilityDTO'
   /me:
     post:
       produces:
@@ -409,7 +409,7 @@ paths:
           description: The availability to create or update
           name: personalDetails
           schema:
-            $ref: '#/definitions/PersonUpdateDTO'
+            $ref: './schemas/PersonUpdateDTO.yaml'
       responses:
         500:
           description: Internal server error
@@ -428,7 +428,7 @@ paths:
         200:
           description: Details about logged in user
           schema:
-            $ref: '#/definitions/MeDetailsDTO'
+            $ref: './schemas/People.yaml#/MeDetailsDTO'
 
 responses:
   Error:
@@ -453,147 +453,37 @@ definitions:
     required:
       - code
       - message
-  ShowSummaryDTO:
-    properties:
-      id:
-        type: integer
-      name:
-        type: string
-      company:
-        type: string
-      slug:
-        type: string
-    required:
-      - id
-      - name
-      - company
-      - slug
-  ShowDTO:
-    properties:
-      id:
-        type: integer
-      name:
-        type: string
-      company:
-        type: string
-      slug:
-        type: string
-    required:
-      - id
-      - name
-      - company
-      - slug
-  CreateShowDTO:
-    properties:
-      name:
-        type: string
-      company:
-        type: string
-      slug:
-        type: string
-    required:
-      - name
-      - company
-      - slug
-  CreateEventDTO:
-    properties:
-      showId:
-        type: integer
-      start:
-        type: string
-        format: date-time
-      end:
-        type: string
-        format: date-time
-        x-nullable: true
-      curtainsUp:
-        type: string
-        format: date-time
-        x-nullable: true
-      name:
-        type: string
-        x-nullable: true
-      shortnote:
-        type: string
-        x-nullable: true
-      address:
-        type: string
-        x-nullable: true
-    required:
-      - showId
-      - start
-  EventPublicDTO:
-    properties:
-      id:
-        type: integer
-      showId:
-        type: integer
-      start:
-        type: string
-        format: date-time
-      name:
-        type: string
-        x-nullable: true
-      nameRaw:
-        type: string
-        x-nullable: true
-      curtainsUp:
-        type: string
-        format: date-time
-        x-nullable: true
-      end:
-        type: string
-        format: date-time
-        x-nullable: true
-    required:
-      - id
-      - start
-  ScheduleEventDTO:
-    allOf: 
-    - $ref: '#/definitions/EventDTO'
-    - type: object
-      properties:
-        availability:
-          x-nullable: true
-          $ref: '#/definitions/AvailabilityDTO'
-  PersonnelDTO:
-    type: object
-    properties:
-      people:
-        type: array
-        items:
-          $ref: '#/definitions/PersonSummaryDTO'
   AvailabilitiesDTO:
     type: object
     properties:
       people:
         type: array
         items:
-          $ref: '#/definitions/PersonSummaryDTO'
+          $ref: './schemas/People.yaml#/PersonSummaryDTO'
       events:
         type: array
         items:
           allOf: 
-          - $ref: '#/definitions/EventDTO'
+          - $ref: './schemas/Event.yaml#/EventDTO'
           - type: object
             properties:
               availabilities: 
                 x-nullable: true
                 type: array
                 items:
-                  $ref: '#/definitions/AvailabilityDTO'
+                  $ref: './schemas/Rostering.yaml#/AvailabilityDTO'
   RosterDTO:
     type: object
     properties:
       roles:
         type: array
         items:
-          $ref: '#/definitions/RoleDTO'
+          $ref: './schemas/Role.yaml#/RoleDTO'
       events:
         type: array
         items:
           allOf: 
-          - $ref: '#/definitions/EventDTO'
+          - $ref: './schemas/Event.yaml#/EventDTO'
           - type: object
             properties:
               assignments: 
@@ -601,43 +491,11 @@ definitions:
                 type: array
                 items:
                   $ref: '#/definitions/AssignedDTO'
-  EventDTO:
-    properties:
-      id:
-        type: integer
-      showId:
-        type: integer
-      start:
-        type: string
-        format: date-time
-      name:
-        type: string
-        x-nullable: true
-      nameRaw:
-        type: string
-        x-nullable: true
-      shortnote:
-        type: string
-        x-nullable: true
-      address:
-        type: string
-        x-nullable: true
-      curtainsUp:
-        type: string
-        format: date-time
-        x-nullable: true
-      end:
-        type: string
-        format: date-time
-        x-nullable: true
-    required:
-      - id
-      - start
   AssignedDTO:
     type: object
     properties:
       person:
-        $ref: '#/definitions/PersonSummaryDTO'
+        $ref: './schemas/People.yaml#/PersonSummaryDTO'
       cover:
         type: boolean
       available:
@@ -646,101 +504,3 @@ definitions:
       - person
       - cover
       - available
-  AvailabilityDTO:
-    type: object
-    properties:
-      eventId:
-        type: integer
-      personId:
-        type: string
-        format: uuid
-      available:
-        type: boolean
-    required:
-      - eventId
-      - personId
-      - available
-  MeDetailsDTO:
-    type: object
-    properties:
-      firstName:
-        type: string
-      email:
-        type: string
-  RoleUpdateDTO:
-    type: object
-    properties:
-      showId:
-        type: integer
-      personId:
-        x-nullable: true
-        type: string
-        format: uuid
-      name:
-        type: string
-  RoleDTO:
-    type: object
-    properties:
-      id:
-        type: integer
-      name:
-        type: string
-      person:
-        x-nullable: true
-        $ref: '#/definitions/PersonSummaryDTO'
-  PersonSummaryDTO:
-    type: object
-    properties:
-      id:
-        type: string
-        format: uuid
-      firstName:
-        type: string
-      lastName:
-        type: string
-  PersonUpdateDTO:
-    type: object
-    properties:
-      pronoun:
-        type: string
-        x-nullable: true
-      firstName:
-        type: string
-      lastName:
-        type: string
-      preferredName:
-        type: string
-        x-nullable: true
-      phone:
-        type: string
-      wwc:
-        type: string
-        x-nullable: true
-      dob:
-        type: string
-      allergies:
-        type: string
-      emergencyPhone:
-        type: string
-      emergencyName:
-        type: string
-      emergencyRelationship:
-        type: string
-      hearAboutUs:
-        type: string
-        x-nullable: true
-      previousWork:
-        type: string
-        x-nullable: true
-      reasonForCrewing:
-        type: string
-        x-nullable: true
-    required:
-      - firstName
-      - lastName
-      - phone
-      - dob
-      - allergies
-      - emergencyName
-      - emergencyPhone
-      - emergencyRelationship

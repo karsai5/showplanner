@@ -16,7 +16,7 @@ import (
 
 // CreateEventDTO create event d t o
 //
-// swagger:model CreateEventDTO
+// swagger:model createEventDTO
 type CreateEventDTO struct {
 
 	// address

@@ -15,7 +15,7 @@ import (
 
 // RoleDTO role d t o
 //
-// swagger:model RoleDTO
+// swagger:model roleDTO
 type RoleDTO struct {
 
 	// id

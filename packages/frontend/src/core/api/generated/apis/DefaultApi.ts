@@ -15,6 +15,7 @@
 
 import * as runtime from '../runtime';
 import type {
+  ArrayOfPersonSummaryDTO,
   AvailabilitiesDTO,
   AvailabilityDTO,
   CreateEventDTO,
@@ -23,7 +24,6 @@ import type {
   HealthCheck,
   MeDetailsDTO,
   PersonUpdateDTO,
-  PersonnelDTO,
   PublicScheduleGet200Response,
   RoleDTO,
   RoleUpdateDTO,
@@ -33,6 +33,8 @@ import type {
   ShowSummaryDTO,
 } from '../models/index';
 import {
+    ArrayOfPersonSummaryDTOFromJSON,
+    ArrayOfPersonSummaryDTOToJSON,
     AvailabilitiesDTOFromJSON,
     AvailabilitiesDTOToJSON,
     AvailabilityDTOFromJSON,
@@ -49,8 +51,6 @@ import {
     MeDetailsDTOToJSON,
     PersonUpdateDTOFromJSON,
     PersonUpdateDTOToJSON,
-    PersonnelDTOFromJSON,
-    PersonnelDTOToJSON,
     PublicScheduleGet200ResponseFromJSON,
     PublicScheduleGet200ResponseToJSON,
     RoleDTOFromJSON,
@@ -395,7 +395,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Returns people for a show
      */
-    async personnelAssignableGetRaw(requestParameters: PersonnelAssignableGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PersonnelDTO>> {
+    async personnelAssignableGetRaw(requestParameters: PersonnelAssignableGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ArrayOfPersonSummaryDTO>> {
         if (requestParameters.showId === null || requestParameters.showId === undefined) {
             throw new runtime.RequiredError('showId','Required parameter requestParameters.showId was null or undefined when calling personnelAssignableGet.');
         }
@@ -415,13 +415,13 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => PersonnelDTOFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ArrayOfPersonSummaryDTOFromJSON(jsonValue));
     }
 
     /**
      * Returns people for a show
      */
-    async personnelAssignableGet(requestParameters: PersonnelAssignableGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PersonnelDTO> {
+    async personnelAssignableGet(requestParameters: PersonnelAssignableGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ArrayOfPersonSummaryDTO> {
         const response = await this.personnelAssignableGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -429,7 +429,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Returns people for a show
      */
-    async personnelAssignedGetRaw(requestParameters: PersonnelAssignedGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PersonnelDTO>> {
+    async personnelAssignedGetRaw(requestParameters: PersonnelAssignedGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ArrayOfPersonSummaryDTO>> {
         if (requestParameters.showId === null || requestParameters.showId === undefined) {
             throw new runtime.RequiredError('showId','Required parameter requestParameters.showId was null or undefined when calling personnelAssignedGet.');
         }
@@ -449,13 +449,13 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => PersonnelDTOFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ArrayOfPersonSummaryDTOFromJSON(jsonValue));
     }
 
     /**
      * Returns people for a show
      */
-    async personnelAssignedGet(requestParameters: PersonnelAssignedGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PersonnelDTO> {
+    async personnelAssignedGet(requestParameters: PersonnelAssignedGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ArrayOfPersonSummaryDTO> {
         const response = await this.personnelAssignedGetRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -15,7 +15,7 @@ import (
 
 // ScheduleEventDTO schedule event d t o
 //
-// swagger:model ScheduleEventDTO
+// swagger:model scheduleEventDTO
 type ScheduleEventDTO struct {
 	EventDTO
 

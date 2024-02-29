@@ -16,7 +16,7 @@ import (
 
 // AvailabilityDTO availability d t o
 //
-// swagger:model AvailabilityDTO
+// swagger:model availabilityDTO
 type AvailabilityDTO struct {
 
 	// available

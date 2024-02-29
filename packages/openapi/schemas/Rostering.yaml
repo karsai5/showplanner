@@ -1,0 +1,23 @@
+ScheduleEventDTO:
+  allOf: 
+  - $ref: './Event.yaml#/EventDTO'
+  - type: object
+    properties:
+      availability:
+        x-nullable: true
+        $ref: '#/AvailabilityDTO'
+
+AvailabilityDTO:
+  type: object
+  properties:
+    eventId:
+      type: integer
+    personId:
+      type: string
+      format: uuid
+    available:
+      type: boolean
+  required:
+    - eventId
+    - personId
+    - available

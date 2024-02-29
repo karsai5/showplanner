@@ -1,0 +1,85 @@
+EventDTO:
+  properties:
+    id:
+      type: integer
+    showId:
+      type: integer
+    start:
+      type: string
+      format: date-time
+    name:
+      type: string
+      x-nullable: true
+    nameRaw:
+      type: string
+      x-nullable: true
+    shortnote:
+      type: string
+      x-nullable: true
+    address:
+      type: string
+      x-nullable: true
+    curtainsUp:
+      type: string
+      format: date-time
+      x-nullable: true
+    end:
+      type: string
+      format: date-time
+      x-nullable: true
+  required:
+    - id
+    - start
+CreateEventDTO:
+  properties:
+    showId:
+      type: integer
+    start:
+      type: string
+      format: date-time
+    end:
+      type: string
+      format: date-time
+      x-nullable: true
+    curtainsUp:
+      type: string
+      format: date-time
+      x-nullable: true
+    name:
+      type: string
+      x-nullable: true
+    shortnote:
+      type: string
+      x-nullable: true
+    address:
+      type: string
+      x-nullable: true
+  required:
+    - showId
+    - start
+EventPublicDTO:
+  properties:
+    id:
+      type: integer
+    showId:
+      type: integer
+    start:
+      type: string
+      format: date-time
+    name:
+      type: string
+      x-nullable: true
+    nameRaw:
+      type: string
+      x-nullable: true
+    curtainsUp:
+      type: string
+      format: date-time
+      x-nullable: true
+    end:
+      type: string
+      format: date-time
+      x-nullable: true
+  required:
+    - id
+    - start

@@ -1,0 +1,21 @@
+RoleUpdateDTO:
+  type: object
+  properties:
+    showId:
+      type: integer
+    personId:
+      x-nullable: true
+      type: string
+      format: uuid
+    name:
+      type: string
+RoleDTO:
+  type: object
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    person:
+      x-nullable: true
+      $ref: './People.yaml#/PersonSummaryDTO'

@@ -16,7 +16,7 @@ import (
 
 // ShowSummaryDTO show summary d t o
 //
-// swagger:model ShowSummaryDTO
+// swagger:model showSummaryDTO
 type ShowSummaryDTO struct {
 
 	// company

@@ -26,7 +26,7 @@ type GetPersonnelAssignableOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.PersonnelDTO `json:"body,omitempty"`
+	Payload *models.ArrayOfPersonSummaryDTO `json:"body,omitempty"`
 }
 
 // NewGetPersonnelAssignableOK creates GetPersonnelAssignableOK with default headers values
@@ -36,13 +36,13 @@ func NewGetPersonnelAssignableOK() *GetPersonnelAssignableOK {
 }
 
 // WithPayload adds the payload to the get personnel assignable o k response
-func (o *GetPersonnelAssignableOK) WithPayload(payload *models.PersonnelDTO) *GetPersonnelAssignableOK {
+func (o *GetPersonnelAssignableOK) WithPayload(payload *models.ArrayOfPersonSummaryDTO) *GetPersonnelAssignableOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get personnel assignable o k response
-func (o *GetPersonnelAssignableOK) SetPayload(payload *models.PersonnelDTO) {
+func (o *GetPersonnelAssignableOK) SetPayload(payload *models.ArrayOfPersonSummaryDTO) {
 	o.Payload = payload
 }
 

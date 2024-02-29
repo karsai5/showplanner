@@ -1,0 +1,45 @@
+type: object
+properties:
+  pronoun:
+    type: string
+    x-nullable: true
+  firstName:
+    type: string
+  lastName:
+    type: string
+  preferredName:
+    type: string
+    x-nullable: true
+  phone:
+    type: string
+  wwc:
+    type: string
+    x-nullable: true
+  dob:
+    type: string
+  allergies:
+    type: string
+  emergencyPhone:
+    type: string
+  emergencyName:
+    type: string
+  emergencyRelationship:
+    type: string
+  hearAboutUs:
+    type: string
+    x-nullable: true
+  previousWork:
+    type: string
+    x-nullable: true
+  reasonForCrewing:
+    type: string
+    x-nullable: true
+required:
+  - firstName
+  - lastName
+  - phone
+  - dob
+  - allergies
+  - emergencyName
+  - emergencyPhone
+  - emergencyRelationship

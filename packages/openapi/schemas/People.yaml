@@ -1,0 +1,25 @@
+MeDetailsDTO:
+  type: object
+  properties:
+    firstName:
+      type: string
+    email:
+      type: string
+PersonSummaryDTO:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+    firstName:
+      type: string
+    lastName:
+      type: string
+
+ArrayOfPersonSummaryDTO:
+  type: object
+  properties:
+    people:
+      type: array
+      items:
+        $ref: '#/PersonSummaryDTO'

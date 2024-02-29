@@ -16,7 +16,7 @@ import (
 
 // PersonSummaryDTO person summary d t o
 //
-// swagger:model PersonSummaryDTO
+// swagger:model personSummaryDTO
 type PersonSummaryDTO struct {
 
 	// first name

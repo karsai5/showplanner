@@ -1,0 +1,42 @@
+ShowSummaryDTO:
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    company:
+      type: string
+    slug:
+      type: string
+  required:
+    - id
+    - name
+    - company
+    - slug
+ShowDTO:
+  properties:
+    id:
+      type: integer
+    name:
+      type: string
+    company:
+      type: string
+    slug:
+      type: string
+  required:
+    - id
+    - name
+    - company
+    - slug
+CreateShowDTO:
+  properties:
+    name:
+      type: string
+    company:
+      type: string
+    slug:
+      type: string
+  required:
+    - name
+    - company
+    - slug

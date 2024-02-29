@@ -16,7 +16,7 @@ import (
 
 // ShowDTO show d t o
 //
-// swagger:model ShowDTO
+// swagger:model showDTO
 type ShowDTO struct {
 
 	// company

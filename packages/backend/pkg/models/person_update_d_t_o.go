@@ -16,7 +16,7 @@ import (
 
 // PersonUpdateDTO person update d t o
 //
-// swagger:model PersonUpdateDTO
+// swagger:model personUpdateDTO
 type PersonUpdateDTO struct {
 
 	// allergies

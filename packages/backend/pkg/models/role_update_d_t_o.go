@@ -16,7 +16,7 @@ import (
 
 // RoleUpdateDTO role update d t o
 //
-// swagger:model RoleUpdateDTO
+// swagger:model roleUpdateDTO
 type RoleUpdateDTO struct {
 
 	// name

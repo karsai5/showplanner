@@ -16,7 +16,7 @@ import (
 
 // EventPublicDTO event public d t o
 //
-// swagger:model EventPublicDTO
+// swagger:model eventPublicDTO
 type EventPublicDTO struct {
 
 	// curtains up

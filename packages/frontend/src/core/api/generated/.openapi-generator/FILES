@@ -1,6 +1,7 @@
 apis/DefaultApi.ts
 apis/index.ts
 index.ts
+models/ArrayOfPersonSummaryDTO.ts
 models/AssignedDTO.ts
 models/AvailabilitiesDTO.ts
 models/AvailabilitiesDTOEventsInner.ts
@@ -14,7 +15,6 @@ models/MeDetailsDTO.ts
 models/ModelError.ts
 models/PersonSummaryDTO.ts
 models/PersonUpdateDTO.ts
-models/PersonnelDTO.ts
 models/PublicScheduleGet200Response.ts
 models/RoleDTO.ts
 models/RoleUpdateDTO.ts
