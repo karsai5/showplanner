@@ -36,9 +36,9 @@ func mapToEventWithAvailabilities(people []database.Person) func(event database.
 
 func mapToEventWithAssignments(roles []database.Role) func(event database.Event) models.RosterDTOEventsItems0 {
 	return func(event database.Event) models.RosterDTOEventsItems0 {
-		assignments := []*models.AssignedDTO{}
+		assignments := []*models.RosterAssignedDTO{}
 		for _, role := range roles {
-			assignment := models.AssignedDTO{
+			assignment := models.RosterAssignedDTO{
 				Available: nil,
 				Cover:     convert.GetPointer(false),
 			}

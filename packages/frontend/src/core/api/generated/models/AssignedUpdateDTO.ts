@@ -13,68 +13,61 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { PersonSummaryDTO } from './PersonSummaryDTO';
-import {
-    PersonSummaryDTOFromJSON,
-    PersonSummaryDTOFromJSONTyped,
-    PersonSummaryDTOToJSON,
-} from './PersonSummaryDTO';
-
 /**
  * 
  * @export
- * @interface AssignedDTO
+ * @interface AssignedUpdateDTO
  */
-export interface AssignedDTO {
+export interface AssignedUpdateDTO {
     /**
      * 
      * @type {number}
-     * @memberof AssignedDTO
+     * @memberof AssignedUpdateDTO
      */
     eventId: number;
     /**
      * 
-     * @type {PersonSummaryDTO}
-     * @memberof AssignedDTO
+     * @type {string}
+     * @memberof AssignedUpdateDTO
      */
-    person: PersonSummaryDTO;
+    personId: string;
     /**
      * 
      * @type {number}
-     * @memberof AssignedDTO
+     * @memberof AssignedUpdateDTO
      */
     roleId: number;
 }
 
 /**
- * Check if a given object implements the AssignedDTO interface.
+ * Check if a given object implements the AssignedUpdateDTO interface.
  */
-export function instanceOfAssignedDTO(value: object): boolean {
+export function instanceOfAssignedUpdateDTO(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "eventId" in value;
-    isInstance = isInstance && "person" in value;
+    isInstance = isInstance && "personId" in value;
     isInstance = isInstance && "roleId" in value;
 
     return isInstance;
 }
 
-export function AssignedDTOFromJSON(json: any): AssignedDTO {
-    return AssignedDTOFromJSONTyped(json, false);
+export function AssignedUpdateDTOFromJSON(json: any): AssignedUpdateDTO {
+    return AssignedUpdateDTOFromJSONTyped(json, false);
 }
 
-export function AssignedDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): AssignedDTO {
+export function AssignedUpdateDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): AssignedUpdateDTO {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'eventId': json['eventId'],
-        'person': PersonSummaryDTOFromJSON(json['person']),
+        'personId': json['personId'],
         'roleId': json['roleId'],
     };
 }
 
-export function AssignedDTOToJSON(value?: AssignedDTO | null): any {
+export function AssignedUpdateDTOToJSON(value?: AssignedUpdateDTO | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -84,7 +77,7 @@ export function AssignedDTOToJSON(value?: AssignedDTO | null): any {
     return {
         
         'eventId': value.eventId,
-        'person': PersonSummaryDTOToJSON(value.person),
+        'personId': value.personId,
         'roleId': value.roleId,
     };
 }

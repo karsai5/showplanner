@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { AssignedDTO } from './AssignedDTO';
+import type { RosterAssignedDTO } from './RosterAssignedDTO';
 import {
-    AssignedDTOFromJSON,
-    AssignedDTOFromJSONTyped,
-    AssignedDTOToJSON,
-} from './AssignedDTO';
+    RosterAssignedDTOFromJSON,
+    RosterAssignedDTOFromJSONTyped,
+    RosterAssignedDTOToJSON,
+} from './RosterAssignedDTO';
 
 /**
  * 
@@ -82,10 +82,10 @@ export interface RosterDTOEventsInner {
     end?: Date | null;
     /**
      * 
-     * @type {Array<AssignedDTO>}
+     * @type {Array<RosterAssignedDTO>}
      * @memberof RosterDTOEventsInner
      */
-    assignments?: Array<AssignedDTO> | null;
+    assignments?: Array<RosterAssignedDTO> | null;
 }
 
 /**
@@ -118,7 +118,7 @@ export function RosterDTOEventsInnerFromJSONTyped(json: any, ignoreDiscriminator
         'address': !exists(json, 'address') ? undefined : json['address'],
         'curtainsUp': !exists(json, 'curtainsUp') ? undefined : (json['curtainsUp'] === null ? null : new Date(json['curtainsUp'])),
         'end': !exists(json, 'end') ? undefined : (json['end'] === null ? null : new Date(json['end'])),
-        'assignments': !exists(json, 'assignments') ? undefined : (json['assignments'] === null ? null : (json['assignments'] as Array<any>).map(AssignedDTOFromJSON)),
+        'assignments': !exists(json, 'assignments') ? undefined : (json['assignments'] === null ? null : (json['assignments'] as Array<any>).map(RosterAssignedDTOFromJSON)),
     };
 }
 
@@ -140,7 +140,7 @@ export function RosterDTOEventsInnerToJSON(value?: RosterDTOEventsInner | null):
         'address': value.address,
         'curtainsUp': value.curtainsUp === undefined ? undefined : (value.curtainsUp === null ? null : value.curtainsUp.toISOString()),
         'end': value.end === undefined ? undefined : (value.end === null ? null : value.end.toISOString()),
-        'assignments': value.assignments === undefined ? undefined : (value.assignments === null ? null : (value.assignments as Array<any>).map(AssignedDTOToJSON)),
+        'assignments': value.assignments === undefined ? undefined : (value.assignments === null ? null : (value.assignments as Array<any>).map(RosterAssignedDTOToJSON)),
     };
 }
 

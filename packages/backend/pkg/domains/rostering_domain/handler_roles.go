@@ -9,10 +9,33 @@ import (
 	"showplanner.io/pkg/restapi/operations"
 )
 
+var handleDeleteRole = operations.DeleteRolesIDHandlerFunc(func(params operations.DeleteRolesIDParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Updating role", &operations.DeleteRolesIDInternalServerError{})
+
+	role, err := database.GetRole(uint(params.ID))
+	if err != nil {
+		return logError(&err)
+	}
+
+	hasPerm, err := permissions.Rostering.HasPermission(role.ShowID, params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+	if !hasPerm {
+		return &operations.DeleteRolesIDUnauthorized{}
+	}
+
+	err = database.DeleteRole(uint(params.ID))
+	if err != nil {
+		return logError(&err)
+	}
+	return &operations.DeleteRolesIDOK{}
+})
+
 var handleUpdateRole = operations.PutRolesIDHandlerFunc(func(params operations.PutRolesIDParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Updating role", &operations.PutRolesIDInternalServerError{})
-	role, err := database.GetRole(uint(params.ID))
 
+	role, err := database.GetRole(uint(params.ID))
 	if err != nil {
 		return logError(&err)
 	}

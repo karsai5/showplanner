@@ -103,6 +103,51 @@ func (o *PostRosterAssignUnauthorized) WriteResponse(rw http.ResponseWriter, pro
 	}
 }
 
+// PostRosterAssignNotFoundCode is the HTTP code returned for type PostRosterAssignNotFound
+const PostRosterAssignNotFoundCode int = 404
+
+/*
+PostRosterAssignNotFound Error
+
+swagger:response postRosterAssignNotFound
+*/
+type PostRosterAssignNotFound struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewPostRosterAssignNotFound creates PostRosterAssignNotFound with default headers values
+func NewPostRosterAssignNotFound() *PostRosterAssignNotFound {
+
+	return &PostRosterAssignNotFound{}
+}
+
+// WithPayload adds the payload to the post roster assign not found response
+func (o *PostRosterAssignNotFound) WithPayload(payload *models.Error) *PostRosterAssignNotFound {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the post roster assign not found response
+func (o *PostRosterAssignNotFound) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *PostRosterAssignNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(404)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
 // PostRosterAssignInternalServerErrorCode is the HTTP code returned for type PostRosterAssignInternalServerError
 const PostRosterAssignInternalServerErrorCode int = 500
 

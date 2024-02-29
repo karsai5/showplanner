@@ -61,51 +61,6 @@ func (o *GetRolesOK) WriteResponse(rw http.ResponseWriter, producer runtime.Prod
 	}
 }
 
-// GetRolesUnauthorizedCode is the HTTP code returned for type GetRolesUnauthorized
-const GetRolesUnauthorizedCode int = 401
-
-/*
-GetRolesUnauthorized Error
-
-swagger:response getRolesUnauthorized
-*/
-type GetRolesUnauthorized struct {
-
-	/*
-	  In: Body
-	*/
-	Payload *models.Error `json:"body,omitempty"`
-}
-
-// NewGetRolesUnauthorized creates GetRolesUnauthorized with default headers values
-func NewGetRolesUnauthorized() *GetRolesUnauthorized {
-
-	return &GetRolesUnauthorized{}
-}
-
-// WithPayload adds the payload to the get roles unauthorized response
-func (o *GetRolesUnauthorized) WithPayload(payload *models.Error) *GetRolesUnauthorized {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the get roles unauthorized response
-func (o *GetRolesUnauthorized) SetPayload(payload *models.Error) {
-	o.Payload = payload
-}
-
-// WriteResponse to the client
-func (o *GetRolesUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
-	rw.WriteHeader(401)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
-	}
-}
-
 // GetRolesInternalServerErrorCode is the HTTP code returned for type GetRolesInternalServerError
 const GetRolesInternalServerErrorCode int = 500
 

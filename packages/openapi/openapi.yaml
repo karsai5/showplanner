@@ -300,6 +300,23 @@ paths:
           $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'
+    delete:
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: ID of role to update
+      summary: Deletes a role
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
   /roles:
     post:
       parameters:
@@ -337,8 +354,6 @@ paths:
             type: array
             items:
               $ref: './schemas/Role.yaml#/RoleDTO'
-        401:
-          $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'
   /roster:
@@ -378,6 +393,8 @@ paths:
           schema:
             $ref: './schemas/Rostering.yaml#/AssignedDTO'
         401:
+          $ref: '#/responses/Error'
+        404:
           $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'

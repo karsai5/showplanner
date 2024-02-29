@@ -16,6 +16,8 @@
 import * as runtime from '../runtime';
 import type {
   ArrayOfPersonSummaryDTO,
+  AssignedDTO,
+  AssignedUpdateDTO,
   AvailabilitiesDTO,
   AvailabilityDTO,
   CreateEventDTO,
@@ -35,6 +37,10 @@ import type {
 import {
     ArrayOfPersonSummaryDTOFromJSON,
     ArrayOfPersonSummaryDTOToJSON,
+    AssignedDTOFromJSON,
+    AssignedDTOToJSON,
+    AssignedUpdateDTOFromJSON,
+    AssignedUpdateDTOToJSON,
     AvailabilitiesDTOFromJSON,
     AvailabilitiesDTOToJSON,
     AvailabilityDTOFromJSON,
@@ -117,6 +123,10 @@ export interface RolesGetRequest {
     showId: number;
 }
 
+export interface RolesIdDeleteRequest {
+    id: number;
+}
+
 export interface RolesIdPutRequest {
     id: number;
     roleDetails?: RoleUpdateDTO;
@@ -124,6 +134,10 @@ export interface RolesIdPutRequest {
 
 export interface RolesPostRequest {
     roleDetails?: RoleUpdateDTO;
+}
+
+export interface RosterAssignPostRequest {
+    assignment?: AssignedUpdateDTO;
 }
 
 export interface RosterGetRequest {
@@ -593,6 +607,35 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
+     * Deletes a role
+     */
+    async rolesIdDeleteRaw(requestParameters: RolesIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling rolesIdDelete.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/roles/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Deletes a role
+     */
+    async rolesIdDelete(requestParameters: RolesIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.rolesIdDeleteRaw(requestParameters, initOverrides);
+    }
+
+    /**
      * Updates a role
      */
     async rolesIdPutRaw(requestParameters: RolesIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RoleDTO>> {
@@ -651,6 +694,35 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async rolesPost(requestParameters: RolesPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RoleDTO> {
         const response = await this.rolesPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Assign a person to a role for an event
+     */
+    async rosterAssignPostRaw(requestParameters: RosterAssignPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AssignedDTO>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/roster/assign`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AssignedUpdateDTOToJSON(requestParameters.assignment),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AssignedDTOFromJSON(jsonValue));
+    }
+
+    /**
+     * Assign a person to a role for an event
+     */
+    async rosterAssignPost(requestParameters: RosterAssignPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AssignedDTO> {
+        const response = await this.rosterAssignPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

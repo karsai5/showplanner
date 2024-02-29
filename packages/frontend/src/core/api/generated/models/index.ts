@@ -2,6 +2,7 @@
 /* eslint-disable */
 export * from './ArrayOfPersonSummaryDTO';
 export * from './AssignedDTO';
+export * from './AssignedUpdateDTO';
 export * from './AvailabilitiesDTO';
 export * from './AvailabilitiesDTOEventsInner';
 export * from './AvailabilityDTO';
@@ -17,6 +18,7 @@ export * from './PersonUpdateDTO';
 export * from './PublicScheduleGet200Response';
 export * from './RoleDTO';
 export * from './RoleUpdateDTO';
+export * from './RosterAssignedDTO';
 export * from './RosterDTO';
 export * from './RosterDTOEventsInner';
 export * from './ScheduleEventDTO';

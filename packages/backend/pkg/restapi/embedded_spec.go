@@ -449,9 +449,6 @@ func init() {
               }
             }
           },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
           "500": {
             "$ref": "#/responses/Error"
           }
@@ -525,6 +522,32 @@ func init() {
             "$ref": "#/responses/Error"
           }
         }
+      },
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Deletes a role",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of role to update",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
       }
     },
     "/roster": {
@@ -582,6 +605,9 @@ func init() {
             }
           },
           "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
             "$ref": "#/responses/Error"
           },
           "500": {
@@ -1279,12 +1305,6 @@ func init() {
               }
             }
           },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
           "500": {
             "description": "Error",
             "schema": {
@@ -1373,6 +1393,38 @@ func init() {
             }
           }
         }
+      },
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Deletes a role",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of role to update",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
       }
     },
     "/roster": {
@@ -1436,6 +1488,12 @@ func init() {
             }
           },
           "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
             "description": "Error",
             "schema": {
               "$ref": "#/definitions/Error"

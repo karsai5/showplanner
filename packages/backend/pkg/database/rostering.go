@@ -53,6 +53,11 @@ func GetRolesForShow(showId uint) ([]Role, error) {
 	return roles, res.Error
 }
 
+func DeleteRole(id uint) error {
+	res := db.Delete(&Role{}, id)
+	return res.Error
+}
+
 func GetRole(roleId uint) (Role, error) {
 	role := Role{}
 	res := db.Find(&role, roleId)
@@ -70,6 +75,11 @@ func UpdateRole(id uint, role Role) (Role, error) {
 			ID: id,
 		},
 	}
-	res := db.Model(&updatedRole).Updates(role)
+	res := db.Model(&updatedRole).Select("PersonID", "Name").Updates(role)
 	return updatedRole, res.Error
+}
+
+func CreateAssignment(assignment Assignment) (Assignment, error) {
+	res := db.Create(&assignment)
+	return assignment, res.Error
 }

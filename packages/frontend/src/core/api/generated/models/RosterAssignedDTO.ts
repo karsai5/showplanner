@@ -23,58 +23,58 @@ import {
 /**
  * 
  * @export
- * @interface AssignedDTO
+ * @interface RosterAssignedDTO
  */
-export interface AssignedDTO {
-    /**
-     * 
-     * @type {number}
-     * @memberof AssignedDTO
-     */
-    eventId: number;
+export interface RosterAssignedDTO {
     /**
      * 
      * @type {PersonSummaryDTO}
-     * @memberof AssignedDTO
+     * @memberof RosterAssignedDTO
      */
     person: PersonSummaryDTO;
     /**
      * 
-     * @type {number}
-     * @memberof AssignedDTO
+     * @type {boolean}
+     * @memberof RosterAssignedDTO
      */
-    roleId: number;
+    cover: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof RosterAssignedDTO
+     */
+    available: boolean;
 }
 
 /**
- * Check if a given object implements the AssignedDTO interface.
+ * Check if a given object implements the RosterAssignedDTO interface.
  */
-export function instanceOfAssignedDTO(value: object): boolean {
+export function instanceOfRosterAssignedDTO(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "eventId" in value;
     isInstance = isInstance && "person" in value;
-    isInstance = isInstance && "roleId" in value;
+    isInstance = isInstance && "cover" in value;
+    isInstance = isInstance && "available" in value;
 
     return isInstance;
 }
 
-export function AssignedDTOFromJSON(json: any): AssignedDTO {
-    return AssignedDTOFromJSONTyped(json, false);
+export function RosterAssignedDTOFromJSON(json: any): RosterAssignedDTO {
+    return RosterAssignedDTOFromJSONTyped(json, false);
 }
 
-export function AssignedDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): AssignedDTO {
+export function RosterAssignedDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): RosterAssignedDTO {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'eventId': json['eventId'],
         'person': PersonSummaryDTOFromJSON(json['person']),
-        'roleId': json['roleId'],
+        'cover': json['cover'],
+        'available': json['available'],
     };
 }
 
-export function AssignedDTOToJSON(value?: AssignedDTO | null): any {
+export function RosterAssignedDTOToJSON(value?: RosterAssignedDTO | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -83,9 +83,9 @@ export function AssignedDTOToJSON(value?: AssignedDTO | null): any {
     }
     return {
         
-        'eventId': value.eventId,
         'person': PersonSummaryDTOToJSON(value.person),
-        'roleId': value.roleId,
+        'cover': value.cover,
+        'available': value.available,
     };
 }
 

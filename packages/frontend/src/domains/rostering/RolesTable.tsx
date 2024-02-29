@@ -66,13 +66,13 @@ export const RoleItem: React.FC<{
     const [editMode, setEditMode] = useState<boolean>(false);
     const queryClient = useQueryClient();
 
-    const mutation = useMutation<unknown, Error, string>({
+    const mutation = useMutation<unknown, Error, string | undefined>({
       mutationFn: (personId) => {
         return api.rolesIdPut({
           id: role.id as number,
           roleDetails: {
             name: role.name,
-            personId,
+            personId: personId || null,
           },
         });
       },
@@ -93,7 +93,7 @@ export const RoleItem: React.FC<{
           <PersonSelector
             people={people}
             loading={mutation.isLoading}
-            onChange={(person) => mutation.mutate(person.id as string)}
+            onChange={(person) => mutation.mutate(person.id)}
             selectedPersonId={role.person?.id}
           />
           <button className="btn" onClick={() => setEditMode(true)}>
@@ -165,6 +165,11 @@ export const RenameRole: React.FC<{
   );
 };
 
+const unassignedPerson: PersonSummaryDTO = {
+  id: undefined,
+  firstName: 'Unassigned',
+  lastName: '',
+}
 
 const PersonSelector: React.FC<{
   people: Array<PersonSummaryDTO>
@@ -183,6 +188,8 @@ const PersonSelector: React.FC<{
     useEffect(() => {
       if (selectedPersonId) {
         setSelected(people.find(p => p.id === selectedPersonId))
+      } else {
+        setSelected(unassignedPerson)
       }
     }, [selectedPersonId, people]);
 
@@ -194,15 +201,17 @@ const PersonSelector: React.FC<{
       }
     }
 
-    const filteredPeople =
-      query === ''
+    const filteredPeople = [unassignedPerson];
+    filteredPeople.push(
+      ...(query === ''
         ? people
         : people.filter((person) =>
           `${person.firstName} ${person.lastName}`
             .toLowerCase()
             .replace(/\s+/g, '')
             .includes(query.toLowerCase().replace(/\s+/g, ''))
-        )
+        ))
+    )
 
     return (
       <div className="">
