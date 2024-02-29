@@ -5,8 +5,7 @@ watch-swagger:
 	nodemon -e yaml --exec 'make' generate
 
 generate:
-	swagger validate openapi.yaml
-	swagger generate server -f openapi.yaml -A go-backend -P models.Principal --model-package="pkg/models" --server-package="pkg/restapi"
+	swagger generate server -f ../openapi/openapi.yaml -A go-backend -P models.Principal --model-package="pkg/models" --server-package="pkg/restapi"
 
 build: build-cli build-server
 
@@ -35,10 +34,6 @@ lint:
 build-and-serve: build serve
 	make build
 	make serve
-
-serve-swagger:
-	swagger validate openapi.yaml
-	swagger serve --flavor=swagger openapi.yaml
 
 develop:
 	concurrently "make watch-swagger" "make watch" "docker compose up"
