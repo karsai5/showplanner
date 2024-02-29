@@ -49,7 +49,7 @@ func UpdateAvailability(userId uuid.UUID, eventId uint, available bool) (*Availa
 
 func GetRolesForShow(showId uint) ([]Role, error) {
 	roles := []Role{}
-	res := db.Where("show_id = ?", showId).Preload("Person").Find(&roles)
+	res := db.Order("id").Where("show_id = ?", showId).Preload("Person").Find(&roles)
 	return roles, res.Error
 }
 

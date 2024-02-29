@@ -1,12 +1,13 @@
 import { Combobox, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/20/solid'
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from 'core/api';
 import { PersonSummaryDTO, RoleDTO } from 'core/api/generated';
 import ErrorBox from 'core/components/ErrorBox/ErrorBox';
 import Input from 'core/components/fields/TextInput';
-import { PencilIcon } from 'core/components/Icons';
 import { LoadingBox } from 'core/components/LoadingBox/LoadingBox';
+import { useConfirmationModal } from 'core/components/Modal/ConfirmationModal';
 import { showToastError } from 'core/utils/errors';
 import { useShowSummary } from 'domains/shows/lib/summaryContext';
 import { useEffect, useState } from 'react';
@@ -65,8 +66,27 @@ export const RoleItem: React.FC<{
 }) => {
     const [editMode, setEditMode] = useState<boolean>(false);
     const queryClient = useQueryClient();
+    const confirmationModal = useConfirmationModal();
 
-    const mutation = useMutation<unknown, Error, string | undefined>({
+    const deleteRole = useMutation<unknown, Error>({
+      mutationFn: () => {
+        return api.rolesIdDelete({
+          id: role.id as number,
+        });
+      },
+      onError: (e) => {
+        showToastError('Something went wrong deleting role.', e);
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['show-roles'] });
+      },
+    });
+
+    const handleDelete = () => {
+      confirmationModal("Delete role", `Are you sure you want to delete the role of "${role.name}"?`, () => deleteRole.mutate());
+    }
+
+    const updateRole = useMutation<unknown, Error, string | undefined>({
       mutationFn: (personId) => {
         return api.rolesIdPut({
           id: role.id as number,
@@ -92,12 +112,15 @@ export const RoleItem: React.FC<{
         <div className="flex gap-2">
           <PersonSelector
             people={people}
-            loading={mutation.isLoading}
-            onChange={(person) => mutation.mutate(person.id)}
+            loading={updateRole.isLoading}
+            onChange={(person) => updateRole.mutate(person.id)}
             selectedPersonId={role.person?.id}
           />
-          <button className="btn" onClick={() => setEditMode(true)}>
-            <PencilIcon />
+          <button className="btn btn-ghost p-2" onClick={() => setEditMode(true)}>
+            <PencilSquareIcon className="h-5 w-5" />
+          </button>
+          <button className="btn btn-ghost p-2" onClick={() => handleDelete()}>
+            <TrashIcon className="h-5 w-5" />
           </button>
         </div>
       </div >
@@ -129,6 +152,7 @@ export const RenameRole: React.FC<{
         id: role.id as number,
         roleDetails: {
           name: inputs.name,
+          personId: role.person?.id,
         },
       });
     },
