@@ -14,37 +14,37 @@ import (
 	"github.com/go-openapi/validate"
 )
 
-// AssignedDTO assigned d t o
+// RosterAssignedDTO roster assigned d t o
 //
-// swagger:model assignedDTO
-type AssignedDTO struct {
+// swagger:model rosterAssignedDTO
+type RosterAssignedDTO struct {
 
-	// event Id
+	// available
 	// Required: true
-	EventID *int64 `json:"eventId"`
+	Available *bool `json:"available"`
+
+	// cover
+	// Required: true
+	Cover *bool `json:"cover"`
 
 	// person
 	// Required: true
 	Person *PersonSummaryDTO `json:"person"`
-
-	// role Id
-	// Required: true
-	RoleID *int64 `json:"roleId"`
 }
 
-// Validate validates this assigned d t o
-func (m *AssignedDTO) Validate(formats strfmt.Registry) error {
+// Validate validates this roster assigned d t o
+func (m *RosterAssignedDTO) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateEventID(formats); err != nil {
+	if err := m.validateAvailable(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateCover(formats); err != nil {
 		res = append(res, err)
 	}
 
 	if err := m.validatePerson(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateRoleID(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -54,16 +54,25 @@ func (m *AssignedDTO) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *AssignedDTO) validateEventID(formats strfmt.Registry) error {
+func (m *RosterAssignedDTO) validateAvailable(formats strfmt.Registry) error {
 
-	if err := validate.Required("eventId", "body", m.EventID); err != nil {
+	if err := validate.Required("available", "body", m.Available); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (m *AssignedDTO) validatePerson(formats strfmt.Registry) error {
+func (m *RosterAssignedDTO) validateCover(formats strfmt.Registry) error {
+
+	if err := validate.Required("cover", "body", m.Cover); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *RosterAssignedDTO) validatePerson(formats strfmt.Registry) error {
 
 	if err := validate.Required("person", "body", m.Person); err != nil {
 		return err
@@ -83,17 +92,8 @@ func (m *AssignedDTO) validatePerson(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *AssignedDTO) validateRoleID(formats strfmt.Registry) error {
-
-	if err := validate.Required("roleId", "body", m.RoleID); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// ContextValidate validate this assigned d t o based on the context it is used
-func (m *AssignedDTO) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+// ContextValidate validate this roster assigned d t o based on the context it is used
+func (m *RosterAssignedDTO) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.contextValidatePerson(ctx, formats); err != nil {
@@ -106,7 +106,7 @@ func (m *AssignedDTO) ContextValidate(ctx context.Context, formats strfmt.Regist
 	return nil
 }
 
-func (m *AssignedDTO) contextValidatePerson(ctx context.Context, formats strfmt.Registry) error {
+func (m *RosterAssignedDTO) contextValidatePerson(ctx context.Context, formats strfmt.Registry) error {
 
 	if m.Person != nil {
 
@@ -124,7 +124,7 @@ func (m *AssignedDTO) contextValidatePerson(ctx context.Context, formats strfmt.
 }
 
 // MarshalBinary interface implementation
-func (m *AssignedDTO) MarshalBinary() ([]byte, error) {
+func (m *RosterAssignedDTO) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -132,8 +132,8 @@ func (m *AssignedDTO) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *AssignedDTO) UnmarshalBinary(b []byte) error {
-	var res AssignedDTO
+func (m *RosterAssignedDTO) UnmarshalBinary(b []byte) error {
+	var res RosterAssignedDTO
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

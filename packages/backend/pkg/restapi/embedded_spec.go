@@ -546,7 +546,39 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/RosterDTO"
+              "$ref": "./schemas/Rostering.yaml#/RosterDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/roster/assign": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Assign a person to a role for an event",
+        "parameters": [
+          {
+            "description": "The details of the assignment",
+            "name": "assignment",
+            "in": "body",
+            "schema": {
+              "$ref": "./schemas/Rostering.yaml#/AssignedUpdateDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/Rostering.yaml#/AssignedDTO"
             }
           },
           "401": {
@@ -686,25 +718,6 @@ func init() {
     }
   },
   "definitions": {
-    "AssignedDTO": {
-      "type": "object",
-      "required": [
-        "person",
-        "cover",
-        "available"
-      ],
-      "properties": {
-        "available": {
-          "type": "boolean"
-        },
-        "cover": {
-          "type": "boolean"
-        },
-        "person": {
-          "$ref": "./schemas/People.yaml#/PersonSummaryDTO"
-        }
-      }
-    },
     "AvailabilitiesDTO": {
       "type": "object",
       "properties": {
@@ -761,39 +774,6 @@ func init() {
       "properties": {
         "message": {
           "type": "string"
-        }
-      }
-    },
-    "RosterDTO": {
-      "type": "object",
-      "properties": {
-        "events": {
-          "type": "array",
-          "items": {
-            "allOf": [
-              {
-                "$ref": "./schemas/Event.yaml#/EventDTO"
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "assignments": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/definitions/AssignedDTO"
-                    },
-                    "x-nullable": true
-                  }
-                }
-              }
-            ]
-          }
-        },
-        "roles": {
-          "type": "array",
-          "items": {
-            "$ref": "./schemas/Role.yaml#/RoleDTO"
-          }
         }
       }
     }
@@ -1414,7 +1394,45 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/RosterDTO"
+              "$ref": "#/definitions/rosterDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/roster/assign": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Assign a person to a role for an event",
+        "parameters": [
+          {
+            "description": "The details of the assignment",
+            "name": "assignment",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/assignedUpdateDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/assignedDTO"
             }
           },
           "401": {
@@ -1587,25 +1605,6 @@ func init() {
     }
   },
   "definitions": {
-    "AssignedDTO": {
-      "type": "object",
-      "required": [
-        "person",
-        "cover",
-        "available"
-      ],
-      "properties": {
-        "available": {
-          "type": "boolean"
-        },
-        "cover": {
-          "type": "boolean"
-        },
-        "person": {
-          "$ref": "#/definitions/personSummaryDTO"
-        }
-      }
-    },
     "AvailabilitiesDTO": {
       "type": "object",
       "properties": {
@@ -1668,23 +1667,6 @@ func init() {
         }
       }
     },
-    "RosterDTO": {
-      "type": "object",
-      "properties": {
-        "events": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/RosterDTOEventsItems0"
-          }
-        },
-        "roles": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/roleDTO"
-          }
-        }
-      }
-    },
     "RosterDTOEventsItems0": {
       "allOf": [
         {
@@ -1696,7 +1678,7 @@ func init() {
             "assignments": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/AssignedDTO"
+                "$ref": "#/definitions/rosterAssignedDTO"
               },
               "x-nullable": true
             }
@@ -1712,6 +1694,45 @@ func init() {
           "items": {
             "$ref": "#/definitions/personSummaryDTO"
           }
+        }
+      }
+    },
+    "assignedDTO": {
+      "type": "object",
+      "required": [
+        "eventId",
+        "person",
+        "roleId"
+      ],
+      "properties": {
+        "eventId": {
+          "type": "integer"
+        },
+        "person": {
+          "$ref": "#/definitions/personSummaryDTO"
+        },
+        "roleId": {
+          "type": "integer"
+        }
+      }
+    },
+    "assignedUpdateDTO": {
+      "type": "object",
+      "required": [
+        "eventId",
+        "personId",
+        "roleId"
+      ],
+      "properties": {
+        "eventId": {
+          "type": "integer"
+        },
+        "personId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "roleId": {
+          "type": "integer"
         }
       }
     },
@@ -1986,6 +2007,42 @@ func init() {
         },
         "showId": {
           "type": "integer"
+        }
+      }
+    },
+    "rosterAssignedDTO": {
+      "type": "object",
+      "required": [
+        "person",
+        "cover",
+        "available"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "cover": {
+          "type": "boolean"
+        },
+        "person": {
+          "$ref": "#/definitions/personSummaryDTO"
+        }
+      }
+    },
+    "rosterDTO": {
+      "type": "object",
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RosterDTOEventsItems0"
+          }
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/roleDTO"
+          }
         }
       }
     },

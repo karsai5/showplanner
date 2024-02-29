@@ -20,6 +20,7 @@ type Event struct {
 	ShortNote      *string
 	Address        *string
 	Availabilities []Availability
+	Assignments    []Assignment
 }
 
 func (e *Event) GetCurtainsUp() *strfmt.DateTime {
@@ -49,6 +50,13 @@ type Availability struct {
 	PersonID  uuid.UUID `gorm:"uniqueIndex:unique_a`
 	EventID   uint      `gorm:"uniqueIndex:unique_a`
 	Available bool
+}
+
+type Assignment struct {
+	gorm.Model
+	PersonID uuid.UUID
+	EventID  uint `gorm:"uniqueIndex:unique_assignment`
+	RoleID   uint `gorm:"uniqueIndex:unique_assignment`
 }
 
 type Person struct {

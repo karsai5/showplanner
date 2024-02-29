@@ -86,5 +86,10 @@ func initDB() *gorm.DB {
 		panic("Failed to migrate role")
 	}
 
+	err = db.AutoMigrate(&Assignment{})
+	if err != nil {
+		panic("Failed to migrate assignment")
+	}
+
 	return db
 }

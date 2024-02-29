@@ -103,6 +103,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		PostRolesHandler: PostRolesHandlerFunc(func(params PostRolesParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostRoles has not yet been implemented")
 		}),
+		PostRosterAssignHandler: PostRosterAssignHandlerFunc(func(params PostRosterAssignParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostRosterAssign has not yet been implemented")
+		}),
 		PostShowsHandler: PostShowsHandlerFunc(func(params PostShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostShows has not yet been implemented")
 		}),
@@ -186,6 +189,8 @@ type GoBackendAPI struct {
 	PostPersonnelAssignHandler PostPersonnelAssignHandler
 	// PostRolesHandler sets the operation handler for the post roles operation
 	PostRolesHandler PostRolesHandler
+	// PostRosterAssignHandler sets the operation handler for the post roster assign operation
+	PostRosterAssignHandler PostRosterAssignHandler
 	// PostShowsHandler sets the operation handler for the post shows operation
 	PostShowsHandler PostShowsHandler
 	// PutRolesIDHandler sets the operation handler for the put roles ID operation
@@ -326,6 +331,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.PostRolesHandler == nil {
 		unregistered = append(unregistered, "PostRolesHandler")
+	}
+	if o.PostRosterAssignHandler == nil {
+		unregistered = append(unregistered, "PostRosterAssignHandler")
 	}
 	if o.PostShowsHandler == nil {
 		unregistered = append(unregistered, "PostShowsHandler")
@@ -499,6 +507,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/roles"] = NewPostRoles(o.context, o.PostRolesHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/roster/assign"] = NewPostRosterAssign(o.context, o.PostRosterAssignHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

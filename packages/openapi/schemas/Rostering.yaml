@@ -21,3 +21,66 @@ AvailabilityDTO:
     - eventId
     - personId
     - available
+
+AssignedUpdateDTO:
+  type: object
+  properties:
+    eventId:
+      type: integer
+    personId:
+      type: string
+      format: uuid
+    roleId:
+      type: integer
+  required:
+    - eventId
+    - personId
+    - roleId
+
+AssignedDTO:
+  type: object
+  properties:
+    eventId:
+      type: integer
+    person:
+      $ref: './People.yaml#/PersonSummaryDTO'
+    roleId:
+      type: integer
+  required:
+    - eventId
+    - person
+    - roleId
+
+RosterDTO:
+  type: object
+  properties:
+    roles:
+      type: array
+      items:
+        $ref: './Role.yaml#/RoleDTO'
+    events:
+      type: array
+      items:
+        allOf: 
+        - $ref: './Event.yaml#/EventDTO'
+        - type: object
+          properties:
+            assignments: 
+              x-nullable: true
+              type: array
+              items:
+                $ref: '#/RosterAssignedDTO'
+
+RosterAssignedDTO:
+  type: object
+  properties:
+    person:
+      $ref: './People.yaml#/PersonSummaryDTO'
+    cover:
+      type: boolean
+    available:
+      type: boolean
+  required:
+    - person
+    - cover
+    - available

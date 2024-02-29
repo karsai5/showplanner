@@ -11,7 +11,7 @@ import (
 	"showplanner.io/pkg/restapi/operations"
 )
 
-var handleGetRoster = operations.GetRosterHandlerFunc(func(params operations.GetRosterParams) middleware.Responder {
+var handlePostAssignment = operations.GetRosterHandlerFunc(func(params operations.GetRosterParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting roster", &operations.GetRosterInternalServerError{})
 
 	hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)
@@ -42,10 +42,5 @@ var handleGetRoster = operations.GetRosterHandlerFunc(func(params operations.Get
 			Roles:  convert.MapArrayOfPointer(roles, mapToRoleDTO),
 		},
 	}
-})
 
-var handlePostAssigne = operations.PostRosterAssignHandlerFunc(func(params operations.PostRosterAssignParams) middleware.Responder {
-	logError := logger.CreateLogErrorFunc("Getting roster", &operations.GetRosterInternalServerError{})
-	return logError(nil)
 })
-

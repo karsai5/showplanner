@@ -356,7 +356,27 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/RosterDTO'
+            $ref: './schemas/Rostering.yaml#/RosterDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+  /roster/assign:
+    post:
+      summary: Assign a person to a role for an event
+      parameters:
+        - in: body
+          description: The details of the assignment
+          name: assignment
+          schema:
+            $ref: './schemas/Rostering.yaml#/AssignedUpdateDTO'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/Rostering.yaml#/AssignedDTO'
         401:
           $ref: '#/responses/Error'
         500:
@@ -472,35 +492,3 @@ definitions:
                 type: array
                 items:
                   $ref: './schemas/Rostering.yaml#/AvailabilityDTO'
-  RosterDTO:
-    type: object
-    properties:
-      roles:
-        type: array
-        items:
-          $ref: './schemas/Role.yaml#/RoleDTO'
-      events:
-        type: array
-        items:
-          allOf: 
-          - $ref: './schemas/Event.yaml#/EventDTO'
-          - type: object
-            properties:
-              assignments: 
-                x-nullable: true
-                type: array
-                items:
-                  $ref: '#/definitions/AssignedDTO'
-  AssignedDTO:
-    type: object
-    properties:
-      person:
-        $ref: './schemas/People.yaml#/PersonSummaryDTO'
-      cover:
-        type: boolean
-      available:
-        type: boolean
-    required:
-      - person
-      - cover
-      - available

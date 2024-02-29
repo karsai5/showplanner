@@ -16,7 +16,7 @@ import (
 
 // RosterDTO roster d t o
 //
-// swagger:model RosterDTO
+// swagger:model rosterDTO
 type RosterDTO struct {
 
 	// events
@@ -189,7 +189,7 @@ type RosterDTOEventsItems0 struct {
 	EventDTO
 
 	// assignments
-	Assignments []*AssignedDTO `json:"assignments"`
+	Assignments []*RosterAssignedDTO `json:"assignments"`
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
@@ -203,7 +203,7 @@ func (m *RosterDTOEventsItems0) UnmarshalJSON(raw []byte) error {
 
 	// AO1
 	var dataAO1 struct {
-		Assignments []*AssignedDTO `json:"assignments"`
+		Assignments []*RosterAssignedDTO `json:"assignments"`
 	}
 	if err := swag.ReadJSON(raw, &dataAO1); err != nil {
 		return err
@@ -224,7 +224,7 @@ func (m RosterDTOEventsItems0) MarshalJSON() ([]byte, error) {
 	}
 	_parts = append(_parts, aO0)
 	var dataAO1 struct {
-		Assignments []*AssignedDTO `json:"assignments"`
+		Assignments []*RosterAssignedDTO `json:"assignments"`
 	}
 
 	dataAO1.Assignments = m.Assignments
