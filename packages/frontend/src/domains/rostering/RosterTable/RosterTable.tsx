@@ -5,6 +5,7 @@ import { PersonSummaryDTO, RosterAssignedDTO, RosterDTOEventsInner } from 'core/
 import ErrorBox from 'core/components/ErrorBox/ErrorBox';
 import { GapRow, Td } from 'core/components/tables/tables';
 import { TimeRangeWithCurtainsUp } from 'core/dates/dateEventHelpers';
+import { showToastError } from 'core/utils/errors';
 import { displayDate } from 'domains/events/lib/displayDate';
 import { processEvents } from 'domains/events/lib/processEvents';
 import { PersonSelector } from 'domains/personnel/PersonSelector/PersonSelector';
@@ -111,42 +112,40 @@ export const AssignmentCell: React.FC<{ assignment: RosterAssignedDTO, showId: n
   );
 
   const queryClient = useQueryClient();
-  const mutation = useMutation<unknown, unknown, string>({
+  const changeAssignmentMutation = useMutation<unknown, Error, string | undefined>({
     mutationFn: (personId) => {
-      if (assignment.assignmentId) {
-        return api.assignmentIdPut({
-          id: assignment.assignmentId, assignment: {
+      if (!personId && assignment.assignmentId) {
+        return api.assignmentIdDelete({ id: assignment.assignmentId })
+      }
+      if (personId) {
+        if (assignment.assignmentId) {
+          return api.assignmentIdPut({
+            id: assignment.assignmentId, assignment: {
+              personId: personId,
+            }
+          });
+        }
+        return api.assignmentPost({
+          assignment: {
+            eventId,
             personId: personId,
+            roleId,
           }
         });
       }
-      return api.assignmentPost({
-        assignment: {
-          eventId,
-          personId: personId,
-          roleId,
-        }
-      });
+      throw new Error();
     },
     onError: (e) => {
-      // toast.error('Something went wrong creating new show');
-      // console.error('Could not create show', e);
+      showToastError("Could not update availability", e);
     },
     onSuccess: async () => {
-      // toast.success('Succesfully created a new show');
-      queryClient.invalidateQueries({ queryKey:  ['roster', showId] });
-      // reset();
-      // if (onSuccess) {
-      //   onSuccess();
-      // }
-      // refresh();
+      // TODO: This should be optimised to just reload the cell instead of the whole table
+      queryClient.invalidateQueries({ queryKey: ['roster', showId] });
     },
   });
 
   const handleChange = (person: PersonSummaryDTO) => {
-    if (person.id) {
-      mutation.mutate(person.id);
-    }
+    changeAssignmentMutation.mutate(person.id);
   }
 
   return <Td
@@ -160,7 +159,7 @@ export const AssignmentCell: React.FC<{ assignment: RosterAssignedDTO, showId: n
       <div>Cover: {assignment.cover ? 'Yes' : 'No'}</div>
       {assignedPeopleRequest.data?.people &&
         <PersonSelector
-          loading={mutation.isLoading}
+          loading={changeAssignmentMutation.isLoading}
           people={assignedPeopleRequest.data.people}
           selectedPersonId={assignment.person.id}
           onChange={handleChange}
