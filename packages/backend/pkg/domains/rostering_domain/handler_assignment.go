@@ -35,7 +35,7 @@ var handlePostAssignment = operations.PostAssignmentHandlerFunc(func(params oper
 		return logError(&err)
 	}
 
-	return &operations.PostAssignmentOK{Payload: convert.GetPointer(mapToAssignmentDTO(assignment))}
+	return &operations.PostAssignmentOK{Payload: convert.GetPointer(mapToAssignedDTO(assignment))}
 })
 
 var handlePutAssignment = operations.PutAssignmentIDHandlerFunc(func(params operations.PutAssignmentIDParams) middleware.Responder {
@@ -63,7 +63,7 @@ var handlePutAssignment = operations.PutAssignmentIDHandlerFunc(func(params oper
 	}
 
 	return &operations.PostAssignmentOK{
-		Payload: convert.GetPointer(mapToAssignmentDTO(assignment)),
+		Payload: convert.GetPointer(mapToAssignedDTO(assignment)),
 	}
 })
 

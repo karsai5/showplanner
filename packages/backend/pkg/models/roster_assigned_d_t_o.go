@@ -19,6 +19,9 @@ import (
 // swagger:model rosterAssignedDTO
 type RosterAssignedDTO struct {
 
+	// assignment Id
+	AssignmentID *int64 `json:"assignmentId,omitempty"`
+
 	// available
 	// Required: true
 	Available *bool `json:"available"`

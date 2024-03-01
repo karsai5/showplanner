@@ -2,10 +2,10 @@
 /* eslint-disable */
 export * from './ArrayOfPersonSummaryDTO';
 export * from './AssignedDTO';
-export * from './AssignedUpdateDTO';
 export * from './AvailabilitiesDTO';
 export * from './AvailabilitiesDTOEventsInner';
 export * from './AvailabilityDTO';
+export * from './CreateAssignedDTO';
 export * from './CreateEventDTO';
 export * from './CreateShowDTO';
 export * from './EventDTO';
@@ -24,3 +24,4 @@ export * from './RosterDTOEventsInner';
 export * from './ScheduleEventDTO';
 export * from './ShowDTO';
 export * from './ShowSummaryDTO';
+export * from './UpdateAssignedDTO';

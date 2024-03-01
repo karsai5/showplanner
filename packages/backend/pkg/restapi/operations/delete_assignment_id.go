@@ -32,7 +32,7 @@ func NewDeleteAssignmentID(ctx *middleware.Context, handler DeleteAssignmentIDHa
 /*
 	DeleteAssignmentID swagger:route DELETE /assignment/{id} deleteAssignmentId
 
-Assign a person to a role for an event
+Deletes an assignment
 */
 type DeleteAssignmentID struct {
 	Context *middleware.Context

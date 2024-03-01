@@ -5,6 +5,7 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 func GetAvailability(userId uuid.UUID, eventId uint) (*Availability, error) {
@@ -81,12 +82,17 @@ func UpdateRole(id uint, role Role) (Role, error) {
 
 func CreateAssignment(assignment Assignment) (Assignment, error) {
 	res := db.Create(&assignment)
+	if res.Error != nil {
+		return assignment, res.Error
+	}
+
+	res = db.Preload(clause.Associations).Find(&assignment, assignment.ID)
 	return assignment, res.Error
 }
 
 func GetAssignment(id uint) (Assignment, error) {
 	assignment := Assignment{}
-	res := db.Preload("Event", "Person").Find(&assignment, id)
+	res := db.Preload(clause.Associations).Find(&assignment, id)
 	return assignment, res.Error
 }
 

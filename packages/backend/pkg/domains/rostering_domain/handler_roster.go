@@ -27,7 +27,7 @@ var handleGetRoster = operations.GetRosterHandlerFunc(func(params operations.Get
 	if err != nil {
 		return logError(&err)
 	}
-	events, err := database.GetEventsWithAvailabilities(uint(params.ShowID))
+	events, err := database.GetEventsPreloaded(uint(params.ShowID))
 	if err != nil {
 		return logError(&err)
 	}
@@ -43,4 +43,3 @@ var handleGetRoster = operations.GetRosterHandlerFunc(func(params operations.Get
 		},
 	}
 })
-

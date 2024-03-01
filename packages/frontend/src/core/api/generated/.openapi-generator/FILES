@@ -3,10 +3,10 @@ apis/index.ts
 index.ts
 models/ArrayOfPersonSummaryDTO.ts
 models/AssignedDTO.ts
-models/AssignedUpdateDTO.ts
 models/AvailabilitiesDTO.ts
 models/AvailabilitiesDTOEventsInner.ts
 models/AvailabilityDTO.ts
+models/CreateAssignedDTO.ts
 models/CreateEventDTO.ts
 models/CreateShowDTO.ts
 models/EventDTO.ts
@@ -25,5 +25,6 @@ models/RosterDTOEventsInner.ts
 models/ScheduleEventDTO.ts
 models/ShowDTO.ts
 models/ShowSummaryDTO.ts
+models/UpdateAssignedDTO.ts
 models/index.ts
 runtime.ts

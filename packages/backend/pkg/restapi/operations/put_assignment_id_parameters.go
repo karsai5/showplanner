@@ -38,7 +38,7 @@ type PutAssignmentIDParams struct {
 	/*The details of the assignment
 	  In: body
 	*/
-	Assignment *models.AssignedUpdateDTO
+	Assignment *models.UpdateAssignedDTO
 	/*Id of assignment to delete
 	  Required: true
 	  In: path
@@ -57,7 +57,7 @@ func (o *PutAssignmentIDParams) BindRequest(r *http.Request, route *middleware.M
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.AssignedUpdateDTO
+		var body models.UpdateAssignedDTO
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			res = append(res, errors.NewParseError("assignment", "body", "", err))
 		} else {

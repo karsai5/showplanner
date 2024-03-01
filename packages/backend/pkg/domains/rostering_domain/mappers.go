@@ -2,6 +2,7 @@ package rostering_domain
 
 import (
 	"slices"
+	"strconv"
 
 	"github.com/go-openapi/strfmt"
 	"showplanner.io/pkg/convert"
@@ -36,29 +37,46 @@ func mapToEventWithAvailabilities(people []database.Person) func(event database.
 
 func mapToEventWithAssignments(roles []database.Role) func(event database.Event) models.RosterDTOEventsItems0 {
 	return func(event database.Event) models.RosterDTOEventsItems0 {
-		assignments := []*models.RosterAssignedDTO{}
+		assignments := map[string]*models.RosterAssignedDTO{}
 		for _, role := range roles {
-			assignment := models.RosterAssignedDTO{
-				Available: nil,
-				Cover:     convert.GetPointer(false),
+			dto := models.RosterAssignedDTO{
+				AssignmentID: nil,
+				Available:    nil,
+				Cover:        convert.GetPointer(false),
+				Person:       &models.PersonSummaryDTO{},
 			}
 
 			if role.Person != nil {
-				assignment.Person = convert.GetPointer(mapPerson(*role.Person))
+				fillPersonAndAvailabilityData(&dto, *role.Person, event)
+			}
 
-				availablilityIdx := slices.IndexFunc(event.Availabilities, func(a database.Availability) bool {
-					return a.PersonID == *role.PersonID
-				})
-				if availablilityIdx >= 0 {
-					assignment.Available = &event.Availabilities[availablilityIdx].Available
+			assignmentIdx := slices.IndexFunc(event.Assignments, func(a database.Assignment) bool { return a.RoleID == role.ID })
+			if assignmentIdx >= 0 {
+				assignment := event.Assignments[assignmentIdx]
+				dto.AssignmentID = convert.UintToInt64(assignment.ID)
+				fillPersonAndAvailabilityData(&dto, assignment.Person, event)
+				if role.Person != nil {
+					dto.Cover = convert.GetPointer(true)
 				}
 			}
-			assignments = append(assignments, &assignment)
+			assignments[strconv.Itoa(int(role.ID))] = &dto
 		}
 		return models.RosterDTOEventsItems0{
-			EventDTO:    events_domain.MapEventToEventDTO(event),
-			Assignments: assignments,
+			EventDTO: events_domain.MapEventToEventDTO(event),
+			Assignments: &models.RosterDTOEventsItems0AO1Assignments{
+				RosterDTOEventsItems0AO1Assignments: assignments,
+			},
 		}
+	}
+}
+
+func fillPersonAndAvailabilityData(dto *models.RosterAssignedDTO, person database.Person, event database.Event) {
+	dto.Person = convert.GetPointer(mapPerson(person))
+	availablilityIdx := slices.IndexFunc(event.Availabilities, func(a database.Availability) bool { return a.PersonID == person.ID })
+	if availablilityIdx >= 0 {
+		dto.Available = &event.Availabilities[availablilityIdx].Available
+	} else {
+		dto.Available = nil
 	}
 }
 
@@ -82,7 +100,7 @@ func mapToRoleDTO(role database.Role) models.RoleDTO {
 	}
 }
 
-func mapToAssignmentDTO(a database.Assignment) models.AssignedDTO {
+func mapToAssignedDTO(a database.Assignment) models.AssignedDTO {
 	return models.AssignedDTO{
 		EventID: convert.UintToInt64(a.EventID),
 		Person:  convert.GetPointer(mapPerson(a.Person)),

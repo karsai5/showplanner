@@ -42,7 +42,7 @@ func init() {
             "name": "assignment",
             "in": "body",
             "schema": {
-              "$ref": "./schemas/Rostering.yaml#/AssignedUpdateDTO"
+              "$ref": "./schemas/Rostering.yaml#/CreateAssignedDTO"
             }
           }
         ],
@@ -84,7 +84,7 @@ func init() {
             "name": "assignment",
             "in": "body",
             "schema": {
-              "$ref": "./schemas/Rostering.yaml#/AssignedUpdateDTO"
+              "$ref": "./schemas/Rostering.yaml#/UpdateAssignedDTO"
             }
           }
         ],
@@ -107,7 +107,7 @@ func init() {
         }
       },
       "delete": {
-        "summary": "Assign a person to a role for an event",
+        "summary": "Deletes an assignment",
         "parameters": [
           {
             "type": "number",
@@ -268,7 +268,7 @@ func init() {
         "produces": [
           "application/json"
         ],
-        "summary": "Delete's an event",
+        "summary": "Delete an event",
         "parameters": [
           {
             "type": "number",
@@ -906,7 +906,7 @@ func init() {
             "name": "assignment",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/assignedUpdateDTO"
+              "$ref": "#/definitions/createAssignedDTO"
             }
           }
         ],
@@ -957,7 +957,7 @@ func init() {
             "name": "assignment",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/assignedUpdateDTO"
+              "$ref": "#/definitions/updateAssignedDTO"
             }
           }
         ],
@@ -989,7 +989,7 @@ func init() {
         }
       },
       "delete": {
-        "summary": "Assign a person to a role for an event",
+        "summary": "Deletes an assignment",
         "parameters": [
           {
             "type": "number",
@@ -1180,7 +1180,7 @@ func init() {
         "produces": [
           "application/json"
         ],
-        "summary": "Delete's an event",
+        "summary": "Delete an event",
         "parameters": [
           {
             "type": "number",
@@ -1888,15 +1888,30 @@ func init() {
           "type": "object",
           "properties": {
             "assignments": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/rosterAssignedDTO"
+              "description": "A map of assignments",
+              "properties": {
+                "default": {
+                  "$ref": "#/definitions/rosterAssignedDTO"
+                }
               },
-              "x-nullable": true
+              "additionalProperties": {
+                "$ref": "#/definitions/rosterAssignedDTO"
+              }
             }
           }
         }
       ]
+    },
+    "RosterDTOEventsItems0AO1Assignments": {
+      "description": "A map of assignments",
+      "properties": {
+        "default": {
+          "$ref": "#/definitions/rosterAssignedDTO"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/rosterAssignedDTO"
+      }
     },
     "arrayOfPersonSummaryDTO": {
       "type": "object",
@@ -1928,26 +1943,6 @@ func init() {
         }
       }
     },
-    "assignedUpdateDTO": {
-      "type": "object",
-      "required": [
-        "eventId",
-        "personId",
-        "roleId"
-      ],
-      "properties": {
-        "eventId": {
-          "type": "integer"
-        },
-        "personId": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "roleId": {
-          "type": "integer"
-        }
-      }
-    },
     "availabilityDTO": {
       "type": "object",
       "required": [
@@ -1965,6 +1960,26 @@ func init() {
         "personId": {
           "type": "string",
           "format": "uuid"
+        }
+      }
+    },
+    "createAssignedDTO": {
+      "type": "object",
+      "required": [
+        "eventId",
+        "personId",
+        "roleId"
+      ],
+      "properties": {
+        "eventId": {
+          "type": "integer"
+        },
+        "personId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "roleId": {
+          "type": "integer"
         }
       }
     },
@@ -2230,6 +2245,10 @@ func init() {
         "available"
       ],
       "properties": {
+        "assignmentId": {
+          "type": "integer",
+          "x-nullable": true
+        },
         "available": {
           "type": "boolean"
         },
@@ -2314,6 +2333,18 @@ func init() {
         },
         "slug": {
           "type": "string"
+        }
+      }
+    },
+    "updateAssignedDTO": {
+      "type": "object",
+      "required": [
+        "personId"
+      ],
+      "properties": {
+        "personId": {
+          "type": "string",
+          "format": "uuid"
         }
       }
     }

@@ -2,6 +2,7 @@ package database
 
 import (
 	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm/clause"
 )
 
 func CreateEvent(event Event) (Event, error) {
@@ -32,6 +33,13 @@ func GetEventsWithAvailabilityForUser(showId uint, userId uuid.UUID) ([]Event, e
 func GetEventsWithAvailabilities(showId uint) ([]Event, error) {
 	var events []Event
 	res := db.Preload("Availabilities").Where("show_id = ?", showId).Find(&events)
+
+	return events, res.Error
+}
+
+func GetEventsPreloaded(showId uint) ([]Event, error) {
+	var events []Event
+	res := db.Preload("Assignments.Person").Preload(clause.Associations).Where("show_id = ?", showId).Find(&events)
 
 	return events, res.Error
 }

@@ -17,9 +17,9 @@ import * as runtime from '../runtime';
 import type {
   ArrayOfPersonSummaryDTO,
   AssignedDTO,
-  AssignedUpdateDTO,
   AvailabilitiesDTO,
   AvailabilityDTO,
+  CreateAssignedDTO,
   CreateEventDTO,
   CreateShowDTO,
   EventDTO,
@@ -33,18 +33,19 @@ import type {
   ScheduleEventDTO,
   ShowDTO,
   ShowSummaryDTO,
+  UpdateAssignedDTO,
 } from '../models/index';
 import {
     ArrayOfPersonSummaryDTOFromJSON,
     ArrayOfPersonSummaryDTOToJSON,
     AssignedDTOFromJSON,
     AssignedDTOToJSON,
-    AssignedUpdateDTOFromJSON,
-    AssignedUpdateDTOToJSON,
     AvailabilitiesDTOFromJSON,
     AvailabilitiesDTOToJSON,
     AvailabilityDTOFromJSON,
     AvailabilityDTOToJSON,
+    CreateAssignedDTOFromJSON,
+    CreateAssignedDTOToJSON,
     CreateEventDTOFromJSON,
     CreateEventDTOToJSON,
     CreateShowDTOFromJSON,
@@ -71,6 +72,8 @@ import {
     ShowDTOToJSON,
     ShowSummaryDTOFromJSON,
     ShowSummaryDTOToJSON,
+    UpdateAssignedDTOFromJSON,
+    UpdateAssignedDTOToJSON,
 } from '../models/index';
 
 export interface AssignmentIdDeleteRequest {
@@ -79,11 +82,11 @@ export interface AssignmentIdDeleteRequest {
 
 export interface AssignmentIdPutRequest {
     id: number;
-    assignment?: AssignedUpdateDTO;
+    assignment?: UpdateAssignedDTO;
 }
 
 export interface AssignmentPostRequest {
-    assignment?: AssignedUpdateDTO;
+    assignment?: CreateAssignedDTO;
 }
 
 export interface AvailabilitiesGetRequest {
@@ -171,7 +174,7 @@ export interface ShowsShowSlugSummaryGetRequest {
 export class DefaultApi extends runtime.BaseAPI {
 
     /**
-     * Assign a person to a role for an event
+     * Deletes an assignment
      */
     async assignmentIdDeleteRaw(requestParameters: AssignmentIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -193,7 +196,7 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Assign a person to a role for an event
+     * Deletes an assignment
      */
     async assignmentIdDelete(requestParameters: AssignmentIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.assignmentIdDeleteRaw(requestParameters, initOverrides);
@@ -218,7 +221,7 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: AssignedUpdateDTOToJSON(requestParameters.assignment),
+            body: UpdateAssignedDTOToJSON(requestParameters.assignment),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AssignedDTOFromJSON(jsonValue));
@@ -247,7 +250,7 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AssignedUpdateDTOToJSON(requestParameters.assignment),
+            body: CreateAssignedDTOToJSON(requestParameters.assignment),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AssignedDTOFromJSON(jsonValue));
@@ -325,7 +328,7 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Delete\'s an event
+     * Delete an event
      */
     async eventsIdDeleteRaw(requestParameters: EventsIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -347,7 +350,7 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * Delete\'s an event
+     * Delete an event
      */
     async eventsIdDelete(requestParameters: EventsIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.eventsIdDeleteRaw(requestParameters, initOverrides);

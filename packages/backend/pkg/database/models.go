@@ -59,6 +59,7 @@ type Assignment struct {
 	RoleID   uint `gorm:"uniqueIndex:unique_assignment`
 	Event    Event
 	Person   Person
+	Role     Role
 }
 
 type Person struct {

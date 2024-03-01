@@ -32,7 +32,7 @@ func NewDeleteEventsID(ctx *middleware.Context, handler DeleteEventsIDHandler) *
 /*
 	DeleteEventsID swagger:route DELETE /events/{id} deleteEventsId
 
-Delete's an event
+Delete an event
 */
 type DeleteEventsID struct {
 	Context *middleware.Context

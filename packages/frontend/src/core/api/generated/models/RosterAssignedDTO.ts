@@ -44,6 +44,12 @@ export interface RosterAssignedDTO {
      * @memberof RosterAssignedDTO
      */
     available: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof RosterAssignedDTO
+     */
+    assignmentId?: number | null;
 }
 
 /**
@@ -71,6 +77,7 @@ export function RosterAssignedDTOFromJSONTyped(json: any, ignoreDiscriminator: b
         'person': PersonSummaryDTOFromJSON(json['person']),
         'cover': json['cover'],
         'available': json['available'],
+        'assignmentId': !exists(json, 'assignmentId') ? undefined : json['assignmentId'],
     };
 }
 
@@ -86,6 +93,7 @@ export function RosterAssignedDTOToJSON(value?: RosterAssignedDTO | null): any {
         'person': PersonSummaryDTOToJSON(value.person),
         'cover': value.cover,
         'available': value.available,
+        'assignmentId': value.assignmentId,
     };
 }
 

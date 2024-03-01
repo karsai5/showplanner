@@ -22,7 +22,7 @@ AvailabilityDTO:
     - personId
     - available
 
-AssignedUpdateDTO:
+CreateAssignedDTO:
   type: object
   properties:
     eventId:
@@ -36,6 +36,15 @@ AssignedUpdateDTO:
     - eventId
     - personId
     - roleId
+
+UpdateAssignedDTO:
+  type: object
+  properties:
+    personId:
+      type: string
+      format: uuid
+  required:
+    - personId
 
 AssignedDTO:
   type: object
@@ -66,9 +75,11 @@ RosterDTO:
         - type: object
           properties:
             assignments: 
-              x-nullable: true
-              type: array
-              items:
+              description: 'A map of assignments'
+              properties:
+                default:
+                  $ref: '#/RosterAssignedDTO'
+              additionalProperties:
                 $ref: '#/RosterAssignedDTO'
 
 RosterAssignedDTO:
@@ -80,6 +91,9 @@ RosterAssignedDTO:
       type: boolean
     available:
       type: boolean
+    assignmentId:
+      type: integer
+      x-nullable: true
   required:
     - person
     - cover

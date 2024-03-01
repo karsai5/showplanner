@@ -81,11 +81,11 @@ export interface RosterDTOEventsInner {
      */
     end?: Date | null;
     /**
-     * 
-     * @type {Array<RosterAssignedDTO>}
+     * A map of assignments
+     * @type {{ [key: string]: RosterAssignedDTO; }}
      * @memberof RosterDTOEventsInner
      */
-    assignments?: Array<RosterAssignedDTO> | null;
+    assignments?: { [key: string]: RosterAssignedDTO; };
 }
 
 /**
@@ -118,7 +118,7 @@ export function RosterDTOEventsInnerFromJSONTyped(json: any, ignoreDiscriminator
         'address': !exists(json, 'address') ? undefined : json['address'],
         'curtainsUp': !exists(json, 'curtainsUp') ? undefined : (json['curtainsUp'] === null ? null : new Date(json['curtainsUp'])),
         'end': !exists(json, 'end') ? undefined : (json['end'] === null ? null : new Date(json['end'])),
-        'assignments': !exists(json, 'assignments') ? undefined : (json['assignments'] === null ? null : (json['assignments'] as Array<any>).map(RosterAssignedDTOFromJSON)),
+        'assignments': !exists(json, 'assignments') ? undefined : (mapValues(json['assignments'], RosterAssignedDTOFromJSON)),
     };
 }
 
@@ -140,7 +140,7 @@ export function RosterDTOEventsInnerToJSON(value?: RosterDTOEventsInner | null):
         'address': value.address,
         'curtainsUp': value.curtainsUp === undefined ? undefined : (value.curtainsUp === null ? null : value.curtainsUp.toISOString()),
         'end': value.end === undefined ? undefined : (value.end === null ? null : value.end.toISOString()),
-        'assignments': value.assignments === undefined ? undefined : (value.assignments === null ? null : (value.assignments as Array<any>).map(RosterAssignedDTOToJSON)),
+        'assignments': value.assignments === undefined ? undefined : (mapValues(value.assignments, RosterAssignedDTOToJSON)),
     };
 }
 

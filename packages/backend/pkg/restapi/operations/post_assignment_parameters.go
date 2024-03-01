@@ -36,7 +36,7 @@ type PostAssignmentParams struct {
 	/*The details of the assignment
 	  In: body
 	*/
-	Assignment *models.AssignedUpdateDTO
+	Assignment *models.CreateAssignedDTO
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -50,7 +50,7 @@ func (o *PostAssignmentParams) BindRequest(r *http.Request, route *middleware.Ma
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.AssignedUpdateDTO
+		var body models.CreateAssignedDTO
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			res = append(res, errors.NewParseError("assignment", "body", "", err))
 		} else {
