@@ -38,6 +38,35 @@ var handlePostAssignment = operations.PostAssignmentHandlerFunc(func(params oper
 	return &operations.PostAssignmentOK{Payload: convert.GetPointer(mapToAssignmentDTO(assignment))}
 })
 
+var handlePutAssignment = operations.PutAssignmentIDHandlerFunc(func(params operations.PutAssignmentIDParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting roster", &operations.PutAssignmentIDInternalServerError{})
+
+	assignment, err := database.GetAssignment(uint(params.ID))
+	if err != nil {
+		return logError(&err)
+	}
+
+	hasPerm, err := permissions.Rostering.HasPermission(assignment.Event.ShowID, params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+	if !hasPerm {
+		return &operations.PutAssignmentIDUnauthorized{}
+	}
+
+	assignment, err = database.UpdateAssignment(uint(params.ID), database.Assignment{
+		PersonID: *convert.StrfmtUUIDToUUID(params.Assignment.PersonID),
+	})
+
+	if err != nil {
+		return logError(&err)
+	}
+
+	return &operations.PostAssignmentOK{
+		Payload: convert.GetPointer(mapToAssignmentDTO(assignment)),
+	}
+})
+
 var handleDeleteAssignment = operations.DeleteAssignmentIDHandlerFunc(func(params operations.DeleteAssignmentIDParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting roster", &operations.PutAssignmentIDInternalServerError{})
 

@@ -92,5 +92,15 @@ func GetAssignment(id uint) (Assignment, error) {
 
 func DeleteAssignment(id uint) error {
 	res := db.Delete(&Assignment{}, id)
-	return  res.Error
+	return res.Error
+}
+
+func UpdateAssignment(id uint, assignment Assignment) (Assignment, error) {
+	updatedAssignment := Assignment{
+		Model: gorm.Model{
+			ID: id,
+		},
+	}
+	res := db.Model(&updatedAssignment).Updates(assignment)
+	return updatedAssignment, res.Error
 }
