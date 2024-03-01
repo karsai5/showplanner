@@ -30,6 +30,109 @@ func init() {
   "host": "localhost:8080",
   "basePath": "/v1",
   "paths": {
+    "/assignment": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Assign a person to a role for an event",
+        "parameters": [
+          {
+            "description": "The details of the assignment",
+            "name": "assignment",
+            "in": "body",
+            "schema": {
+              "$ref": "./schemas/Rostering.yaml#/AssignedUpdateDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/Rostering.yaml#/AssignedDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/assignment/{id}": {
+      "put": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Assign a person to a role for an event",
+        "parameters": [
+          {
+            "type": "number",
+            "description": "Id of assignment to delete",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "The details of the assignment",
+            "name": "assignment",
+            "in": "body",
+            "schema": {
+              "$ref": "./schemas/Rostering.yaml#/AssignedUpdateDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/Rostering.yaml#/AssignedDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Assign a person to a role for an event",
+        "parameters": [
+          {
+            "type": "number",
+            "description": "Id of assignment to delete",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/availabilities": {
       "get": {
         "produces": [
@@ -581,41 +684,6 @@ func init() {
         }
       }
     },
-    "/roster/assign": {
-      "post": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Assign a person to a role for an event",
-        "parameters": [
-          {
-            "description": "The details of the assignment",
-            "name": "assignment",
-            "in": "body",
-            "schema": {
-              "$ref": "./schemas/Rostering.yaml#/AssignedUpdateDTO"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "./schemas/Rostering.yaml#/AssignedDTO"
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
-          "404": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "$ref": "#/responses/Error"
-          }
-        }
-      }
-    },
     "/schedule": {
       "get": {
         "produces": [
@@ -826,6 +894,136 @@ func init() {
   "host": "localhost:8080",
   "basePath": "/v1",
   "paths": {
+    "/assignment": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Assign a person to a role for an event",
+        "parameters": [
+          {
+            "description": "The details of the assignment",
+            "name": "assignment",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/assignedUpdateDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/assignedDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/assignment/{id}": {
+      "put": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Assign a person to a role for an event",
+        "parameters": [
+          {
+            "type": "number",
+            "description": "Id of assignment to delete",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "The details of the assignment",
+            "name": "assignment",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/assignedUpdateDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/assignedDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Assign a person to a role for an event",
+        "parameters": [
+          {
+            "type": "number",
+            "description": "Id of assignment to delete",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/availabilities": {
       "get": {
         "produces": [
@@ -1450,50 +1648,6 @@ func init() {
             }
           },
           "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/roster/assign": {
-      "post": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Assign a person to a role for an event",
-        "parameters": [
-          {
-            "description": "The details of the assignment",
-            "name": "assignment",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/assignedUpdateDTO"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/assignedDTO"
-            }
-          },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "404": {
             "description": "Error",
             "schema": {
               "$ref": "#/definitions/Error"

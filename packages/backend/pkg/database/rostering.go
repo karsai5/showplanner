@@ -83,3 +83,14 @@ func CreateAssignment(assignment Assignment) (Assignment, error) {
 	res := db.Create(&assignment)
 	return assignment, res.Error
 }
+
+func GetAssignment(id uint) (Assignment, error) {
+	assignment := Assignment{}
+	res := db.Preload("Event", "Person").Find(&assignment, id)
+	return assignment, res.Error
+}
+
+func DeleteAssignment(id uint) error {
+	res := db.Delete(&Assignment{}, id)
+	return  res.Error
+}

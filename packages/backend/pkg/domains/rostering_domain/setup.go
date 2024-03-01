@@ -12,5 +12,7 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 	api.DeleteRolesIDHandler = handleDeleteRole
 
 	api.GetRosterHandler = handleGetRoster
-	api.PostRosterAssignHandler = handlePostAssign
+
+	api.PostAssignmentHandler = handlePostAssignment
+	api.DeleteAssignmentIDHandler = handleDeleteAssignment
 }

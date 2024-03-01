@@ -44,27 +44,3 @@ var handleGetRoster = operations.GetRosterHandlerFunc(func(params operations.Get
 	}
 })
 
-var handlePostAssign = operations.PostRosterAssignHandlerFunc(func(params operations.PostRosterAssignParams) middleware.Responder {
-	logError := logger.CreateLogErrorFunc("Getting roster", &operations.PostRosterAssignInternalServerError{})
-
-	event, err := database.GetEvent(uint(*params.Assignment.EventID))
-	if err != nil {
-		return logError(&err)
-	}
-
-	hasPerm, err := permissions.Rostering.HasPermission(event.ShowID, params.HTTPRequest)
-	if err != nil {
-		return logError(&err)
-	}
-	if !hasPerm {
-		return &operations.GetAvailabilitiesUnauthorized{}
-	}
-
-	database.CreateAssignment(database.Assignment{
-		PersonID: *convert.StrfmtUUIDToUUID(params.Assignment.PersonID),
-		EventID:  event.ID,
-		RoleID:   uint(*params.Assignment.RoleID),
-	})
-
-	return logError(nil)
-})

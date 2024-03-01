@@ -16,19 +16,19 @@ import (
 	"showplanner.io/pkg/models"
 )
 
-// NewPostRosterAssignParams creates a new PostRosterAssignParams object
+// NewPostAssignmentParams creates a new PostAssignmentParams object
 //
 // There are no default values defined in the spec.
-func NewPostRosterAssignParams() PostRosterAssignParams {
+func NewPostAssignmentParams() PostAssignmentParams {
 
-	return PostRosterAssignParams{}
+	return PostAssignmentParams{}
 }
 
-// PostRosterAssignParams contains all the bound params for the post roster assign operation
+// PostAssignmentParams contains all the bound params for the post assignment operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters PostRosterAssign
-type PostRosterAssignParams struct {
+// swagger:parameters PostAssignment
+type PostAssignmentParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
@@ -42,8 +42,8 @@ type PostRosterAssignParams struct {
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewPostRosterAssignParams() beforehand.
-func (o *PostRosterAssignParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewPostAssignmentParams() beforehand.
+func (o *PostAssignmentParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r

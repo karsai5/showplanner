@@ -46,6 +46,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 			return errors.NotImplemented("textCalendar producer has not yet been implemented")
 		}),
 
+		DeleteAssignmentIDHandler: DeleteAssignmentIDHandlerFunc(func(params DeleteAssignmentIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation DeleteAssignmentID has not yet been implemented")
+		}),
 		DeleteEventsIDHandler: DeleteEventsIDHandlerFunc(func(params DeleteEventsIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation DeleteEventsID has not yet been implemented")
 		}),
@@ -88,6 +91,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetShowsShowSlugSummaryHandler: GetShowsShowSlugSummaryHandlerFunc(func(params GetShowsShowSlugSummaryParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetShowsShowSlugSummary has not yet been implemented")
 		}),
+		PostAssignmentHandler: PostAssignmentHandlerFunc(func(params PostAssignmentParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostAssignment has not yet been implemented")
+		}),
 		PostAvailabilitiesHandler: PostAvailabilitiesHandlerFunc(func(params PostAvailabilitiesParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostAvailabilities has not yet been implemented")
 		}),
@@ -106,11 +112,11 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		PostRolesHandler: PostRolesHandlerFunc(func(params PostRolesParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostRoles has not yet been implemented")
 		}),
-		PostRosterAssignHandler: PostRosterAssignHandlerFunc(func(params PostRosterAssignParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostRosterAssign has not yet been implemented")
-		}),
 		PostShowsHandler: PostShowsHandlerFunc(func(params PostShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostShows has not yet been implemented")
+		}),
+		PutAssignmentIDHandler: PutAssignmentIDHandlerFunc(func(params PutAssignmentIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation PutAssignmentID has not yet been implemented")
 		}),
 		PutRolesIDHandler: PutRolesIDHandlerFunc(func(params PutRolesIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation PutRolesID has not yet been implemented")
@@ -154,6 +160,8 @@ type GoBackendAPI struct {
 	//   - text/calendar
 	TextCalendarProducer runtime.Producer
 
+	// DeleteAssignmentIDHandler sets the operation handler for the delete assignment ID operation
+	DeleteAssignmentIDHandler DeleteAssignmentIDHandler
 	// DeleteEventsIDHandler sets the operation handler for the delete events ID operation
 	DeleteEventsIDHandler DeleteEventsIDHandler
 	// DeleteRolesIDHandler sets the operation handler for the delete roles ID operation
@@ -182,6 +190,8 @@ type GoBackendAPI struct {
 	GetShowsHandler GetShowsHandler
 	// GetShowsShowSlugSummaryHandler sets the operation handler for the get shows show slug summary operation
 	GetShowsShowSlugSummaryHandler GetShowsShowSlugSummaryHandler
+	// PostAssignmentHandler sets the operation handler for the post assignment operation
+	PostAssignmentHandler PostAssignmentHandler
 	// PostAvailabilitiesHandler sets the operation handler for the post availabilities operation
 	PostAvailabilitiesHandler PostAvailabilitiesHandler
 	// PostEventsHandler sets the operation handler for the post events operation
@@ -194,10 +204,10 @@ type GoBackendAPI struct {
 	PostPersonnelAssignHandler PostPersonnelAssignHandler
 	// PostRolesHandler sets the operation handler for the post roles operation
 	PostRolesHandler PostRolesHandler
-	// PostRosterAssignHandler sets the operation handler for the post roster assign operation
-	PostRosterAssignHandler PostRosterAssignHandler
 	// PostShowsHandler sets the operation handler for the post shows operation
 	PostShowsHandler PostShowsHandler
+	// PutAssignmentIDHandler sets the operation handler for the put assignment ID operation
+	PutAssignmentIDHandler PutAssignmentIDHandler
 	// PutRolesIDHandler sets the operation handler for the put roles ID operation
 	PutRolesIDHandler PutRolesIDHandler
 
@@ -280,6 +290,9 @@ func (o *GoBackendAPI) Validate() error {
 		unregistered = append(unregistered, "TextCalendarProducer")
 	}
 
+	if o.DeleteAssignmentIDHandler == nil {
+		unregistered = append(unregistered, "DeleteAssignmentIDHandler")
+	}
 	if o.DeleteEventsIDHandler == nil {
 		unregistered = append(unregistered, "DeleteEventsIDHandler")
 	}
@@ -322,6 +335,9 @@ func (o *GoBackendAPI) Validate() error {
 	if o.GetShowsShowSlugSummaryHandler == nil {
 		unregistered = append(unregistered, "GetShowsShowSlugSummaryHandler")
 	}
+	if o.PostAssignmentHandler == nil {
+		unregistered = append(unregistered, "PostAssignmentHandler")
+	}
 	if o.PostAvailabilitiesHandler == nil {
 		unregistered = append(unregistered, "PostAvailabilitiesHandler")
 	}
@@ -340,11 +356,11 @@ func (o *GoBackendAPI) Validate() error {
 	if o.PostRolesHandler == nil {
 		unregistered = append(unregistered, "PostRolesHandler")
 	}
-	if o.PostRosterAssignHandler == nil {
-		unregistered = append(unregistered, "PostRosterAssignHandler")
-	}
 	if o.PostShowsHandler == nil {
 		unregistered = append(unregistered, "PostShowsHandler")
+	}
+	if o.PutAssignmentIDHandler == nil {
+		unregistered = append(unregistered, "PutAssignmentIDHandler")
 	}
 	if o.PutRolesIDHandler == nil {
 		unregistered = append(unregistered, "PutRolesIDHandler")
@@ -442,6 +458,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["DELETE"] == nil {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
 	}
+	o.handlers["DELETE"]["/assignment/{id}"] = NewDeleteAssignmentID(o.context, o.DeleteAssignmentIDHandler)
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
 	o.handlers["DELETE"]["/events/{id}"] = NewDeleteEventsID(o.context, o.DeleteEventsIDHandler)
 	if o.handlers["DELETE"] == nil {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
@@ -498,6 +518,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
+	o.handlers["POST"]["/assignment"] = NewPostAssignment(o.context, o.PostAssignmentHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
 	o.handlers["POST"]["/availabilities"] = NewPostAvailabilities(o.context, o.PostAvailabilitiesHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
@@ -522,11 +546,11 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/roster/assign"] = NewPostRosterAssign(o.context, o.PostRosterAssignHandler)
-	if o.handlers["POST"] == nil {
-		o.handlers["POST"] = make(map[string]http.Handler)
-	}
 	o.handlers["POST"]["/shows"] = NewPostShows(o.context, o.PostShowsHandler)
+	if o.handlers["PUT"] == nil {
+		o.handlers["PUT"] = make(map[string]http.Handler)
+	}
+	o.handlers["PUT"]["/assignment/{id}"] = NewPutAssignmentID(o.context, o.PutAssignmentIDHandler)
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)
 	}

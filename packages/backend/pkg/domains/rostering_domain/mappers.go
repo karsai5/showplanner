@@ -82,6 +82,14 @@ func mapToRoleDTO(role database.Role) models.RoleDTO {
 	}
 }
 
+func mapToAssignmentDTO(a database.Assignment) models.AssignedDTO {
+	return models.AssignedDTO{
+		EventID: convert.UintToInt64(a.EventID),
+		Person:  convert.GetPointer(mapPerson(a.Person)),
+		RoleID:  convert.UintToInt64(a.RoleID),
+	}
+}
+
 func findAvailability(availabilities []database.Availability, personId strfmt.UUID) *models.AvailabilityDTO {
 	for i := range availabilities {
 		if availabilities[i].PersonID.String() == personId.String() {

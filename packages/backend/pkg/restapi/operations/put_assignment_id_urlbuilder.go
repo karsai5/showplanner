@@ -9,13 +9,14 @@ import (
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
+	"strings"
 
 	"github.com/go-openapi/swag"
 )
 
-// GetPersonnelURL generates an URL for the get personnel operation
-type GetPersonnelURL struct {
-	ShowID int64
+// PutAssignmentIDURL generates an URL for the put assignment ID operation
+type PutAssignmentIDURL struct {
+	ID float64
 
 	_basePath string
 	// avoid unkeyed usage
@@ -25,7 +26,7 @@ type GetPersonnelURL struct {
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetPersonnelURL) WithBasePath(bp string) *GetPersonnelURL {
+func (o *PutAssignmentIDURL) WithBasePath(bp string) *PutAssignmentIDURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -33,15 +34,22 @@ func (o *GetPersonnelURL) WithBasePath(bp string) *GetPersonnelURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetPersonnelURL) SetBasePath(bp string) {
+func (o *PutAssignmentIDURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *GetPersonnelURL) Build() (*url.URL, error) {
+func (o *PutAssignmentIDURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/personnel"
+	var _path = "/assignment/{id}"
+
+	id := swag.FormatFloat64(o.ID)
+	if id != "" {
+		_path = strings.Replace(_path, "{id}", id, -1)
+	} else {
+		return nil, errors.New("id is required on PutAssignmentIDURL")
+	}
 
 	_basePath := o._basePath
 	if _basePath == "" {
@@ -49,20 +57,11 @@ func (o *GetPersonnelURL) Build() (*url.URL, error) {
 	}
 	_result.Path = golangswaggerpaths.Join(_basePath, _path)
 
-	qs := make(url.Values)
-
-	showIDQ := swag.FormatInt64(o.ShowID)
-	if showIDQ != "" {
-		qs.Set("showId", showIDQ)
-	}
-
-	_result.RawQuery = qs.Encode()
-
 	return &_result, nil
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *GetPersonnelURL) Must(u *url.URL, err error) *url.URL {
+func (o *PutAssignmentIDURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -73,17 +72,17 @@ func (o *GetPersonnelURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *GetPersonnelURL) String() string {
+func (o *PutAssignmentIDURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *GetPersonnelURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *PutAssignmentIDURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on GetPersonnelURL")
+		return nil, errors.New("scheme is required for a full url on PutAssignmentIDURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on GetPersonnelURL")
+		return nil, errors.New("host is required for a full url on PutAssignmentIDURL")
 	}
 
 	base, err := o.Build()
@@ -97,6 +96,6 @@ func (o *GetPersonnelURL) BuildFull(scheme, host string) (*url.URL, error) {
 }
 
 // StringFull returns the string representation of a complete url
-func (o *GetPersonnelURL) StringFull(scheme, host string) string {
+func (o *PutAssignmentIDURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

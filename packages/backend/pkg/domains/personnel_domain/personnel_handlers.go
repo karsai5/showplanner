@@ -66,8 +66,8 @@ var handlePersonnel = operations.GetPersonnelAssignedHandlerFunc(func(params ope
 		}
 	})
 
-	return &operations.GetPersonnelOK{
-		Payload: &models.PersonnelDTO{
+	return &operations.GetPersonnelAssignedOK{
+		Payload: &models.ArrayOfPersonSummaryDTO{
 			People: mappedPeople,
 		},
 	}
@@ -97,8 +97,8 @@ var handleAssignablePersonnel = operations.GetPersonnelAssignableHandlerFunc(fun
 		}
 	})
 
-	return &operations.GetPersonnelOK{
-		Payload: &models.PersonnelDTO{
+	return &operations.GetPersonnelAssignableOK{
+		Payload: &models.ArrayOfPersonSummaryDTO{
 			People: mappedPeople,
 		},
 	}

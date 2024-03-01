@@ -83,6 +83,72 @@ paths:
           description: OK
           schema:
             $ref: './schemas/Event.yaml#/EventDTO'
+  /assignment:
+    post:
+      summary: Assign a person to a role for an event
+      parameters:
+        - in: body
+          description: The details of the assignment
+          name: assignment
+          schema:
+            $ref: './schemas/Rostering.yaml#/AssignedUpdateDTO'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/Rostering.yaml#/AssignedDTO'
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+  /assignment/{id}:
+    put:
+      summary: Assign a person to a role for an event
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: Id of assignment to delete
+        - in: body
+          description: The details of the assignment
+          name: assignment
+          schema:
+            $ref: './schemas/Rostering.yaml#/AssignedUpdateDTO'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/Rostering.yaml#/AssignedDTO'
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+    delete:
+      summary: Assign a person to a role for an event
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: Id of assignment to delete
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
   /public/schedule:
     get:
       parameters:
@@ -373,28 +439,6 @@ paths:
           schema:
             $ref: './schemas/Rostering.yaml#/RosterDTO'
         401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
-  /roster/assign:
-    post:
-      summary: Assign a person to a role for an event
-      parameters:
-        - in: body
-          description: The details of the assignment
-          name: assignment
-          schema:
-            $ref: './schemas/Rostering.yaml#/AssignedUpdateDTO'
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: './schemas/Rostering.yaml#/AssignedDTO'
-        401:
-          $ref: '#/responses/Error'
-        404:
           $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'

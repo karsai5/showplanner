@@ -4,18 +4,20 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"showplanner.io/pkg/convert"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/events_domain"
 	"showplanner.io/pkg/logger"
-	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
 )
 
-var handlePostAssignment = operations.GetRosterHandlerFunc(func(params operations.GetRosterParams) middleware.Responder {
-	logError := logger.CreateLogErrorFunc("Getting roster", &operations.GetRosterInternalServerError{})
+var handlePostAssignment = operations.PostAssignmentHandlerFunc(func(params operations.PostAssignmentParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting roster", &operations.PostAssignmentInternalServerError{})
 
-	hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	event, err := database.GetEvent(uint(*params.Assignment.EventID))
+	if err != nil {
+		return logError(&err)
+	}
 
+	hasPerm, err := permissions.Rostering.HasPermission(event.ShowID, params.HTTPRequest)
 	if err != nil {
 		return logError(&err)
 	}
@@ -23,24 +25,39 @@ var handlePostAssignment = operations.GetRosterHandlerFunc(func(params operation
 		return &operations.GetAvailabilitiesUnauthorized{}
 	}
 
-	roles, err := database.GetRolesForShow(uint(params.ShowID))
+	assignment, err := database.CreateAssignment(database.Assignment{
+		PersonID: *convert.StrfmtUUIDToUUID(params.Assignment.PersonID),
+		EventID:  event.ID,
+		RoleID:   uint(*params.Assignment.RoleID),
+	})
+
 	if err != nil {
 		return logError(&err)
 	}
-	events, err := database.GetEventsWithAvailabilities(uint(params.ShowID))
+
+	return &operations.PostAssignmentOK{Payload: convert.GetPointer(mapToAssignmentDTO(assignment))}
+})
+
+var handleDeleteAssignment = operations.DeleteAssignmentIDHandlerFunc(func(params operations.DeleteAssignmentIDParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting roster", &operations.PutAssignmentIDInternalServerError{})
+
+	assignment, err := database.GetAssignment(uint(params.ID))
 	if err != nil {
 		return logError(&err)
 	}
 
-	mappedEvents := convert.MapArrayOfPointer(events, mapToEventWithAssignments(roles))
-
-	events_domain.NameEventsWithCurtainsUp(mappedEvents)
-
-	return &operations.GetRosterOK{
-		Payload: &models.RosterDTO{
-			Events: mappedEvents,
-			Roles:  convert.MapArrayOfPointer(roles, mapToRoleDTO),
-		},
+	hasPerm, err := permissions.Rostering.HasPermission(assignment.Event.ShowID, params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+	if !hasPerm {
+		return &operations.PutAssignmentIDUnauthorized{}
 	}
 
+	err = database.DeleteAssignment(uint(params.ID))
+	if err != nil {
+		return logError(&err)
+	}
+
+	return &operations.PutAssignmentIDOK{}
 })
