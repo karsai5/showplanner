@@ -42,6 +42,8 @@ paths:
           $ref: '#/responses/Error'
   /schedule:
     get:
+      tags: 
+        - show
       parameters:
         - in: query
           required: true
@@ -64,6 +66,8 @@ paths:
           $ref: '#/responses/Error'
   /events:
     post:
+      tags: 
+        - show
       summary: Creates an event
       consumes:
         - application/json
@@ -86,6 +90,8 @@ paths:
   /assignment:
     post:
       summary: Assign a person to a role for an event
+      tags: 
+        - rostering
       parameters:
         - in: body
           description: The details of the assignment
@@ -108,6 +114,8 @@ paths:
   /assignment/{id}:
     put:
       summary: Assign a person to a role for an event
+      tags: 
+        - rostering
       parameters:
         - in: path
           name: id
@@ -133,7 +141,9 @@ paths:
         500:
           $ref: '#/responses/Error'
     delete:
-      summary: Assign a person to a role for an event
+      summary: Deletes an assignment
+      tags: 
+        - rostering
       parameters:
         - in: path
           name: id
@@ -151,6 +161,8 @@ paths:
           $ref: '#/responses/Error'
   /public/schedule:
     get:
+      tags: 
+        - show
       parameters:
         - in: query
           required: true
@@ -176,7 +188,9 @@ paths:
           $ref: '#/responses/Error'
   /events/{id}:
     delete:
-      summary: Delete's an event
+      summary: Delete an event
+      tags: 
+        - show
       parameters:
         - in: path
           name: id
@@ -195,6 +209,8 @@ paths:
         200:
     post:
       summary: Update event
+      tags: 
+        - show
       parameters:
         - in: path
           name: id
@@ -219,6 +235,8 @@ paths:
             $ref: './schemas/Show.yaml#/ShowDTO'
   /shows:
     get:
+      tags: 
+        - show
       summary: Returns a list of shows
       produces:
         - application/json
@@ -235,6 +253,8 @@ paths:
               $ref: './schemas/Show.yaml#/ShowDTO'
     post:
       summary: Creates a show
+      tags: 
+        - show
       consumes:
         - application/json
       parameters:
