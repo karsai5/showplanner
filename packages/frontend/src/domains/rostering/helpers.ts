@@ -21,9 +21,9 @@ export const getBgColorForRoster = (b: boolean | undefined) => {
     case YES:
       return '';
     case NO:
-      return 'bg-red-300';
+      return 'bg-red-100';
     default:
-      return 'bg-amber-300';
+      return 'bg-amber-100';
   }
 };
 

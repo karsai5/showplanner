@@ -9,9 +9,10 @@ import { showToastError } from 'core/utils/errors';
 import { displayDate } from 'domains/events/lib/displayDate';
 import { processEvents } from 'domains/events/lib/processEvents';
 import { PersonSelector } from 'domains/personnel/PersonSelector/PersonSelector';
-import { getBgColorForRoster, getStringFromBoolean } from 'domains/rostering/helpers';
+import { getBgColorForRoster } from 'domains/rostering/helpers';
 import sortBy from 'lodash/sortBy';
-import React, { Fragment } from 'react';
+import { KeyboardEventHandler } from 'react';
+import React, { Fragment, useState } from 'react';
 
 export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
   const rosterRequest = useQuery(
@@ -31,7 +32,7 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
       processEvents<RosterDTOEventsInner>(roster.events);
     return (
       <div className="overflow-x-auto">
-        <table className="table table-sm w-full">
+        <table className="table table-sm">
           <thead>
             <tr>
               <th></th>
@@ -111,6 +112,7 @@ export const AssignmentCell: React.FC<{ assignment: RosterAssignedDTO, showId: n
     () => api.personnelAssignedGet({ showId: showId }),
   );
 
+  const [showPersonDropdown, setShowPersonDropdown] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const changeAssignmentMutation = useMutation<unknown, Error, string | undefined>({
     mutationFn: (personId) => {
@@ -133,7 +135,7 @@ export const AssignmentCell: React.FC<{ assignment: RosterAssignedDTO, showId: n
           }
         });
       }
-      throw new Error();
+      return new Promise((res) => res(undefined));
     },
     onError: (e) => {
       showToastError("Could not update availability", e);
@@ -141,29 +143,49 @@ export const AssignmentCell: React.FC<{ assignment: RosterAssignedDTO, showId: n
     onSuccess: async () => {
       // TODO: This should be optimised to just reload the cell instead of the whole table
       queryClient.invalidateQueries({ queryKey: ['roster', showId] });
+      setShowPersonDropdown(false);
     },
   });
 
   const handleChange = (person: PersonSummaryDTO) => {
-    changeAssignmentMutation.mutate(person.id);
+    if (person.id === assignment.person.id) {
+      setShowPersonDropdown(false);
+    } else {
+      changeAssignmentMutation.mutate(person.id);
+    }
+  }
+
+  let bgClassName = '';
+  if (assignment.person?.id) {
+    bgClassName = getBgColorForRoster(assignment.available);
+  }
+
+  const handleKeyPress: KeyboardEventHandler = (event) => {
+    if (event.code === "Space") {
+      setShowPersonDropdown(true);
+    }
   }
 
   return <Td
-    className={cc(
-      getBgColorForRoster(assignment.available),
-    )}
+    className={cc(bgClassName, "relative")}
+    onClick={() => showPersonDropdown ? undefined : setShowPersonDropdown(true)}
+    tabIndex={0}
+    onKeyDown={handleKeyPress}
   >
-    {assignment.person && <>
-      <div>{assignment.person.firstName} {assignment.person.lastName}</div>
-      <div>Available: {getStringFromBoolean(assignment.available)}</div>
-      <div>Cover: {assignment.cover ? 'Yes' : 'No'}</div>
-      {assignedPeopleRequest.data?.people &&
-        <PersonSelector
-          loading={changeAssignmentMutation.isLoading}
-          people={assignedPeopleRequest.data.people}
-          selectedPersonId={assignment.person.id}
-          onChange={handleChange}
-        />}
-    </>}
+    {!showPersonDropdown && <div className="flex">
+      {!assignment.person?.id && <span className="italic">Unassigned</span>}
+      {assignment.person?.id && <>
+        {assignment.cover && <><div className="w-5"></div><div className="cover-box bg-orange-400">cover</div></>}
+        <div>{assignment.person.firstName} {assignment.person.lastName}</div>
+      </>}
+    </div>}
+    {showPersonDropdown && assignedPeopleRequest.data?.people &&
+      <PersonSelector
+        loading={changeAssignmentMutation.isLoading}
+        people={assignedPeopleRequest.data.people}
+        selectedPersonId={assignment.person.id}
+        onChange={handleChange}
+        openOnLoad={true}
+      />}
   </Td>
 }
