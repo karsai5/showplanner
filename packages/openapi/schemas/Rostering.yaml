@@ -74,8 +74,15 @@ RosterDTO:
         - $ref: './Event.yaml#/EventDTO'
         - type: object
           properties:
+            availabilities:
+              description: 'A map of availabilities to personId'
+              properties:
+                default:
+                  $ref: '#/AvailabilityDTO'
+              additionalProperties:
+                $ref: '#/AvailabilityDTO'
             assignments: 
-              description: 'A map of assignments'
+              description: 'A map of assignments to roleId'
               properties:
                 default:
                   $ref: '#/RosterAssignedDTO'

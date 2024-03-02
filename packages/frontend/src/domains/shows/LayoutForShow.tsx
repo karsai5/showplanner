@@ -56,7 +56,7 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
         <Nav mobile={{ toggleSidebar: () => handleSidebar(!sidebarOpen) }} />
         {isLoading && <LoadingBox className="flex-1" />}
         {isError && <ErrorBox>Something went wrong getting show</ErrorBox>}
-        {show && (
+        {show && !isError && (
           <SessionAuth
             accessDeniedScreen={AccessDenied}
             overrideGlobalClaimValidators={(globalValidators) => [

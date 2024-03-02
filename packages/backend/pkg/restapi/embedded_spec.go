@@ -1888,7 +1888,7 @@ func init() {
           "type": "object",
           "properties": {
             "assignments": {
-              "description": "A map of assignments",
+              "description": "A map of assignments to roleId",
               "properties": {
                 "default": {
                   "$ref": "#/definitions/rosterAssignedDTO"
@@ -1897,13 +1897,24 @@ func init() {
               "additionalProperties": {
                 "$ref": "#/definitions/rosterAssignedDTO"
               }
+            },
+            "availabilities": {
+              "description": "A map of availabilities to personId",
+              "properties": {
+                "default": {
+                  "$ref": "#/definitions/availabilityDTO"
+                }
+              },
+              "additionalProperties": {
+                "$ref": "#/definitions/availabilityDTO"
+              }
             }
           }
         }
       ]
     },
     "RosterDTOEventsItems0AO1Assignments": {
-      "description": "A map of assignments",
+      "description": "A map of assignments to roleId",
       "properties": {
         "default": {
           "$ref": "#/definitions/rosterAssignedDTO"
@@ -1911,6 +1922,17 @@ func init() {
       },
       "additionalProperties": {
         "$ref": "#/definitions/rosterAssignedDTO"
+      }
+    },
+    "RosterDTOEventsItems0AO1Availabilities": {
+      "description": "A map of availabilities to personId",
+      "properties": {
+        "default": {
+          "$ref": "#/definitions/availabilityDTO"
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/availabilityDTO"
       }
     },
     "arrayOfPersonSummaryDTO": {

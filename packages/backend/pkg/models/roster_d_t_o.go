@@ -192,6 +192,9 @@ type RosterDTOEventsItems0 struct {
 
 	// assignments
 	Assignments *RosterDTOEventsItems0AO1Assignments `json:"assignments,omitempty"`
+
+	// availabilities
+	Availabilities *RosterDTOEventsItems0AO1Availabilities `json:"availabilities,omitempty"`
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
@@ -206,12 +209,16 @@ func (m *RosterDTOEventsItems0) UnmarshalJSON(raw []byte) error {
 	// AO1
 	var dataAO1 struct {
 		Assignments *RosterDTOEventsItems0AO1Assignments `json:"assignments,omitempty"`
+
+		Availabilities *RosterDTOEventsItems0AO1Availabilities `json:"availabilities,omitempty"`
 	}
 	if err := swag.ReadJSON(raw, &dataAO1); err != nil {
 		return err
 	}
 
 	m.Assignments = dataAO1.Assignments
+
+	m.Availabilities = dataAO1.Availabilities
 
 	return nil
 }
@@ -227,9 +234,13 @@ func (m RosterDTOEventsItems0) MarshalJSON() ([]byte, error) {
 	_parts = append(_parts, aO0)
 	var dataAO1 struct {
 		Assignments *RosterDTOEventsItems0AO1Assignments `json:"assignments,omitempty"`
+
+		Availabilities *RosterDTOEventsItems0AO1Availabilities `json:"availabilities,omitempty"`
 	}
 
 	dataAO1.Assignments = m.Assignments
+
+	dataAO1.Availabilities = m.Availabilities
 
 	jsonDataAO1, errAO1 := swag.WriteJSON(dataAO1)
 	if errAO1 != nil {
@@ -249,6 +260,10 @@ func (m *RosterDTOEventsItems0) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateAssignments(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateAvailabilities(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -278,6 +293,26 @@ func (m *RosterDTOEventsItems0) validateAssignments(formats strfmt.Registry) err
 	return nil
 }
 
+func (m *RosterDTOEventsItems0) validateAvailabilities(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Availabilities) { // not required
+		return nil
+	}
+
+	if m.Availabilities != nil {
+		if err := m.Availabilities.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("availabilities")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("availabilities")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 // ContextValidate validate this roster d t o events items0 based on the context it is used
 func (m *RosterDTOEventsItems0) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
@@ -288,6 +323,10 @@ func (m *RosterDTOEventsItems0) ContextValidate(ctx context.Context, formats str
 	}
 
 	if err := m.contextValidateAssignments(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateAvailabilities(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -318,6 +357,27 @@ func (m *RosterDTOEventsItems0) contextValidateAssignments(ctx context.Context, 
 	return nil
 }
 
+func (m *RosterDTOEventsItems0) contextValidateAvailabilities(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Availabilities != nil {
+
+		if swag.IsZero(m.Availabilities) { // not required
+			return nil
+		}
+
+		if err := m.Availabilities.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("availabilities")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("availabilities")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 // MarshalBinary interface implementation
 func (m *RosterDTOEventsItems0) MarshalBinary() ([]byte, error) {
 	if m == nil {
@@ -336,7 +396,7 @@ func (m *RosterDTOEventsItems0) UnmarshalBinary(b []byte) error {
 	return nil
 }
 
-// RosterDTOEventsItems0AO1Assignments A map of assignments
+// RosterDTOEventsItems0AO1Assignments A map of assignments to roleId
 //
 // swagger:model RosterDTOEventsItems0AO1Assignments
 type RosterDTOEventsItems0AO1Assignments struct {
@@ -533,6 +593,210 @@ func (m *RosterDTOEventsItems0AO1Assignments) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary interface implementation
 func (m *RosterDTOEventsItems0AO1Assignments) UnmarshalBinary(b []byte) error {
 	var res RosterDTOEventsItems0AO1Assignments
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// RosterDTOEventsItems0AO1Availabilities A map of availabilities to personId
+//
+// swagger:model RosterDTOEventsItems0AO1Availabilities
+type RosterDTOEventsItems0AO1Availabilities struct {
+
+	// default
+	Default *AvailabilityDTO `json:"default,omitempty"`
+
+	// roster d t o events items0 a o1 availabilities
+	// Required: true
+	RosterDTOEventsItems0AO1Availabilities map[string]*AvailabilityDTO `json:"-"`
+}
+
+// UnmarshalJSON unmarshals this object with additional properties from JSON
+func (m *RosterDTOEventsItems0AO1Availabilities) UnmarshalJSON(data []byte) error {
+	// stage 1, bind the properties
+	var stage1 struct {
+
+		// default
+		Default *AvailabilityDTO `json:"default,omitempty"`
+	}
+	if err := json.Unmarshal(data, &stage1); err != nil {
+		return err
+	}
+	var rcv RosterDTOEventsItems0AO1Availabilities
+
+	rcv.Default = stage1.Default
+	*m = rcv
+
+	// stage 2, remove properties and add to map
+	stage2 := make(map[string]json.RawMessage)
+	if err := json.Unmarshal(data, &stage2); err != nil {
+		return err
+	}
+
+	delete(stage2, "default")
+	// stage 3, add additional properties values
+	if len(stage2) > 0 {
+		result := make(map[string]*AvailabilityDTO)
+		for k, v := range stage2 {
+			var toadd *AvailabilityDTO
+			if err := json.Unmarshal(v, toadd); err != nil {
+				return err
+			}
+			result[k] = toadd
+		}
+		m.RosterDTOEventsItems0AO1Availabilities = result
+	}
+
+	return nil
+}
+
+// MarshalJSON marshals this object with additional properties into a JSON object
+func (m RosterDTOEventsItems0AO1Availabilities) MarshalJSON() ([]byte, error) {
+	var stage1 struct {
+
+		// default
+		Default *AvailabilityDTO `json:"default,omitempty"`
+	}
+
+	stage1.Default = m.Default
+
+	// make JSON object for known properties
+	props, err := json.Marshal(stage1)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(m.RosterDTOEventsItems0AO1Availabilities) == 0 { // no additional properties
+		return props, nil
+	}
+
+	// make JSON object for the additional properties
+	additional, err := json.Marshal(m.RosterDTOEventsItems0AO1Availabilities)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(props) < 3 { // "{}": only additional properties
+		return additional, nil
+	}
+
+	// concatenate the 2 objects
+	return swag.ConcatJSON(props, additional), nil
+}
+
+// Validate validates this roster d t o events items0 a o1 availabilities
+func (m *RosterDTOEventsItems0AO1Availabilities) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateDefault(formats); err != nil {
+		res = append(res, err)
+	}
+
+	for k := range m.RosterDTOEventsItems0AO1Availabilities {
+
+		if err := validate.Required("availabilities"+"."+k, "body", m.RosterDTOEventsItems0AO1Availabilities[k]); err != nil {
+			return err
+		}
+		if val, ok := m.RosterDTOEventsItems0AO1Availabilities[k]; ok {
+			if val != nil {
+				if err := val.Validate(formats); err != nil {
+					if ve, ok := err.(*errors.Validation); ok {
+						return ve.ValidateName("availabilities" + "." + k)
+					} else if ce, ok := err.(*errors.CompositeError); ok {
+						return ce.ValidateName("availabilities" + "." + k)
+					}
+					return err
+				}
+			}
+		}
+
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *RosterDTOEventsItems0AO1Availabilities) validateDefault(formats strfmt.Registry) error {
+	if swag.IsZero(m.Default) { // not required
+		return nil
+	}
+
+	if m.Default != nil {
+		if err := m.Default.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("availabilities" + "." + "default")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("availabilities" + "." + "default")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this roster d t o events items0 a o1 availabilities based on the context it is used
+func (m *RosterDTOEventsItems0AO1Availabilities) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateDefault(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	for k := range m.RosterDTOEventsItems0AO1Availabilities {
+
+		if val, ok := m.RosterDTOEventsItems0AO1Availabilities[k]; ok {
+			if val != nil {
+				if err := val.ContextValidate(ctx, formats); err != nil {
+					return err
+				}
+			}
+		}
+
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *RosterDTOEventsItems0AO1Availabilities) contextValidateDefault(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Default != nil {
+
+		if swag.IsZero(m.Default) { // not required
+			return nil
+		}
+
+		if err := m.Default.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("availabilities" + "." + "default")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("availabilities" + "." + "default")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *RosterDTOEventsItems0AO1Availabilities) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *RosterDTOEventsItems0AO1Availabilities) UnmarshalBinary(b []byte) error {
+	var res RosterDTOEventsItems0AO1Availabilities
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

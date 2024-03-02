@@ -11,14 +11,14 @@ import (
 	"showplanner.io/pkg/models"
 )
 
-func mapToAvailabilityDTO(availability database.Availability) *models.AvailabilityDTO {
+func mapToAvailabilityDTO(availability database.Availability) models.AvailabilityDTO {
 	personId := strfmt.UUID(availability.PersonID.String())
 	dto := models.AvailabilityDTO{
 		PersonID:  &personId,
 		EventID:   convert.UintToInt64(availability.EventID),
 		Available: &availability.Available,
 	}
-	return &dto
+	return dto
 }
 
 func mapToEventWithAvailabilities(people []database.Person) func(event database.Event) models.AvailabilitiesDTOEventsItems0 {
@@ -66,8 +66,19 @@ func mapToEventWithAssignments(roles []database.Role) func(event database.Event)
 			Assignments: &models.RosterDTOEventsItems0AO1Assignments{
 				RosterDTOEventsItems0AO1Assignments: assignments,
 			},
+			Availabilities: &models.RosterDTOEventsItems0AO1Availabilities{
+				RosterDTOEventsItems0AO1Availabilities: mapAvailabilityToMap(event.Availabilities),
+			},
 		}
 	}
+}
+
+func mapAvailabilityToMap(availabilities []database.Availability) map[string]*models.AvailabilityDTO {
+	dictionary := map[string]*models.AvailabilityDTO{}
+	for _, a := range availabilities {
+		dictionary[a.PersonID.String()] = convert.GetPointer(mapToAvailabilityDTO(a))
+	}
+	return dictionary
 }
 
 func fillPersonAndAvailabilityData(dto *models.RosterAssignedDTO, person database.Person, event database.Event) {
@@ -111,7 +122,7 @@ func mapToAssignedDTO(a database.Assignment) models.AssignedDTO {
 func findAvailability(availabilities []database.Availability, personId strfmt.UUID) *models.AvailabilityDTO {
 	for i := range availabilities {
 		if availabilities[i].PersonID.String() == personId.String() {
-			return mapToAvailabilityDTO(availabilities[i])
+			return convert.GetPointer(mapToAvailabilityDTO(availabilities[i]))
 		}
 	}
 	return nil

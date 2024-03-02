@@ -1,6 +1,9 @@
 package personnel_domain
 
 import (
+	"sort"
+	"strings"
+
 	"github.com/go-openapi/runtime/middleware"
 	uuid "github.com/satori/go.uuid"
 	"showplanner.io/pkg/convert"
@@ -12,7 +15,7 @@ import (
 )
 
 func SetupHandlers(api *operations.GoBackendAPI) {
-	api.GetPersonnelAssignedHandler = handlePersonnel
+	api.GetPersonnelAssignedHandler = handleAssignedPersonnel
 	api.GetPersonnelAssignableHandler = handleAssignablePersonnel
 	api.PostPersonnelAssignHandler = handleAddPersonToShow
 }
@@ -42,7 +45,7 @@ var handleAddPersonToShow = operations.PostPersonnelAssignHandlerFunc(func(param
 	return &operations.PostPersonnelAssignOK{}
 })
 
-var handlePersonnel = operations.GetPersonnelAssignedHandlerFunc(func(params operations.GetPersonnelAssignedParams) middleware.Responder {
+var handleAssignedPersonnel = operations.GetPersonnelAssignedHandlerFunc(func(params operations.GetPersonnelAssignedParams) middleware.Responder {
 	hasPerm, err := permissions.ViewPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
 	if err != nil {
 		logger.Error("Getting availabilites", err)
@@ -57,6 +60,12 @@ var handlePersonnel = operations.GetPersonnelAssignedHandlerFunc(func(params ope
 		logger.Error("Getting availabilites", err)
 		return &operations.GetAvailabilitiesInternalServerError{}
 	}
+
+	sort.Slice(people, func(i, j int) bool {
+		personI := strings.ToLower(strings.Join([]string{people[i].FirstName, people[i].LastName}, ""))
+		personJ := strings.ToLower(strings.Join([]string{people[j].FirstName, people[j].LastName}, ""))
+		return personI < personJ
+	})
 
 	mappedPeople := convert.MapArrayOfPointer(people, func(person database.Person) models.PersonSummaryDTO {
 		return models.PersonSummaryDTO{
@@ -74,10 +83,10 @@ var handlePersonnel = operations.GetPersonnelAssignedHandlerFunc(func(params ope
 })
 
 var handleAssignablePersonnel = operations.GetPersonnelAssignableHandlerFunc(func(params operations.GetPersonnelAssignableParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting roster", &operations.GetPersonnelAssignableInternalServerError{})
 	hasPerm, err := permissions.ViewPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
 	if err != nil {
-		logger.Error("Getting people", err)
-		return &operations.GetAvailabilitiesInternalServerError{}
+		return logError(&err)
 	}
 	if !hasPerm {
 		return &operations.GetAvailabilitiesUnauthorized{}
@@ -85,9 +94,14 @@ var handleAssignablePersonnel = operations.GetPersonnelAssignableHandlerFunc(fun
 
 	people, err := database.GetPeopleNotAssignedToShow(uint(params.ShowID))
 	if err != nil {
-		logger.Error("Getting people", err)
-		return &operations.GetAvailabilitiesInternalServerError{}
+		return logError(&err)
 	}
+
+	sort.Slice(people, func(i, j int) bool {
+		personI := strings.Join([]string{people[i].FirstName, people[i].LastName}, "")
+		personJ := strings.Join([]string{people[j].FirstName, people[j].LastName}, "")
+		return personI < personJ
+	})
 
 	mappedPeople := convert.MapArrayOfPointer(people, func(person database.Person) models.PersonSummaryDTO {
 		return models.PersonSummaryDTO{

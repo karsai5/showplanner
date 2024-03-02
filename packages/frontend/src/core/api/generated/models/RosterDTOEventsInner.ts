@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AvailabilityDTO } from './AvailabilityDTO';
+import {
+    AvailabilityDTOFromJSON,
+    AvailabilityDTOFromJSONTyped,
+    AvailabilityDTOToJSON,
+} from './AvailabilityDTO';
 import type { RosterAssignedDTO } from './RosterAssignedDTO';
 import {
     RosterAssignedDTOFromJSON,
@@ -81,7 +87,13 @@ export interface RosterDTOEventsInner {
      */
     end?: Date | null;
     /**
-     * A map of assignments
+     * A map of availabilities to personId
+     * @type {{ [key: string]: AvailabilityDTO; }}
+     * @memberof RosterDTOEventsInner
+     */
+    availabilities?: { [key: string]: AvailabilityDTO; };
+    /**
+     * A map of assignments to roleId
      * @type {{ [key: string]: RosterAssignedDTO; }}
      * @memberof RosterDTOEventsInner
      */
@@ -118,6 +130,7 @@ export function RosterDTOEventsInnerFromJSONTyped(json: any, ignoreDiscriminator
         'address': !exists(json, 'address') ? undefined : json['address'],
         'curtainsUp': !exists(json, 'curtainsUp') ? undefined : (json['curtainsUp'] === null ? null : new Date(json['curtainsUp'])),
         'end': !exists(json, 'end') ? undefined : (json['end'] === null ? null : new Date(json['end'])),
+        'availabilities': !exists(json, 'availabilities') ? undefined : (mapValues(json['availabilities'], AvailabilityDTOFromJSON)),
         'assignments': !exists(json, 'assignments') ? undefined : (mapValues(json['assignments'], RosterAssignedDTOFromJSON)),
     };
 }
@@ -140,6 +153,7 @@ export function RosterDTOEventsInnerToJSON(value?: RosterDTOEventsInner | null):
         'address': value.address,
         'curtainsUp': value.curtainsUp === undefined ? undefined : (value.curtainsUp === null ? null : value.curtainsUp.toISOString()),
         'end': value.end === undefined ? undefined : (value.end === null ? null : value.end.toISOString()),
+        'availabilities': value.availabilities === undefined ? undefined : (mapValues(value.availabilities, AvailabilityDTOToJSON)),
         'assignments': value.assignments === undefined ? undefined : (mapValues(value.assignments, RosterAssignedDTOToJSON)),
     };
 }

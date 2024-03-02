@@ -92,6 +92,6 @@ var handleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(par
 	})
 
 	return &operations.PostAvailabilitiesOK{
-		Payload: mapToAvailabilityDTO(*availability),
+		Payload: convert.GetPointer(mapToAvailabilityDTO(*availability)),
 	}
 })
