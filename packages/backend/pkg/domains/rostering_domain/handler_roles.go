@@ -2,7 +2,7 @@ package rostering_domain
 
 import (
 	"github.com/go-openapi/runtime/middleware"
-	"showplanner.io/pkg/convert"
+	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/permissions"
@@ -50,7 +50,7 @@ var handleUpdateRole = operations.PutRolesIDHandlerFunc(func(params operations.P
 
 	role, err = database.UpdateRole(uint(params.ID), database.Role{
 		Name:     params.RoleDetails.Name,
-		PersonID: convert.StrfmtUUIDToUUID(params.RoleDetails.PersonID),
+		PersonID: conv.StrfmtUUIDToUUID(params.RoleDetails.PersonID),
 	})
 
 	if err != nil {
@@ -62,10 +62,10 @@ var handleUpdateRole = operations.PutRolesIDHandlerFunc(func(params operations.P
 		if err != nil {
 			return logError(&err)
 		}
-		role.Person = convert.GetPointer(person)
+		role.Person = conv.Pointer(person)
 	}
 
-	return &operations.PutRolesIDOK{Payload: convert.GetPointer(mapToRoleDTO(role))}
+	return &operations.PutRolesIDOK{Payload: conv.Pointer(mapToRoleDTO(role))}
 })
 
 var handleCreateRole = operations.PostRolesHandlerFunc(func(params operations.PostRolesParams) middleware.Responder {
@@ -111,7 +111,7 @@ var handleGetRoles = operations.GetRolesHandlerFunc(func(params operations.GetRo
 		return logError(&err)
 	}
 
-	mappedRoles := convert.MapArrayOfPointer(roles, mapToRoleDTO)
+	mappedRoles := conv.MapArrayOfPointer(roles, mapToRoleDTO)
 
 	return &operations.GetRolesOK{
 		Payload: mappedRoles,

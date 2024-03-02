@@ -1,7 +1,7 @@
 package rostering_domain
 
 import (
-	"showplanner.io/pkg/convert"
+	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/events_domain"
 	"showplanner.io/pkg/logger"
@@ -35,8 +35,8 @@ var handleGetAvailabilities = operations.GetAvailabilitiesHandlerFunc(func(param
 		return logError(&err)
 	}
 
-	mappedPeople := convert.MapArrayOfPointer(people, mapPerson)
-	mappedEvents := convert.MapArrayOfPointer(events, mapToEventWithAvailabilities(people))
+	mappedPeople := conv.MapArrayOfPointer(people, mapPerson)
+	mappedEvents := conv.MapArrayOfPointer(events, mapToEventWithAvailabilities(people))
 
 	events_domain.NameEventsWithCurtainsUp(mappedEvents)
 
@@ -60,7 +60,7 @@ var handleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(par
 	if params.Availability.PersonID.String() != userId.String() {
 		return &operations.PostAvailabilitiesUnauthorized{
 			Payload: &models.Error{
-				Message: convert.GetPointer("Cannot update an availability for another user"),
+				Message: conv.Pointer("Cannot update an availability for another user"),
 			},
 		}
 	}
@@ -74,7 +74,7 @@ var handleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(par
 	if hasPerm, _ := permissions.ViewEvents.HasPermission(event.ShowID, params.HTTPRequest); !hasPerm {
 		return &operations.PostAvailabilitiesUnauthorized{
 			Payload: &models.Error{
-				Message: convert.GetPointer("Cannot update an availability for a show you are not assigned to"),
+				Message: conv.Pointer("Cannot update an availability for a show you are not assigned to"),
 			},
 		}
 	}
@@ -92,6 +92,6 @@ var handleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(par
 	})
 
 	return &operations.PostAvailabilitiesOK{
-		Payload: convert.GetPointer(mapToAvailabilityDTO(*availability)),
+		Payload: conv.Pointer(mapToAvailabilityDTO(*availability)),
 	}
 })

@@ -2,7 +2,7 @@ package rostering_domain
 
 import (
 	"github.com/go-openapi/runtime/middleware"
-	"showplanner.io/pkg/convert"
+	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/permissions"
@@ -26,7 +26,7 @@ var handlePostAssignment = operations.PostAssignmentHandlerFunc(func(params oper
 	}
 
 	assignment, err := database.CreateAssignment(database.Assignment{
-		PersonID: *convert.StrfmtUUIDToUUID(params.Assignment.PersonID),
+		PersonID: *conv.StrfmtUUIDToUUID(params.Assignment.PersonID),
 		EventID:  event.ID,
 		RoleID:   uint(*params.Assignment.RoleID),
 	})
@@ -35,7 +35,7 @@ var handlePostAssignment = operations.PostAssignmentHandlerFunc(func(params oper
 		return logError(&err)
 	}
 
-	return &operations.PostAssignmentOK{Payload: convert.GetPointer(mapToAssignedDTO(assignment))}
+	return &operations.PostAssignmentOK{Payload: conv.Pointer(mapToAssignedDTO(assignment))}
 })
 
 var handlePutAssignment = operations.PutAssignmentIDHandlerFunc(func(params operations.PutAssignmentIDParams) middleware.Responder {
@@ -55,7 +55,7 @@ var handlePutAssignment = operations.PutAssignmentIDHandlerFunc(func(params oper
 	}
 
 	assignment, err = database.UpdateAssignment(uint(params.ID), database.Assignment{
-		PersonID: *convert.StrfmtUUIDToUUID(params.Assignment.PersonID),
+		PersonID: *conv.StrfmtUUIDToUUID(params.Assignment.PersonID),
 	})
 
 	if err != nil {
@@ -63,7 +63,7 @@ var handlePutAssignment = operations.PutAssignmentIDHandlerFunc(func(params oper
 	}
 
 	return &operations.PostAssignmentOK{
-		Payload: convert.GetPointer(mapToAssignedDTO(assignment)),
+		Payload: conv.Pointer(mapToAssignedDTO(assignment)),
 	}
 })
 

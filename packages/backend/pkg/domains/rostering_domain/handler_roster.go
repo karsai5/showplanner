@@ -2,7 +2,7 @@ package rostering_domain
 
 import (
 	"github.com/go-openapi/runtime/middleware"
-	"showplanner.io/pkg/convert"
+	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/events_domain"
 	"showplanner.io/pkg/logger"
@@ -32,14 +32,14 @@ var handleGetRoster = operations.GetRosterHandlerFunc(func(params operations.Get
 		return logError(&err)
 	}
 
-	mappedEvents := convert.MapArrayOfPointer(events, mapToEventWithAssignments(roles))
+	mappedEvents := conv.MapArrayOfPointer(events, mapToEventWithAssignments(roles))
 
 	events_domain.NameEventsWithCurtainsUp(mappedEvents)
 
 	return &operations.GetRosterOK{
 		Payload: &models.RosterDTO{
 			Events: mappedEvents,
-			Roles:  convert.MapArrayOfPointer(roles, mapToRoleDTO),
+			Roles:  conv.MapArrayOfPointer(roles, mapToRoleDTO),
 		},
 	}
 })

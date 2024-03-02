@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	uuid "github.com/satori/go.uuid"
-	"showplanner.io/pkg/convert"
+	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/postoffice"
@@ -40,7 +40,7 @@ func AddToShow(showId int64, userId uuid.UUID) (err error) {
 		Email:    user.Email,
 		ShowName: show.Name,
 		ShowSlug: show.Slug,
-		ShowId:   convert.UintToString(&show.ID),
+		ShowId:   conv.UintToString(&show.ID),
 	})
 	return nil
 }

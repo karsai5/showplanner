@@ -1,4 +1,4 @@
-package convert
+package conv
 
 import (
 	"strconv"
@@ -17,7 +17,7 @@ func UintToInt64(n uint) *int64 {
 	return &id
 }
 
-func GetPointer[T any](x T) *T {
+func Pointer[T any](x T) *T {
 	y := x
 	return &y
 }

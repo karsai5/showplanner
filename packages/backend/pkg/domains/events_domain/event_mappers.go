@@ -1,12 +1,13 @@
 package events_domain
 
 import (
-	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/models"
-	"showplanner.io/pkg/convert"
 	"sort"
 	"strconv"
 	"time"
+
+	"showplanner.io/pkg/conv"
+	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/models"
 
 	"github.com/go-openapi/strfmt"
 )
@@ -58,11 +59,11 @@ func MapEventToEventDTO(e database.Event) models.EventDTO {
 	start := strfmt.DateTime(e.Start)
 
 	me := models.EventDTO{
-		ID:         convert.UintToInt64(e.ID),
+		ID:         conv.UintToInt64(e.ID),
 		ShowID:     int64(e.ShowID),
 		Start:      &start,
-		CurtainsUp: convert.TimeToDateTime(e.CurtainsUp),
-		End:        convert.TimeToDateTime(e.End),
+		CurtainsUp: conv.TimeToDateTime(e.CurtainsUp),
+		End:        conv.TimeToDateTime(e.End),
 		NameRaw:    e.Name,
 		Name:       e.Name,
 		Shortnote:  e.ShortNote,

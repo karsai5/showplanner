@@ -6,7 +6,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
-	"showplanner.io/pkg/convert"
+	"showplanner.io/pkg/conv"
 )
 
 type Event struct {
@@ -24,7 +24,7 @@ type Event struct {
 }
 
 func (e *Event) GetCurtainsUp() *strfmt.DateTime {
-	return convert.TimeToDateTime(e.CurtainsUp)
+	return conv.TimeToDateTime(e.CurtainsUp)
 }
 
 func (e *Event) SetName(name string) {

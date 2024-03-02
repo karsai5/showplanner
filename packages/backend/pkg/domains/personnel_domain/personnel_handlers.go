@@ -6,7 +6,7 @@ import (
 
 	"github.com/go-openapi/runtime/middleware"
 	uuid "github.com/satori/go.uuid"
-	"showplanner.io/pkg/convert"
+	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
@@ -67,10 +67,10 @@ var handleAssignedPersonnel = operations.GetPersonnelAssignedHandlerFunc(func(pa
 		return personI < personJ
 	})
 
-	mappedPeople := convert.MapArrayOfPointer(people, func(person database.Person) models.PersonSummaryDTO {
+	mappedPeople := conv.MapArrayOfPointer(people, func(person database.Person) models.PersonSummaryDTO {
 		return models.PersonSummaryDTO{
 			FirstName: person.FirstName,
-			ID:        *convert.UUIDToStrmFmtUUID(person.ID),
+			ID:        *conv.UUIDToStrmFmtUUID(person.ID),
 			LastName:  person.LastName,
 		}
 	})
@@ -103,10 +103,10 @@ var handleAssignablePersonnel = operations.GetPersonnelAssignableHandlerFunc(fun
 		return personI < personJ
 	})
 
-	mappedPeople := convert.MapArrayOfPointer(people, func(person database.Person) models.PersonSummaryDTO {
+	mappedPeople := conv.MapArrayOfPointer(people, func(person database.Person) models.PersonSummaryDTO {
 		return models.PersonSummaryDTO{
 			FirstName: person.FirstName,
-			ID:        *convert.UUIDToStrmFmtUUID(person.ID),
+			ID:        *conv.UUIDToStrmFmtUUID(person.ID),
 			LastName:  person.LastName,
 		}
 	})

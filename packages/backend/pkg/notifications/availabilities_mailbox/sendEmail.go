@@ -8,7 +8,7 @@ import (
 
 	"github.com/ThreeDotsLabs/watermill/message"
 	"showplanner.io/pkg/config"
-	"showplanner.io/pkg/convert"
+	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/helpers"
 	"showplanner.io/pkg/logger"
@@ -93,7 +93,7 @@ View availabilites at %s/shows/%s/availabilities`, show.Slug, namesList, config.
 
 func getManagerEmailsForShow(id uint) ([]string, error) {
 	emails := []string{}
-	users, err := permissions.GetUsersThatHavePermission(permissions.Rostering.Permission(convert.UintToString(&id)))
+	users, err := permissions.GetUsersThatHavePermission(permissions.Rostering.Permission(conv.UintToString(&id)))
 	if err != nil {
 		return emails, err
 	}

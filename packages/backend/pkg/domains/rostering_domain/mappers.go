@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/go-openapi/strfmt"
-	"showplanner.io/pkg/convert"
+	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/events_domain"
 	"showplanner.io/pkg/models"
@@ -15,7 +15,7 @@ func mapToAvailabilityDTO(availability database.Availability) models.Availabilit
 	personId := strfmt.UUID(availability.PersonID.String())
 	dto := models.AvailabilityDTO{
 		PersonID:  &personId,
-		EventID:   convert.UintToInt64(availability.EventID),
+		EventID:   conv.UintToInt64(availability.EventID),
 		Available: &availability.Available,
 	}
 	return dto
@@ -25,7 +25,7 @@ func mapToEventWithAvailabilities(people []database.Person) func(event database.
 	return func(event database.Event) models.AvailabilitiesDTOEventsItems0 {
 		availabilities := []*models.AvailabilityDTO{}
 		for _, person := range people {
-			availabilities = append(availabilities, findAvailability(event.Availabilities, *convert.UUIDToStrmFmtUUID(person.ID)))
+			availabilities = append(availabilities, findAvailability(event.Availabilities, *conv.UUIDToStrmFmtUUID(person.ID)))
 		}
 
 		return models.AvailabilitiesDTOEventsItems0{
@@ -42,7 +42,7 @@ func mapToEventWithAssignments(roles []database.Role) func(event database.Event)
 			dto := models.RosterAssignedDTO{
 				AssignmentID: nil,
 				Available:    nil,
-				Cover:        convert.GetPointer(false),
+				Cover:        conv.Pointer(false),
 				Person:       &models.PersonSummaryDTO{},
 			}
 
@@ -53,10 +53,10 @@ func mapToEventWithAssignments(roles []database.Role) func(event database.Event)
 			assignmentIdx := slices.IndexFunc(event.Assignments, func(a database.Assignment) bool { return a.RoleID == role.ID })
 			if assignmentIdx >= 0 {
 				assignment := event.Assignments[assignmentIdx]
-				dto.AssignmentID = convert.UintToInt64(assignment.ID)
+				dto.AssignmentID = conv.UintToInt64(assignment.ID)
 				fillPersonAndAvailabilityData(&dto, assignment.Person, event)
 				if role.Person != nil {
-					dto.Cover = convert.GetPointer(true)
+					dto.Cover = conv.Pointer(true)
 				}
 			}
 			assignments[strconv.Itoa(int(role.ID))] = &dto
@@ -76,13 +76,13 @@ func mapToEventWithAssignments(roles []database.Role) func(event database.Event)
 func mapAvailabilityToMap(availabilities []database.Availability) map[string]*models.AvailabilityDTO {
 	dictionary := map[string]*models.AvailabilityDTO{}
 	for _, a := range availabilities {
-		dictionary[a.PersonID.String()] = convert.GetPointer(mapToAvailabilityDTO(a))
+		dictionary[a.PersonID.String()] = conv.Pointer(mapToAvailabilityDTO(a))
 	}
 	return dictionary
 }
 
 func fillPersonAndAvailabilityData(dto *models.RosterAssignedDTO, person database.Person, event database.Event) {
-	dto.Person = convert.GetPointer(mapPerson(person))
+	dto.Person = conv.Pointer(mapPerson(person))
 	availablilityIdx := slices.IndexFunc(event.Availabilities, func(a database.Availability) bool { return a.PersonID == person.ID })
 	if availablilityIdx >= 0 {
 		dto.Available = &event.Availabilities[availablilityIdx].Available
@@ -94,7 +94,7 @@ func fillPersonAndAvailabilityData(dto *models.RosterAssignedDTO, person databas
 func mapPerson(person database.Person) models.PersonSummaryDTO {
 	return models.PersonSummaryDTO{
 		FirstName: person.FirstName,
-		ID:        *convert.UUIDToStrmFmtUUID(person.ID),
+		ID:        *conv.UUIDToStrmFmtUUID(person.ID),
 		LastName:  person.LastName,
 	}
 }
@@ -102,7 +102,7 @@ func mapPerson(person database.Person) models.PersonSummaryDTO {
 func mapToRoleDTO(role database.Role) models.RoleDTO {
 	var person *models.PersonSummaryDTO
 	if role.Person != nil {
-		person = convert.GetPointer(mapPerson(*role.Person))
+		person = conv.Pointer(mapPerson(*role.Person))
 	}
 	return models.RoleDTO{
 		ID:     int64(role.ID),
@@ -113,16 +113,16 @@ func mapToRoleDTO(role database.Role) models.RoleDTO {
 
 func mapToAssignedDTO(a database.Assignment) models.AssignedDTO {
 	return models.AssignedDTO{
-		EventID: convert.UintToInt64(a.EventID),
-		Person:  convert.GetPointer(mapPerson(a.Person)),
-		RoleID:  convert.UintToInt64(a.RoleID),
+		EventID: conv.UintToInt64(a.EventID),
+		Person:  conv.Pointer(mapPerson(a.Person)),
+		RoleID:  conv.UintToInt64(a.RoleID),
 	}
 }
 
 func findAvailability(availabilities []database.Availability, personId strfmt.UUID) *models.AvailabilityDTO {
 	for i := range availabilities {
 		if availabilities[i].PersonID.String() == personId.String() {
-			return convert.GetPointer(mapToAvailabilityDTO(availabilities[i]))
+			return conv.Pointer(mapToAvailabilityDTO(availabilities[i]))
 		}
 	}
 	return nil

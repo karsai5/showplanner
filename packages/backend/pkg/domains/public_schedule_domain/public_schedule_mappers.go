@@ -1,7 +1,7 @@
 package public_schedule_domain
 
 import (
-	"showplanner.io/pkg/convert"
+	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/models"
 
@@ -21,11 +21,11 @@ func mapEventToEventPublicDTO(e database.Event) models.EventPublicDTO {
 	start := strfmt.DateTime(e.Start)
 
 	me := models.EventPublicDTO{
-		ID:         convert.UintToInt64(e.ID),
+		ID:         conv.UintToInt64(e.ID),
 		ShowID:     int64(e.ShowID),
 		Start:      &start,
-		CurtainsUp: convert.TimeToDateTime(e.CurtainsUp),
-		End:        convert.TimeToDateTime(e.End),
+		CurtainsUp: conv.TimeToDateTime(e.CurtainsUp),
+		End:        conv.TimeToDateTime(e.End),
 		NameRaw:    e.Name,
 		Name:       e.Name,
 	}
