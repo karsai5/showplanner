@@ -63,7 +63,7 @@ const AvailabilitiesTable: React.FC<{ showId: number }> = ({ showId }) => {
             <th></th>
             <th></th>
             {data.people?.map((p) => (
-              <th key={p.id}>
+              <th key={p.id} className="sticky top-0 bg-white z-50">
                 {p.firstName} {p.lastName}
               </th>
             ))}
@@ -92,7 +92,7 @@ const AvailabilitiesTable: React.FC<{ showId: number }> = ({ showId }) => {
                           {displayDate(e.start)}
                         </Td>
                       )}
-                      <Td className="w-40">
+                      <Td className="w-40 sticky left-0 bg-white z-50">
                         <TimeRangeWithCurtainsUp event={e} />
                       </Td>
                       {e.availabilities?.map((a, i) => {
