@@ -20,6 +20,12 @@ module.exports = {
         port: '',
         pathname: '/maps/api/staticmap',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.ko-fi.com',
+        port: '',
+        pathname: '/cdn/**',
+      },
     ],
   },
 };

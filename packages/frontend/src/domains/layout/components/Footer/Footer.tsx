@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const donateLink = 'https://ko-fi.com/linuskarsai';
 export const Footer = () => {
   return (
@@ -22,11 +24,11 @@ export const Footer = () => {
       </div>
       <div>
         <a href={donateLink} target="_blank" rel="noreferrer">
-          <img
-            height="36"
-            className="h-9 border-0"
+          <Image 
             src="https://storage.ko-fi.com/cdn/kofi2.png?v=3"
             alt="Buy Me a Coffee at ko-fi.com"
+            height="36"
+            width="141"
           />
         </a>
       </div>
