@@ -23,7 +23,7 @@ const getSelectedPerson = (people: Array<PersonSummaryDTO>, selectedPersonId: st
 
 export const PersonSelector: React.FC<{
 	people: Array<PersonSummaryDTO>
-	onChange?: (person: PersonSummaryDTO) => void
+	onChange: (person: PersonSummaryDTO) => void
 	loading?: boolean
 	selectedPersonId: string | undefined
 	openOnLoad?: boolean;
@@ -46,12 +46,12 @@ export const PersonSelector: React.FC<{
 			}
 		}, [buttonRef, openOnLoad]);
 
+		useEffect(() => {
+			setSelected(getSelectedPerson(people, selectedPersonId))
+		}, [selectedPersonId, people])
+
 		const handleChange = (person: PersonSummaryDTO) => {
-			if (onChange) {
-				onChange(person)
-			} else {
-				setSelected(person);
-			}
+			onChange(person)
 		}
 
 		const filteredPeople = [unassignedPerson];
@@ -72,6 +72,12 @@ export const PersonSelector: React.FC<{
 			}
 		}
 
+		const handleOnClick = (open: boolean) => {
+			if (!open && buttonRef.current) {
+				buttonRef.current.click();
+			}
+		}
+
 		return (
 			<div className="">
 				<Combobox value={selected} onChange={handleChange}>
@@ -85,6 +91,7 @@ export const PersonSelector: React.FC<{
 									className={cc("input", className ? className : 'input-bordered')}
 									displayValue={(person: PersonSummaryDTO) => `${person.firstName} ${person.lastName}`}
 									onChange={(event) => setQuery(event.target.value)}
+									onClick={() => handleOnClick(open)}
 									onBlur={() => handleBlur(open)}
 								/>
 								<Combobox.Button ref={buttonRef}>
@@ -97,7 +104,7 @@ export const PersonSelector: React.FC<{
 								leaveTo="opacity-0"
 								afterLeave={() => setQuery('')}
 							>
-								<Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-50">
+								<Combobox.Options className="absolute mt-1 max-h-60 w-full rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-50">
 									{filteredPeople.length === 0 && query !== '' ? (
 										<div className="relative cursor-default select-none px-4 py-2 text-gray-700" key="-1">
 											Nothing found.

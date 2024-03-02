@@ -69,7 +69,7 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
             {show && (
               <ShowSummaryContext.Provider value={show}>
                 <Sidebar isOpen={sidebarOpen}>
-                  <div className="p-6 h-full overflow-auto flex-grow">
+                  <div className="p-6 w-full">
                     {children}
                   </div>
                 </Sidebar>

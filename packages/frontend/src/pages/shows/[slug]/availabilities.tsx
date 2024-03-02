@@ -57,70 +57,68 @@ const AvailabilitiesTable: React.FC<{ showId: number }> = ({ showId }) => {
     const { dates, groupedEvents } =
       processEvents<AvailabilitiesDTOEventsInner>(data.events);
     return (
-      <div className="overflow-x-auto">
-        <table className="table table-sm w-full">
-          <thead>
-            <tr>
-              <th></th>
-              <th></th>
-              {data.people?.map((p) => (
-                <th key={p.id}>
-                  {p.firstName} {p.lastName}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {dates.map((date) => {
-              const thisGroupEvents = sortBy(
-                groupedEvents[date.date.toString()],
-                'start',
-                'curtainsUp',
-              );
-              return (
-                <Fragment key={date.date.toString()}>
-                  {thisGroupEvents.map((e, i) => {
-                    return (
-                      <tr
-                        key={e.id}
-                        className="last:border-b first:border-t border-slate-200"
-                      >
-                        {i === 0 && (
-                          <Td
-                            className="whitespace-nowrap w-20"
-                            rowSpan={thisGroupEvents.length}
-                          >
-                            {displayDate(e.start)}
-                          </Td>
-                        )}
-                        <Td className="w-40">
-                          <TimeRangeWithCurtainsUp event={e} />
+      <table className="table table-sm w-full">
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+            {data.people?.map((p) => (
+              <th key={p.id}>
+                {p.firstName} {p.lastName}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {dates.map((date) => {
+            const thisGroupEvents = sortBy(
+              groupedEvents[date.date.toString()],
+              'start',
+              'curtainsUp',
+            );
+            return (
+              <Fragment key={date.date.toString()}>
+                {thisGroupEvents.map((e, i) => {
+                  return (
+                    <tr
+                      key={e.id}
+                      className="last:border-b first:border-t border-slate-200"
+                    >
+                      {i === 0 && (
+                        <Td
+                          className="whitespace-nowrap w-20"
+                          rowSpan={thisGroupEvents.length}
+                        >
+                          {displayDate(e.start)}
                         </Td>
-                        {e.availabilities?.map((a, i) => {
-                          if (a === null) {
-                            return <Td key={i}>Unknown</Td>;
-                          }
-                          return (
-                            <Td
-                              key={i}
-                              className={cc(
-                                getBgColor(getStringFromBoolean(a.available)),
-                              )}
-                            >
-                              {a.available ? 'Yes' : 'No'}
-                            </Td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                  {date.gapAfter && <GapRow length={4} />}
-                </Fragment>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                      )}
+                      <Td className="w-40">
+                        <TimeRangeWithCurtainsUp event={e} />
+                      </Td>
+                      {e.availabilities?.map((a, i) => {
+                        if (a === null) {
+                          return <Td key={i}>Unknown</Td>;
+                        }
+                        return (
+                          <Td
+                            key={i}
+                            className={cc(
+                              getBgColor(getStringFromBoolean(a.available)),
+                            )}
+                          >
+                            {a.available ? 'Yes' : 'No'}
+                          </Td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+                {date.gapAfter && <GapRow length={4} />}
+              </Fragment>
+            );
+          })}
+        </tbody>
+      </table>
     );
   }
   return null;
