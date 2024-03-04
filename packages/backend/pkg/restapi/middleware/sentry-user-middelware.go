@@ -19,7 +19,7 @@ func (ve *SentryUser) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	id, err := permissions.GetUserId(r)
 	if err == nil {
 		sentry.ConfigureScope(func(scope *sentry.Scope) {
-			scope.SetUser(sentry.User{ID: id.String()})
+			scope.SetUser(sentry.User{IPAddress: r.RemoteAddr})
 		})
 	}
 

@@ -7,7 +7,7 @@ import (
 	"github.com/supertokens/supertokens-golang/recipe/session"
 )
 
-func VerifiedEndpointHandler(handlerToWrap http.Handler) *VerifiedEndpoint {
+func VerifiedEndpointHandlerMiddleware(handlerToWrap http.Handler) *VerifiedEndpoint {
 	return &VerifiedEndpoint{handlerToWrap}
 }
 
