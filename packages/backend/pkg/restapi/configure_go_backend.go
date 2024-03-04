@@ -5,15 +5,16 @@ package restapi
 import (
 	"crypto/tls"
 
-	"showplanner.io/pkg/domains/rostering_domain"
 	"showplanner.io/pkg/domains/people_domain"
 	"showplanner.io/pkg/domains/personnel_domain"
+	"showplanner.io/pkg/domains/rostering_domain"
 	"showplanner.io/pkg/notifications/availabilities_mailbox"
 	"showplanner.io/pkg/notifications/userlifecycle_mailbox"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/middleware"
 	"showplanner.io/pkg/restapi/operations"
 
+	"github.com/getsentry/sentry-go"
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 
@@ -79,8 +80,10 @@ func setupMiddlewares(handler http.Handler) http.Handler {
 // The middleware configuration happens before anything, this middleware also applies to serving the swagger.json document.
 // So this is a good place to plug in a panic handling middleware, logging and metrics.
 func setupGlobalMiddleware(handler http.Handler) http.Handler {
-	// return handler
+	defer sentry.Recover()
+
 	return middleware.LogsMiddleware(
 		middleware.CorsMiddleware(
-			supertokens.Middleware(handler)))
+			supertokens.Middleware(
+				middleware.SentryUserMiddleware(handler))))
 }
