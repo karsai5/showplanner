@@ -49,7 +49,7 @@ export const AvailabilityDropdown: React.FC<{ event: ScheduleEventDTO }> = ({
   };
 
   return (
-    <div className="w-32">
+    <div>
       {mutation.isLoading && (
         <div className="bg-white absolute top-0 bottom-0 left-0 right-0 z-10">
           <div className="flex h-full justify-center items-center">

@@ -19,6 +19,12 @@ import {
     AvailabilityDTOFromJSONTyped,
     AvailabilityDTOToJSON,
 } from './AvailabilityDTO';
+import type { ScheduleEventDTOAllOfRoles } from './ScheduleEventDTOAllOfRoles';
+import {
+    ScheduleEventDTOAllOfRolesFromJSON,
+    ScheduleEventDTOAllOfRolesFromJSONTyped,
+    ScheduleEventDTOAllOfRolesToJSON,
+} from './ScheduleEventDTOAllOfRoles';
 
 /**
  * 
@@ -86,6 +92,12 @@ export interface ScheduleEventDTO {
      * @memberof ScheduleEventDTO
      */
     availability?: AvailabilityDTO;
+    /**
+     * 
+     * @type {Array<ScheduleEventDTOAllOfRoles>}
+     * @memberof ScheduleEventDTO
+     */
+    roles?: Array<ScheduleEventDTOAllOfRoles>;
 }
 
 /**
@@ -119,6 +131,7 @@ export function ScheduleEventDTOFromJSONTyped(json: any, ignoreDiscriminator: bo
         'curtainsUp': !exists(json, 'curtainsUp') ? undefined : (json['curtainsUp'] === null ? null : new Date(json['curtainsUp'])),
         'end': !exists(json, 'end') ? undefined : (json['end'] === null ? null : new Date(json['end'])),
         'availability': !exists(json, 'availability') ? undefined : AvailabilityDTOFromJSON(json['availability']),
+        'roles': !exists(json, 'roles') ? undefined : ((json['roles'] as Array<any>).map(ScheduleEventDTOAllOfRolesFromJSON)),
     };
 }
 
@@ -141,6 +154,7 @@ export function ScheduleEventDTOToJSON(value?: ScheduleEventDTO | null): any {
         'curtainsUp': value.curtainsUp === undefined ? undefined : (value.curtainsUp === null ? null : value.curtainsUp.toISOString()),
         'end': value.end === undefined ? undefined : (value.end === null ? null : value.end.toISOString()),
         'availability': AvailabilityDTOToJSON(value.availability),
+        'roles': value.roles === undefined ? undefined : ((value.roles as Array<any>).map(ScheduleEventDTOAllOfRolesToJSON)),
     };
 }
 

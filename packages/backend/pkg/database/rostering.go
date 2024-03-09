@@ -6,6 +6,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
+	"showplanner.io/pkg/conv"
 )
 
 func GetAvailability(userId uuid.UUID, eventId uint) (*Availability, error) {
@@ -62,6 +63,12 @@ func DeleteRole(id uint) error {
 func GetRole(roleId uint) (Role, error) {
 	role := Role{}
 	res := db.Find(&role, roleId)
+	return role, res.Error
+}
+
+func GetRoleForPerson(showId uint, personId uuid.UUID) (Role, error) {
+	role := Role{}
+	res := db.Where(&Role{PersonID: conv.Pointer(personId), ShowID: showId}).First(&role)
 	return role, res.Error
 }
 

@@ -1935,6 +1935,21 @@ func init() {
         "$ref": "#/definitions/availabilityDTO"
       }
     },
+    "ScheduleEventDTORolesItems0": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
     "arrayOfPersonSummaryDTO": {
       "type": "object",
       "properties": {
@@ -2309,6 +2324,12 @@ func init() {
           "properties": {
             "availability": {
               "$ref": "#/definitions/availabilityDTO"
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ScheduleEventDTORolesItems0"
+              }
             }
           }
         }

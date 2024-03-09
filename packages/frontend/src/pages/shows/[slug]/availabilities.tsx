@@ -97,7 +97,7 @@ const AvailabilitiesTable: React.FC<{ showId: number }> = ({ showId }) => {
                       </Td>
                       {e.availabilities?.map((a, i) => {
                         if (a === null) {
-                          return <Td key={i}>Unknown</Td>;
+                          return <Td key={i} className="italic text-slate-400">Unknown</Td>;
                         }
                         return (
                           <Td

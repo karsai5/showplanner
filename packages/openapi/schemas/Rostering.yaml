@@ -6,6 +6,19 @@ ScheduleEventDTO:
       availability:
         x-nullable: true
         $ref: '#/AvailabilityDTO'
+      roles:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+          required:
+            - id
+            - name
+
 
 AvailabilityDTO:
   type: object

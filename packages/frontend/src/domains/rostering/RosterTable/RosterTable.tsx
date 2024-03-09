@@ -186,7 +186,7 @@ export const AssignmentCell: React.FC<{
       onKeyDown={handleKeyPress}
     >
       {!showPersonDropdown && <div className="flex">
-        {!assignment.person?.id && <span className="italic">Unassigned</span>}
+        {!assignment.person?.id && <span className="italic text-slate-400">Unassigned</span>}
         {assignment.person?.id && <>
           {assignment.cover && <><div className="w-5"></div><div className="cover-box bg-orange-400">cover</div></>}
           <div>{assignment.person.firstName} {assignment.person.lastName}</div>

@@ -1,4 +1,4 @@
-import { ScheduleEventDTO } from 'core/api/generated';
+import { ScheduleEventDTO, ScheduleEventDTOAllOfRoles } from 'core/api/generated';
 import { PERMISSION, showPermission, useHasPermission } from 'core/permissions';
 import { useShowSummary } from 'domains/shows/lib/summaryContext';
 
@@ -22,12 +22,16 @@ export const Schedule: React.FC<React.ComponentProps<typeof EventTable>> = (
       leftHeaders={
         <>
           <th>Availability</th>
+          <th>Role</th>
         </>
       }
       leftColums={(e) => (
         <>
           <td className="border-l border-slate-200 relative">
             <AvailabilityDropdown event={e} />
+          </td>
+          <td className="border-l border-slate-200 relative">
+            <RolesDescription roles={e.roles} />
           </td>
         </>
       )}
@@ -44,6 +48,19 @@ export const Schedule: React.FC<React.ComponentProps<typeof EventTable>> = (
     />
   );
 };
+
+const RolesDescription: React.FC<{
+  roles?: Array<ScheduleEventDTOAllOfRoles>
+}> = ({
+  roles
+}) => {
+    if (!roles || roles.length === 0) {
+      return <span className="italic text-slate-400">Unassigned</span>
+    }
+    return <div className="min-w-20">
+      {roles.map(r => <div key={r.id}>{r.name}</div>)}
+    </div>
+  }
 
 const AdminButtons: React.FC<{ event: ScheduleEventDTO }> = ({ event }) => {
   return (
