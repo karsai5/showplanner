@@ -11,6 +11,7 @@ echo "Checking backend build is successfull"
 echo "======================================="
 (cd packages/backend && make build)
 
+echo ""
 echo "======================================="
 echo "Checking openapi build is successfull"
 echo "======================================="
