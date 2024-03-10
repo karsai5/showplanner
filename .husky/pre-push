@@ -1,6 +1,17 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+echo "======================================="
+echo "Checking frontend build is successfull"
+echo "======================================="
 (cd packages/frontend && yarn build)
+
+echo "======================================="
+echo "Checking backend build is successfull"
+echo "======================================="
 (cd packages/backend && make build)
+
+echo "======================================="
+echo "Checking openapi build is successfull"
+echo "======================================="
 (cd packages/openapi && make validate)
