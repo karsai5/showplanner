@@ -85,13 +85,16 @@ export const RoleItem: React.FC<{
       confirmationModal("Delete role", `Are you sure you want to delete the role of "${role.name}"?`, () => deleteRole.mutate());
     }
 
-    const updateRole = useMutation<unknown, Error, string | undefined>({
+    const updateRole = useMutation<unknown, Error, string | null>({
       mutationFn: (personId) => {
+        if (personId === '') {
+          personId = null;
+        }
         return api.rolesIdPut({
           id: role.id as number,
           roleDetails: {
             name: role.name,
-            personId: personId || null,
+            personId: personId,
           },
         });
       },

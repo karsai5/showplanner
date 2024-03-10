@@ -9,7 +9,7 @@ import { Fragment } from 'react'
 
 
 const unassignedPerson: PersonSummaryDTO = {
-	id: undefined,
+	id: '',
 	firstName: 'Unassigned',
 	lastName: '',
 }

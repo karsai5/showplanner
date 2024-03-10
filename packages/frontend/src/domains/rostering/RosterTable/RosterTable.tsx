@@ -118,12 +118,12 @@ export const AssignmentCell: React.FC<{
 
     const [showPersonDropdown, setShowPersonDropdown] = useState<boolean>(false);
     const queryClient = useQueryClient();
-    const changeAssignmentMutation = useMutation<unknown, Error, string | undefined>({
+    const changeAssignmentMutation = useMutation<unknown, Error, string>({
       mutationFn: (personId) => {
-        if (!personId && assignment.assignmentId) {
+        if (personId === '' && assignment.assignmentId) {
           return api.assignmentIdDelete({ id: assignment.assignmentId })
         }
-        if (personId) {
+        if (personId !== '') {
           if (assignment.assignmentId) {
             return api.assignmentIdPut({
               id: assignment.assignmentId, assignment: {
@@ -161,7 +161,7 @@ export const AssignmentCell: React.FC<{
       </p>
     }
 
-    const handleChange = (person: PersonSummaryDTO) => {
+    const handlePersonChange = (person: PersonSummaryDTO) => {
       if (person.id === assignment.person.id) {
         setShowPersonDropdown(false);
       } else {
@@ -198,7 +198,7 @@ export const AssignmentCell: React.FC<{
           loading={changeAssignmentMutation.isLoading}
           people={assignedPeopleRequest.data.people}
           selectedPersonId={assignment.person.id}
-          onChange={handleChange}
+          onChange={handlePersonChange}
           openOnLoad={true}
           nameComponent={NameComponent}
         />}
