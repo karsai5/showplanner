@@ -24,19 +24,25 @@ export interface PersonSummaryDTO {
      * @type {string}
      * @memberof PersonSummaryDTO
      */
-    id?: string;
+    id: string;
     /**
      * 
      * @type {string}
      * @memberof PersonSummaryDTO
      */
-    firstName?: string;
+    firstName: string;
     /**
      * 
      * @type {string}
      * @memberof PersonSummaryDTO
      */
-    lastName?: string;
+    preferredName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PersonSummaryDTO
+     */
+    lastName: string;
 }
 
 /**
@@ -44,6 +50,9 @@ export interface PersonSummaryDTO {
  */
 export function instanceOfPersonSummaryDTO(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "firstName" in value;
+    isInstance = isInstance && "lastName" in value;
 
     return isInstance;
 }
@@ -58,9 +67,10 @@ export function PersonSummaryDTOFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'firstName': !exists(json, 'firstName') ? undefined : json['firstName'],
-        'lastName': !exists(json, 'lastName') ? undefined : json['lastName'],
+        'id': json['id'],
+        'firstName': json['firstName'],
+        'preferredName': !exists(json, 'preferredName') ? undefined : json['preferredName'],
+        'lastName': json['lastName'],
     };
 }
 
@@ -75,6 +85,7 @@ export function PersonSummaryDTOToJSON(value?: PersonSummaryDTO | null): any {
         
         'id': value.id,
         'firstName': value.firstName,
+        'preferredName': value.preferredName,
         'lastName': value.lastName,
     };
 }

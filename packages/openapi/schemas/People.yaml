@@ -13,8 +13,14 @@ PersonSummaryDTO:
       format: uuid
     firstName:
       type: string
+    preferredName:
+      type: string
     lastName:
       type: string
+  required:
+    - id
+    - firstName
+    - lastName
 
 ArrayOfPersonSummaryDTO:
   type: object

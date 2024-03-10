@@ -20,21 +20,35 @@ import (
 type PersonSummaryDTO struct {
 
 	// first name
-	FirstName string `json:"firstName,omitempty"`
+	// Required: true
+	FirstName *string `json:"firstName"`
 
 	// id
+	// Required: true
 	// Format: uuid
-	ID strfmt.UUID `json:"id,omitempty"`
+	ID *strfmt.UUID `json:"id"`
 
 	// last name
-	LastName string `json:"lastName,omitempty"`
+	// Required: true
+	LastName *string `json:"lastName"`
+
+	// preferred name
+	PreferredName string `json:"preferredName,omitempty"`
 }
 
 // Validate validates this person summary d t o
 func (m *PersonSummaryDTO) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateFirstName(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateID(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateLastName(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -44,12 +58,31 @@ func (m *PersonSummaryDTO) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *PersonSummaryDTO) validateFirstName(formats strfmt.Registry) error {
+
+	if err := validate.Required("firstName", "body", m.FirstName); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *PersonSummaryDTO) validateID(formats strfmt.Registry) error {
-	if swag.IsZero(m.ID) { // not required
-		return nil
+
+	if err := validate.Required("id", "body", m.ID); err != nil {
+		return err
 	}
 
 	if err := validate.FormatOf("id", "body", "uuid", m.ID.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PersonSummaryDTO) validateLastName(formats strfmt.Registry) error {
+
+	if err := validate.Required("lastName", "body", m.LastName); err != nil {
 		return err
 	}
 

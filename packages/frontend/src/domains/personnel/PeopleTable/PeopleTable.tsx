@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from 'core/api';
 import ErrorBox from 'core/components/ErrorBox/ErrorBox';
 import { LoadingBox } from 'core/components/LoadingBox/LoadingBox';
+import { PersonDisplayName } from 'domains/personnel/PersonDisplayName';
 
 export const PeopleTable: React.FC<{
   showId: number;
@@ -30,7 +31,7 @@ export const PeopleTable: React.FC<{
             {data.people?.map((person) => (
               <tr key={person.id}>
                 <td>
-                  {person.firstName} {person.lastName}
+                  <PersonDisplayName person={person}/>
                 </td>
               </tr>
             ))}

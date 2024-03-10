@@ -2,6 +2,7 @@ import { Combobox, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/20/solid'
 import cc from 'classnames';
 import { PersonSummaryDTO } from 'core/api/generated';
+import { PersonDisplayName } from 'domains/personnel/PersonDisplayName';
 import React, { FC, useRef } from 'react';
 import { useEffect, useState } from 'react';
 import { Fragment } from 'react'
@@ -23,10 +24,6 @@ const getSelectedPerson = (people: Array<PersonSummaryDTO>, selectedPersonId: st
 
 type NameComponentType = FC<{ person: PersonSummaryDTO }>
 
-const DefaultNameComponent: NameComponentType = ({ person }) => {
-	return <div>{person.firstName} {person.lastName}</div>
-}
-
 export const PersonSelector: React.FC<{
 	people: Array<PersonSummaryDTO>
 	onChange: (person: PersonSummaryDTO) => void
@@ -42,7 +39,7 @@ export const PersonSelector: React.FC<{
 	selectedPersonId,
 	openOnLoad,
 	className,
-	nameComponent: NameComponent = DefaultNameComponent,
+	nameComponent: NameComponent = PersonDisplayName,
 }) => {
 		const [selected, setSelected] = useState<PersonSummaryDTO | undefined>(getSelectedPerson(people, selectedPersonId))
 		const [query, setQuery] = useState('')
@@ -67,7 +64,7 @@ export const PersonSelector: React.FC<{
 			...(query === ''
 				? people
 				: people.filter((person) =>
-					`${person.firstName} ${person.lastName}`
+					`${person.preferredName || person.firstName} ${person.lastName}`
 						.toLowerCase()
 						.replace(/\s+/g, '')
 						.includes(query.toLowerCase().replace(/\s+/g, ''))
@@ -97,7 +94,7 @@ export const PersonSelector: React.FC<{
 								</div>}
 								<Combobox.Input
 									className={cc("input", className ? className : 'input-bordered')}
-									displayValue={(person: PersonSummaryDTO) => `${person.firstName} ${person.lastName}`}
+									displayValue={(person: PersonSummaryDTO) => `${person.preferredName || person.firstName} ${person.lastName}`}
 									onChange={(event) => setQuery(event.target.value)}
 									onClick={() => handleOnClick(open)}
 									onBlur={() => handleBlur(open)}

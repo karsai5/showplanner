@@ -8,6 +8,7 @@ import { TimeRangeWithCurtainsUp } from 'core/dates/dateEventHelpers';
 import { showToastError } from 'core/utils/errors';
 import { displayDate } from 'domains/events/lib/displayDate';
 import { processEvents } from 'domains/events/lib/processEvents';
+import { PersonDisplayName } from 'domains/personnel/PersonDisplayName';
 import { PersonSelector } from 'domains/personnel/PersonSelector/PersonSelector';
 import { getBgColorForRoster } from 'domains/rostering/helpers';
 import sortBy from 'lodash/sortBy';
@@ -39,7 +40,7 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
             {roster.roles?.map((r) => (
               <th key={r.id} className="sticky top-0 bg-white z-50">
                 <div>{r.name}</div>
-                {r.person && <div>{r.person.firstName} {r.person.lastName}</div>}
+                {r.person && <PersonDisplayName person={r.person} />}
               </th>
             ))}
           </tr>
@@ -156,7 +157,7 @@ export const AssignmentCell: React.FC<{
         ['line-through']: person.id && availability?.available === false,
         ['text-slate-300']: person.id && availability?.available === undefined || availability?.available === null,
       })}>
-        {person.firstName} {person.lastName}
+        <PersonDisplayName person={person} />
       </p>
     }
 
@@ -189,7 +190,7 @@ export const AssignmentCell: React.FC<{
         {!assignment.person?.id && <span className="italic text-slate-400">Unassigned</span>}
         {assignment.person?.id && <>
           {assignment.cover && <><div className="w-5"></div><div className="cover-box bg-orange-400">cover</div></>}
-          <div>{assignment.person.firstName} {assignment.person.lastName}</div>
+          <PersonDisplayName person={assignment.person} />
         </>}
       </div>}
       {showPersonDropdown && assignedPeopleRequest.data?.people &&

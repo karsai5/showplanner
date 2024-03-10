@@ -4,6 +4,7 @@ import (
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/events_domain"
+	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
@@ -35,7 +36,7 @@ var handleGetAvailabilities = operations.GetAvailabilitiesHandlerFunc(func(param
 		return logError(&err)
 	}
 
-	mappedPeople := conv.MapArrayOfPointer(people, mapPerson)
+	mappedPeople := conv.MapArrayOfPointer(people, personnel_domain.MapToPersonSummaryDTO)
 	mappedEvents := conv.MapArrayOfPointer(events, mapToEventWithAvailabilities(people))
 
 	events_domain.NameEventsWithCurtainsUp(mappedEvents)

@@ -2168,6 +2168,11 @@ func init() {
     },
     "personSummaryDTO": {
       "type": "object",
+      "required": [
+        "id",
+        "firstName",
+        "lastName"
+      ],
       "properties": {
         "firstName": {
           "type": "string"
@@ -2177,6 +2182,9 @@ func init() {
           "format": "uuid"
         },
         "lastName": {
+          "type": "string"
+        },
+        "preferredName": {
           "type": "string"
         }
       }

@@ -8,6 +8,7 @@ import (
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/events_domain"
+	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/models"
 )
 
@@ -82,7 +83,7 @@ func mapAvailabilityToMap(availabilities []database.Availability) map[string]*mo
 }
 
 func fillPersonAndAvailabilityData(dto *models.RosterAssignedDTO, person database.Person, event database.Event) {
-	dto.Person = conv.Pointer(mapPerson(person))
+	dto.Person = conv.Pointer(personnel_domain.MapToPersonSummaryDTO(person))
 	availablilityIdx := slices.IndexFunc(event.Availabilities, func(a database.Availability) bool { return a.PersonID == person.ID })
 	if availablilityIdx >= 0 {
 		dto.Available = &event.Availabilities[availablilityIdx].Available
@@ -91,18 +92,10 @@ func fillPersonAndAvailabilityData(dto *models.RosterAssignedDTO, person databas
 	}
 }
 
-func mapPerson(person database.Person) models.PersonSummaryDTO {
-	return models.PersonSummaryDTO{
-		FirstName: person.FirstName,
-		ID:        *conv.UUIDToStrmFmtUUID(person.ID),
-		LastName:  person.LastName,
-	}
-}
-
 func mapToRoleDTO(role database.Role) models.RoleDTO {
 	var person *models.PersonSummaryDTO
 	if role.Person != nil {
-		person = conv.Pointer(mapPerson(*role.Person))
+		person = conv.Pointer(personnel_domain.MapToPersonSummaryDTO(*role.Person))
 	}
 	return models.RoleDTO{
 		ID:     int64(role.ID),
@@ -114,7 +107,7 @@ func mapToRoleDTO(role database.Role) models.RoleDTO {
 func mapToAssignedDTO(a database.Assignment) models.AssignedDTO {
 	return models.AssignedDTO{
 		EventID: conv.UintToInt64(a.EventID),
-		Person:  conv.Pointer(mapPerson(a.Person)),
+		Person:  conv.Pointer(personnel_domain.MapToPersonSummaryDTO(a.Person)),
 		RoleID:  conv.UintToInt64(a.RoleID),
 	}
 }

@@ -67,17 +67,9 @@ var handleAssignedPersonnel = operations.GetPersonnelAssignedHandlerFunc(func(pa
 		return personI < personJ
 	})
 
-	mappedPeople := conv.MapArrayOfPointer(people, func(person database.Person) models.PersonSummaryDTO {
-		return models.PersonSummaryDTO{
-			FirstName: person.FirstName,
-			ID:        *conv.UUIDToStrmFmtUUID(person.ID),
-			LastName:  person.LastName,
-		}
-	})
-
 	return &operations.GetPersonnelAssignedOK{
 		Payload: &models.ArrayOfPersonSummaryDTO{
-			People: mappedPeople,
+			People: conv.MapArrayOfPointer(people, MapToPersonSummaryDTO),
 		},
 	}
 })
@@ -103,17 +95,9 @@ var handleAssignablePersonnel = operations.GetPersonnelAssignableHandlerFunc(fun
 		return personI < personJ
 	})
 
-	mappedPeople := conv.MapArrayOfPointer(people, func(person database.Person) models.PersonSummaryDTO {
-		return models.PersonSummaryDTO{
-			FirstName: person.FirstName,
-			ID:        *conv.UUIDToStrmFmtUUID(person.ID),
-			LastName:  person.LastName,
-		}
-	})
-
 	return &operations.GetPersonnelAssignableOK{
 		Payload: &models.ArrayOfPersonSummaryDTO{
-			People: mappedPeople,
+			People: conv.MapArrayOfPointer(people, MapToPersonSummaryDTO),
 		},
 	}
 })
