@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# (cd packages/frontend-next && yarn build)
+(cd packages/frontend && yarn build)
+(cd packages/backend && make build)
+(cd packages/openapi && make validate)

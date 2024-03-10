@@ -19,7 +19,7 @@
   "scripts": {
     "generate-types": "yarn sts packages/backend/api -o packages/frontend/src/types",
     "lint": "lerna run lint",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "name": "showplanner",
   "packageManager": "yarn@4.0.2"
