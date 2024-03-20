@@ -1,3 +1,5 @@
+import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
+import { Menu, Popover } from '@headlessui/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import cc from 'classnames';
 import { api } from 'core/api';
@@ -14,6 +16,7 @@ import { getBgColorForRoster } from 'domains/rostering/helpers';
 import sortBy from 'lodash/sortBy';
 import { KeyboardEventHandler } from 'react';
 import React, { Fragment, useState } from 'react';
+import { Toggle } from 'core/toggles/toggles';
 
 export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
   const rosterRequest = useQuery(
@@ -182,25 +185,37 @@ export const AssignmentCell: React.FC<{
 
     return <Td
       className={cc(bgClassName, "relative min-w-40")}
-      onClick={() => showPersonDropdown ? undefined : setShowPersonDropdown(true)}
-      tabIndex={0}
-      onKeyDown={handleKeyPress}
     >
-      {!showPersonDropdown && <div className="flex">
-        {!assignment.person?.id && <span className="italic text-slate-400">Unassigned</span>}
-        {assignment.person?.id && <>
-          {assignment.cover && <><div className="w-5"></div><div className="cover-box bg-orange-400">cover</div></>}
-          <PersonDisplayName person={assignment.person} />
-        </>}
-      </div>}
-      {showPersonDropdown && assignedPeopleRequest.data?.people &&
-        <PersonSelector
-          loading={changeAssignmentMutation.isLoading}
-          people={assignedPeopleRequest.data.people}
-          selectedPersonId={assignment.person.id}
-          onChange={handlePersonChange}
-          openOnLoad={true}
-          nameComponent={NameComponent}
-        />}
+      <div className='flex justify-between items-center gap-2'>
+        {!showPersonDropdown && <div className="flex"
+          onClick={() => setShowPersonDropdown(true)}
+          onKeyDown={handleKeyPress}
+          tabIndex={0}
+        >
+          {!assignment.person?.id && <span className="italic text-slate-400">Unassigned</span>}
+          {assignment.person?.id && <>
+            {assignment.cover && <><div className="w-5"></div><div className="cover-box bg-orange-400">cover</div></>}
+            <PersonDisplayName person={assignment.person} />
+          </>}
+        </div>}
+        {showPersonDropdown && assignedPeopleRequest.data?.people &&
+          <PersonSelector
+            loading={changeAssignmentMutation.isLoading}
+            people={assignedPeopleRequest.data.people}
+            selectedPersonId={assignment.person.id}
+            onChange={handlePersonChange}
+            openOnLoad={true}
+            nameComponent={NameComponent}
+          />}
+        <Toggle key="availabilities_menu">
+          <Popover className="relative">
+            <Popover.Button className='btn btn-sm btn-ghost'><EllipsisHorizontalIcon className='h-6 w-6' /></Popover.Button>
+            <Popover.Panel as='li' className="absolute z-10 menu bg-white shadow-lg ring-1 ring-black/5 w-40 rounded-box">
+              <li><a>Assign Shadow</a></li>
+              <li><a>Role Not Required</a></li>
+            </Popover.Panel>
+          </Popover>
+        </Toggle>
+      </div>
     </Td>
   }
