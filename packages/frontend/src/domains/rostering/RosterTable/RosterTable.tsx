@@ -1,5 +1,5 @@
+import { Popover } from '@headlessui/react'
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
-import { Menu, Popover } from '@headlessui/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import cc from 'classnames';
 import { api } from 'core/api';
@@ -7,6 +7,7 @@ import { PersonSummaryDTO, RosterAssignedDTO, RosterDTOEventsInner } from 'core/
 import ErrorBox from 'core/components/ErrorBox/ErrorBox';
 import { GapRow, Td } from 'core/components/tables/tables';
 import { TimeRangeWithCurtainsUp } from 'core/dates/dateEventHelpers';
+import { Toggle } from 'core/toggles/toggles';
 import { showToastError } from 'core/utils/errors';
 import { displayDate } from 'domains/events/lib/displayDate';
 import { processEvents } from 'domains/events/lib/processEvents';
@@ -16,7 +17,6 @@ import { getBgColorForRoster } from 'domains/rostering/helpers';
 import sortBy from 'lodash/sortBy';
 import { KeyboardEventHandler } from 'react';
 import React, { Fragment, useState } from 'react';
-import { Toggle } from 'core/toggles/toggles';
 
 export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
   const rosterRequest = useQuery(
