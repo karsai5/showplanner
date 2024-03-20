@@ -7,3 +7,6 @@ validate:
 
 serve: validate
 	swagger serve --flavor=swagger openapi.yaml
+
+watch:
+	nodemon -e yaml --exec 'make' generate

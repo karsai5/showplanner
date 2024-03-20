@@ -243,6 +243,9 @@ func (m *ScheduleEventDTO) UnmarshalBinary(b []byte) error {
 // swagger:model ScheduleEventDTORolesItems0
 type ScheduleEventDTORolesItems0 struct {
 
+	// covered by
+	CoveredBy *PersonSummaryDTO `json:"coveredBy,omitempty"`
+
 	// id
 	// Required: true
 	ID *int64 `json:"id"`
@@ -256,6 +259,10 @@ type ScheduleEventDTORolesItems0 struct {
 func (m *ScheduleEventDTORolesItems0) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateCoveredBy(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateID(formats); err != nil {
 		res = append(res, err)
 	}
@@ -267,6 +274,25 @@ func (m *ScheduleEventDTORolesItems0) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *ScheduleEventDTORolesItems0) validateCoveredBy(formats strfmt.Registry) error {
+	if swag.IsZero(m.CoveredBy) { // not required
+		return nil
+	}
+
+	if m.CoveredBy != nil {
+		if err := m.CoveredBy.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("coveredBy")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("coveredBy")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -288,8 +314,38 @@ func (m *ScheduleEventDTORolesItems0) validateName(formats strfmt.Registry) erro
 	return nil
 }
 
-// ContextValidate validates this schedule event d t o roles items0 based on context it is used
+// ContextValidate validate this schedule event d t o roles items0 based on the context it is used
 func (m *ScheduleEventDTORolesItems0) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateCoveredBy(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *ScheduleEventDTORolesItems0) contextValidateCoveredBy(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.CoveredBy != nil {
+
+		if swag.IsZero(m.CoveredBy) { // not required
+			return nil
+		}
+
+		if err := m.CoveredBy.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("coveredBy")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("coveredBy")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

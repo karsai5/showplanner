@@ -1942,6 +1942,9 @@ func init() {
         "name"
       ],
       "properties": {
+        "coveredBy": {
+          "$ref": "#/definitions/personSummaryDTO"
+        },
         "id": {
           "type": "integer"
         },

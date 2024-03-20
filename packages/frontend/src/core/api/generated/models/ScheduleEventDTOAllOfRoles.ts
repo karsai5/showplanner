@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PersonSummaryDTO } from './PersonSummaryDTO';
+import {
+    PersonSummaryDTOFromJSON,
+    PersonSummaryDTOFromJSONTyped,
+    PersonSummaryDTOToJSON,
+} from './PersonSummaryDTO';
+
 /**
  * 
  * @export
@@ -31,6 +38,12 @@ export interface ScheduleEventDTOAllOfRoles {
      * @memberof ScheduleEventDTOAllOfRoles
      */
     name: string;
+    /**
+     * 
+     * @type {PersonSummaryDTO}
+     * @memberof ScheduleEventDTOAllOfRoles
+     */
+    coveredBy?: PersonSummaryDTO;
 }
 
 /**
@@ -56,6 +69,7 @@ export function ScheduleEventDTOAllOfRolesFromJSONTyped(json: any, ignoreDiscrim
         
         'id': json['id'],
         'name': json['name'],
+        'coveredBy': !exists(json, 'coveredBy') ? undefined : PersonSummaryDTOFromJSON(json['coveredBy']),
     };
 }
 
@@ -70,6 +84,7 @@ export function ScheduleEventDTOAllOfRolesToJSON(value?: ScheduleEventDTOAllOfRo
         
         'id': value.id,
         'name': value.name,
+        'coveredBy': PersonSummaryDTOToJSON(value.coveredBy),
     };
 }
 
