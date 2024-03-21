@@ -1908,6 +1908,16 @@ func init() {
               "additionalProperties": {
                 "$ref": "#/definitions/availabilityDTO"
               }
+            },
+            "shadows": {
+              "description": "A map of shadows to roleId",
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/shadowDTO"
+                }
+              }
             }
           }
         }
@@ -2345,6 +2355,22 @@ func init() {
           }
         }
       ]
+    },
+    "shadowDTO": {
+      "type": "object",
+      "required": [
+        "person",
+        "available"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean",
+          "x-nullable": true
+        },
+        "person": {
+          "$ref": "#/definitions/personSummaryDTO"
+        }
+      }
     },
     "showDTO": {
       "required": [

@@ -23,6 +23,7 @@ export * from './RosterDTO';
 export * from './RosterDTOEventsInner';
 export * from './ScheduleEventDTO';
 export * from './ScheduleEventDTOAllOfRoles';
+export * from './ShadowDTO';
 export * from './ShowDTO';
 export * from './ShowSummaryDTO';
 export * from './UpdateAssignedDTO';

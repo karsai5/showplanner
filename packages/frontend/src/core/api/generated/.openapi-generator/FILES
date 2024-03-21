@@ -24,6 +24,7 @@ models/RosterDTO.ts
 models/RosterDTOEventsInner.ts
 models/ScheduleEventDTO.ts
 models/ScheduleEventDTOAllOfRoles.ts
+models/ShadowDTO.ts
 models/ShowDTO.ts
 models/ShowSummaryDTO.ts
 models/UpdateAssignedDTO.ts

@@ -2,7 +2,7 @@ import { FC, ReactNode } from "react";
 
 const TOGGLES = {
   availabilities_menu: false,
-  availabilities_shadow_menu: false,
+  availabilities_shadow_menu: true,
 }
 
 export const isToggledOn = (key: keyof typeof TOGGLES): boolean => {

@@ -195,6 +195,9 @@ type RosterDTOEventsItems0 struct {
 
 	// availabilities
 	Availabilities *RosterDTOEventsItems0AO1Availabilities `json:"availabilities,omitempty"`
+
+	// A map of shadows to roleId
+	Shadows map[string][]ShadowDTO `json:"shadows,omitempty"`
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
@@ -211,6 +214,8 @@ func (m *RosterDTOEventsItems0) UnmarshalJSON(raw []byte) error {
 		Assignments *RosterDTOEventsItems0AO1Assignments `json:"assignments,omitempty"`
 
 		Availabilities *RosterDTOEventsItems0AO1Availabilities `json:"availabilities,omitempty"`
+
+		Shadows map[string][]ShadowDTO `json:"shadows,omitempty"`
 	}
 	if err := swag.ReadJSON(raw, &dataAO1); err != nil {
 		return err
@@ -219,6 +224,8 @@ func (m *RosterDTOEventsItems0) UnmarshalJSON(raw []byte) error {
 	m.Assignments = dataAO1.Assignments
 
 	m.Availabilities = dataAO1.Availabilities
+
+	m.Shadows = dataAO1.Shadows
 
 	return nil
 }
@@ -236,11 +243,15 @@ func (m RosterDTOEventsItems0) MarshalJSON() ([]byte, error) {
 		Assignments *RosterDTOEventsItems0AO1Assignments `json:"assignments,omitempty"`
 
 		Availabilities *RosterDTOEventsItems0AO1Availabilities `json:"availabilities,omitempty"`
+
+		Shadows map[string][]ShadowDTO `json:"shadows,omitempty"`
 	}
 
 	dataAO1.Assignments = m.Assignments
 
 	dataAO1.Availabilities = m.Availabilities
+
+	dataAO1.Shadows = m.Shadows
 
 	jsonDataAO1, errAO1 := swag.WriteJSON(dataAO1)
 	if errAO1 != nil {
@@ -264,6 +275,10 @@ func (m *RosterDTOEventsItems0) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateAvailabilities(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateShadows(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -313,6 +328,36 @@ func (m *RosterDTOEventsItems0) validateAvailabilities(formats strfmt.Registry) 
 	return nil
 }
 
+func (m *RosterDTOEventsItems0) validateShadows(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.Shadows) { // not required
+		return nil
+	}
+
+	for k := range m.Shadows {
+
+		if err := validate.Required("shadows"+"."+k, "body", m.Shadows[k]); err != nil {
+			return err
+		}
+
+		for i := 0; i < len(m.Shadows[k]); i++ {
+
+			if err := m.Shadows[k][i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("shadows" + "." + k + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("shadows" + "." + k + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+
+		}
+
+	}
+
+	return nil
+}
+
 // ContextValidate validate this roster d t o events items0 based on the context it is used
 func (m *RosterDTOEventsItems0) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
@@ -327,6 +372,10 @@ func (m *RosterDTOEventsItems0) ContextValidate(ctx context.Context, formats str
 	}
 
 	if err := m.contextValidateAvailabilities(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateShadows(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -373,6 +422,32 @@ func (m *RosterDTOEventsItems0) contextValidateAvailabilities(ctx context.Contex
 			}
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (m *RosterDTOEventsItems0) contextValidateShadows(ctx context.Context, formats strfmt.Registry) error {
+
+	for k := range m.Shadows {
+
+		for i := 0; i < len(m.Shadows[k]); i++ {
+
+			if swag.IsZero(m.Shadows[k][i]) { // not required
+				return nil
+			}
+
+			if err := m.Shadows[k][i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("shadows" + "." + k + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("shadows" + "." + k + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+
+		}
+
 	}
 
 	return nil

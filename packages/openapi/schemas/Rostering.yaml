@@ -103,6 +103,25 @@ RosterDTO:
                   $ref: '#/RosterAssignedDTO'
               additionalProperties:
                 $ref: '#/RosterAssignedDTO'
+            shadows: 
+              type: object
+              description: 'A map of shadows to roleId'
+              additionalProperties:
+                type: array
+                items:
+                  $ref: '#/ShadowDTO'
+
+ShadowDTO:
+  type: object
+  properties:
+    person:
+      $ref: './People.yaml#/PersonSummaryDTO'
+    available:
+      x-nullable: true
+      type: boolean
+  required:
+    - person
+    - available
 
 RosterAssignedDTO:
   type: object

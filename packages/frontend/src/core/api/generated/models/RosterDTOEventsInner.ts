@@ -25,6 +25,12 @@ import {
     RosterAssignedDTOFromJSONTyped,
     RosterAssignedDTOToJSON,
 } from './RosterAssignedDTO';
+import type { ShadowDTO } from './ShadowDTO';
+import {
+    ShadowDTOFromJSON,
+    ShadowDTOFromJSONTyped,
+    ShadowDTOToJSON,
+} from './ShadowDTO';
 
 /**
  * 
@@ -98,6 +104,12 @@ export interface RosterDTOEventsInner {
      * @memberof RosterDTOEventsInner
      */
     assignments?: { [key: string]: RosterAssignedDTO; };
+    /**
+     * A map of shadows to roleId
+     * @type {{ [key: string]: Array<ShadowDTO>; }}
+     * @memberof RosterDTOEventsInner
+     */
+    shadows?: { [key: string]: Array<ShadowDTO>; };
 }
 
 /**
@@ -132,6 +144,7 @@ export function RosterDTOEventsInnerFromJSONTyped(json: any, ignoreDiscriminator
         'end': !exists(json, 'end') ? undefined : (json['end'] === null ? null : new Date(json['end'])),
         'availabilities': !exists(json, 'availabilities') ? undefined : (mapValues(json['availabilities'], AvailabilityDTOFromJSON)),
         'assignments': !exists(json, 'assignments') ? undefined : (mapValues(json['assignments'], RosterAssignedDTOFromJSON)),
+        'shadows': !exists(json, 'shadows') ? undefined : json['shadows'],
     };
 }
 
@@ -155,6 +168,7 @@ export function RosterDTOEventsInnerToJSON(value?: RosterDTOEventsInner | null):
         'end': value.end === undefined ? undefined : (value.end === null ? null : value.end.toISOString()),
         'availabilities': value.availabilities === undefined ? undefined : (mapValues(value.availabilities, AvailabilityDTOToJSON)),
         'assignments': value.assignments === undefined ? undefined : (mapValues(value.assignments, RosterAssignedDTOToJSON)),
+        'shadows': value.shadows,
     };
 }
 
