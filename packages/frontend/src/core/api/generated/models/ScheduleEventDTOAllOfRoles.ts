@@ -43,7 +43,25 @@ export interface ScheduleEventDTOAllOfRoles {
      * @type {PersonSummaryDTO}
      * @memberof ScheduleEventDTOAllOfRoles
      */
+    covering?: PersonSummaryDTO;
+    /**
+     * 
+     * @type {PersonSummaryDTO}
+     * @memberof ScheduleEventDTOAllOfRoles
+     */
     coveredBy?: PersonSummaryDTO;
+    /**
+     * 
+     * @type {PersonSummaryDTO}
+     * @memberof ScheduleEventDTOAllOfRoles
+     */
+    shadowing?: PersonSummaryDTO;
+    /**
+     * 
+     * @type {Array<PersonSummaryDTO>}
+     * @memberof ScheduleEventDTOAllOfRoles
+     */
+    shadowedBy?: Array<PersonSummaryDTO>;
 }
 
 /**
@@ -69,7 +87,10 @@ export function ScheduleEventDTOAllOfRolesFromJSONTyped(json: any, ignoreDiscrim
         
         'id': json['id'],
         'name': json['name'],
+        'covering': !exists(json, 'covering') ? undefined : PersonSummaryDTOFromJSON(json['covering']),
         'coveredBy': !exists(json, 'coveredBy') ? undefined : PersonSummaryDTOFromJSON(json['coveredBy']),
+        'shadowing': !exists(json, 'shadowing') ? undefined : PersonSummaryDTOFromJSON(json['shadowing']),
+        'shadowedBy': !exists(json, 'shadowedBy') ? undefined : ((json['shadowedBy'] as Array<any>).map(PersonSummaryDTOFromJSON)),
     };
 }
 
@@ -84,7 +105,10 @@ export function ScheduleEventDTOAllOfRolesToJSON(value?: ScheduleEventDTOAllOfRo
         
         'id': value.id,
         'name': value.name,
+        'covering': PersonSummaryDTOToJSON(value.covering),
         'coveredBy': PersonSummaryDTOToJSON(value.coveredBy),
+        'shadowing': PersonSummaryDTOToJSON(value.shadowing),
+        'shadowedBy': value.shadowedBy === undefined ? undefined : ((value.shadowedBy as Array<any>).map(PersonSummaryDTOToJSON)),
     };
 }
 

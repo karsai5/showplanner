@@ -2093,11 +2093,23 @@ func init() {
         "coveredBy": {
           "$ref": "#/definitions/personSummaryDTO"
         },
+        "covering": {
+          "$ref": "#/definitions/personSummaryDTO"
+        },
         "id": {
           "type": "integer"
         },
         "name": {
           "type": "string"
+        },
+        "shadowedBy": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/personSummaryDTO"
+          }
+        },
+        "shadowing": {
+          "$ref": "#/definitions/personSummaryDTO"
         }
       }
     },

@@ -70,6 +70,7 @@ type Shadow struct {
 	RoleID   uint      `gorm:"uniqueIndex:unique_shadow`
 	Event    Event
 	Person   Person
+	Role     Role
 }
 
 type Person struct {

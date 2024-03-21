@@ -60,8 +60,22 @@ const RolesDescription: React.FC<{
     }
     return <div className="min-w-20">
       {roles.map(r => {
+        if (r.covering) {
+          return <div key={r.id}>{r.name} (covering: <PersonDisplayName person={r.covering} />)</div>;
+        }
         if (r.coveredBy) {
-          return <div key={r.id}><span className="line-through">{r.name}</span> (covered by: <PersonDisplayName person={r.coveredBy} />)</div>;
+          return <div key={r.id}><span className="line-through">{r.name}</span> (not required, covered by: <PersonDisplayName person={r.coveredBy} />)</div>;
+        }
+        if (r.shadowing) {
+          return <div key={r.id}>{r.name} (shadowing: <PersonDisplayName person={r.shadowing} />)</div>;
+        }
+        if (r.shadowedBy) {
+          return <div key={r.id}>{r.name} (shadowed by: {r.shadowedBy.map((p, i) => {
+            if (i === 0) {
+              return <PersonDisplayName person={p} key={i} />
+            }
+            return <span key={i}>, <PersonDisplayName person={p} key={i} /></span>
+          })})</div>;
         }
         return <div key={r.id}>{r.name}</div>;
       })}

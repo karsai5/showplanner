@@ -15,8 +15,16 @@ ScheduleEventDTO:
               type: integer
             name:
               type: string
+            covering:
+              $ref: './People.yaml#/PersonSummaryDTO'
             coveredBy:
               $ref: './People.yaml#/PersonSummaryDTO'
+            shadowing:
+              $ref: './People.yaml#/PersonSummaryDTO'
+            shadowedBy:
+              type: array
+              items:
+                $ref: './People.yaml#/PersonSummaryDTO'
           required:
             - id
             - name
