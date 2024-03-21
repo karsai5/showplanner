@@ -718,6 +718,66 @@ func init() {
         }
       }
     },
+    "/shadow": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Assign a shadow to a role for an event",
+        "parameters": [
+          {
+            "description": "The details of the shadow",
+            "name": "shadow",
+            "in": "body",
+            "schema": {
+              "$ref": "./schemas/Rostering.yaml#/CreateShadowDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/shadow/{id}": {
+      "delete": {
+        "summary": "Deletes a shadow",
+        "parameters": [
+          {
+            "type": "number",
+            "description": "Id of assignment to delete",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/shows": {
       "get": {
         "produces": [
@@ -1702,6 +1762,84 @@ func init() {
         }
       }
     },
+    "/shadow": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Assign a shadow to a role for an event",
+        "parameters": [
+          {
+            "description": "The details of the shadow",
+            "name": "shadow",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/createShadowDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/shadow/{id}": {
+      "delete": {
+        "summary": "Deletes a shadow",
+        "parameters": [
+          {
+            "type": "number",
+            "description": "Id of assignment to delete",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/shows": {
       "get": {
         "produces": [
@@ -2067,6 +2205,26 @@ func init() {
         "start": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "createShadowDTO": {
+      "type": "object",
+      "required": [
+        "eventId",
+        "personId",
+        "roleId"
+      ],
+      "properties": {
+        "eventId": {
+          "type": "integer"
+        },
+        "personId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "roleId": {
+          "type": "integer"
         }
       }
     },

@@ -84,6 +84,44 @@ paths:
           description: OK
           schema:
             $ref: './schemas/Event.yaml#/EventDTO'
+  /shadow:
+    post:
+      summary: Assign a shadow to a role for an event
+      parameters:
+        - in: body
+          description: The details of the shadow
+          name: shadow
+          schema:
+            $ref: './schemas/Rostering.yaml#/CreateShadowDTO'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+  /shadow/{id}:
+    delete:
+      summary: Deletes a shadow
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: Id of assignment to delete
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
   /assignment:
     post:
       summary: Assign a person to a role for an event

@@ -8,6 +8,7 @@ models/AvailabilitiesDTOEventsInner.ts
 models/AvailabilityDTO.ts
 models/CreateAssignedDTO.ts
 models/CreateEventDTO.ts
+models/CreateShadowDTO.ts
 models/CreateShowDTO.ts
 models/EventDTO.ts
 models/EventPublicDTO.ts

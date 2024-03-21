@@ -7,6 +7,7 @@ export * from './AvailabilitiesDTOEventsInner';
 export * from './AvailabilityDTO';
 export * from './CreateAssignedDTO';
 export * from './CreateEventDTO';
+export * from './CreateShadowDTO';
 export * from './CreateShowDTO';
 export * from './EventDTO';
 export * from './EventPublicDTO';

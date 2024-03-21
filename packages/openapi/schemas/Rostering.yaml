@@ -37,6 +37,21 @@ AvailabilityDTO:
     - personId
     - available
 
+CreateShadowDTO:
+  type: object
+  properties:
+    eventId:
+      type: integer
+    personId:
+      type: string
+      format: uuid
+    roleId:
+      type: integer
+  required:
+    - eventId
+    - personId
+    - roleId
+
 CreateAssignedDTO:
   type: object
   properties:

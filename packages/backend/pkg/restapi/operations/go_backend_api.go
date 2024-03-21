@@ -55,6 +55,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		DeleteRolesIDHandler: DeleteRolesIDHandlerFunc(func(params DeleteRolesIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation DeleteRolesID has not yet been implemented")
 		}),
+		DeleteShadowIDHandler: DeleteShadowIDHandlerFunc(func(params DeleteShadowIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation DeleteShadowID has not yet been implemented")
+		}),
 		GetAvailabilitiesHandler: GetAvailabilitiesHandlerFunc(func(params GetAvailabilitiesParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetAvailabilities has not yet been implemented")
 		}),
@@ -112,6 +115,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		PostRolesHandler: PostRolesHandlerFunc(func(params PostRolesParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostRoles has not yet been implemented")
 		}),
+		PostShadowHandler: PostShadowHandlerFunc(func(params PostShadowParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostShadow has not yet been implemented")
+		}),
 		PostShowsHandler: PostShowsHandlerFunc(func(params PostShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostShows has not yet been implemented")
 		}),
@@ -166,6 +172,8 @@ type GoBackendAPI struct {
 	DeleteEventsIDHandler DeleteEventsIDHandler
 	// DeleteRolesIDHandler sets the operation handler for the delete roles ID operation
 	DeleteRolesIDHandler DeleteRolesIDHandler
+	// DeleteShadowIDHandler sets the operation handler for the delete shadow ID operation
+	DeleteShadowIDHandler DeleteShadowIDHandler
 	// GetAvailabilitiesHandler sets the operation handler for the get availabilities operation
 	GetAvailabilitiesHandler GetAvailabilitiesHandler
 	// GetMeHandler sets the operation handler for the get me operation
@@ -204,6 +212,8 @@ type GoBackendAPI struct {
 	PostPersonnelAssignHandler PostPersonnelAssignHandler
 	// PostRolesHandler sets the operation handler for the post roles operation
 	PostRolesHandler PostRolesHandler
+	// PostShadowHandler sets the operation handler for the post shadow operation
+	PostShadowHandler PostShadowHandler
 	// PostShowsHandler sets the operation handler for the post shows operation
 	PostShowsHandler PostShowsHandler
 	// PutAssignmentIDHandler sets the operation handler for the put assignment ID operation
@@ -299,6 +309,9 @@ func (o *GoBackendAPI) Validate() error {
 	if o.DeleteRolesIDHandler == nil {
 		unregistered = append(unregistered, "DeleteRolesIDHandler")
 	}
+	if o.DeleteShadowIDHandler == nil {
+		unregistered = append(unregistered, "DeleteShadowIDHandler")
+	}
 	if o.GetAvailabilitiesHandler == nil {
 		unregistered = append(unregistered, "GetAvailabilitiesHandler")
 	}
@@ -355,6 +368,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.PostRolesHandler == nil {
 		unregistered = append(unregistered, "PostRolesHandler")
+	}
+	if o.PostShadowHandler == nil {
+		unregistered = append(unregistered, "PostShadowHandler")
 	}
 	if o.PostShowsHandler == nil {
 		unregistered = append(unregistered, "PostShowsHandler")
@@ -467,6 +483,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
 	}
 	o.handlers["DELETE"]["/roles/{id}"] = NewDeleteRolesID(o.context, o.DeleteRolesIDHandler)
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
+	o.handlers["DELETE"]["/shadow/{id}"] = NewDeleteShadowID(o.context, o.DeleteShadowIDHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
@@ -543,6 +563,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/roles"] = NewPostRoles(o.context, o.PostRolesHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/shadow"] = NewPostShadow(o.context, o.PostShadowHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

@@ -21,6 +21,7 @@ import type {
   AvailabilityDTO,
   CreateAssignedDTO,
   CreateEventDTO,
+  CreateShadowDTO,
   CreateShowDTO,
   EventDTO,
   HealthCheck,
@@ -48,6 +49,8 @@ import {
     CreateAssignedDTOToJSON,
     CreateEventDTOFromJSON,
     CreateEventDTOToJSON,
+    CreateShadowDTOFromJSON,
+    CreateShadowDTOToJSON,
     CreateShowDTOFromJSON,
     CreateShowDTOToJSON,
     EventDTOFromJSON,
@@ -158,6 +161,14 @@ export interface RosterGetRequest {
 
 export interface ScheduleGetRequest {
     showId: number;
+}
+
+export interface ShadowIdDeleteRequest {
+    id: number;
+}
+
+export interface ShadowPostRequest {
+    shadow?: CreateShadowDTO;
 }
 
 export interface ShowsPostRequest {
@@ -866,6 +877,63 @@ export class DefaultApi extends runtime.BaseAPI {
     async scheduleGet(requestParameters: ScheduleGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ScheduleEventDTO>> {
         const response = await this.scheduleGetRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Deletes a shadow
+     */
+    async shadowIdDeleteRaw(requestParameters: ShadowIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling shadowIdDelete.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/shadow/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Deletes a shadow
+     */
+    async shadowIdDelete(requestParameters: ShadowIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.shadowIdDeleteRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Assign a shadow to a role for an event
+     */
+    async shadowPostRaw(requestParameters: ShadowPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/shadow`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateShadowDTOToJSON(requestParameters.shadow),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Assign a shadow to a role for an event
+     */
+    async shadowPost(requestParameters: ShadowPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.shadowPostRaw(requestParameters, initOverrides);
     }
 
     /**
