@@ -23,6 +23,10 @@ type ShadowDTO struct {
 	// Required: true
 	Available *bool `json:"available"`
 
+	// id
+	// Required: true
+	ID *int64 `json:"id"`
+
 	// person
 	// Required: true
 	Person *PersonSummaryDTO `json:"person"`
@@ -33,6 +37,10 @@ func (m *ShadowDTO) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateAvailable(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateID(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -49,6 +57,15 @@ func (m *ShadowDTO) Validate(formats strfmt.Registry) error {
 func (m *ShadowDTO) validateAvailable(formats strfmt.Registry) error {
 
 	if err := validate.Required("available", "body", m.Available); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ShadowDTO) validateID(formats strfmt.Registry) error {
+
+	if err := validate.Required("id", "body", m.ID); err != nil {
 		return err
 	}
 

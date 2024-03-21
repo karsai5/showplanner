@@ -129,12 +129,15 @@ RosterDTO:
 ShadowDTO:
   type: object
   properties:
+    id:
+      type: integer
     person:
       $ref: './People.yaml#/PersonSummaryDTO'
     available:
       x-nullable: true
       type: boolean
   required:
+    - id
     - person
     - available
 

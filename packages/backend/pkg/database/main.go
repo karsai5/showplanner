@@ -91,5 +91,10 @@ func initDB() *gorm.DB {
 		panic("Failed to migrate assignment")
 	}
 
+	err = db.AutoMigrate(&Shadow{})
+	if err != nil {
+		panic("Failed to migrate shadow")
+	}
+
 	return db
 }

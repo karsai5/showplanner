@@ -10,7 +10,7 @@ import (
 )
 
 var handlePostAssignment = operations.PostAssignmentHandlerFunc(func(params operations.PostAssignmentParams) middleware.Responder {
-	logError := logger.CreateLogErrorFunc("Getting roster", &operations.PostAssignmentInternalServerError{})
+	logError := logger.CreateLogErrorFunc("Creating assignment", &operations.PostAssignmentInternalServerError{})
 
 	event, err := database.GetEvent(uint(*params.Assignment.EventID))
 	if err != nil {

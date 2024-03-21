@@ -97,6 +97,22 @@ func CreateAssignment(assignment Assignment) (Assignment, error) {
 	return assignment, res.Error
 }
 
+func GetShadow(id uint) (Shadow, error) {
+	shadow := Shadow{}
+	res := db.Preload(clause.Associations).Find(&shadow, id)
+	return shadow, res.Error
+}
+
+func CreateShadow(shadow Shadow) (Shadow, error) {
+	res := db.Create(&shadow)
+	return shadow, res.Error
+}
+
+func DeleteShadow(id uint) error {
+	res := db.Delete(&Shadow{}, id)
+	return res.Error
+}
+
 func GetAssignment(id uint) (Assignment, error) {
 	assignment := Assignment{}
 	res := db.Preload(clause.Associations).Find(&assignment, id)

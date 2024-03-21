@@ -70,8 +70,24 @@ func mapToEventWithAssignments(roles []database.Role) func(event database.Event)
 			Availabilities: &models.RosterDTOEventsItems0AO1Availabilities{
 				RosterDTOEventsItems0AO1Availabilities: mapAvailabilityToMap(event.Availabilities),
 			},
+			Shadows: mapShadowsToMap(event.Shadows),
 		}
 	}
+}
+
+func mapShadowsToMap(shadows []database.Shadow) map[string][]models.ShadowDTO {
+	dictionary := map[string][]models.ShadowDTO{}
+	for _, s := range shadows {
+		roleId := strconv.Itoa(int(s.RoleID))
+
+		val, ok := dictionary[roleId]
+		if ok {
+			dictionary[roleId] = append(val, mapToShadowDTO(s))
+		} else {
+			dictionary[roleId] = []models.ShadowDTO{mapToShadowDTO(s)}
+		}
+	}
+	return dictionary
 }
 
 func mapAvailabilityToMap(availabilities []database.Availability) map[string]*models.AvailabilityDTO {
@@ -101,6 +117,14 @@ func mapToRoleDTO(role database.Role) models.RoleDTO {
 		ID:     int64(role.ID),
 		Name:   role.Name,
 		Person: person,
+	}
+}
+
+func mapToShadowDTO(shadow database.Shadow) models.ShadowDTO {
+	return models.ShadowDTO{
+		Available: nil,
+		ID:        conv.UintToInt64(shadow.ID),
+		Person:    conv.Pointer(personnel_domain.MapToPersonSummaryDTO(shadow.Person)),
 	}
 }
 

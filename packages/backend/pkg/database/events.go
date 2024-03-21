@@ -39,7 +39,7 @@ func GetEventsWithAvailabilities(showId uint) ([]Event, error) {
 
 func GetEventsPreloaded(showId uint) ([]Event, error) {
 	var events []Event
-	res := db.Preload("Assignments.Person").Preload(clause.Associations).Where("show_id = ?", showId).Find(&events)
+	res := db.Preload("Shadows.Person").Preload("Assignments.Person").Preload(clause.Associations).Where("show_id = ?", showId).Find(&events)
 
 	return events, res.Error
 }

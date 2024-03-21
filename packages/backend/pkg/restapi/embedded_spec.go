@@ -2517,6 +2517,7 @@ func init() {
     "shadowDTO": {
       "type": "object",
       "required": [
+        "id",
         "person",
         "available"
       ],
@@ -2524,6 +2525,9 @@ func init() {
         "available": {
           "type": "boolean",
           "x-nullable": true
+        },
+        "id": {
+          "type": "integer"
         },
         "person": {
           "$ref": "#/definitions/personSummaryDTO"

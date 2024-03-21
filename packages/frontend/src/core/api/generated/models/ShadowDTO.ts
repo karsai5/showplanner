@@ -28,6 +28,12 @@ import {
 export interface ShadowDTO {
     /**
      * 
+     * @type {number}
+     * @memberof ShadowDTO
+     */
+    id: number;
+    /**
+     * 
      * @type {PersonSummaryDTO}
      * @memberof ShadowDTO
      */
@@ -45,6 +51,7 @@ export interface ShadowDTO {
  */
 export function instanceOfShadowDTO(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
     isInstance = isInstance && "person" in value;
     isInstance = isInstance && "available" in value;
 
@@ -61,6 +68,7 @@ export function ShadowDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     }
     return {
         
+        'id': json['id'],
         'person': PersonSummaryDTOFromJSON(json['person']),
         'available': json['available'],
     };
@@ -75,6 +83,7 @@ export function ShadowDTOToJSON(value?: ShadowDTO | null): any {
     }
     return {
         
+        'id': value.id,
         'person': PersonSummaryDTOToJSON(value.person),
         'available': value.available,
     };
