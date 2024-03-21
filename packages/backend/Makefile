@@ -1,5 +1,5 @@
 watch:
-	nodemon -e go --signal SIGTERM --exec 'make' build-and-serve
+	nodemon -e go --signal SIGTERM --exec 'make' build-and-serve || exit 1
 
 watch-swagger:
 	nodemon -e yaml --exec 'make' generate
@@ -15,9 +15,9 @@ publish: build-image
 	docker push karsai5/showplanner-backend:latest
 
 build-server:
-	go build ./cmd/go-backend-server
-build-cli:
-	go build ./cmd/go-backend-cli
+	go build ./cmd/go-backend-server || exit 1
+build-cli: 
+	go build ./cmd/go-backend-cli || exit 1
 
 serve:
 	./go-backend-server --host localhost --port 8080

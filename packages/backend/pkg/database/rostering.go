@@ -66,10 +66,10 @@ func GetRole(roleId uint) (Role, error) {
 	return role, res.Error
 }
 
-func GetRoleForPerson(showId uint, personId uuid.UUID) (Role, error) {
-	role := Role{}
-	res := db.Where(&Role{PersonID: conv.Pointer(personId), ShowID: showId}).First(&role)
-	return role, res.Error
+func GetRolesForPerson(showId uint, personId uuid.UUID) ([]Role, error) {
+	roles := []Role{}
+	res := db.Where(&Role{PersonID: conv.Pointer(personId), ShowID: showId}).Find(&roles)
+	return roles, res.Error
 }
 
 func CreateRole(role Role) (Role, error) {

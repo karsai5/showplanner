@@ -76,7 +76,7 @@ export const ShadowSelectorPure: FC<{
     const [showPersonSelector, setShowPersonSelector] = useState(false);
     const filteredPeople = people?.filter(p => !shadows.find(s => s.person.id === p.id)) || [];
     return <>
-      <div className="dropdown dropdown-hover">
+      <div className="dropdown dropdown-hover dropdown-end">
         <div tabIndex={0} role="button" className="btn btn-sm px-2 btn-ghost m-1 indicator">
           {shadows.length > 0 &&
             <span className="indicator-item badge badge-default">{shadows.length}</span>}

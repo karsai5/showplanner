@@ -7,6 +7,7 @@ package models
 
 import (
 	"context"
+	"encoding/json"
 	"strconv"
 
 	"github.com/go-openapi/errors"
@@ -262,6 +263,10 @@ type ScheduleEventDTORolesItems0 struct {
 
 	// shadowing
 	Shadowing *PersonSummaryDTO `json:"shadowing,omitempty"`
+
+	// type
+	// Enum: [baseRole assigned covering shadowing]
+	Type string `json:"type,omitempty"`
 }
 
 // Validate validates this schedule event d t o roles items0
@@ -289,6 +294,10 @@ func (m *ScheduleEventDTORolesItems0) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateShadowing(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateType(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -394,6 +403,54 @@ func (m *ScheduleEventDTORolesItems0) validateShadowing(formats strfmt.Registry)
 			}
 			return err
 		}
+	}
+
+	return nil
+}
+
+var scheduleEventDTORolesItems0TypeTypePropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["baseRole","assigned","covering","shadowing"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		scheduleEventDTORolesItems0TypeTypePropEnum = append(scheduleEventDTORolesItems0TypeTypePropEnum, v)
+	}
+}
+
+const (
+
+	// ScheduleEventDTORolesItems0TypeBaseRole captures enum value "baseRole"
+	ScheduleEventDTORolesItems0TypeBaseRole string = "baseRole"
+
+	// ScheduleEventDTORolesItems0TypeAssigned captures enum value "assigned"
+	ScheduleEventDTORolesItems0TypeAssigned string = "assigned"
+
+	// ScheduleEventDTORolesItems0TypeCovering captures enum value "covering"
+	ScheduleEventDTORolesItems0TypeCovering string = "covering"
+
+	// ScheduleEventDTORolesItems0TypeShadowing captures enum value "shadowing"
+	ScheduleEventDTORolesItems0TypeShadowing string = "shadowing"
+)
+
+// prop value enum
+func (m *ScheduleEventDTORolesItems0) validateTypeEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, scheduleEventDTORolesItems0TypeTypePropEnum, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *ScheduleEventDTORolesItems0) validateType(formats strfmt.Registry) error {
+	if swag.IsZero(m.Type) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := m.validateTypeEnum("type", "body", m.Type); err != nil {
+		return err
 	}
 
 	return nil

@@ -15,11 +15,14 @@ ScheduleEventDTO:
               type: integer
             name:
               type: string
+            type:
+              type: string
+              enum: [baseRole, assigned, covering, shadowing]
             covering:
               $ref: './People.yaml#/PersonSummaryDTO'
-            coveredBy:
-              $ref: './People.yaml#/PersonSummaryDTO'
             shadowing:
+              $ref: './People.yaml#/PersonSummaryDTO'
+            coveredBy:
               $ref: './People.yaml#/PersonSummaryDTO'
             shadowedBy:
               type: array

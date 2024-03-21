@@ -35,7 +35,7 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
             <th></th>
             <th></th>
             {roster.roles?.map((r) => (
-              <th key={r.id} className="sticky top-0 bg-white z-50">
+              <th key={r.id} className="sticky top-0 bg-white z-40">
                 <div>{r.name}</div>
                 {r.person && <PersonDisplayName person={r.person} />}
               </th>
@@ -65,7 +65,7 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
                           {displayDate(e.start)}
                         </Td>
                       )}
-                      <Td className="w-40 sticky left-0 bg-white z-50">
+                      <Td className="w-40 sticky left-0 bg-white z-40">
                         <TimeRangeWithCurtainsUp event={e} />
                       </Td>
                       {

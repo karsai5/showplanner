@@ -2110,6 +2110,15 @@ func init() {
         },
         "shadowing": {
           "$ref": "#/definitions/personSummaryDTO"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "baseRole",
+            "assigned",
+            "covering",
+            "shadowing"
+          ]
         }
       }
     },
