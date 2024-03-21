@@ -25,7 +25,7 @@ func GetEvents(showId uint) ([]Event, error) {
 
 func GetEventsWithAvailabilityAndAssignmentsForUser(showId uint, userId uuid.UUID) ([]Event, error) {
 	var events []Event
-	res := db.Preload("Availabilities", "person_id = ?", userId).Preload("Shadows.Role").Preload("Shadows.Person").Preload("Assignments").Preload("Assignments.Role").Preload("Assignments.Person").Where("show_id = ?", showId).Find(&events)
+	res := db.Preload("Availabilities", "person_id = ?", userId).Preload("Shadows.Role").Preload("Shadows.Person").Preload("Assignments").Preload("Assignments.Role.Person").Preload("Assignments.Person").Where("show_id = ?", showId).Find(&events)
 
 	return events, res.Error
 }

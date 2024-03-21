@@ -79,8 +79,8 @@ func getRoles(role database.Role, event database.Event, userId uuid.UUID) []*mod
 		arr = append(arr, getBaseRole(role, event, userId))
 	}
 
-	// Add any assignments (note: you can't get covered for an assignment)
-	arr = append(arr, getAssignedAssignments(event.Assignments, userId)...)
+	// Add shadows (note: you can't get covered for an assignment)
+	arr = append(arr, getAssignedShadows(event.Assignments, userId)...)
 
 	// Add any shadows
 	arr = append(arr, getRolesUserIsShadowing(event.Shadows, userId)...)
@@ -130,14 +130,14 @@ func getRolesUserIsShadowing(shadows []database.Shadow, userId uuid.UUID) []*mod
 	return arr
 }
 
-func getAssignedAssignments(assignments []database.Assignment, userId uuid.UUID) []*models.ScheduleEventDTORolesItems0 {
+func getAssignedShadows(assignments []database.Assignment, userId uuid.UUID) []*models.ScheduleEventDTORolesItems0 {
 	arr := []*models.ScheduleEventDTORolesItems0{}
 	for _, assignment := range assignments {
 		if assignment.PersonID == userId {
 			arr = append(arr, conv.Pointer(models.ScheduleEventDTORolesItems0{
 				ID:       conv.UintToInt64(assignment.RoleID),
 				Name:     conv.Pointer(assignment.Role.Name),
-				Covering: conv.Pointer(personnel_domain.MapToPersonSummaryDTO(assignment.Person)),
+				Covering: conv.Pointer(personnel_domain.MapToPersonSummaryDTO(*assignment.Role.Person)),
 			}))
 		}
 	}
