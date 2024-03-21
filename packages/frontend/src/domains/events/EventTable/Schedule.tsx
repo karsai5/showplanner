@@ -1,5 +1,6 @@
 import { ScheduleEventDTO, ScheduleEventDTOAllOfRoles } from 'core/api/generated';
 import { PERMISSION, showPermission, useHasPermission } from 'core/permissions';
+import { PersonDisplayName } from 'domains/personnel/PersonDisplayName';
 import { useShowSummary } from 'domains/shows/lib/summaryContext';
 
 import { AvailabilityDropdown } from './components/AvailabilityDropdown';
@@ -58,7 +59,12 @@ const RolesDescription: React.FC<{
       return <span className="italic text-slate-400">Unassigned</span>
     }
     return <div className="min-w-20">
-      {roles.map(r => <div key={r.id}>{r.name}</div>)}
+      {roles.map(r => {
+        if (r.coveredBy) {
+          return <div key={r.id}><span className="line-through">{r.name}</span> (covered by: <PersonDisplayName person={r.coveredBy} />)</div>;
+        }
+        return <div key={r.id}>{r.name}</div>;
+      })}
     </div>
   }
 
