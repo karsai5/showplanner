@@ -8,19 +8,6 @@ import { useEffect, useState } from 'react';
 import { Fragment } from 'react'
 
 
-const unassignedPerson: PersonSummaryDTO = {
-	id: '',
-	firstName: 'Unassigned',
-	lastName: '',
-}
-
-const getSelectedPerson = (people: Array<PersonSummaryDTO>, selectedPersonId: string | undefined) => {
-	if (selectedPersonId) {
-		const selectedPerson = people.find(p => p.id === selectedPersonId);
-		return selectedPerson || unassignedPerson;
-	}
-	return unassignedPerson;
-}
 
 type NameComponentType = FC<{ person: PersonSummaryDTO }>
 
@@ -32,6 +19,7 @@ export const PersonSelector: React.FC<{
 	openOnLoad?: boolean;
 	className?: string;
 	nameComponent?: NameComponentType;
+	placeholder?: string;
 }> = ({
 	people,
 	onChange,
@@ -39,12 +27,26 @@ export const PersonSelector: React.FC<{
 	selectedPersonId,
 	openOnLoad,
 	className,
+	placeholder,
 	nameComponent: NameComponent = PersonDisplayName,
 }) => {
+		const unassignedPerson: PersonSummaryDTO = {
+			id: '',
+			firstName: placeholder || 'Unassigned',
+			lastName: '',
+		}
+
+		const getSelectedPerson = (people: Array<PersonSummaryDTO>, selectedPersonId: string | undefined) => {
+			if (selectedPersonId) {
+				const selectedPerson = people.find(p => p.id === selectedPersonId);
+				return selectedPerson || unassignedPerson;
+			}
+			return unassignedPerson;
+		}
+
 		const [selected, setSelected] = useState<PersonSummaryDTO | undefined>(getSelectedPerson(people, selectedPersonId))
 		const [query, setQuery] = useState('')
 		const buttonRef = useRef<HTMLButtonElement>(null)
-
 		useEffect(() => {
 			if (buttonRef.current && openOnLoad) {
 				buttonRef.current?.click()
@@ -130,7 +132,7 @@ export const PersonSelector: React.FC<{
 															className={`block truncate ${selected ? 'font-medium' : 'font-normal'
 																}`}
 														>
-															<NameComponent person={person}/>
+															<NameComponent person={person} />
 														</span>
 														{selected ? (
 															<span

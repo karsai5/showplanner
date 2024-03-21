@@ -1,9 +1,8 @@
-import { Popover } from '@headlessui/react'
-import { UserPlusIcon } from '@heroicons/react/24/outline';
+import { TrashIcon, UserPlusIcon } from '@heroicons/react/24/outline';
 import { PersonSummaryDTO, RosterDTOEventsInner } from 'core/api/generated';
 import { PersonDisplayName } from 'domains/personnel/PersonDisplayName';
 import { PersonSelector } from 'domains/personnel/PersonSelector/PersonSelector';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import React from 'react';
 
 export const ShadowSelector: FC<{
@@ -16,19 +15,36 @@ export const ShadowSelector: FC<{
   people
 }) => {
     const shadows = event.shadows?.[roleId] || [];
-    return <Popover className="relative">
-      <div className="indicator">
-        {shadows.length > 0 &&
-          <span className="indicator-item badge badge-default">{shadows.length}</span>}
-        <Popover.Button className='btn btn-sm btn-ghost px-2'><UserPlusIcon className='h-6 w-6' /></Popover.Button>
-      </div>
-      <Popover.Panel as='li' className="absolute z-10 menu bg-white shadow-lg ring-1 ring-black/5 min-w-40 rounded-box">
-        {shadows.map((s) => <div key={s.person.id}><PersonDisplayName person={s.person} /></div>)}
-        <PersonSelector
-          people={people}
-          onChange={() => { }}
-          selectedPersonId={undefined}
-        />
-      </Popover.Panel>
-    </Popover>
+    const [showPersonSelector, setShowPersonSelector] = useState(false);
+    return <>
+      <div className="dropdown dropdown-hover dropdown-open">
+        <div tabIndex={0} role="button" className="btn btn-sm px-2 btn-ghost m-1 indicator">
+          {shadows.length > 0 &&
+            <span className="indicator-item badge badge-default">{shadows.length}</span>}
+          <UserPlusIcon className='h-6 w-6' />
+        </div>
+        <div className="dropdown-content z-[1] menu p-4 shadow bg-base-100 rounded-box">
+          <div className="font-semibold text-lg mb-2">Shadows</div>
+          <div className="mb-4">
+            {shadows.map((s) =>
+              <div key={s.person.id} className="flex justify-between items-center">
+                <div><PersonDisplayName person={s.person} /></div>
+                <button className="btn btn-ghost btn-sm -mr-2"><TrashIcon className="h-6 w-6 text-slate-500" /></button>
+              </div>
+            )}
+            {shadows.length === 0 && <div>No shadows are assigned</div>}
+          </div>
+          {showPersonSelector ?
+            <PersonSelector
+              people={people}
+              onChange={() => { }}
+              selectedPersonId={undefined}
+              placeholder='Assign Shadow'
+              openOnLoad={true}
+            />
+            :
+            <button className='btn btn-outline whitespace-nowrap w-52' onClick={() => setShowPersonSelector(true)}>Add Shadow</button>
+          }
+        </div>
+      </div></>
   };
