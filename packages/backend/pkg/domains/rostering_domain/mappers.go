@@ -70,21 +70,21 @@ func mapToEventWithAssignments(roles []database.Role) func(event database.Event)
 			Availabilities: &models.RosterDTOEventsItems0AO1Availabilities{
 				RosterDTOEventsItems0AO1Availabilities: mapAvailabilityToMap(event.Availabilities),
 			},
-			Shadows: mapShadowsToMap(event.Shadows),
+			Shadows: mapShadowsToMap(event),
 		}
 	}
 }
 
-func mapShadowsToMap(shadows []database.Shadow) map[string][]models.ShadowDTO {
+func mapShadowsToMap(event database.Event) map[string][]models.ShadowDTO {
 	dictionary := map[string][]models.ShadowDTO{}
-	for _, s := range shadows {
+	for _, s := range event.Shadows {
 		roleId := strconv.Itoa(int(s.RoleID))
 
 		val, ok := dictionary[roleId]
 		if ok {
-			dictionary[roleId] = append(val, mapToShadowDTO(s))
+			dictionary[roleId] = append(val, mapToShadowDTO(s, event))
 		} else {
-			dictionary[roleId] = []models.ShadowDTO{mapToShadowDTO(s)}
+			dictionary[roleId] = []models.ShadowDTO{mapToShadowDTO(s, event)}
 		}
 	}
 	return dictionary
@@ -120,12 +120,19 @@ func mapToRoleDTO(role database.Role) models.RoleDTO {
 	}
 }
 
-func mapToShadowDTO(shadow database.Shadow) models.ShadowDTO {
-	return models.ShadowDTO{
+func mapToShadowDTO(shadow database.Shadow, event database.Event) models.ShadowDTO {
+	dto := models.ShadowDTO{
 		Available: nil,
 		ID:        conv.UintToInt64(shadow.ID),
 		Person:    conv.Pointer(personnel_domain.MapToPersonSummaryDTO(shadow.Person)),
 	}
+
+	availabilityIdx := slices.IndexFunc(event.Availabilities, func(a database.Availability) bool { return shadow.Person.ID == a.PersonID })
+	if availabilityIdx >= 0 {
+		dto.Available = &event.Availabilities[availabilityIdx].Available
+	}
+
+	return dto
 }
 
 func mapToAssignedDTO(a database.Assignment) models.AssignedDTO {

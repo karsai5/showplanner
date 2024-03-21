@@ -1,7 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 
-import { ShadowSelector } from './ShadowSelector';
+import { ShadowSelectorPure } from './ShadowSelector';
 
 export default {
   /* 👇 The title prop is optional.
@@ -9,12 +9,12 @@ export default {
    * to learn how to generate automatic titles
    */
   title: 'Rostering/ShadowSelector',
-  component: ShadowSelector,
-} as ComponentMeta<typeof ShadowSelector>;
+  component: ShadowSelectorPure,
+} as ComponentMeta<typeof ShadowSelectorPure>;
 
 //👇 We create a “template” of how args map to rendering
-const Template: ComponentStory<typeof ShadowSelector> = (args) => (
-  <ShadowSelector {...args} />
+const Template: ComponentStory<typeof ShadowSelectorPure> = (args) => (
+  <ShadowSelectorPure {...args} />
 );
 
 export const Simple = Template.bind({});
@@ -25,6 +25,7 @@ Simple.args = {
     start: new Date(),
     shadows: {
       0: [{
+        id: 0,
         person: {
           id: '0',
           firstName: "Jane",

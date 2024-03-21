@@ -1,5 +1,5 @@
 import { Popover } from '@headlessui/react'
-import { EllipsisHorizontalIcon} from '@heroicons/react/24/outline';
+import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import cc from 'classnames';
 import { api } from 'core/api';
@@ -13,6 +13,7 @@ import { getBgColorForRoster } from 'domains/rostering/helpers';
 import { KeyboardEventHandler, ReactNode } from 'react';
 import React, { useState } from 'react';
 
+import { colorCodednameComponent } from './ColorCodedName';
 import { ShadowSelector } from './ShadowSelector';
 
 export const AssignmentCell: React.FC<{
@@ -85,7 +86,7 @@ export const AssignmentCell: React.FC<{
       setShowPersonDropdown={setShowPersonDropdown}
     >
       <Toggle toggle="availabilities_shadow_menu">
-        <ShadowSelector event={event} roleId={roleId} />
+        <ShadowSelector event={event} roleId={roleId} people={assignedPeopleRequest.data?.people} />
       </Toggle>
       <Toggle toggle="availabilities_menu">
         <Popover className="relative">
@@ -119,16 +120,6 @@ export const PureAssignmentCell: React.FC<{
   isLoading,
   children = null
 }) => {
-    const NameComponent: React.FC<{ person: PersonSummaryDTO }> = ({ person }) => {
-      const availability = event.availabilities?.[person?.id || ''];
-      return <p className={cc({
-        ['line-through']: person.id && availability?.available === false,
-        ['text-slate-300']: person.id && availability?.available === undefined || availability?.available === null,
-      })}>
-        <PersonDisplayName person={person} />
-      </p>
-    }
-
     let bgClassName = '';
     if (assignment.person?.id) {
       bgClassName = getBgColorForRoster(assignment.available);
@@ -144,7 +135,7 @@ export const PureAssignmentCell: React.FC<{
       className={cc(bgClassName, "relative min-w-46")}
     >
       <div className='flex justify-between items-center'>
-        {!showPersonDropdown && <div className="cursor-pointer w-24 whitespace-nowrap overflow-hidden text-ellipsis"
+        {!showPersonDropdown && <div className="flex cursor-pointer w-24 flex-1"
           onClick={() => setShowPersonDropdown(true)}
           onKeyDown={handleKeyPress}
           tabIndex={0}
@@ -152,7 +143,9 @@ export const PureAssignmentCell: React.FC<{
           {!assignment.person?.id && <span className="italic text-slate-400">Unassigned</span>}
           {assignment.person?.id && <>
             {assignment.cover && <><div className="w-5"></div><div className="cover-box bg-orange-400">cover</div></>}
-            <PersonDisplayName person={assignment.person} />
+            <div className="whitespace-nowrap overflow-hidden text-ellipsis">
+              <PersonDisplayName person={assignment.person} />
+            </div>
           </>}
         </div>}
         {showPersonDropdown && people &&
@@ -162,7 +155,7 @@ export const PureAssignmentCell: React.FC<{
             selectedPersonId={assignment.person.id}
             onChange={(p) => onChangeAssigned(p.id)}
             openOnLoad={true}
-            nameComponent={NameComponent}
+            nameComponent={colorCodednameComponent(event)}
           />}
         {children}
       </div>

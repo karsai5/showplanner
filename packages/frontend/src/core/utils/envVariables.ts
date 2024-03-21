@@ -4,3 +4,6 @@ export const getRequiredEnvVariable = (value: string | undefined): string => {
   }
   return value;
 };
+
+export const isProd = () => process.env.NODE_ENV === "production";
+export const isDev = () => process.env.NODE_ENV === "development";

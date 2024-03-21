@@ -17,4 +17,6 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 	api.DeleteAssignmentIDHandler = handleDeleteAssignment
 	api.PutAssignmentIDHandler = handlePutAssignment
 
+	api.PostShadowHandler = handlePostShadow
+	api.DeleteShadowIDHandler = handleDeleteShadow
 }
