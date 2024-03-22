@@ -1,15 +1,15 @@
+import cc from 'classnames';
 import { PersonSummaryDTO, ScheduleEventDTO, ScheduleEventDTOAllOfRoles, ScheduleEventDTOAllOfRolesTypeEnum } from 'core/api/generated';
 import { PERMISSION, showPermission, useHasPermission } from 'core/permissions';
 import { PersonDisplayName } from 'domains/personnel/PersonDisplayName';
 import { useShowSummary } from 'domains/shows/lib/summaryContext';
+import { FC } from 'react';
 
 import { AvailabilityDropdown } from './components/AvailabilityDropdown';
 import { EventTable } from './EventTable';
 import { CloneEventModal } from './modals/CloneEventModal';
 import { DeleteEventModal } from './modals/DeleteEventModal';
 import { EditEventModal } from './modals/EditEventModal';
-import cc from 'classnames';
-import { FC } from 'react';
 
 export const Schedule: React.FC<React.ComponentProps<typeof EventTable>> = (
   props,
