@@ -17,6 +17,30 @@ PersonSummaryDTO:
       type: string
     lastName:
       type: string
+    private:
+      x-nullable: true
+      type: object
+      properties:
+        email: 
+          type: string
+        phone: 
+          type: string
+        wwc: 
+          x-nullable: true
+          type: string
+        dob: 
+          type: string
+        allergies:
+          type: string
+        emergencyContact:
+          type: object
+          properties:
+            name: 
+              type: string
+            relationship: 
+              type: string
+            phone: 
+              type: string
   required:
     - id
     - firstName

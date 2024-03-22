@@ -109,7 +109,7 @@ export const RoleItem: React.FC<{
       return <RenameRole role={role} onClose={() => setEditMode(false)} />;
     }
     return (
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-4">
         <div>{role.name}</div>
         <div className="flex gap-2">
           <PersonSelector

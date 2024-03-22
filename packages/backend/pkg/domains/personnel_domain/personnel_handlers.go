@@ -67,9 +67,19 @@ var handleAssignedPersonnel = operations.GetPersonnelAssignedHandlerFunc(func(pa
 		return personI < personJ
 	})
 
+	hasPerm, err = permissions.ViewPrivatePersonnelDetails.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	if err != nil {
+		logger.Error("Getting availabilites", err)
+		return &operations.GetAvailabilitiesInternalServerError{}
+	}
+	personMapper := MapToPersonSummaryDTO
+	if hasPerm {
+		personMapper = MapToPersonSummaryDTOWithPrivateInfo
+	}
+
 	return &operations.GetPersonnelAssignedOK{
 		Payload: &models.ArrayOfPersonSummaryDTO{
-			People: conv.MapArrayOfPointer(people, MapToPersonSummaryDTO),
+			People: conv.MapArrayOfPointer(people, personMapper),
 		},
 	}
 })

@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PersonSummaryDTOPrivate } from './PersonSummaryDTOPrivate';
+import {
+    PersonSummaryDTOPrivateFromJSON,
+    PersonSummaryDTOPrivateFromJSONTyped,
+    PersonSummaryDTOPrivateToJSON,
+} from './PersonSummaryDTOPrivate';
+
 /**
  * 
  * @export
@@ -43,6 +50,12 @@ export interface PersonSummaryDTO {
      * @memberof PersonSummaryDTO
      */
     lastName: string;
+    /**
+     * 
+     * @type {PersonSummaryDTOPrivate}
+     * @memberof PersonSummaryDTO
+     */
+    _private?: PersonSummaryDTOPrivate | null;
 }
 
 /**
@@ -71,6 +84,7 @@ export function PersonSummaryDTOFromJSONTyped(json: any, ignoreDiscriminator: bo
         'firstName': json['firstName'],
         'preferredName': !exists(json, 'preferredName') ? undefined : json['preferredName'],
         'lastName': json['lastName'],
+        '_private': !exists(json, 'private') ? undefined : PersonSummaryDTOPrivateFromJSON(json['private']),
     };
 }
 
@@ -87,6 +101,7 @@ export function PersonSummaryDTOToJSON(value?: PersonSummaryDTO | null): any {
         'firstName': value.firstName,
         'preferredName': value.preferredName,
         'lastName': value.lastName,
+        'private': PersonSummaryDTOPrivateToJSON(value._private),
     };
 }
 

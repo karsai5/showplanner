@@ -2017,6 +2017,56 @@ func init() {
         }
       }
     },
+    "PersonSummaryDTOPrivate": {
+      "type": "object",
+      "properties": {
+        "allergies": {
+          "type": "string"
+        },
+        "dob": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "emergencyContact": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "relationship": {
+              "type": "string"
+            }
+          }
+        },
+        "phone": {
+          "type": "string"
+        },
+        "wwc": {
+          "type": "string",
+          "x-nullable": true
+        }
+      },
+      "x-nullable": true
+    },
+    "PersonSummaryDTOPrivateEmergencyContact": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "relationship": {
+          "type": "string"
+        }
+      }
+    },
     "RosterDTOEventsItems0": {
       "allOf": [
         {
@@ -2378,6 +2428,42 @@ func init() {
         },
         "preferredName": {
           "type": "string"
+        },
+        "private": {
+          "type": "object",
+          "properties": {
+            "allergies": {
+              "type": "string"
+            },
+            "dob": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "emergencyContact": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "relationship": {
+                  "type": "string"
+                }
+              }
+            },
+            "phone": {
+              "type": "string"
+            },
+            "wwc": {
+              "type": "string",
+              "x-nullable": true
+            }
+          },
+          "x-nullable": true
         }
       }
     },

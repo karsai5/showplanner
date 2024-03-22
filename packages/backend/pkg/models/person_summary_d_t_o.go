@@ -34,6 +34,9 @@ type PersonSummaryDTO struct {
 
 	// preferred name
 	PreferredName string `json:"preferredName,omitempty"`
+
+	// private
+	Private *PersonSummaryDTOPrivate `json:"private,omitempty"`
 }
 
 // Validate validates this person summary d t o
@@ -49,6 +52,10 @@ func (m *PersonSummaryDTO) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateLastName(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validatePrivate(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -89,8 +96,57 @@ func (m *PersonSummaryDTO) validateLastName(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this person summary d t o based on context it is used
+func (m *PersonSummaryDTO) validatePrivate(formats strfmt.Registry) error {
+	if swag.IsZero(m.Private) { // not required
+		return nil
+	}
+
+	if m.Private != nil {
+		if err := m.Private.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("private")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("private")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this person summary d t o based on the context it is used
 func (m *PersonSummaryDTO) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidatePrivate(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *PersonSummaryDTO) contextValidatePrivate(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Private != nil {
+
+		if swag.IsZero(m.Private) { // not required
+			return nil
+		}
+
+		if err := m.Private.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("private")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("private")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -105,6 +161,159 @@ func (m *PersonSummaryDTO) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary interface implementation
 func (m *PersonSummaryDTO) UnmarshalBinary(b []byte) error {
 	var res PersonSummaryDTO
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// PersonSummaryDTOPrivate person summary d t o private
+//
+// swagger:model PersonSummaryDTOPrivate
+type PersonSummaryDTOPrivate struct {
+
+	// allergies
+	Allergies string `json:"allergies,omitempty"`
+
+	// dob
+	Dob string `json:"dob,omitempty"`
+
+	// email
+	Email string `json:"email,omitempty"`
+
+	// emergency contact
+	EmergencyContact *PersonSummaryDTOPrivateEmergencyContact `json:"emergencyContact,omitempty"`
+
+	// phone
+	Phone string `json:"phone,omitempty"`
+
+	// wwc
+	Wwc *string `json:"wwc,omitempty"`
+}
+
+// Validate validates this person summary d t o private
+func (m *PersonSummaryDTOPrivate) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateEmergencyContact(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *PersonSummaryDTOPrivate) validateEmergencyContact(formats strfmt.Registry) error {
+	if swag.IsZero(m.EmergencyContact) { // not required
+		return nil
+	}
+
+	if m.EmergencyContact != nil {
+		if err := m.EmergencyContact.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("private" + "." + "emergencyContact")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("private" + "." + "emergencyContact")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this person summary d t o private based on the context it is used
+func (m *PersonSummaryDTOPrivate) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateEmergencyContact(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *PersonSummaryDTOPrivate) contextValidateEmergencyContact(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.EmergencyContact != nil {
+
+		if swag.IsZero(m.EmergencyContact) { // not required
+			return nil
+		}
+
+		if err := m.EmergencyContact.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("private" + "." + "emergencyContact")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("private" + "." + "emergencyContact")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *PersonSummaryDTOPrivate) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *PersonSummaryDTOPrivate) UnmarshalBinary(b []byte) error {
+	var res PersonSummaryDTOPrivate
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// PersonSummaryDTOPrivateEmergencyContact person summary d t o private emergency contact
+//
+// swagger:model PersonSummaryDTOPrivateEmergencyContact
+type PersonSummaryDTOPrivateEmergencyContact struct {
+
+	// name
+	Name string `json:"name,omitempty"`
+
+	// phone
+	Phone string `json:"phone,omitempty"`
+
+	// relationship
+	Relationship string `json:"relationship,omitempty"`
+}
+
+// Validate validates this person summary d t o private emergency contact
+func (m *PersonSummaryDTOPrivateEmergencyContact) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this person summary d t o private emergency contact based on context it is used
+func (m *PersonSummaryDTOPrivateEmergencyContact) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *PersonSummaryDTOPrivateEmergencyContact) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *PersonSummaryDTOPrivateEmergencyContact) UnmarshalBinary(b []byte) error {
+	var res PersonSummaryDTOPrivateEmergencyContact
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

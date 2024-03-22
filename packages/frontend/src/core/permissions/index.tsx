@@ -14,7 +14,7 @@ const client = jwksClient({
 });
 
 function getKey(header: JwtHeader, callback: SigningKeyCallback) {
-  client.getSigningKey(header.kid, function (err, key) {
+  client.getSigningKey(header.kid, function(err, key) {
     const signingKey = key?.getPublicKey();
     callback(err, signingKey);
   });
@@ -25,6 +25,7 @@ export const enum PERMISSION {
   viewEvents = 'view-events',
   personnel = 'personnel',
   rostering = 'rostering',
+  personnelPrivateDetails = 'personnel-private-details',
 
   addShow = 'add-show',
 }
@@ -64,7 +65,7 @@ export const getDecodedJWT = async (ctx: GetServerSidePropsContext) => {
   try {
     const jwt = await new Promise<JsonWebToken.JwtPayload>(
       (resolve, reject) => {
-        JsonWebToken.verify(sAccessToken, getKey, {}, function (err, decoded) {
+        JsonWebToken.verify(sAccessToken, getKey, {}, function(err, decoded) {
           if (err) {
             return reject(err);
           }

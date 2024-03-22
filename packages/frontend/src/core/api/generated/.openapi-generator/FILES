@@ -16,6 +16,8 @@ models/HealthCheck.ts
 models/MeDetailsDTO.ts
 models/ModelError.ts
 models/PersonSummaryDTO.ts
+models/PersonSummaryDTOPrivate.ts
+models/PersonSummaryDTOPrivateEmergencyContact.ts
 models/PersonUpdateDTO.ts
 models/PublicScheduleGet200Response.ts
 models/RoleDTO.ts

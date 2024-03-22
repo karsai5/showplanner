@@ -15,6 +15,8 @@ export * from './HealthCheck';
 export * from './MeDetailsDTO';
 export * from './ModelError';
 export * from './PersonSummaryDTO';
+export * from './PersonSummaryDTOPrivate';
+export * from './PersonSummaryDTOPrivateEmergencyContact';
 export * from './PersonUpdateDTO';
 export * from './PublicScheduleGet200Response';
 export * from './RoleDTO';
