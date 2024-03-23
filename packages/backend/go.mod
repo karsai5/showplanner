@@ -12,7 +12,7 @@ require (
 	github.com/go-openapi/validate v0.22.1
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/joho/godotenv v1.5.1
-	github.com/supertokens/supertokens-golang v0.16.5
+	github.com/supertokens/supertokens-golang v0.17.5
 	github.com/urfave/cli/v2 v2.25.7
 	golang.org/x/net v0.10.0
 	gorm.io/driver/sqlite v1.5.3
