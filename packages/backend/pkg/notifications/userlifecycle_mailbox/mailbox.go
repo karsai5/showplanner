@@ -35,7 +35,7 @@ func Setup() {
 	router.AddNoPublisherHandler(
 		"email_new_user",
 		topics.NewUser,
-		postoffice.CreateSubscriber("email_new_user"),
+		postoffice.PubSub,
 		func(msg *message.Message) error {
 			letter := letters.NewUserLetter{}
 
@@ -50,7 +50,7 @@ func Setup() {
 	router.AddNoPublisherHandler(
 		"email_admin_about_filled_in_profile",
 		topics.UserFilledInProfile,
-		postoffice.CreateSubscriber("email_admin_about_filled_in_profile"),
+		postoffice.PubSub,
 		func(msg *message.Message) error {
 			letter := letters.UserFilledInProfileLetter{}
 
@@ -66,7 +66,7 @@ func Setup() {
 	router.AddNoPublisherHandler(
 		"email_user_added_to_show",
 		topics.UserAddedToShow,
-		postoffice.CreateSubscriber("email_user_added_to_show"),
+		postoffice.PubSub,
 		func(msg *message.Message) error {
 			letter := letters.UserAddedToShowLetter{}
 

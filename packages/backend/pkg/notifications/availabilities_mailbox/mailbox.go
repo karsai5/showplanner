@@ -33,7 +33,7 @@ func Setup() {
 	router.AddNoPublisherHandler(
 		"email_availabilities_update",
 		topics.UpdatedAvailability,
-		postoffice.CreateSubscriber("4"),
+		postoffice.PubSub,
 		handleEmailNotification,
 	)
 

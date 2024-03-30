@@ -9,6 +9,7 @@ import (
 	"github.com/ThreeDotsLabs/watermill"
 	"github.com/ThreeDotsLabs/watermill-kafka/v2/pkg/kafka"
 	"github.com/ThreeDotsLabs/watermill/message"
+	"github.com/ThreeDotsLabs/watermill/pubsub/gochannel"
 	"showplanner.io/pkg/config"
 )
 
@@ -19,7 +20,10 @@ var (
 		false, // trace
 	)
 	marshaler = kafka.DefaultMarshaler{}
-	publisher = CreatePublisher()
+	PubSub    = gochannel.NewGoChannel(
+		gochannel.Config{},
+		watermill.NewStdLogger(false, false),
+	)
 )
 
 type BaseEvent struct {
@@ -37,7 +41,7 @@ func PublishLetter[T any](topic string, event T) error {
 		slog.Error("Could not marshall")
 		return fmt.Errorf("While publishing event: %w", err)
 	}
-	err = publisher.Publish(topic, message.NewMessage(
+	err = PubSub.Publish(topic, message.NewMessage(
 		watermill.NewUUID(), // internal uuid of the message, useful for debugging
 		payload,
 	))
@@ -62,37 +66,4 @@ func printMessages(msg *message.Message) error {
 		msg.UUID, string(msg.Payload), msg.Metadata,
 	)
 	return nil
-}
-
-// createPublisher is a helper function that creates a Publisher, in this case - the Kafka Publisher.
-func CreatePublisher() message.Publisher {
-	kafkaPublisher, err := kafka.NewPublisher(
-		kafka.PublisherConfig{
-			Brokers:   brokers,
-			Marshaler: marshaler,
-		},
-		RouterLogger,
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	return kafkaPublisher
-}
-
-// createSubscriber is a helper function similar to the previous one, but in this case it creates a Subscriber.
-func CreateSubscriber(consumerGroup string) message.Subscriber {
-	kafkaSubscriber, err := kafka.NewSubscriber(
-		kafka.SubscriberConfig{
-			Brokers:       brokers,
-			Unmarshaler:   marshaler,
-			ConsumerGroup: consumerGroup, // every handler will use a separate consumer group
-		},
-		RouterLogger,
-	)
-	if err != nil {
-		panic(err)
-	}
-
-	return kafkaSubscriber
 }
