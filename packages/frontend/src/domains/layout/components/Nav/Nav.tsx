@@ -62,7 +62,7 @@ const Title = () => (
 );
 
 const NavList: React.FC<{ className?: string }> = ({ className }) => (
-  <ul className={className}>
+  <ul className={className} tabIndex={0}>
     <li>
       <Link href="/tools/showtimer">ShowTimer</Link>
     </li>
