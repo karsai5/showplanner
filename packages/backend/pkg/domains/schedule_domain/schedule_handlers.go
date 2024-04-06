@@ -57,7 +57,7 @@ var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operation
 		scheduledEvents = append(scheduledEvents, conv.Pointer(
 			models.ScheduleEventDTO{
 				EventDTO:     events_domain.MapEventToEventDTO(e),
-				Roles:        getRoles(roles, e, userId),
+				Roles:        MapRoles(roles, e, userId),
 				Availability: getAvailability(e.Availabilities),
 			},
 		))
@@ -78,7 +78,7 @@ func getAvailability(availabilities []database.Availability) *models.Availabilit
 	return nil
 }
 
-func getRoles(roles []database.Role, event database.Event, userId uuid.UUID) []*models.ScheduleEventDTORolesItems0 {
+func MapRoles(roles []database.Role, event database.Event, userId uuid.UUID) []*models.ScheduleEventDTORolesItems0 {
 	arr := []*models.ScheduleEventDTORolesItems0{}
 
 	// Get base roles, check if role is covered, check if role is shadowed
@@ -97,10 +97,12 @@ func getRoles(roles []database.Role, event database.Event, userId uuid.UUID) []*
 
 func getBaseRole(role database.Role, event database.Event, userId uuid.UUID) *models.ScheduleEventDTORolesItems0 {
 	baseRole := models.ScheduleEventDTORolesItems0{
+		CoveredBy:  nil,
+		Covering:   nil,
 		ID:         conv.UintToInt64(role.ID),
 		Name:       conv.Pointer(role.Name),
-		CoveredBy:  nil,
 		ShadowedBy: nil,
+		Shadowing:  nil,
 		Type:       BASE_ROLE,
 	}
 
