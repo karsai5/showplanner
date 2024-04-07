@@ -78,6 +78,11 @@ func createEventsForShow(cal *ics.Calendar, show database.Show, userId uuid.UUID
 
 func getDescription(show database.Show, event database.Event, mappedRoles []*models.ScheduleEventDTORolesItems0) string {
 	sBuilder := []string{}
+
+	if event.CurtainsUp != nil {
+		sBuilder = append(sBuilder, fmt.Sprintf("%s show\n", event.CurtainsUp.Format("3:04pm")))
+	}
+
 	for _, r := range mappedRoles {
 		if r.CoveredBy != nil {
 			sBuilder = append(sBuilder, fmt.Sprintf("Not required for %s, covered by %s %s", *r.Name, *r.CoveredBy.FirstName, *r.CoveredBy.LastName))
