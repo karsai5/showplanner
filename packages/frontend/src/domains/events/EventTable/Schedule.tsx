@@ -1,22 +1,27 @@
-import cc from 'classnames';
-import { PersonSummaryDTO, ScheduleEventDTO, ScheduleEventDTOAllOfRoles, ScheduleEventDTOAllOfRolesTypeEnum } from 'core/api/generated';
-import { PERMISSION, showPermission, useHasPermission } from 'core/permissions';
-import { PersonDisplayName } from 'domains/personnel/PersonDisplayName';
-import { useShowSummary } from 'domains/shows/lib/summaryContext';
-import { FC } from 'react';
+import cc from "classnames";
+import {
+  PersonSummaryDTO,
+  ScheduleEventDTO,
+  ScheduleEventDTOAllOfRoles,
+  ScheduleEventDTOAllOfRolesTypeEnum,
+} from "core/api/generated";
+import { PERMISSION, showPermission, useHasPermission } from "core/permissions";
+import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
+import { useShowSummary } from "domains/shows/lib/summaryContext";
+import { FC } from "react";
 
-import { AvailabilityDropdown } from './components/AvailabilityDropdown';
-import { EventTable } from './EventTable';
-import { CloneEventModal } from './modals/CloneEventModal';
-import { DeleteEventModal } from './modals/DeleteEventModal';
-import { EditEventModal } from './modals/EditEventModal';
+import { AvailabilityDropdown } from "./components/AvailabilityDropdown";
+import { EventTable } from "./EventTable";
+import { CloneEventModal } from "./modals/CloneEventModal";
+import { DeleteEventModal } from "./modals/DeleteEventModal";
+import { EditEventModal } from "./modals/EditEventModal";
 
 export const Schedule: React.FC<React.ComponentProps<typeof EventTable>> = (
-  props,
+  props
 ) => {
   const show = useShowSummary();
   const canEditEvents = useHasPermission()(
-    showPermission(show.id, PERMISSION.addEvents),
+    showPermission(show.id, PERMISSION.addEvents)
   );
 
   return (
@@ -53,44 +58,82 @@ export const Schedule: React.FC<React.ComponentProps<typeof EventTable>> = (
 };
 
 const RolesDescription: React.FC<{
-  roles?: Array<ScheduleEventDTOAllOfRoles>
-  isShow?: boolean
-}> = ({
-  roles,
-  isShow
-}) => {
-    if (!roles || roles.length === 0) {
-      if (isShow) {
-        return <span className="italic text-slate-400">Not required</span>
-      }
-      return null
+  roles?: Array<ScheduleEventDTOAllOfRoles>;
+  isShow?: boolean;
+}> = ({ roles, isShow }) => {
+  if (!roles || roles.length === 0) {
+    if (isShow) {
+      return <span className="italic text-slate-400">Not required</span>;
     }
-    return <div className="min-w-20">
-      {roles.map(r => {
-        return <div key={`${r.id}-${r.type}`} className={cc({['italic text-slate-400']: r.coveredBy})}>
-          <span className={cc({ ['line-through']: r.coveredBy })}>
-            {r.name}
-          </span>
-          {r.coveredBy && <> Not required, covered by <PersonDisplayName person={r.coveredBy} /></>}
-          {r.type === ScheduleEventDTOAllOfRolesTypeEnum.Covering && <> (Covering<OptionalDisplayName person={r.covering} />)</>}
-          {r.type === ScheduleEventDTOAllOfRolesTypeEnum.Shadowing && <> (Shadowing<OptionalDisplayName person={r.shadowing} />)</>}
-          {r.shadowedBy && <> (Shadowed by {r.shadowedBy.map((s, i) => {
-            if (i === 0) {
-              return <PersonDisplayName key={i} person={s} />
-            }
-            return <span key={i}>, <PersonDisplayName person={s} /></span>
-          })})</>}
-        </div>
+    return null;
+  }
+  return (
+    <div className="min-w-20">
+      {roles.map((r) => {
+        return (
+          <div
+            key={`${r.id}-${r.type}`}
+            className={cc({ ["italic text-slate-400"]: r.coveredBy })}
+          >
+            <span className={cc({ ["line-through"]: r.coveredBy })}>
+              {r.name}
+            </span>
+            {r.coveredBy && (
+              <>
+                {" "}
+                Not required, covered by{" "}
+                <PersonDisplayName person={r.coveredBy} />
+              </>
+            )}
+            {r.type === ScheduleEventDTOAllOfRolesTypeEnum.Covering && (
+              <>
+                {" "}
+                (Covering
+                <OptionalDisplayName person={r.covering} />)
+              </>
+            )}
+            {r.type === ScheduleEventDTOAllOfRolesTypeEnum.Shadowing && (
+              <>
+                {" "}
+                (Shadowing
+                <OptionalDisplayName person={r.shadowing} />)
+              </>
+            )}
+            {r.shadowedBy && (
+              <>
+                {" "}
+                (Shadowed by{" "}
+                {r.shadowedBy.map((s, i) => {
+                  if (i === 0) {
+                    return <PersonDisplayName key={i} person={s} />;
+                  }
+                  return (
+                    <span key={i}>
+                      , <PersonDisplayName person={s} />
+                    </span>
+                  );
+                })}
+                )
+              </>
+            )}
+          </div>
+        );
       })}
     </div>
-  }
+  );
+};
 
 const OptionalDisplayName: FC<{ person?: PersonSummaryDTO }> = ({ person }) => {
   if (!person) {
     return null;
   }
-  return <> <PersonDisplayName person={person} /></>
-}
+  return (
+    <>
+      {" "}
+      <PersonDisplayName person={person} />
+    </>
+  );
+};
 
 const AdminButtons: FC<{ event: ScheduleEventDTO }> = ({ event }) => {
   return (

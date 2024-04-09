@@ -1,17 +1,17 @@
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import theatreIcons from 'domains/events/images/theatre.png';
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import theatreIcons from "domains/events/images/theatre.png";
 
 dayjs.extend(customParseFormat);
 
-import Image from 'next/image';
+import Image from "next/image";
 
-import { dateFormatString, timeFormatString } from './datesConstants';
+import { dateFormatString, timeFormatString } from "./datesConstants";
 
 export const getTimeRangeWithCurtainsUp = (
   start?: Date,
   end?: Date | null,
-  curtainsUp?: Date,
+  curtainsUp?: Date
 ) => {
   let stringBuilder = getTimeRangeString(start, end);
   if (stringBuilder?.length) {
@@ -57,10 +57,10 @@ export const TimeRangeWithCurtainsUp: React.FC<{
 
 export const getTimeRangeString = (
   startString?: Date,
-  endString?: Date | null,
+  endString?: Date | null
 ) => {
   if (!startString) {
-    return '';
+    return "";
   }
   const start = dayjs(startString);
   let stringBuilder = dayjs(start).format(timeFormatString);
@@ -68,17 +68,17 @@ export const getTimeRangeString = (
   if (endString) {
     const end = dayjs(endString);
     const endTime = end.format(timeFormatString);
-    sameDay = dayjs(endString).isSame(start, 'day');
+    sameDay = dayjs(endString).isSame(start, "day");
 
     if (sameDay) {
       stringBuilder += ` - ${endTime}`;
     } else if (
-      dayjs(startString).add(1, 'day').startOf('day').isSame(endString)
+      dayjs(startString).add(1, "day").startOf("day").isSame(endString)
     ) {
-      stringBuilder += ' - midnight';
+      stringBuilder += " - midnight";
     } else {
       stringBuilder += ` - ${endTime} (${dayjs(endString).format(
-        dateFormatString,
+        dateFormatString
       )})`;
     }
   }

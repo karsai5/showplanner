@@ -1,23 +1,23 @@
-import { useQuery } from '@tanstack/react-query';
-import cc from 'classnames';
-import { api } from 'core/api';
-import { AvailabilitiesDTOEventsInner } from 'core/api/generated';
-import { AccessDenied } from 'core/components/AccessDenied/AccessDenied';
-import ErrorBox from 'core/components/ErrorBox/ErrorBox';
-import { GapRow, Td } from 'core/components/tables/tables';
-import { H2 } from 'core/components/Typography';
-import { TimeRangeWithCurtainsUp } from 'core/dates/dateEventHelpers';
-import { PERMISSION, showPermission } from 'core/permissions';
-import { displayDate } from 'domains/events/lib/displayDate';
-import { processEvents } from 'domains/events/lib/processEvents';
-import { getBgColor, getStringFromBoolean } from 'domains/rostering/helpers';
-import { LayoutWithShowSidebar } from 'domains/shows/LayoutForShow';
-import { useShowSummary } from 'domains/shows/lib/summaryContext';
-import sortBy from 'lodash/sortBy';
-import Head from 'next/head';
-import React, { Fragment, ReactElement } from 'react';
-import { SessionAuth } from 'supertokens-auth-react/recipe/session';
-import { PermissionClaim } from 'supertokens-auth-react/recipe/userroles';
+import { useQuery } from "@tanstack/react-query";
+import cc from "classnames";
+import { api } from "core/api";
+import { AvailabilitiesDTOEventsInner } from "core/api/generated";
+import { AccessDenied } from "core/components/AccessDenied/AccessDenied";
+import ErrorBox from "core/components/ErrorBox/ErrorBox";
+import { GapRow, Td } from "core/components/tables/tables";
+import { H2 } from "core/components/Typography";
+import { TimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
+import { PERMISSION, showPermission } from "core/permissions";
+import { displayDate } from "domains/events/lib/displayDate";
+import { processEvents } from "domains/events/lib/processEvents";
+import { getBgColor, getStringFromBoolean } from "domains/rostering/helpers";
+import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
+import { useShowSummary } from "domains/shows/lib/summaryContext";
+import sortBy from "lodash/sortBy";
+import Head from "next/head";
+import React, { Fragment, ReactElement } from "react";
+import { SessionAuth } from "supertokens-auth-react/recipe/session";
+import { PermissionClaim } from "supertokens-auth-react/recipe/userroles";
 
 const ShowPage = () => {
   const show = useShowSummary();
@@ -27,7 +27,7 @@ const ShowPage = () => {
       overrideGlobalClaimValidators={(globalValidators) => [
         ...globalValidators,
         PermissionClaim.validators.includes(
-          showPermission(show?.id, PERMISSION.rostering),
+          showPermission(show?.id, PERMISSION.rostering)
         ),
       ]}
     >
@@ -44,8 +44,8 @@ const ShowPage = () => {
 
 const AvailabilitiesTable: React.FC<{ showId: number }> = ({ showId }) => {
   const { data, isLoading, isError } = useQuery(
-    ['ShowAvailabilities', showId],
-    () => api.availabilitiesGet({ showId: showId }),
+    ["ShowAvailabilities", showId],
+    () => api.availabilitiesGet({ showId: showId })
   );
   if (isError) {
     return <ErrorBox>Could not get shows</ErrorBox>;
@@ -54,8 +54,10 @@ const AvailabilitiesTable: React.FC<{ showId: number }> = ({ showId }) => {
     return <progress className="progress w-56"></progress>;
   }
   if (data) {
-    const { dates, groupedEvents } =
-      processEvents<AvailabilitiesDTOEventsInner>(data.events);
+    const {
+      dates,
+      groupedEvents,
+    } = processEvents<AvailabilitiesDTOEventsInner>(data.events);
     return (
       <table className="table table-sm w-full">
         <thead>
@@ -73,8 +75,8 @@ const AvailabilitiesTable: React.FC<{ showId: number }> = ({ showId }) => {
           {dates.map((date) => {
             const thisGroupEvents = sortBy(
               groupedEvents[date.date.toString()],
-              'start',
-              'curtainsUp',
+              "start",
+              "curtainsUp"
             );
             return (
               <Fragment key={date.date.toString()}>
@@ -97,16 +99,20 @@ const AvailabilitiesTable: React.FC<{ showId: number }> = ({ showId }) => {
                       </Td>
                       {e.availabilities?.map((a, i) => {
                         if (a === null) {
-                          return <Td key={i} className="italic text-slate-400">Unknown</Td>;
+                          return (
+                            <Td key={i} className="italic text-slate-400">
+                              Unknown
+                            </Td>
+                          );
                         }
                         return (
                           <Td
                             key={i}
                             className={cc(
-                              getBgColor(getStringFromBoolean(a.available)),
+                              getBgColor(getStringFromBoolean(a.available))
                             )}
                           >
-                            {a.available ? 'Yes' : 'No'}
+                            {a.available ? "Yes" : "No"}
                           </Td>
                         );
                       })}

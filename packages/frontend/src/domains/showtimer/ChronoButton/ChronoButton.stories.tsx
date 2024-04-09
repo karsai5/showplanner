@@ -1,13 +1,13 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import { ChronoButton } from './ChronoButton';
+import { ChronoButton } from "./ChronoButton";
 
 export default {
   /* 👇 The title prop is optional.
    * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
    * to learn how to generate automatic titles
    */
-  title: 'ChronoButton',
+  title: "ChronoButton",
   component: ChronoButton,
 } as ComponentMeta<typeof ChronoButton>;
 
@@ -22,4 +22,4 @@ Initial.args = {};
 
 export const SavedState = Template.bind({});
 
-SavedState.args = { id: 'storybook' };
+SavedState.args = { id: "storybook" };

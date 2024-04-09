@@ -1,1 +1,1 @@
-export * from './EventTable';
+export * from "./EventTable";

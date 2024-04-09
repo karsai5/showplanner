@@ -1,6 +1,6 @@
-import { Dialog } from '@headlessui/react';
-import cc from 'classnames';
-import React, { FC, useState } from 'react';
+import { Dialog } from "@headlessui/react";
+import cc from "classnames";
+import React, { FC, useState } from "react";
 
 export const useModal = (initialState: boolean = false) => {
   const [isOpen, setIsOpen] = useState(initialState);
@@ -32,11 +32,11 @@ const Modal: FC<NewShowModalProps> = ({
       onClose={close}
       as="div"
       className={cc(
-        'modal modal-bottom sm:modal-middle',
+        "modal modal-bottom sm:modal-middle",
         {
-          ['modal-open']: isOpen,
+          ["modal-open"]: isOpen,
         },
-        className,
+        className
       )}
     >
       <Dialog.Panel className="modal-box flex flex-col">

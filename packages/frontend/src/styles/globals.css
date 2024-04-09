@@ -3,12 +3,12 @@
 @tailwind utilities;
 
 .cover-box {
-	writing-mode: vertical-rl;
-	text-orientation: mixed;
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	text-align: center;
-	padding: 0.1rem;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  text-align: center;
+  padding: 0.1rem;
 }

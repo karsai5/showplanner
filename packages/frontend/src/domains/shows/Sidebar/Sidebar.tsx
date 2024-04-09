@@ -1,17 +1,14 @@
-import { CalendarDaysIcon, HomeIcon } from '@heroicons/react/24/outline';
-import cc from 'classnames';
-import {
-  DocumentCheckIcon,
-  UsersIcon,
-} from 'core/components/Icons';
-import { HasPermission, PERMISSION } from 'core/permissions';
-import { useShowSlugFromUrl } from 'domains/shows/lib/helpers';
-import { useShowSummary } from 'domains/shows/lib/summaryContext';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React, { FC, ReactNode, useState } from 'react';
+import { CalendarDaysIcon, HomeIcon } from "@heroicons/react/24/outline";
+import cc from "classnames";
+import { DocumentCheckIcon, UsersIcon } from "core/components/Icons";
+import { HasPermission, PERMISSION } from "core/permissions";
+import { useShowSlugFromUrl } from "domains/shows/lib/helpers";
+import { useShowSummary } from "domains/shows/lib/summaryContext";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { FC, ReactNode, useState } from "react";
 
-import styles from './Sidebar.module.scss';
+import styles from "./Sidebar.module.scss";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -38,14 +35,14 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, children }) => {
               <Item
                 url={`/shows/${slug}`}
                 collapsed={collapsed}
-                name={'Schedule'}
+                name={"Schedule"}
                 icon={<HomeIcon className="h-6 w-6" />}
               />
               <HasPermission showId={show.id} permission={PERMISSION.rostering}>
                 <Item
                   url={`/shows/${slug}/availabilities`}
                   collapsed={collapsed}
-                  name={'Availabilities'}
+                  name={"Availabilities"}
                   icon={<DocumentCheckIcon />}
                 />
               </HasPermission>
@@ -53,7 +50,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, children }) => {
                 <Item
                   url={`/shows/${slug}/people`}
                   collapsed={collapsed}
-                  name={'People'}
+                  name={"People"}
                   icon={<UsersIcon />}
                 />
               </HasPermission>
@@ -61,7 +58,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, children }) => {
                 <Item
                   url={`/shows/${slug}/roster`}
                   collapsed={collapsed}
-                  name={'Roster'}
+                  name={"Roster"}
                   icon={<CalendarDaysIcon className="h-6 w-6" />}
                 />
               </HasPermission>
@@ -86,7 +83,7 @@ const Item: React.FC<{
     <li>
       <Link href={url} className={cc({ active: active })}>
         <div
-          className={cc({ tooltip: collapsed }, 'tooltip-right z-50')}
+          className={cc({ tooltip: collapsed }, "tooltip-right z-50")}
           data-tip={name}
         >
           {icon}

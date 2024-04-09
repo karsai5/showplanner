@@ -1,13 +1,13 @@
-import 'react-datepicker/dist/react-datepicker.css';
+import "react-datepicker/dist/react-datepicker.css";
 
-import cc from 'classnames';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import cc from "classnames";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
 const BEGINNERS_DURATION = 5;
-const LOCALSTORAGE_KEY = 'beginners-curtainsUp';
+const LOCALSTORAGE_KEY = "beginners-curtainsUp";
 
 type Call = {
   duration: number;
@@ -52,15 +52,15 @@ export const Beginners: React.FunctionComponent<
     setCurtainsUp(newTime);
     window.localStorage.setItem(LOCALSTORAGE_KEY, newTime.toISOString());
   };
-  const beginners = moment(curtainsUp).subtract(BEGINNERS_DURATION, 'm');
+  const beginners = moment(curtainsUp).subtract(BEGINNERS_DURATION, "m");
 
   const diffTillCurtainsUp = moment(curtainsUp).diff(nowPerSecond);
 
   const diffTillBeginners = moment(beginners).diff(nowPerSecond);
 
-  const firstCall = moment(beginners).subtract(calls[0].duration, 'm');
-  const minutesDifference = moment(curtainsUp).diff(firstCall, 'minutes');
-  const difference = moment().diff(firstCall, 'minutes');
+  const firstCall = moment(beginners).subtract(calls[0].duration, "m");
+  const minutesDifference = moment(curtainsUp).diff(firstCall, "minutes");
+  const difference = moment().diff(firstCall, "minutes");
 
   const percent = Math.round((difference / minutesDifference) * 100);
 
@@ -84,9 +84,9 @@ export const Beginners: React.FunctionComponent<
           className="input input-bordered w-full max-w-xs"
           type="time"
           onChange={(event) =>
-            handleUpdate(moment(event.target.value, 'HH:mm').toDate())
+            handleUpdate(moment(event.target.value, "HH:mm").toDate())
           }
-          value={curtainsUp ? moment(curtainsUp).format('HH:mm') : undefined}
+          value={curtainsUp ? moment(curtainsUp).format("HH:mm") : undefined}
         />
       </div>
     </div>
@@ -103,10 +103,10 @@ export const TimeTill: React.FC<{
   const minutes = diff / 1000 / 60;
   const lessThanFiveMinutes = minutes < 5;
   return (
-    <div className={cc({ ['opacity-30']: !timeLeft }, className)}>
+    <div className={cc({ ["opacity-30"]: !timeLeft }, className)}>
       <div className="flex justify-between">
         <div className="font-bold">{label}</div>
-        <div className="text-slate-500">{moment(time).format('h:mma')}</div>
+        <div className="text-slate-500">{moment(time).format("h:mma")}</div>
       </div>
       <span className={styles.clock}>
         {timeLeft && !lessThanFiveMinutes && (
@@ -117,7 +117,7 @@ export const TimeTill: React.FC<{
             <span
               style={
                 {
-                  '--value': moment.utc(diff).format('mm'),
+                  "--value": moment.utc(diff).format("mm"),
                 } as React.CSSProperties
               }
             ></span>
@@ -125,7 +125,7 @@ export const TimeTill: React.FC<{
             <span
               style={
                 {
-                  '--value': moment.utc(diff).format('ss'),
+                  "--value": moment.utc(diff).format("ss"),
                 } as React.CSSProperties
               }
             ></span>

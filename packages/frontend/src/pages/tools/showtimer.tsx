@@ -1,7 +1,7 @@
-import { ClockIcon } from 'core/components/Icons';
-import { H2 } from 'core/components/Typography';
-import { ShowTimer } from 'domains/showtimer/ShowTimer';
-import Head from 'next/head';
+import { ClockIcon } from "core/components/Icons";
+import { H2 } from "core/components/Typography";
+import { ShowTimer } from "domains/showtimer/ShowTimer";
+import Head from "next/head";
 
 const Shows = () => (
   <>

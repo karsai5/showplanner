@@ -1,13 +1,13 @@
-import { AccessDenied } from 'core/components/AccessDenied/AccessDenied';
-import { H2 } from 'core/components/Typography';
-import { PERMISSION, showPermission } from 'core/permissions';
-import { RosterTable } from 'domains/rostering/RosterTable/RosterTable';
-import { LayoutWithShowSidebar } from 'domains/shows/LayoutForShow';
-import { useShowSummary } from 'domains/shows/lib/summaryContext';
-import Head from 'next/head';
-import React, { ReactElement } from 'react';
-import { SessionAuth } from 'supertokens-auth-react/recipe/session';
-import { PermissionClaim } from 'supertokens-auth-react/recipe/userroles';
+import { AccessDenied } from "core/components/AccessDenied/AccessDenied";
+import { H2 } from "core/components/Typography";
+import { PERMISSION, showPermission } from "core/permissions";
+import { RosterTable } from "domains/rostering/RosterTable/RosterTable";
+import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
+import { useShowSummary } from "domains/shows/lib/summaryContext";
+import Head from "next/head";
+import React, { ReactElement } from "react";
+import { SessionAuth } from "supertokens-auth-react/recipe/session";
+import { PermissionClaim } from "supertokens-auth-react/recipe/userroles";
 
 const ShowPage = () => {
   const show = useShowSummary();
@@ -17,7 +17,7 @@ const ShowPage = () => {
       overrideGlobalClaimValidators={(globalValidators) => [
         ...globalValidators,
         PermissionClaim.validators.includes(
-          showPermission(show?.id, PERMISSION.rostering),
+          showPermission(show?.id, PERMISSION.rostering)
         ),
       ]}
     >
@@ -31,7 +31,6 @@ const ShowPage = () => {
     </SessionAuth>
   );
 };
-
 
 ShowPage.getLayout = (page: ReactElement) => (
   <LayoutWithShowSidebar>{page}</LayoutWithShowSidebar>

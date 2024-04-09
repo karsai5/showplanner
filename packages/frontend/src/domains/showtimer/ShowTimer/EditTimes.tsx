@@ -1,11 +1,11 @@
-import { Dialog } from '@headlessui/react';
-import { PencilIcon } from 'core/components/Icons';
-import { ResetButton } from 'domains/showtimer/buttons/ResetButton';
-import moment from 'moment';
-import { useState } from 'react';
-import { FaTrash } from 'react-icons/fa';
+import { Dialog } from "@headlessui/react";
+import { PencilIcon } from "core/components/Icons";
+import { ResetButton } from "domains/showtimer/buttons/ResetButton";
+import moment from "moment";
+import { useState } from "react";
+import { FaTrash } from "react-icons/fa";
 
-import { TimerLabels, Timers } from './types';
+import { TimerLabels, Timers } from "./types";
 
 type Props = {
   timers: Timers;
@@ -33,9 +33,9 @@ const ButtonRow: React.FC<Props & { timerKey: keyof Timers }> = ({
           className="input input-bordered w-full max-w-xs"
           type="time"
           onChange={(event) =>
-            handleUpdate(moment(event.target.value, 'HH:mm').toDate())
+            handleUpdate(moment(event.target.value, "HH:mm").toDate())
           }
-          value={thisTimer?.format('HH:mm') || ''}
+          value={thisTimer?.format("HH:mm") || ""}
         />
         <button className="btn" onClick={handleStart}>
           Now

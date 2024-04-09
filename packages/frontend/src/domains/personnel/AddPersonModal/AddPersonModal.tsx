@@ -1,37 +1,37 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { api } from 'core/api';
-import ErrorBox from 'core/components/ErrorBox/ErrorBox';
-import { LoadingBox } from 'core/components/LoadingBox/LoadingBox';
-import { useModal } from 'core/components/Modal/Modal';
-import { showToastError } from 'core/utils/errors';
-import { toast } from 'react-toastify';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { api } from "core/api";
+import ErrorBox from "core/components/ErrorBox/ErrorBox";
+import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
+import { useModal } from "core/components/Modal/Modal";
+import { showToastError } from "core/utils/errors";
+import { toast } from "react-toastify";
 
 export const AddPersonModal: React.FC<{
   showId: number;
 }> = ({ showId }) => {
   const { Modal, open, close, isOpen } = useModal();
   const { data, isLoading, isError } = useQuery(
-    ['unassigned-people', showId],
-    () => api.personnelAssignableGet({ showId: showId }),
+    ["unassigned-people", showId],
+    () => api.personnelAssignableGet({ showId: showId })
   );
 
   const queryClient = useQueryClient();
   const mutation = useMutation<unknown, Error, string | undefined>({
     mutationFn: (personId) => {
       if (!personId) {
-        throw new Error('Person id missing');
+        throw new Error("Person id missing");
       }
       return api.personnelAssignPost({ showId: showId, personId: personId });
     },
     onError: (e) => {
-      showToastError('Something went wrong adding person to show.', e);
+      showToastError("Something went wrong adding person to show.", e);
     },
     onSuccess: () => {
-      toast.success('Person added to show!');
+      toast.success("Person added to show!");
       queryClient.invalidateQueries({
-        queryKey: ['unassigned-people', showId],
+        queryKey: ["unassigned-people", showId],
       });
-      queryClient.invalidateQueries({ queryKey: ['assigned-people', showId] });
+      queryClient.invalidateQueries({ queryKey: ["assigned-people", showId] });
     },
   });
 

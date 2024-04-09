@@ -1,20 +1,20 @@
-import confetti from 'canvas-confetti';
-import { ClipboardIcon, EmailIcon } from 'core/components/Icons';
-import { useCopyToClipboard } from 'core/hooks/useCopyToClipboard';
-import { NextButton } from 'domains/showtimer/buttons/NextButton';
-import { ChronoButton } from 'domains/showtimer/ChronoButton';
-import moment, { Moment } from 'moment';
-import React, { createContext, FC, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import confetti from "canvas-confetti";
+import { ClipboardIcon, EmailIcon } from "core/components/Icons";
+import { useCopyToClipboard } from "core/hooks/useCopyToClipboard";
+import { NextButton } from "domains/showtimer/buttons/NextButton";
+import { ChronoButton } from "domains/showtimer/ChronoButton";
+import moment, { Moment } from "moment";
+import React, { createContext, FC, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-import { Beginners } from './Beginners';
-import { CurrentTimeCard } from './CurrentTimeCard';
-import { EditTimes } from './EditTimes';
-import { Interval } from './Interval';
-import { getShowLengths } from './TimingDetails';
-import { calculateCurrentPhase, Phase, Timers } from './types';
+import { Beginners } from "./Beginners";
+import { CurrentTimeCard } from "./CurrentTimeCard";
+import { EditTimes } from "./EditTimes";
+import { Interval } from "./Interval";
+import { getShowLengths } from "./TimingDetails";
+import { calculateCurrentPhase, Phase, Timers } from "./types";
 
-const TIMERS_KEY = 'timers';
+const TIMERS_KEY = "timers";
 
 export const emptyTimers: Timers = {
   actOneStart: null,
@@ -61,9 +61,9 @@ export const ShowTimer: FC = () => {
 
   const copyTimes = async () => {
     if (await copy(getTimersAndNotesSummary(timers))) {
-      toast.success('Copied summary to clipboard for sharing');
+      toast.success("Copied summary to clipboard for sharing");
     } else {
-      toast.error('Could not copy summary. Try sending as an email instead.');
+      toast.error("Could not copy summary. Try sending as an email instead.");
     }
   };
 
@@ -116,9 +116,13 @@ export const ShowTimer: FC = () => {
 
 const getTimersAndNotesSummary = (timers: Timers) => {
   const formatTime = (value: Moment | null) =>
-    value ? moment(value).format('hh:mma') : '';
-  const { actTwoLength, intervalLength, showLength, actOneLength } =
-    getShowLengths(timers);
+    value ? moment(value).format("hh:mma") : "";
+  const {
+    actTwoLength,
+    intervalLength,
+    showLength,
+    actOneLength,
+  } = getShowLengths(timers);
 
   const {
     houseOpen,
@@ -130,20 +134,20 @@ const getTimersAndNotesSummary = (timers: Timers) => {
     actTwoEnd,
   } = timers;
 
-  let body = `Show times for ${moment().format('dddd, MMMM Do')}\n\n`;
-  body = body + 'SHOW TIMES\n';
+  let body = `Show times for ${moment().format("dddd, MMMM Do")}\n\n`;
+  body = body + "SHOW TIMES\n";
   if (houseOpen && (fohClearance || actOneStart)) {
     body =
       body +
       `House open: ${formatTime(houseOpen)} - ${formatTime(
-        fohClearance || actOneStart,
+        fohClearance || actOneStart
       )} \n`;
   }
   if (actOneStart && intervalStart) {
     body =
       body +
       `Act one: ${formatTime(actOneStart)} - ${formatTime(
-        intervalStart,
+        intervalStart
       )} (${actOneLength})\n`;
   }
   if (intervalStart && intervalEnd) {
@@ -152,32 +156,32 @@ const getTimersAndNotesSummary = (timers: Timers) => {
       body +
       (intervalFohClearance
         ? ` (FOH clearance given at ${formatTime(intervalFohClearance)})\n`
-        : '\n');
+        : "\n");
   }
   if (intervalEnd && actTwoEnd) {
     body =
       body +
       `Act two: ${formatTime(intervalEnd)} - ${formatTime(
-        actTwoEnd,
+        actTwoEnd
       )} (${actTwoLength})\n`;
   }
   if (actOneStart && actTwoEnd) {
     body =
       body +
       `Show: ${formatTime(actOneStart)} - ${formatTime(
-        actTwoEnd,
+        actTwoEnd
       )} (${showLength})\n`;
   }
-  body = body + '\nDETAILED TIMESTAMPS\n';
+  body = body + "\nDETAILED TIMESTAMPS\n";
   body =
     body +
     Object.keys(timers)
       .map((key) => {
         const value = timers[key as keyof Timers];
-        const formattedValue = value ? moment(value).format('hh:mma') : '';
+        const formattedValue = value ? moment(value).format("hh:mma") : "";
         return `${key}: ${formattedValue}`;
       })
-      .join('\n');
+      .join("\n");
 
   return body;
 };

@@ -1,7 +1,7 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
-import imageSrc from './404.jpg';
+import imageSrc from "./404.jpg";
 
 const NotFoundPage = () => {
   return (

@@ -1,9 +1,9 @@
-import cc from 'classnames';
-import { ClockIcon, PauseIcon, PlayIcon } from 'core/components/Icons';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import { useEffect, useState } from 'react';
-import { CallableContextResult, useLongPress } from 'use-long-press';
+import cc from "classnames";
+import { ClockIcon, PauseIcon, PlayIcon } from "core/components/Icons";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+import { useEffect, useState } from "react";
+import { CallableContextResult, useLongPress } from "use-long-press";
 
 dayjs.extend(duration);
 
@@ -37,7 +37,7 @@ export const ChronoButton: React.FC<{ id?: string; className?: string }> = ({
   });
 
   const [interval, saveInterval] = useState<NodeJS.Timer | undefined>(
-    undefined,
+    undefined
   );
 
   const startTimer = () => {
@@ -47,12 +47,12 @@ export const ChronoButton: React.FC<{ id?: string; className?: string }> = ({
           if (key) {
             window.localStorage.setItem(
               localStorageKey(key) as string,
-              (milliseconds + 1000).toString(),
+              (milliseconds + 1000).toString()
             );
           }
           return milliseconds + 1000;
         });
-      }, 1000),
+      }, 1000)
     );
   };
 
@@ -86,7 +86,7 @@ export const ChronoButton: React.FC<{ id?: string; className?: string }> = ({
         handleClickOnRuningTimer();
       },
       threshold: 1500,
-    },
+    }
   );
 
   if (milliseconds > 0 || interval) {
@@ -122,9 +122,9 @@ const RunningTimer: React.FC<{
   return (
     <div
       className={cc(
-        { ['tooltip-open']: showTooltip },
-        'tooltip tooltip-bottom',
-        className,
+        { ["tooltip-open"]: showTooltip },
+        "tooltip tooltip-bottom",
+        className
       )}
       data-tip="Tap to pause, hold to reset"
     >
@@ -137,7 +137,7 @@ const RunningTimer: React.FC<{
           <span
             style={
               {
-                '--value': dayjs.duration(milliseconds).format('mm'),
+                "--value": dayjs.duration(milliseconds).format("mm"),
               } as React.CSSProperties
             }
           ></span>
@@ -145,7 +145,7 @@ const RunningTimer: React.FC<{
           <span
             style={
               {
-                '--value': dayjs.duration(milliseconds).format('ss'),
+                "--value": dayjs.duration(milliseconds).format("ss"),
               } as React.CSSProperties
             }
           ></span>
@@ -167,9 +167,9 @@ const PausedTimer: React.FC<{
   return (
     <div
       className={cc(
-        { ['tooltip-open']: showTooltip },
-        'tooltip tooltip-bottom',
-        className,
+        { ["tooltip-open"]: showTooltip },
+        "tooltip tooltip-bottom",
+        className
       )}
       data-tip="Tap to continue, hold to reset"
     >
@@ -182,7 +182,7 @@ const PausedTimer: React.FC<{
           <span
             style={
               {
-                '--value': dayjs.duration(milliseconds).format('mm'),
+                "--value": dayjs.duration(milliseconds).format("mm"),
               } as React.CSSProperties
             }
           ></span>
@@ -190,7 +190,7 @@ const PausedTimer: React.FC<{
           <span
             style={
               {
-                '--value': dayjs.duration(milliseconds).format('ss'),
+                "--value": dayjs.duration(milliseconds).format("ss"),
               } as React.CSSProperties
             }
           ></span>
@@ -206,7 +206,7 @@ const DormantTimer: React.FC<{ onClick: () => void; className?: string }> = ({
 }) => (
   <button
     onClick={onClick}
-    className={cc('btn btn-block flex flex-nowrap', className)}
+    className={cc("btn btn-block flex flex-nowrap", className)}
   >
     <ClockIcon className="mr-1" />
     00:00

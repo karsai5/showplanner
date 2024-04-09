@@ -1,5 +1,5 @@
-import { CrossIcon } from 'core/components/Icons';
-import React, { FC } from 'react';
+import { CrossIcon } from "core/components/Icons";
+import React, { FC } from "react";
 
 interface ErrorBoxProps {
   children: React.ReactNode;

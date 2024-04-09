@@ -1,10 +1,10 @@
-import 'react-datepicker/dist/react-datepicker.css';
+import "react-datepicker/dist/react-datepicker.css";
 
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 
-import { TimeTill } from './Beginners';
-import { Timers } from './types';
+import { TimeTill } from "./Beginners";
+import { Timers } from "./types";
 
 const BEGINNERS_DURATION = 5;
 const INTERVAL_DURATION = 20;
@@ -42,17 +42,17 @@ export const Interval: React.FC<
   }
 
   const beginners = moment(intervalStart)
-    .add(INTERVAL_DURATION, 'm')
-    .subtract(BEGINNERS_DURATION, 'm');
-  const curtainsUp = moment(intervalStart).add(INTERVAL_DURATION, 'm');
+    .add(INTERVAL_DURATION, "m")
+    .subtract(BEGINNERS_DURATION, "m");
+  const curtainsUp = moment(intervalStart).add(INTERVAL_DURATION, "m");
 
   const diffTillCurtainsUp = moment(curtainsUp).diff(nowPerSecond);
 
   const diffTillBeginners = moment(beginners).diff(nowPerSecond);
 
-  const firstCall = moment(beginners).subtract(calls[0].duration, 'm');
-  const minutesDifference = moment(curtainsUp).diff(firstCall, 'minutes');
-  const difference = moment().diff(firstCall, 'minutes');
+  const firstCall = moment(beginners).subtract(calls[0].duration, "m");
+  const minutesDifference = moment(curtainsUp).diff(firstCall, "minutes");
+  const difference = moment().diff(firstCall, "minutes");
 
   const percent = Math.round((difference / minutesDifference) * 100);
 

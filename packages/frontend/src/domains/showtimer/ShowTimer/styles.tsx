@@ -1,5 +1,5 @@
-import { Card, Form, Table } from 'semantic-ui-react';
-import styled from 'styled-components';
+import { Card, Form, Table } from "semantic-ui-react";
+import styled from "styled-components";
 
 export const StyledCard = styled(Card)`
   &.big-clock {

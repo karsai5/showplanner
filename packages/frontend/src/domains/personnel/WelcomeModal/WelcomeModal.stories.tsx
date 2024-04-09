@@ -1,12 +1,12 @@
 /* eslint-disable */
-import WelcomeModal from './WelcomeModal';
+import WelcomeModal from "./WelcomeModal";
 
 export default {
-  title: 'WelcomeModal',
+  title: "WelcomeModal",
 };
 
 export const Default = () => <WelcomeModal />;
 
 Default.story = {
-  name: 'default',
+  name: "default",
 };

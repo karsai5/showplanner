@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { exists, mapValues } from "../runtime";
 /**
  *
  * @export
@@ -50,9 +50,9 @@ export interface BaseShowDTO {
  */
 export function instanceOfBaseShowDTO(value: object): boolean {
   let isInstance = true;
-  isInstance = isInstance && 'name' in value;
-  isInstance = isInstance && 'company' in value;
-  isInstance = isInstance && 'slug' in value;
+  isInstance = isInstance && "name" in value;
+  isInstance = isInstance && "company" in value;
+  isInstance = isInstance && "slug" in value;
 
   return isInstance;
 }
@@ -63,16 +63,16 @@ export function BaseShowDTOFromJSON(json: any): BaseShowDTO {
 
 export function BaseShowDTOFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  ignoreDiscriminator: boolean
 ): BaseShowDTO {
   if (json === undefined || json === null) {
     return json;
   }
   return {
-    id: !exists(json, 'id') ? undefined : json['id'],
-    name: json['name'],
-    company: json['company'],
-    slug: json['slug'],
+    id: !exists(json, "id") ? undefined : json["id"],
+    name: json["name"],
+    company: json["company"],
+    slug: json["slug"],
   };
 }
 

@@ -1,26 +1,26 @@
-import { ScheduleEventDTO } from 'core/api/generated';
-import Address from 'core/components/Address/Address';
-import { GapRow, Td } from 'core/components/tables/tables';
-import { TimeRangeWithCurtainsUp } from 'core/dates/dateEventHelpers';
-import dayjs from 'dayjs';
-import advancedFormat from 'dayjs/plugin/advancedFormat';
-import { displayDate } from 'domains/events/lib/displayDate';
-import { processEvents } from 'domains/events/lib/processEvents';
-import sortBy from 'lodash/sortBy';
-import { FC, Fragment, ReactNode } from 'react';
+import { ScheduleEventDTO } from "core/api/generated";
+import Address from "core/components/Address/Address";
+import { GapRow, Td } from "core/components/tables/tables";
+import { TimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import { displayDate } from "domains/events/lib/displayDate";
+import { processEvents } from "domains/events/lib/processEvents";
+import sortBy from "lodash/sortBy";
+import { FC, Fragment, ReactNode } from "react";
 
 dayjs.extend(advancedFormat);
 
 export enum eventTableDefaultHeaders {
-  Name = 'Name',
-  Time = 'Time',
-  Location = 'Location',
-  Note = 'Note',
+  Name = "Name",
+  Time = "Time",
+  Location = "Location",
+  Note = "Note",
 }
 
 export type FieldOptions = {
   header: string;
-  position: 'left' | 'right';
+  position: "left" | "right";
   render: FC<{ event: ScheduleEventDTO }>;
   className?: (event: ScheduleEventDTO) => string | string;
   noPadding?: boolean;
@@ -64,8 +64,8 @@ export const EventTable: React.FC<{
           {dates.map((date) => {
             const thisGroupEvents = sortBy(
               groupedEvents[date.date.toString()],
-              'start',
-              'curtainsUp',
+              "start",
+              "curtainsUp"
             );
             return (
               <Fragment key={date.date.toString()}>

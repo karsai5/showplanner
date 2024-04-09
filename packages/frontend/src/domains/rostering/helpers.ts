@@ -1,29 +1,29 @@
-export const YES = 'Yes';
-export const NO = 'No';
-export const UNKNOWN = 'Unknown';
+export const YES = "Yes";
+export const NO = "No";
+export const UNKNOWN = "Unknown";
 
 export const getBgColor = (value: string) => {
   switch (value) {
     case YES:
-      return 'bg-green-300';
+      return "bg-green-300";
     case NO:
-      return 'bg-red-300';
+      return "bg-red-300";
     case UNKNOWN:
-      return 'bg-amber-300';
+      return "bg-amber-300";
     default:
-      return '';
+      return "";
   }
 };
 
 export const getBgColorForRoster = (b: boolean | undefined) => {
-  const value = b !== null ? getStringFromBoolean(b) : '';
+  const value = b !== null ? getStringFromBoolean(b) : "";
   switch (value) {
     case YES:
-      return '';
+      return "";
     case NO:
-      return 'bg-red-100';
+      return "bg-red-100";
     default:
-      return 'bg-amber-100';
+      return "bg-amber-100";
   }
 };
 

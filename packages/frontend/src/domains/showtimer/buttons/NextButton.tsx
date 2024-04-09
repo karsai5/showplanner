@@ -1,11 +1,11 @@
-import cc from 'classnames';
-import { HoldButton } from 'domains/showtimer/HoldButton/HoldButton';
-import { Phase, TimerLabels, Timers } from 'domains/showtimer/ShowTimer/types';
-import moment from 'moment';
-import { useState } from 'react';
-import { useLongPress } from 'use-long-press';
+import cc from "classnames";
+import { HoldButton } from "domains/showtimer/HoldButton/HoldButton";
+import { Phase, TimerLabels, Timers } from "domains/showtimer/ShowTimer/types";
+import moment from "moment";
+import { useState } from "react";
+import { useLongPress } from "use-long-press";
 
-import { ResetButton } from './ResetButton';
+import { ResetButton } from "./ResetButton";
 
 export const NextButton: React.FC<
   React.PropsWithChildren<{
@@ -36,19 +36,19 @@ export const NextButton: React.FC<
         onCancel: () => setHolding(false),
         onStart: () => setHolding(true),
         threshold: 1500,
-      },
+      }
     );
 
     return (
       <button
         {...bind()}
         onClick={value ? () => {} : callback(timerKey)}
-        className={cc('btn flex flex-col flex-1', className)}
+        className={cc("btn flex flex-col flex-1", className)}
       >
         {TimerLabels[timerKey]}
         {value && (
           <span className="text-xs">
-            {holding ? 'Hold' : value.format('hh:mma')}
+            {holding ? "Hold" : value.format("hh:mma")}
           </span>
         )}
       </button>
@@ -66,7 +66,7 @@ export const NextButton: React.FC<
             </div>
             <HoldButton
               label="Start Act One"
-              callback={callback('actOneStart')}
+              callback={callback("actOneStart")}
               helperText="Hold down button to start act one"
               confetti
             />
@@ -75,7 +75,7 @@ export const NextButton: React.FC<
         {currentPhase === Phase.actOne && (
           <HoldButton
             label="Start Interval"
-            callback={callback('intervalStart')}
+            callback={callback("intervalStart")}
             helperText="Hold down button to start interval"
             confetti
           />
@@ -88,7 +88,7 @@ export const NextButton: React.FC<
             />
             <HoldButton
               label="Start Act Two"
-              callback={callback('intervalEnd')}
+              callback={callback("intervalEnd")}
               helperText="Hold down button to start act two"
               confetti
             />
@@ -103,7 +103,7 @@ export const NextButton: React.FC<
             <HoldButton
               label="Curtain down"
               helperText="Hold down button to end show"
-              callback={callback('actTwoEnd')}
+              callback={callback("actTwoEnd")}
               confetti
             />
           </>

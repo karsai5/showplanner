@@ -1,8 +1,8 @@
-import cc from 'classnames';
-import { FC } from 'react';
-import { FieldErrors, UseFormRegisterReturn } from 'react-hook-form';
+import cc from "classnames";
+import { FC } from "react";
+import { FieldErrors, UseFormRegisterReturn } from "react-hook-form";
 
-import { getErrorMessage } from './helpers';
+import { getErrorMessage } from "./helpers";
 
 const Input: FC<{
   register: UseFormRegisterReturn;
@@ -21,7 +21,7 @@ const Input: FC<{
   register,
   showRequired,
   placeholder,
-  type = 'text',
+  type = "text",
   helpText,
   label,
   className,
@@ -31,22 +31,22 @@ const Input: FC<{
   const id = `input-${name}`;
   const error = errors[name];
   return (
-    <div className={cc('form-control w-full', className)}>
+    <div className={cc("form-control w-full", className)}>
       {label && (
         <label className="label" htmlFor={id}>
           <span className="label-text-alt">
             {label}
-            {showRequired ? ' *' : ''}
+            {showRequired ? " *" : ""}
           </span>
         </label>
       )}
       <input
         id={id}
         type={type}
-        placeholder={`${placeholder}${showRequired ? ' *' : ''}`}
+        placeholder={`${placeholder}${showRequired ? " *" : ""}`}
         className={cc(
-          { ['input-error']: !!error, ['input-sm']: sm },
-          'input input-bordered',
+          { ["input-error"]: !!error, ["input-sm"]: sm },
+          "input input-bordered"
         )}
         disabled={loading}
         {...register}

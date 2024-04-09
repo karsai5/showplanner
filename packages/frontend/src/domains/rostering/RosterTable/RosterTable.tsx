@@ -1,21 +1,20 @@
-import { useQuery, } from '@tanstack/react-query';
-import { api } from 'core/api';
-import { RosterDTOEventsInner } from 'core/api/generated';
-import ErrorBox from 'core/components/ErrorBox/ErrorBox';
-import { GapRow, Td } from 'core/components/tables/tables';
-import { TimeRangeWithCurtainsUp } from 'core/dates/dateEventHelpers';
-import { displayDate } from 'domains/events/lib/displayDate';
-import { processEvents } from 'domains/events/lib/processEvents';
-import { PersonDisplayName } from 'domains/personnel/PersonDisplayName';
-import sortBy from 'lodash/sortBy';
-import React, { Fragment } from 'react';
+import { useQuery } from "@tanstack/react-query";
+import { api } from "core/api";
+import { RosterDTOEventsInner } from "core/api/generated";
+import ErrorBox from "core/components/ErrorBox/ErrorBox";
+import { GapRow, Td } from "core/components/tables/tables";
+import { TimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
+import { displayDate } from "domains/events/lib/displayDate";
+import { processEvents } from "domains/events/lib/processEvents";
+import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
+import sortBy from "lodash/sortBy";
+import React, { Fragment } from "react";
 
-import { AssignmentCell } from './AssignmentCell';
+import { AssignmentCell } from "./AssignmentCell";
 
 export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
-  const rosterRequest = useQuery(
-    ['roster', showId],
-    () => api.rosterGet({ showId: showId })
+  const rosterRequest = useQuery(["roster", showId], () =>
+    api.rosterGet({ showId: showId })
   );
 
   if (rosterRequest.isError) {
@@ -26,8 +25,9 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
   }
   if (rosterRequest.data) {
     const roster = rosterRequest.data;
-    const { dates, groupedEvents } =
-      processEvents<RosterDTOEventsInner>(roster.events);
+    const { dates, groupedEvents } = processEvents<RosterDTOEventsInner>(
+      roster.events
+    );
     return (
       <table className="table table-sm">
         <thead>
@@ -46,8 +46,8 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
           {dates.map((date) => {
             const thisGroupEvents = sortBy(
               groupedEvents[date.date.toString()],
-              'start',
-              'curtainsUp',
+              "start",
+              "curtainsUp"
             );
             return (
               <Fragment key={date.date.toString()}>
@@ -68,21 +68,21 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
                       <Td className="w-40 sticky left-0 bg-white z-40">
                         <TimeRangeWithCurtainsUp event={e} />
                       </Td>
-                      {
-                        roster.roles?.map(r => {
-                          if (r.id === undefined || e.assignments === undefined) {
-                            throw new Error();
-                          }
-                          const a = e.assignments[r.id];
-                          return <AssignmentCell
+                      {roster.roles?.map((r) => {
+                        if (r.id === undefined || e.assignments === undefined) {
+                          throw new Error();
+                        }
+                        const a = e.assignments[r.id];
+                        return (
+                          <AssignmentCell
                             assignment={a}
                             showId={showId}
                             event={e}
                             roleId={r.id}
                             key={r.id}
                           />
-                        })
-                      }
+                        );
+                      })}
                     </tr>
                   );
                 })}
@@ -96,4 +96,3 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
   }
   return null;
 };
-

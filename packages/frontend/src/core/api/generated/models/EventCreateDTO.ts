@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { exists, mapValues } from "../runtime";
 /**
  *
  * @export
@@ -38,8 +38,8 @@ export interface EventCreateDTO {
  */
 export function instanceOfEventCreateDTO(value: object): boolean {
   let isInstance = true;
-  isInstance = isInstance && 'showId' in value;
-  isInstance = isInstance && 'start' in value;
+  isInstance = isInstance && "showId" in value;
+  isInstance = isInstance && "start" in value;
 
   return isInstance;
 }
@@ -50,14 +50,14 @@ export function EventCreateDTOFromJSON(json: any): EventCreateDTO {
 
 export function EventCreateDTOFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  ignoreDiscriminator: boolean
 ): EventCreateDTO {
   if (json === undefined || json === null) {
     return json;
   }
   return {
-    showId: json['showId'],
-    start: json['start'],
+    showId: json["showId"],
+    start: json["start"],
   };
 }
 

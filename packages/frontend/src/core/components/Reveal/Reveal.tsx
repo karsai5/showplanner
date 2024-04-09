@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Icon } from 'semantic-ui-react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import { Icon } from "semantic-ui-react";
+import styled from "styled-components";
 
 const Body = styled.div`
   margin-left: 0.5rem;
@@ -12,9 +12,9 @@ export const Reveal: React.FunctionComponent<
 > = ({ text, children }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div style={{ marginTop: '0.5rem' }}>
-      <header onClick={() => setOpen(!open)} style={{ cursor: 'pointer' }}>
-        <Icon name={open ? 'caret down' : 'caret right'} />
+    <div style={{ marginTop: "0.5rem" }}>
+      <header onClick={() => setOpen(!open)} style={{ cursor: "pointer" }}>
+        <Icon name={open ? "caret down" : "caret right"} />
         {text}
       </header>
       {open ? <Body>{children}</Body> : null}

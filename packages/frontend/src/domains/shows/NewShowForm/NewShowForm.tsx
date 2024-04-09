@@ -1,10 +1,10 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { getApi } from 'core/api';
-import Input from 'core/components/fields/TextInput';
-import { useRefreshToken } from 'pages/me/refresh';
-import React, { FC } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getApi } from "core/api";
+import Input from "core/components/fields/TextInput";
+import { useRefreshToken } from "pages/me/refresh";
+import React, { FC } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 type Inputs = {
   name: string;
@@ -34,12 +34,12 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
   const mutation = useMutation<unknown, unknown, Inputs>({
     mutationFn: (data) => api.showsPost({ show: data }),
     onError: (e) => {
-      toast.error('Something went wrong creating new show');
-      console.error('Could not create show', e);
+      toast.error("Something went wrong creating new show");
+      console.error("Could not create show", e);
     },
     onSuccess: async () => {
-      toast.success('Succesfully created a new show');
-      queryClient.invalidateQueries({ queryKey: ['AssignedShowsList'] });
+      toast.success("Succesfully created a new show");
+      queryClient.invalidateQueries({ queryKey: ["AssignedShowsList"] });
       reset();
       if (onSuccess) {
         onSuccess();
@@ -54,27 +54,27 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
       onSubmit={handleSubmit((data) => mutation.mutate(data))}
     >
       <Input
-        register={register('name', { required: true })}
+        register={register("name", { required: true })}
         placeholder="Name"
         errors={errors}
         showRequired
       />
       <Input
-        register={register('company', { required: true })}
+        register={register("company", { required: true })}
         placeholder="Company"
         errors={errors}
         showRequired
       />
       <Input
-        register={register('slug', {
+        register={register("slug", {
           required: true,
           pattern: {
             value: /^\w*$/,
-            message: 'Slug must be all lower case letters',
+            message: "Slug must be all lower case letters",
           },
           maxLength: {
             value: 20,
-            message: 'Must be less than 20 characters',
+            message: "Must be less than 20 characters",
           },
         })}
         placeholder="URL Slug"
