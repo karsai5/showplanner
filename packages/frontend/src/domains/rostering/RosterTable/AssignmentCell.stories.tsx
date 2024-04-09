@@ -14,7 +14,14 @@ export default {
 
 //👇 We create a “template” of how args map to rendering
 const Template: ComponentStory<typeof PureAssignmentCell> = (args) => (
-  <PureAssignmentCell {...args} />
+  <table className="table">
+    <tbody>
+      <tr>
+        <PureAssignmentCell {...args} key="1" />
+        <PureAssignmentCell {...args} key="2" />
+      </tr>
+    </tbody>
+  </table>
 );
 
 export const Simple = Template.bind({});
@@ -28,7 +35,7 @@ Simple.args = {
     },
     assignmentId: 0,
     available: true,
-    cover: false,
+    cover: true,
   },
   people: [
     {
@@ -47,6 +54,18 @@ Simple.args = {
   event: {
     id: 0,
     start: new Date(),
-    shadows: { "0": [] },
+    shadows: {
+      "0": [
+        {
+          id: 1,
+          person: {
+            id: "0",
+            firstName: "Jane",
+            lastName: "Smith",
+          },
+          available: true,
+        },
+      ],
+    },
   },
 };

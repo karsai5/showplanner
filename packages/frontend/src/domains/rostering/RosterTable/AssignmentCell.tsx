@@ -11,7 +11,10 @@ import {
 import { Td } from "core/components/tables/tables";
 import { Toggle } from "core/toggles/toggles";
 import { showToastError } from "core/utils/errors";
-import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
+import {
+  getPersonDisplayName,
+  PersonDisplayName,
+} from "domains/personnel/PersonDisplayName";
 import { PersonSelector } from "domains/personnel/PersonSelector/PersonSelector";
 import { getBgColorForRoster } from "domains/rostering/helpers";
 import { KeyboardEventHandler, ReactNode } from "react";
@@ -83,6 +86,7 @@ export const AssignmentCell: React.FC<{
       isLoading={changeAssignmentMutation.isLoading}
       showPersonDropdown={showPersonDropdown}
       setShowPersonDropdown={setShowPersonDropdown}
+      roleId={roleId}
     >
       <Toggle toggle="availabilities_shadow_menu">
         <ShadowSelector
@@ -122,6 +126,7 @@ export const PureAssignmentCell: React.FC<{
   setShowPersonDropdown: (show: boolean) => void;
   isLoading?: boolean;
   children?: ReactNode;
+  roleId: number;
 }> = ({
   people,
   onChangeAssigned,
@@ -130,6 +135,7 @@ export const PureAssignmentCell: React.FC<{
   assignment,
   event,
   isLoading,
+  roleId,
   children = null,
 }) => {
   let bgClassName = "";
@@ -143,12 +149,15 @@ export const PureAssignmentCell: React.FC<{
     }
   };
 
+  const shadows = event.shadows?.[roleId] || [];
+  const hasShadows = shadows.length > 0;
+
   return (
-    <Td className={cc(bgClassName, "relative min-w-46")}>
+    <Td className={cc(bgClassName, "relative")}>
       <div className="flex justify-between items-center">
         {!showPersonDropdown && (
           <div
-            className="flex cursor-pointer w-24 flex-1"
+            className="flex cursor-pointer"
             onClick={() => setShowPersonDropdown(true)}
             onKeyDown={handleKeyPress}
             tabIndex={0}
@@ -158,14 +167,32 @@ export const PureAssignmentCell: React.FC<{
             )}
             {assignment.person?.id && (
               <>
-                {assignment.cover && (
-                  <>
-                    <div className="w-5"></div>
-                    <div className="cover-box bg-orange-400">cover</div>
-                  </>
-                )}
-                <div className="whitespace-nowrap overflow-hidden text-ellipsis">
-                  <PersonDisplayName person={assignment.person} />
+                <div className="flex cover-box-container">
+                  {assignment.cover && (
+                    <>
+                      <div className="cover-box bg-orange-400">cover</div>
+                    </>
+                  )}
+                </div>
+                <div className="flex flex-col justify-center">
+                  <div className="whitespace-nowrap overflow-hidden text-ellipsis">
+                    <PersonDisplayName
+                      person={assignment.person}
+                      className="block whitespace-nowrap text-ellipsis overflow-hidden w-32"
+                    />
+                  </div>
+                  {hasShadows && (
+                    <div className="whitespace-nowrap overflow-hidden text-ellipsis text-slate-500 text-xs w-40">
+                      Shadows:{" "}
+                      {shadows
+                        .map((s) =>
+                          getPersonDisplayName(s.person, {
+                            firstNameOnly: true,
+                          })
+                        )
+                        .join(", ")}
+                    </div>
+                  )}
                 </div>
               </>
             )}

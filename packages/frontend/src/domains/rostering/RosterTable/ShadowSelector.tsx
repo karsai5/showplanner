@@ -81,12 +81,7 @@ export const ShadowSelectorPure: FC<{
           role="button"
           className="btn btn-sm px-2 btn-ghost m-1 indicator"
         >
-          {shadows.length > 0 && (
-            <span className="indicator-item badge badge-default">
-              {shadows.length}
-            </span>
-          )}
-          <UserPlusIcon className="h-6 w-6 text-slate-500" />
+          <UserPlusIcon className="h-6 w-6 text-slate-400" />
         </div>
         <div className="dropdown-content z-50 menu p-4 shadow bg-base-100 rounded-box">
           <div className="font-semibold text-lg mb-2">Shadows</div>

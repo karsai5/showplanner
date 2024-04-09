@@ -5,10 +5,15 @@
 .cover-box {
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
   text-align: center;
-  padding: 0.1rem;
+  font-size: 12px;
+  padding: 0.5rem 0;
+}
+
+.cover-box-container {
+  margin-top: -8px;
+  margin-bottom: -8px;
+  margin-left: -12px;
+  margin-right: 0.5rem;
+  height: 56px;
 }
