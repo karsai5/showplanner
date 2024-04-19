@@ -9,16 +9,19 @@ import { useConfirmationModal } from "core/components/Modal/ConfirmationModal";
 import { showToastError } from "core/utils/errors";
 import { PersonSelector } from "domains/personnel/PersonSelector/PersonSelector";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 export const RolesTable: React.FC<{
   className?: string;
 }> = ({ className }) => {
   const show = useShowSummary();
-  const { isError, isLoading, data: roles } = useQuery(
-    ["show-roles", show.id],
-    () => api.rolesGet({ showId: show.id })
+  const {
+    isError,
+    isLoading,
+    data: roles,
+  } = useQuery(["show-roles", show.id], () =>
+    api.rolesGet({ showId: show.id })
   );
 
   const {
@@ -142,11 +145,16 @@ export const RenameRole: React.FC<{
     register,
     handleSubmit,
     formState: { errors },
+    setFocus,
   } = useForm<Inputs>({
     defaultValues: {
       name: role.name,
     },
   });
+
+  useEffect(() => {
+    setFocus("name");
+  }, [setFocus]);
 
   const queryClient = useQueryClient();
   const mutation = useMutation<unknown, Error, Inputs>({

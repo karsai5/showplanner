@@ -3,6 +3,7 @@ import { api } from "core/api";
 import Input from "core/components/fields/TextInput";
 import { useModal } from "core/components/Modal/Modal";
 import { showToastError } from "core/utils/errors";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 type Inputs = {
@@ -19,6 +20,7 @@ export const AddRoleModal: React.FC<{
     handleSubmit,
     formState: { errors },
     reset,
+    setFocus,
   } = useForm<Inputs>();
 
   const queryClient = useQueryClient();
@@ -41,27 +43,35 @@ export const AddRoleModal: React.FC<{
     },
   });
 
+  useEffect(() => {
+    if (isOpen) {
+      setFocus("name");
+    }
+  }, [setFocus, isOpen]);
+
   return (
     <>
       <button className="btn btn-sm" onClick={() => open()}>
         Add Role
       </button>
-      <Modal isOpen={isOpen} close={close} title="Add role to show">
-        <form onSubmit={handleSubmit((data) => mutation.mutate(data))}>
-          <Input
-            register={register("name", { required: true })}
-            placeholder="Name"
-            errors={errors}
-            showRequired
-          />
-          <button type="submit" className="btn btn-block">
-            {mutation.isLoading && (
-              <span className="loading loading-spinner"></span>
-            )}
-            Add role
-          </button>
-        </form>
-      </Modal>
+      {isOpen && (
+        <Modal isOpen={isOpen} close={close} title="Add role to show">
+          <form onSubmit={handleSubmit((data) => mutation.mutate(data))}>
+            <Input
+              register={register("name", { required: true })}
+              placeholder="Name"
+              errors={errors}
+              showRequired
+            />
+            <button type="submit" className="btn btn-block">
+              {mutation.isLoading && (
+                <span className="loading loading-spinner"></span>
+              )}
+              Add role
+            </button>
+          </form>
+        </Modal>
+      )}
     </>
   );
 };

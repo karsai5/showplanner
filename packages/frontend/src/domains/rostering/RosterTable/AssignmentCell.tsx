@@ -15,6 +15,7 @@ import {
 } from "core/api/generated";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { NewShowModalProps, useModal } from "core/components/Modal/Modal";
+import { ShortText } from "core/components/ShortText";
 import { Td } from "core/components/tables/tables";
 import { showToastError } from "core/utils/errors";
 import {
@@ -131,7 +132,7 @@ export const PureAssignmentCell: React.FC<{
                   />
                 </div>
                 {hasShadows && (
-                  <div className="whitespace-nowrap overflow-hidden text-ellipsis text-slate-500 text-xs w-40">
+                  <ShortText className="text-slate-500 text-xs w-40">
                     Shadows:{" "}
                     {shadows
                       .map((s) =>
@@ -140,7 +141,7 @@ export const PureAssignmentCell: React.FC<{
                         })
                       )
                       .join(", ")}
-                  </div>
+                  </ShortText>
                 )}
               </div>
             </>

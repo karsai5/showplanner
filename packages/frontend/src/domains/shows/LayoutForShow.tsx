@@ -39,7 +39,11 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
   const {
     query: { slug },
   } = useRouter();
-  const { data: show, isLoading, isError } = useQuery(["Show", slug], () => {
+  const {
+    data: show,
+    isLoading,
+    isError,
+  } = useQuery(["Show", slug], () => {
     if (!slug) {
       return null;
     }
@@ -48,7 +52,7 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
 
   return (
     <SessionAuth>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col h-screen overflow-auto">
         <Nav mobile={{ toggleSidebar: () => handleSidebar(!sidebarOpen) }} />
         {isLoading && <LoadingBox className="flex-1" />}
         {isError && <ErrorBox>Something went wrong getting show</ErrorBox>}

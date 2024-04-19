@@ -3,6 +3,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 
 dayjs.extend(customParseFormat);
 
+import { ShortText } from "core/components/ShortText";
 
 import { dateFormatString, timeFormatString } from "./datesConstants";
 
@@ -43,9 +44,7 @@ export const TimeRangeWithCurtainsUp: React.FC<{
         )}
       </div>
       <div className="flex flex-col">
-        <div>
-          {name && <span className="whitespace-nowrap mr-2">{name}</span>}
-        </div>
+        <div>{name && <ShortText className="mr-2 w-32">{name}</ShortText>}</div>
         <span className="whitespace-nowrap text-sm">{timeRange}</span>
       </div>
     </div>

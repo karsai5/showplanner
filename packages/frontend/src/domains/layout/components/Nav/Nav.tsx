@@ -11,7 +11,7 @@ export const Nav: React.FC<{ mobile?: MobileNavProps }> = ({ mobile }) => {
     return <MobileNav {...mobile} />;
   }
   return (
-    <div className="navbar bg-base-100 drop-shadow-md rounded-md z-50">
+    <div className="navbar bg-base-100 drop-shadow-md rounded-md z-50 sticky left-0">
       <div className="flex-1">
         <Title />
       </div>
@@ -28,7 +28,7 @@ type MobileNavProps = {
 
 const MobileNav: React.FC<MobileNavProps> = ({ toggleSidebar }) => {
   return (
-    <div className="navbar bg-base-100 drop-shadow-md rounded-md z-50">
+    <div className="navbar bg-base-100 drop-shadow-md rounded-md z-50 sticky left-0">
       <div className="navbar-start">
         {toggleSidebar && (
           <button

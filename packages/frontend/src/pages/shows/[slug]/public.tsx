@@ -52,8 +52,9 @@ const ShowPage = () => {
       </Head>
       <div className="flex flex-col gap-4 sm:flex-row justify-between">
         <div>
-          <div className="flex justify-between items-center">
-            <H2>{showName} - Schedule </H2>
+          <div className="prose mb-4">
+            <H2 className="mb-4">{showName} - Public Schedule</H2>
+            <p>Join the show for more details</p>
           </div>
           {events && <EventTable events={events} hideNote hideLocation />}
         </div>
