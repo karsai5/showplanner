@@ -22,7 +22,6 @@ export const ShortText: React.FC<{
       className="tooltip text-left"
       data-tip={overflowing ? children : undefined}
     >
-      {overflowing && "true"}
       <span
         className={cc(
           "whitespace-nowrap inline-block overflow-hidden overflow-ellipsis",
