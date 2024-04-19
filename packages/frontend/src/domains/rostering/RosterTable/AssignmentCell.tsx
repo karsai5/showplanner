@@ -1,6 +1,7 @@
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import {
-  UseMutationResult,
   useMutation,
+  UseMutationResult,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
@@ -12,21 +13,20 @@ import {
   RosterAssignedDTO,
   RosterDTOEventsInner,
 } from "core/api/generated";
+import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
+import { NewShowModalProps, useModal } from "core/components/Modal/Modal";
 import { Td } from "core/components/tables/tables";
 import { showToastError } from "core/utils/errors";
 import {
   getPersonDisplayName,
   PersonDisplayName,
 } from "domains/personnel/PersonDisplayName";
+import { PersonSelectorModal } from "domains/personnel/PersonSelector/PersonSelectorModal";
 import { getBgColorForRoster } from "domains/rostering/helpers";
 import React, { useState } from "react";
 
-import { ShadowSelector } from "./ShadowSelector";
-import { NewShowModalProps, useModal } from "core/components/Modal/Modal";
-import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
-import { PersonSelectorModal } from "domains/personnel/PersonSelector/PersonSelectorModal";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { colorCodednameComponent } from "./ColorCodedName";
+import { ShadowSelector } from "./ShadowSelector";
 
 export const AssignmentCell: React.FC<{
   assignment: RosterAssignedDTO;

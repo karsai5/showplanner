@@ -1,10 +1,8 @@
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import theatreIcons from "domains/events/images/theatre.png";
 
 dayjs.extend(customParseFormat);
 
-import Image from "next/image";
 
 import { dateFormatString, timeFormatString } from "./datesConstants";
 

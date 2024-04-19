@@ -1,7 +1,7 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import {
-  UseMutationResult,
   useMutation,
+  UseMutationResult,
   useQueryClient,
 } from "@tanstack/react-query";
 import cc from "classnames";
@@ -9,10 +9,10 @@ import { api } from "core/api";
 import { PersonSummaryDTO, RosterDTOEventsInner } from "core/api/generated";
 import { showToastError } from "core/utils/errors";
 import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
+import { PersonSelectorModal } from "domains/personnel/PersonSelector/PersonSelectorModal";
 import { FC, useState } from "react";
 import React from "react";
 
-import { PersonSelectorModal } from "domains/personnel/PersonSelector/PersonSelectorModal";
 import { colorCodednameComponent } from "./ColorCodedName";
 
 export const ShadowSelector: FC<{
