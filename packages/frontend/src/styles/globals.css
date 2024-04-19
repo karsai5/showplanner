@@ -2,18 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-.cover-box {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  text-align: center;
-  font-size: 12px;
-  padding: 0.5rem 0;
-}
-
 .cover-box-container {
   margin-top: -8px;
   margin-bottom: -8px;
   margin-left: -12px;
   margin-right: 0.5rem;
-  height: 56px;
+  position: relative;
+  background: blue;
+}
+
+.cover-box {
+  height: 100%;
+  display: flex;
+}
+
+.cover-box-content {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  text-align: center;
+  font-size: 12px;
+  padding: 0.5rem 0;
+  width: 100%;
 }

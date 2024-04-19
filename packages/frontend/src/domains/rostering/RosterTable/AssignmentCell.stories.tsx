@@ -18,7 +18,6 @@ const Template: ComponentStory<typeof PureAssignmentCell> = (args) => (
     <tbody>
       <tr>
         <PureAssignmentCell {...args} key="1" />
-        <PureAssignmentCell {...args} key="2" />
       </tr>
     </tbody>
   </table>
@@ -54,6 +53,7 @@ Simple.args = {
   event: {
     id: 0,
     start: new Date(),
+    name: "Event 1",
     shadows: {
       "0": [
         {
@@ -66,6 +66,15 @@ Simple.args = {
           available: true,
         },
       ],
+    },
+  },
+  role: {
+    id: 1,
+    name: "Super role",
+    person: {
+      id: "0",
+      firstName: "Jane",
+      lastName: "Smith",
     },
   },
 };

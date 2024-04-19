@@ -35,21 +35,20 @@ export const TimeRangeWithCurtainsUp: React.FC<{
   const timeRange = getTimeRangeString(start, end);
   return (
     <div className="flex gap-1">
-      {curtainsUp && (
-        <div className="mr-2 w-5 self-center">
-          <Image alt="Theatre" src={theatreIcons} height="20" width="20" />
-        </div>
-      )}
+      <div className="cover-box-container">
+        {curtainsUp && (
+          <div className="cover-box bg-gray-100">
+            <div className="cover-box-content">
+              {dayjs(curtainsUp).format(timeFormatString)}
+            </div>
+          </div>
+        )}
+      </div>
       <div className="flex flex-col">
         <div>
           {name && <span className="whitespace-nowrap mr-2">{name}</span>}
-          {curtainsUp && (
-            <span className="whitespace-nowrap text-xs text-slate-500">
-              {dayjs(curtainsUp).format(timeFormatString)} show
-            </span>
-          )}
         </div>
-        <span className="whitespace-nowrap">{timeRange}</span>
+        <span className="whitespace-nowrap text-sm">{timeRange}</span>
       </div>
     </div>
   );

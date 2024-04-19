@@ -1,39 +1,43 @@
-import { Popover } from "@headlessui/react";
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  UseMutationResult,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import cc from "classnames";
 import { api } from "core/api";
 import {
   PersonSummaryDTO,
+  RoleDTO,
   RosterAssignedDTO,
   RosterDTOEventsInner,
 } from "core/api/generated";
 import { Td } from "core/components/tables/tables";
-import { Toggle } from "core/toggles/toggles";
 import { showToastError } from "core/utils/errors";
 import {
   getPersonDisplayName,
   PersonDisplayName,
 } from "domains/personnel/PersonDisplayName";
-import { PersonSelector } from "domains/personnel/PersonSelector/PersonSelector";
 import { getBgColorForRoster } from "domains/rostering/helpers";
-import { KeyboardEventHandler, ReactNode } from "react";
 import React, { useState } from "react";
 
-import { colorCodednameComponent } from "./ColorCodedName";
 import { ShadowSelector } from "./ShadowSelector";
+import { NewShowModalProps, useModal } from "core/components/Modal/Modal";
+import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
+import { PersonSelectorModal } from "domains/personnel/PersonSelector/PersonSelectorModal";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { colorCodednameComponent } from "./ColorCodedName";
 
 export const AssignmentCell: React.FC<{
   assignment: RosterAssignedDTO;
   showId: number;
   event: RosterDTOEventsInner;
-  roleId: number;
-}> = ({ assignment, showId, event, roleId }) => {
+  role: RoleDTO;
+}> = ({ assignment, showId, event, role }) => {
   const assignedPeopleRequest = useQuery(["assigned-people", showId], () =>
     api.personnelAssignedGet({ showId: showId })
   );
 
-  const [showPersonDropdown, setShowPersonDropdown] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const changeAssignmentMutation = useMutation<unknown, Error, string>({
     mutationFn: (personId) => {
@@ -53,7 +57,7 @@ export const AssignmentCell: React.FC<{
           assignment: {
             eventId: event.id,
             personId: personId,
-            roleId,
+            roleId: role.id as number,
           },
         });
       }
@@ -65,16 +69,11 @@ export const AssignmentCell: React.FC<{
     onSuccess: async () => {
       // TODO: This should be optimised to just reload the cell instead of the whole table
       queryClient.invalidateQueries({ queryKey: ["roster", showId] });
-      setShowPersonDropdown(false);
     },
   });
 
   const handleChange = (personId: string) => {
-    if (personId === assignment.person.id) {
-      setShowPersonDropdown(false);
-    } else {
-      changeAssignmentMutation.mutate(personId);
-    }
+    changeAssignmentMutation.mutate(personId);
   };
 
   return (
@@ -84,36 +83,8 @@ export const AssignmentCell: React.FC<{
       people={assignedPeopleRequest.data?.people}
       onChangeAssigned={handleChange}
       isLoading={changeAssignmentMutation.isLoading}
-      showPersonDropdown={showPersonDropdown}
-      setShowPersonDropdown={setShowPersonDropdown}
-      roleId={roleId}
-    >
-      <Toggle toggle="availabilities_shadow_menu">
-        <ShadowSelector
-          event={event}
-          roleId={roleId}
-          people={assignedPeopleRequest.data?.people}
-        />
-      </Toggle>
-      <Toggle toggle="availabilities_menu">
-        <Popover className="relative">
-          <Popover.Button className="btn btn-sm btn-ghost px-2">
-            <EllipsisHorizontalIcon className="h-6 w-6" />
-          </Popover.Button>
-          <Popover.Panel
-            as="li"
-            className="absolute z-10 menu bg-white shadow-lg ring-1 ring-black/5 w-40 rounded-box"
-          >
-            <li>
-              <a>Assign Shadow</a>
-            </li>
-            <li>
-              <a>Role Not Required</a>
-            </li>
-          </Popover.Panel>
-        </Popover>
-      </Toggle>
-    </PureAssignmentCell>
+      role={role}
+    />
   );
 };
 
@@ -122,94 +93,274 @@ export const PureAssignmentCell: React.FC<{
   event: RosterDTOEventsInner;
   people?: PersonSummaryDTO[];
   onChangeAssigned: (personId: string) => void;
-  showPersonDropdown: boolean;
-  setShowPersonDropdown: (show: boolean) => void;
   isLoading?: boolean;
-  children?: ReactNode;
-  roleId: number;
-}> = ({
-  people,
-  onChangeAssigned,
-  showPersonDropdown,
-  setShowPersonDropdown,
-  assignment,
-  event,
-  isLoading,
-  roleId,
-  children = null,
-}) => {
+  role: RoleDTO;
+}> = ({ people, assignment, event, role }) => {
   let bgClassName = "";
   if (assignment.person?.id) {
     bgClassName = getBgColorForRoster(assignment.available);
   }
+  const { Modal, open, close, isOpen } = useModal(false);
 
-  const handleKeyPress: KeyboardEventHandler = (event) => {
-    if (event.code === "Space") {
-      setShowPersonDropdown(true);
-    }
-  };
-
-  const shadows = event.shadows?.[roleId] || [];
+  const shadows = event.shadows?.[role.id as number] || [];
   const hasShadows = shadows.length > 0;
 
   return (
-    <Td className={cc(bgClassName, "relative")}>
-      <div className="flex justify-between items-center">
-        {!showPersonDropdown && (
-          <div
-            className="flex cursor-pointer"
-            onClick={() => setShowPersonDropdown(true)}
-            onKeyDown={handleKeyPress}
-            tabIndex={0}
-          >
-            {!assignment.person?.id && (
-              <span className="italic text-slate-400">Unassigned</span>
-            )}
-            {assignment.person?.id && (
-              <>
-                <div className="flex cover-box-container">
-                  {assignment.cover && (
-                    <>
-                      <div className="cover-box bg-orange-400">cover</div>
-                    </>
-                  )}
+    <Td className={cc(bgClassName)} onClick={() => open()}>
+      <div className="flex cursor-pointer">
+        <div className="cover-box-container">
+          {assignment?.cover && (
+            <>
+              <div className="cover-box bg-orange-400">
+                <div className="cover-box-content">cover</div>
+              </div>
+            </>
+          )}
+        </div>
+        <div className="flex" tabIndex={0}>
+          {!assignment.person?.id && (
+            <span className="italic text-slate-400">Unassigned</span>
+          )}
+          {assignment.person?.id && (
+            <>
+              <div className="flex flex-col justify-center">
+                <div className="whitespace-nowrap overflow-hidden text-ellipsis">
+                  <PersonDisplayName
+                    person={assignment.person}
+                    className="block whitespace-nowrap text-ellipsis overflow-hidden w-32"
+                  />
                 </div>
-                <div className="flex flex-col justify-center">
-                  <div className="whitespace-nowrap overflow-hidden text-ellipsis">
-                    <PersonDisplayName
-                      person={assignment.person}
-                      className="block whitespace-nowrap text-ellipsis overflow-hidden w-32"
-                    />
+                {hasShadows && (
+                  <div className="whitespace-nowrap overflow-hidden text-ellipsis text-slate-500 text-xs w-40">
+                    Shadows:{" "}
+                    {shadows
+                      .map((s) =>
+                        getPersonDisplayName(s.person, {
+                          firstNameOnly: true,
+                        })
+                      )
+                      .join(", ")}
                   </div>
-                  {hasShadows && (
-                    <div className="whitespace-nowrap overflow-hidden text-ellipsis text-slate-500 text-xs w-40">
-                      Shadows:{" "}
-                      {shadows
-                        .map((s) =>
-                          getPersonDisplayName(s.person, {
-                            firstNameOnly: true,
-                          })
-                        )
-                        .join(", ")}
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
-          </div>
-        )}
-        {showPersonDropdown && people && (
-          <PersonSelector
-            loading={isLoading}
-            people={people}
-            selectedPersonId={assignment.person.id}
-            onChange={(p) => onChangeAssigned(p.id)}
-            openOnLoad={true}
-            nameComponent={colorCodednameComponent(event)}
-          />
-        )}
-        {children}
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </div>
+      <AssignmentModal
+        Modal={Modal}
+        isOpen={isOpen}
+        close={close}
+        event={event}
+        role={role}
+        assignment={assignment}
+        people={people}
+      />
     </Td>
   );
+};
+
+export const AssignmentModal: React.FC<{
+  isOpen: boolean;
+  close: () => void;
+  Modal: React.FC<NewShowModalProps>;
+  event: RosterDTOEventsInner;
+  role: RoleDTO;
+  assignment: RosterAssignedDTO;
+  people?: PersonSummaryDTO[];
+}> = ({ isOpen, close, Modal, event, role, assignment, people }) => {
+  const titleArray = [role.name, event.name].filter((i) => i);
+  const title = titleArray.length === 0 ? "Assignment" : titleArray.join(" - ");
+
+  const queryClient = useQueryClient();
+  const changeAssignmentMutation = useMutation<unknown, Error, string>({
+    mutationFn: (personId) => {
+      if (personId === "" && assignment.assignmentId) {
+        return api.assignmentIdDelete({ id: assignment.assignmentId });
+      }
+      if (personId !== "") {
+        if (assignment.assignmentId) {
+          return api.assignmentIdPut({
+            id: assignment.assignmentId,
+            assignment: {
+              personId: personId,
+            },
+          });
+        }
+        return api.assignmentPost({
+          assignment: {
+            eventId: event.id,
+            personId: personId,
+            roleId: role.id as number,
+          },
+        });
+      }
+      return new Promise((res) => res(undefined));
+    },
+    onError: (e) => {
+      showToastError("Could not update availability", e);
+    },
+    onSuccess: async () => {
+      // TODO: This should be optimised to just reload the cell instead of the whole table
+      queryClient.invalidateQueries({ queryKey: ["roster", event.showId] });
+    },
+  });
+
+  const normalPersonAvailability =
+    event.availabilities?.[role?.person?.id || ""]?.available;
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      close={close}
+      title={title}
+      dialogClassName="max-h-full"
+    >
+      {!people && <LoadingBox />}
+      {people && (
+        <>
+          {role.person && (
+            <p className="mb-2">
+              Role normally assigned to:{" "}
+              <PersonDisplayName person={role.person} />{" "}
+              <span className="text-slate-500">
+                ({getAvailabilityString(normalPersonAvailability)})
+              </span>
+            </p>
+          )}
+
+          <Cover
+            mutation={changeAssignmentMutation}
+            assignment={assignment}
+            event={event}
+            people={people}
+            role={role}
+          />
+          <Shadows
+            role={role}
+            mutation={changeAssignmentMutation}
+            assignment={assignment}
+            event={event}
+            people={people}
+          />
+        </>
+      )}
+    </Modal>
+  );
+};
+
+const Shadows: React.FC<{
+  mutation: UseMutationResult<unknown, Error, string, unknown>;
+  assignment: RosterAssignedDTO;
+  event: RosterDTOEventsInner;
+  role: RoleDTO;
+  people?: PersonSummaryDTO[];
+}> = ({ mutation, assignment, event, people, role }) => {
+  const [showPersonSelector, setShowPersonSelector] = useState(false);
+  const handleChange = (person: PersonSummaryDTO) => {
+    mutation.mutate(person.id, {
+      onSuccess: () => setShowPersonSelector(false),
+    });
+  };
+  return (
+    <>
+      <div className="font-semibold text-lg mt-2 mb-1">Shadows</div>
+      <ShadowSelector
+        event={event}
+        roleId={role.id as number}
+        people={people}
+      />
+      {showPersonSelector && people && (
+        <PersonSelectorModal
+          loading={mutation.isLoading}
+          people={people}
+          onChange={(p) => handleChange(p)}
+          selectedPersonId={assignment?.person?.id}
+        />
+      )}
+    </>
+  );
+};
+
+const Cover: React.FC<{
+  mutation: UseMutationResult<unknown, Error, string, unknown>;
+  assignment: RosterAssignedDTO;
+  event: RosterDTOEventsInner;
+  people?: PersonSummaryDTO[];
+  role: RoleDTO;
+}> = ({ mutation, assignment, event, people, role }) => {
+  const coverAvailability = assignment.cover
+    ? event.availabilities?.[assignment.person.id]?.available
+    : undefined;
+  const [showPersonSelector, setShowPersonSelector] = useState(false);
+  const handleChange = (person: PersonSummaryDTO) => {
+    mutation.mutate(person.id, {
+      onSuccess: () => setShowPersonSelector(false),
+    });
+  };
+  const selectedPersonId = assignment?.cover
+    ? assignment?.person?.id
+    : undefined;
+  const filteredPeople = people?.filter((p) => p.id != role?.person?.id) || [];
+
+  const showAssignment =
+    assignment.cover || (!role.person && assignment.person);
+
+  return (
+    <>
+      <div className="font-semibold text-lg mt-2 mb-1">Cover</div>
+      {showAssignment && (
+        <div className="flex items-center gap-2 justify-between">
+          <div>
+            <div>
+              Covered by <PersonDisplayName person={assignment.person} />{" "}
+            </div>
+            <div className="text-slate-500">
+              ({getAvailabilityString(coverAvailability)})
+            </div>
+          </div>
+          <div className="mt-2 flex">
+            <button
+              className="btn btn-outline"
+              onClick={() => setShowPersonSelector(true)}
+            >
+              <PencilIcon className="w-6 h-6" />
+            </button>
+            <button
+              className="btn btn-ghost"
+              onClick={() => mutation.mutate("")}
+            >
+              <TrashIcon className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      )}
+      {!showAssignment && (
+        <button
+          className="btn btn-block btn-outline"
+          onClick={() => setShowPersonSelector(true)}
+        >
+          Assign Cover
+        </button>
+      )}
+      {showPersonSelector && (
+        <PersonSelectorModal
+          loading={mutation.isLoading}
+          people={filteredPeople}
+          nameComponent={colorCodednameComponent(event)}
+          onChange={(p) => handleChange(p)}
+          selectedPersonId={selectedPersonId}
+        />
+      )}
+    </>
+  );
+};
+
+const getAvailabilityString = (available: undefined | boolean): string => {
+  if (available === undefined) {
+    return "availability is unknown";
+  }
+  if (available) {
+    return "available";
+  } else return "not available";
 };

@@ -78,7 +78,7 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
                             assignment={a}
                             showId={showId}
                             event={e}
-                            roleId={r.id}
+                            role={r}
                             key={r.id}
                           />
                         );
