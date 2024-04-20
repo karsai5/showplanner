@@ -97,17 +97,44 @@ export const PureAssignmentCell: React.FC<{
   isLoading?: boolean;
   role: RoleDTO;
 }> = ({ people, assignment, event, role }) => {
+  const { Modal, open, close, isOpen } = useModal(false);
+
+  return (
+    <>
+      <AssignmentDisplay
+        assignment={assignment}
+        shadows={event.shadows}
+        roleId={role.id as number}
+        openModal={open}
+      />
+      <AssignmentModal
+        Modal={Modal}
+        isOpen={isOpen}
+        close={close}
+        event={event}
+        role={role}
+        assignment={assignment}
+        people={people}
+      />
+    </>
+  );
+};
+
+export const AssignmentDisplay: React.FC<{
+  assignment: RosterAssignedDTO;
+  shadows: RosterDTOEventsInner["shadows"];
+  roleId: number;
+  openModal: () => void;
+}> = ({ assignment, shadows, roleId, openModal }) => {
   let bgClassName = "";
   if (assignment.person?.id) {
     bgClassName = getBgColorForRoster(assignment.available);
   }
-  const { Modal, open, close, isOpen } = useModal(false);
-
-  const shadows = event.shadows?.[role.id as number] || [];
-  const hasShadows = shadows.length > 0;
+  const shadowsForThisRole = shadows?.[roleId] || [];
+  const hasShadows = shadowsForThisRole.length > 0;
 
   return (
-    <Td className={cc(bgClassName)} onClick={() => open()}>
+    <Td className={cc(bgClassName)} onClick={() => openModal()}>
       <div className="flex cursor-pointer">
         <div className="cover-box-container">
           {assignment?.cover && (
@@ -134,7 +161,7 @@ export const PureAssignmentCell: React.FC<{
                 {hasShadows && (
                   <ShortText className="text-slate-500 text-xs w-40">
                     Shadows:{" "}
-                    {shadows
+                    {shadowsForThisRole
                       .map((s) =>
                         getPersonDisplayName(s.person, {
                           firstNameOnly: true,
@@ -148,15 +175,6 @@ export const PureAssignmentCell: React.FC<{
           )}
         </div>
       </div>
-      <AssignmentModal
-        Modal={Modal}
-        isOpen={isOpen}
-        close={close}
-        event={event}
-        role={role}
-        assignment={assignment}
-        people={people}
-      />
     </Td>
   );
 };
