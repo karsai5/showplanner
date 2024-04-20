@@ -43,6 +43,18 @@ export interface ShowDTO {
    * @memberof ShowDTO
    */
   slug: string;
+  /**
+   *
+   * @type {Date}
+   * @memberof ShowDTO
+   */
+  start?: Date | null;
+  /**
+   *
+   * @type {Date}
+   * @memberof ShowDTO
+   */
+  end?: Date | null;
 }
 
 /**
@@ -74,6 +86,16 @@ export function ShowDTOFromJSONTyped(
     name: json["name"],
     company: json["company"],
     slug: json["slug"],
+    start: !exists(json, "start")
+      ? undefined
+      : json["start"] === null
+      ? null
+      : new Date(json["start"]),
+    end: !exists(json, "end")
+      ? undefined
+      : json["end"] === null
+      ? null
+      : new Date(json["end"]),
   };
 }
 
@@ -89,5 +111,17 @@ export function ShowDTOToJSON(value?: ShowDTO | null): any {
     name: value.name,
     company: value.company,
     slug: value.slug,
+    start:
+      value.start === undefined
+        ? undefined
+        : value.start === null
+        ? null
+        : value.start.toISOString(),
+    end:
+      value.end === undefined
+        ? undefined
+        : value.end === null
+        ? null
+        : value.end.toISOString(),
   };
 }

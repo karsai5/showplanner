@@ -2,13 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import { getApi } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { ShowBox } from "domains/shows/ShowBox/ShowBox";
+import { orderBy } from "lodash";
 import Image from "next/image";
 
 import missingImg from "./missing.png";
 
 export const AssignedShowBoxGrid: React.FC = () => {
   const api = getApi();
-  const { data: shows, isLoading, isError } = useQuery(["ShowList"], () => {
+  const {
+    data: shows,
+    isLoading,
+    isError,
+  } = useQuery(["ShowList"], () => {
     return api.showsGet();
   });
 
@@ -22,6 +27,8 @@ export const AssignedShowBoxGrid: React.FC = () => {
   if (!shows) {
     return null;
   }
+
+  const sortedShows = orderBy(shows, "start", "desc");
 
   return (
     <>
@@ -50,7 +57,7 @@ export const AssignedShowBoxGrid: React.FC = () => {
       )}
 
       <div className="flex gap-4 flex-wrap">
-        {shows.map((show) => (
+        {sortedShows.map((show) => (
           <ShowBox key={show.id} show={show} />
         ))}
       </div>

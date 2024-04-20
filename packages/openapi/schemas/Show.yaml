@@ -23,6 +23,14 @@ ShowDTO:
       type: string
     slug:
       type: string
+    start:
+      type: string
+      format: date-time
+      x-nullable: true
+    end:
+      type: string
+      format: date-time
+      x-nullable: true
   required:
     - id
     - name

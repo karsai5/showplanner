@@ -23,6 +23,10 @@ type ShowDTO struct {
 	// Required: true
 	Company *string `json:"company"`
 
+	// end
+	// Format: date-time
+	End *strfmt.DateTime `json:"end,omitempty"`
+
 	// id
 	// Required: true
 	ID *int64 `json:"id"`
@@ -34,6 +38,10 @@ type ShowDTO struct {
 	// slug
 	// Required: true
 	Slug *string `json:"slug"`
+
+	// start
+	// Format: date-time
+	Start *strfmt.DateTime `json:"start,omitempty"`
 }
 
 // Validate validates this show d t o
@@ -41,6 +49,10 @@ func (m *ShowDTO) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateCompany(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateEnd(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -56,6 +68,10 @@ func (m *ShowDTO) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateStart(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
@@ -65,6 +81,18 @@ func (m *ShowDTO) Validate(formats strfmt.Registry) error {
 func (m *ShowDTO) validateCompany(formats strfmt.Registry) error {
 
 	if err := validate.Required("company", "body", m.Company); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ShowDTO) validateEnd(formats strfmt.Registry) error {
+	if swag.IsZero(m.End) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("end", "body", "date-time", m.End.String(), formats); err != nil {
 		return err
 	}
 
@@ -92,6 +120,18 @@ func (m *ShowDTO) validateName(formats strfmt.Registry) error {
 func (m *ShowDTO) validateSlug(formats strfmt.Registry) error {
 
 	if err := validate.Required("slug", "body", m.Slug); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ShowDTO) validateStart(formats strfmt.Registry) error {
+	if swag.IsZero(m.Start) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("start", "body", "date-time", m.Start.String(), formats); err != nil {
 		return err
 	}
 

@@ -251,10 +251,7 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "Show",
-            "schema": {
-              "$ref": "./schemas/Show.yaml#/ShowDTO"
-            }
+            "description": ""
           },
           "401": {
             "$ref": "#/responses/Error"
@@ -1217,10 +1214,7 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "Show",
-            "schema": {
-              "$ref": "#/definitions/showDTO"
-            }
+            "description": ""
           },
           "401": {
             "description": "Error",
@@ -2652,6 +2646,11 @@ func init() {
         "company": {
           "type": "string"
         },
+        "end": {
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
         "id": {
           "type": "integer"
         },
@@ -2660,6 +2659,11 @@ func init() {
         },
         "slug": {
           "type": "string"
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
         }
       }
     },

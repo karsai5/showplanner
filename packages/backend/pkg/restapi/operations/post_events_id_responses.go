@@ -17,16 +17,11 @@ import (
 const PostEventsIDOKCode int = 200
 
 /*
-PostEventsIDOK Show
+PostEventsIDOK post events Id o k
 
 swagger:response postEventsIdOK
 */
 type PostEventsIDOK struct {
-
-	/*
-	  In: Body
-	*/
-	Payload *models.ShowDTO `json:"body,omitempty"`
 }
 
 // NewPostEventsIDOK creates PostEventsIDOK with default headers values
@@ -35,27 +30,12 @@ func NewPostEventsIDOK() *PostEventsIDOK {
 	return &PostEventsIDOK{}
 }
 
-// WithPayload adds the payload to the post events Id o k response
-func (o *PostEventsIDOK) WithPayload(payload *models.ShowDTO) *PostEventsIDOK {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the post events Id o k response
-func (o *PostEventsIDOK) SetPayload(payload *models.ShowDTO) {
-	o.Payload = payload
-}
-
 // WriteResponse to the client
 func (o *PostEventsIDOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
 	rw.WriteHeader(200)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
-	}
 }
 
 // PostEventsIDUnauthorizedCode is the HTTP code returned for type PostEventsIDUnauthorized

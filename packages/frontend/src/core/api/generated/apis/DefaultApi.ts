@@ -469,7 +469,7 @@ export class DefaultApi extends runtime.BaseAPI {
   async eventsIdPostRaw(
     requestParameters: EventsIdPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<ShowDTO>> {
+  ): Promise<runtime.ApiResponse<void>> {
     if (requestParameters.id === null || requestParameters.id === undefined) {
       throw new runtime.RequiredError(
         "id",
@@ -497,9 +497,7 @@ export class DefaultApi extends runtime.BaseAPI {
       initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ShowDTOFromJSON(jsonValue)
-    );
+    return new runtime.VoidApiResponse(response);
   }
 
   /**
@@ -508,12 +506,8 @@ export class DefaultApi extends runtime.BaseAPI {
   async eventsIdPost(
     requestParameters: EventsIdPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<ShowDTO> {
-    const response = await this.eventsIdPostRaw(
-      requestParameters,
-      initOverrides
-    );
-    return await response.value();
+  ): Promise<void> {
+    await this.eventsIdPostRaw(requestParameters, initOverrides);
   }
 
   /**

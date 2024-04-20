@@ -79,7 +79,8 @@ export const ScheduleEventDTOAllOfRolesTypeEnum = {
   Covering: "covering",
   Shadowing: "shadowing",
 } as const;
-export type ScheduleEventDTOAllOfRolesTypeEnum = typeof ScheduleEventDTOAllOfRolesTypeEnum[keyof typeof ScheduleEventDTOAllOfRolesTypeEnum];
+export type ScheduleEventDTOAllOfRolesTypeEnum =
+  (typeof ScheduleEventDTOAllOfRolesTypeEnum)[keyof typeof ScheduleEventDTOAllOfRolesTypeEnum];
 
 /**
  * Check if a given object implements the ScheduleEventDTOAllOfRoles interface.

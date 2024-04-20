@@ -253,9 +253,6 @@ paths:
         404:
           $ref: '#/responses/Error'
         200:
-          description: "Show"
-          schema:
-            $ref: './schemas/Show.yaml#/ShowDTO'
   /shows:
     get:
       summary: Returns a list of shows

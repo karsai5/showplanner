@@ -4,6 +4,7 @@ import (
 	"strconv"
 	"strings"
 
+	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/logger"
@@ -29,7 +30,7 @@ var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetS
 	}
 
 	return &operations.GetShowsOK{
-		Payload: MapShows(shows),
+		Payload: conv.MapArray(shows, MapShow),
 	}
 })
 
