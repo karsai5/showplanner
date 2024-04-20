@@ -1,6 +1,7 @@
 {
   "private": true,
   "dependencies": {
+    "concurrently": "^8.2.2",
     "prettier": "^2.2.1",
     "strapi-to-typescript": "^2.0.6"
   },
