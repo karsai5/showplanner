@@ -1,6 +1,8 @@
+import { OutboundLink } from "core/components/links";
 import Image from "next/image";
 
 const donateLink = "https://ko-fi.com/linuskarsai";
+
 export const Footer = () => {
   return (
     <footer className="footer p-6 bg-base-200 text-base-content sticky left-0">
@@ -8,17 +10,29 @@ export const Footer = () => {
         <p>
           <span className="font-medium">Made by Linus Karsai</span>
           <br />
-          Built in my spare time, mind the bugs!{" "}
+          Built in my spare time, mind the bugs! <br />
+          If you do find a{" "}
+          <OutboundLink href="https://forum.showplanner.io/c/bugs/5">
+            bug
+          </OutboundLink>{" "}
+          or have an{" "}
+          <OutboundLink href="https://forum.showplanner.io/c/feature-ideas/6">
+            idea
+          </OutboundLink>{" "}
+          a feature, make a post about it on the{" "}
+          <OutboundLink href="https://forum.showplanner.io/">
+            forum
+          </OutboundLink>
         </p>
       </div>
       <div>
         <div>
           <p className="max-w-sm">
             If you&apos;re interested in supporting the ShowPlanner, consider{" "}
-            <a className="link" href={donateLink}>
+            <OutboundLink href={donateLink}>
               donating to its upkeep
-            </a>
-            .
+            </OutboundLink>
+            . The server this site runs on costs $28 a month.
           </p>
         </div>
       </div>
