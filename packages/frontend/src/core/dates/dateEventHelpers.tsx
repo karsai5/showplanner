@@ -3,8 +3,6 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 
 dayjs.extend(customParseFormat);
 
-import { ShortText } from "core/components/ShortText";
-
 import { dateFormatString, timeFormatString } from "./datesConstants";
 
 export const getTimeRangeWithCurtainsUp = (
@@ -19,36 +17,6 @@ export const getTimeRangeWithCurtainsUp = (
     }
     return stringBuilder;
   }
-};
-
-export const TimeRangeWithCurtainsUp: React.FC<{
-  event: {
-    start?: Date;
-    end?: Date | null;
-    curtainsUp?: Date | null | undefined;
-    name?: string | null | undefined;
-  };
-}> = ({ event }) => {
-  const { start, end, curtainsUp, name } = event;
-
-  const timeRange = getTimeRangeString(start, end);
-  return (
-    <div className="flex gap-1">
-      <div className="cover-box-container">
-        {curtainsUp && (
-          <div className="cover-box bg-gray-100">
-            <div className="cover-box-content">
-              {dayjs(curtainsUp).format(timeFormatString)}
-            </div>
-          </div>
-        )}
-      </div>
-      <div className="flex flex-col">
-        <div>{name && <ShortText className="mr-2 w-32">{name}</ShortText>}</div>
-        <span className="whitespace-nowrap text-sm">{timeRange}</span>
-      </div>
-    </div>
-  );
 };
 
 export const getTimeRangeString = (

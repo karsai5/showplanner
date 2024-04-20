@@ -3,24 +3,32 @@
 @tailwind utilities;
 
 .cover-box-container {
-  margin-top: -8px;
-  margin-bottom: -8px;
-  margin-left: -12px;
-  margin-right: 0.5rem;
-  position: relative;
-  background: blue;
+  /* margin-top: -8px; */
+  /* margin-bottom: -8px; */
+  /* margin-left: -12px; */
+  /* margin-right: 0.5rem; */
+  /* position: relative; */
+  /* background: blue; */
 }
 
 .cover-box {
-  height: 100%;
-  display: flex;
+  /* height: 100%; */
+  /* display: flex; */
 }
 
-.cover-box-content {
+.indicator-spacer {
+}
+
+.indicator-box {
   writing-mode: vertical-rl;
   text-orientation: mixed;
   text-align: center;
   font-size: 12px;
   padding: 0.5rem 0;
-  width: 100%;
+
+  position: absolute;
+  top: 0;
+  /* left: 0; */
+  right: 0;
+  bottom: 0;
 }

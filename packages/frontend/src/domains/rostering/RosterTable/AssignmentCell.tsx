@@ -16,6 +16,7 @@ import {
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { NewShowModalProps, useModal } from "core/components/Modal/Modal";
 import { ShortText } from "core/components/ShortText";
+import { Indicator, Indicators } from "core/components/tables/Indicators";
 import { Td } from "core/components/tables/tables";
 import { showToastError } from "core/utils/errors";
 import {
@@ -98,14 +99,20 @@ export const PureAssignmentCell: React.FC<{
   role: RoleDTO;
 }> = ({ people, assignment, event, role }) => {
   const { Modal, open, close, isOpen } = useModal(false);
+  let bgClassName = "";
+  if (assignment.person?.id) {
+    bgClassName = getBgColorForRoster(assignment.available);
+  }
 
   return (
-    <>
+    <Td
+      onClick={() => open()}
+      className={cc(bgClassName, "relative p-0 cursor-pointer")}
+    >
       <AssignmentDisplay
         assignment={assignment}
         shadows={event.shadows}
         roleId={role.id as number}
-        openModal={open}
       />
       <AssignmentModal
         Modal={Modal}
@@ -116,7 +123,7 @@ export const PureAssignmentCell: React.FC<{
         assignment={assignment}
         people={people}
       />
-    </>
+    </Td>
   );
 };
 
@@ -124,58 +131,49 @@ export const AssignmentDisplay: React.FC<{
   assignment: RosterAssignedDTO;
   shadows: RosterDTOEventsInner["shadows"];
   roleId: number;
-  openModal: () => void;
-}> = ({ assignment, shadows, roleId, openModal }) => {
-  let bgClassName = "";
-  if (assignment.person?.id) {
-    bgClassName = getBgColorForRoster(assignment.available);
-  }
+}> = ({ assignment, shadows, roleId }) => {
   const shadowsForThisRole = shadows?.[roleId] || [];
   const hasShadows = shadowsForThisRole.length > 0;
 
+  const indicators: Indicator[] = [];
+
+  if (assignment.cover) {
+    indicators.push({ content: "cover", className: "bg-orange-400" });
+  }
+
   return (
-    <Td className={cc(bgClassName)} onClick={() => openModal()}>
-      <div className="flex cursor-pointer">
-        <div className="cover-box-container">
-          {assignment?.cover && (
-            <>
-              <div className="cover-box bg-orange-400">
-                <div className="cover-box-content">cover</div>
+    <div className="flex">
+      <Indicators items={indicators} className="mr-1.5" />
+      <div className="flex" tabIndex={0}>
+        {!assignment.person?.id && (
+          <span className="italic text-slate-400">Unassigned</span>
+        )}
+        {assignment.person?.id && (
+          <>
+            <div className="flex flex-col justify-center">
+              <div className="whitespace-nowrap overflow-hidden text-ellipsis">
+                <PersonDisplayName
+                  person={assignment.person}
+                  className="block whitespace-nowrap text-ellipsis overflow-hidden w-32"
+                />
               </div>
-            </>
-          )}
-        </div>
-        <div className="flex" tabIndex={0}>
-          {!assignment.person?.id && (
-            <span className="italic text-slate-400">Unassigned</span>
-          )}
-          {assignment.person?.id && (
-            <>
-              <div className="flex flex-col justify-center">
-                <div className="whitespace-nowrap overflow-hidden text-ellipsis">
-                  <PersonDisplayName
-                    person={assignment.person}
-                    className="block whitespace-nowrap text-ellipsis overflow-hidden w-32"
-                  />
-                </div>
-                {hasShadows && (
-                  <ShortText className="text-slate-500 text-xs w-40">
-                    Shadows:{" "}
-                    {shadowsForThisRole
-                      .map((s) =>
-                        getPersonDisplayName(s.person, {
-                          firstNameOnly: true,
-                        })
-                      )
-                      .join(", ")}
-                  </ShortText>
-                )}
-              </div>
-            </>
-          )}
-        </div>
+              {hasShadows && (
+                <ShortText className="text-slate-500 text-xs w-40">
+                  Shadows:{" "}
+                  {shadowsForThisRole
+                    .map((s) =>
+                      getPersonDisplayName(s.person, {
+                        firstNameOnly: true,
+                      })
+                    )
+                    .join(", ")}
+                </ShortText>
+              )}
+            </div>
+          </>
+        )}
       </div>
-    </Td>
+    </div>
   );
 };
 

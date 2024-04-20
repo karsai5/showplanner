@@ -3,7 +3,7 @@ import { api } from "core/api";
 import { RosterDTOEventsInner } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { GapRow, Td } from "core/components/tables/tables";
-import { TimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
+import { TimeRangeWithCurtainsUp } from "core/components/tables/TimeRangeWithCurtainsUp";
 import { displayDate } from "domains/events/lib/displayDate";
 import { processEvents } from "domains/events/lib/processEvents";
 import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
@@ -65,7 +65,7 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
                           {displayDate(e.start)}
                         </Td>
                       )}
-                      <Td className="w-40 sticky left-0 bg-white z-40">
+                      <Td className="w-40 sticky left-0 bg-white z-40 pl-0">
                         <TimeRangeWithCurtainsUp event={e} />
                       </Td>
                       {roster.roles?.map((r) => {

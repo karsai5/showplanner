@@ -5,8 +5,8 @@ import { AvailabilitiesDTOEventsInner } from "core/api/generated";
 import { AccessDenied } from "core/components/AccessDenied/AccessDenied";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { GapRow, Td } from "core/components/tables/tables";
+import { TimeRangeWithCurtainsUp } from "core/components/tables/TimeRangeWithCurtainsUp";
 import { H2 } from "core/components/Typography";
-import { TimeRangeWithCurtainsUp } from "core/dates/dateEventHelpers";
 import { PERMISSION, showPermission } from "core/permissions";
 import { displayDate } from "domains/events/lib/displayDate";
 import { processEvents } from "domains/events/lib/processEvents";
@@ -54,10 +54,8 @@ const AvailabilitiesTable: React.FC<{ showId: number }> = ({ showId }) => {
     return <progress className="progress w-56"></progress>;
   }
   if (data) {
-    const {
-      dates,
-      groupedEvents,
-    } = processEvents<AvailabilitiesDTOEventsInner>(data.events);
+    const { dates, groupedEvents } =
+      processEvents<AvailabilitiesDTOEventsInner>(data.events);
     return (
       <table className="table table-sm w-full">
         <thead>
@@ -94,7 +92,7 @@ const AvailabilitiesTable: React.FC<{ showId: number }> = ({ showId }) => {
                           {displayDate(e.start)}
                         </Td>
                       )}
-                      <Td className="w-40 sticky left-0 bg-white z-50">
+                      <Td className="w-40 sticky pl-0 bg-white z-50">
                         <TimeRangeWithCurtainsUp event={e} />
                       </Td>
                       {e.availabilities?.map((a, i) => {
