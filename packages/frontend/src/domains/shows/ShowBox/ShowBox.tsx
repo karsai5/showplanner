@@ -2,11 +2,8 @@ import cc from "classnames";
 import ColorHash from "color-hash";
 import { ShowDTO } from "core/api/generated";
 import dayjs from "dayjs";
-import advancedFormat from "dayjs/plugin/advancedFormat";
 import Link from "next/link";
 import Tilt from "react-parallax-tilt";
-
-dayjs.extend(advancedFormat);
 
 const colorHash = new ColorHash();
 
@@ -20,10 +17,13 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
 
   const showCount = 0;
 
-  const dates = [show.start, show.end]
+  let dates = [show.start, show.end]
     .filter((d) => d)
-    .map((d) => dayjs(d).format("d MMM"))
-    .join(" - ");
+    .map((d) => dayjs(d).format("MMM"))
+
+  if (dates.length == 2 && dates[0] === dates[1]) {
+    dates = [dates[0]]
+  }
 
   return (
     <Tilt
@@ -57,7 +57,7 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
             </h2>
             <div className="flex gap-2 justify-between">
               <div>{show.company}</div>
-              <div className="whitespace-nowrap">{dates}</div>
+              <div className="whitespace-nowrap">{dates.join(' - ')}</div>
             </div>
           </div>
           <div className="card-actions">
