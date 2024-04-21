@@ -4,7 +4,8 @@ import { PersonSummaryDTO, RosterDTOEventsInner } from "core/api/generated";
 import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
 import { FC } from "react";
 
-export const colorCodednameComponent = (event: RosterDTOEventsInner): FC<{ person: PersonSummaryDTO }> =>
+export const colorCodednameComponent =
+  (event: RosterDTOEventsInner): FC<{ person: PersonSummaryDTO }> =>
   ({ person }) => {
     const availability = event.availabilities?.[person?.id || ""];
     return (

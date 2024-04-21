@@ -4,7 +4,7 @@ import cc from "classnames";
 import { PersonSummaryDTO } from "core/api/generated";
 import { useModal } from "core/components/Modal/Modal";
 import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
-import React, { FC, useCallback, useMemo,useRef } from "react";
+import React, { FC, useCallback, useMemo, useRef } from "react";
 import { useEffect, useState } from "react";
 
 type NameComponentType = FC<{ person: PersonSummaryDTO }>;
