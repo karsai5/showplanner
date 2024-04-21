@@ -1,11 +1,10 @@
 import cc from "classnames";
 import ColorHash from "color-hash";
 import { ShowDTO } from "core/api/generated";
-import { dateFormatString } from "core/dates/datesConstants";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import Link from "next/link";
-import Tilt from 'react-parallax-tilt';
+import Tilt from "react-parallax-tilt";
 
 dayjs.extend(advancedFormat);
 
@@ -23,11 +22,16 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
 
   const dates = [show.start, show.end]
     .filter((d) => d)
-    .map((d) => dayjs(d).format(dateFormatString))
+    .map((d) => dayjs(d).format("d MMM"))
     .join(" - ");
 
   return (
-    <Tilt scale={1.02} transitionSpeed={2000} tiltMaxAngleX={10} tiltMaxAngleY={10}>
+    <Tilt
+      scale={1.02}
+      transitionSpeed={2000}
+      tiltMaxAngleX={10}
+      tiltMaxAngleY={10}
+    >
       <Link
         href={`/shows/${show.slug}`}
         className={cc(
@@ -53,7 +57,7 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
             </h2>
             <div className="flex gap-2 justify-between">
               <div>{show.company}</div>
-              <div>{dates}</div>
+              <div className="whitespace-nowrap">{dates}</div>
             </div>
           </div>
           <div className="card-actions">
