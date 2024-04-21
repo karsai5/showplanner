@@ -15,13 +15,6 @@
     "format": "prettier --check --ignore-path .gitignore .",
     "format:fix": "prettier --write --ignore-path .gitignore ."
   },
-  "lint-staged": {
-    "*.ts": [
-      "prettier --write",
-      "yarn lint --fix"
-    ],
-    "*.scss": "prettier --write"
-  },
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
