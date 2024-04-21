@@ -2,10 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { getApi } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { ShowBox } from "domains/shows/ShowBox/ShowBox";
-import { orderBy } from "lodash";
+import { groupBy, orderBy } from "lodash";
 import Image from "next/image";
 
 import missingImg from "./missing.png";
+import { ShowDTO } from "core/api/generated";
+import dayjs from "dayjs";
 
 export const AssignedShowBoxGrid: React.FC = () => {
   const api = getApi();
@@ -28,7 +30,16 @@ export const AssignedShowBoxGrid: React.FC = () => {
     return null;
   }
 
-  const sortedShows = orderBy(shows, "start", "desc");
+  const groupedShows = groupBy(orderBy(shows, "start"), (show: ShowDTO) => {
+    if (show.end && dayjs(show.end).isBefore(new Date())) {
+      return "past";
+    } else if (!show.end) {
+      return "nodates";
+    }
+    return "future";
+  });
+
+  console.log("groupedShows", groupedShows);
 
   return (
     <>
@@ -57,9 +68,18 @@ export const AssignedShowBoxGrid: React.FC = () => {
       )}
 
       <div className="flex gap-4 flex-wrap">
-        {sortedShows.map((show) => (
-          <ShowBox key={show.id} show={show} />
-        ))}
+        {groupedShows?.nodates &&
+          groupedShows.nodates.map((show) => (
+            <ShowBox key={show.id} show={show} />
+          ))}
+        {groupedShows?.future &&
+          groupedShows.future.map((show) => (
+            <ShowBox key={show.id} show={show} />
+          ))}
+        {groupedShows?.past &&
+          groupedShows.past.map((show) => (
+            <ShowBox key={show.id} show={show} />
+          ))}
       </div>
     </>
   );
