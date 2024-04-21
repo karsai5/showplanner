@@ -5224,6 +5224,7 @@ __metadata:
     react-hook-form: "npm:^7.33.0"
     react-icons: "npm:^4.4.0"
     react-input-mask: "npm:^2.0.4"
+    react-parallax-tilt: "npm:^1.7.221"
     react-places-autocomplete: "npm:^7.3.0"
     react-toastify: "npm:^9.1.1"
     sass: "npm:^1.58.0"
@@ -18653,6 +18654,16 @@ __metadata:
     react: ^15.5.x || ^16.x || ^17.x || ^18.x
     react-dom: ^15.5.x || ^16.x || ^17.x || ^18.x
   checksum: 2a87ef9e41777698d7ca215786115893ecdbae184064044370fc72a8526f841ae709068a9abedc79633c159900a400c8424196170ece18f362c47a9bb12ecf90
+  languageName: node
+  linkType: hard
+
+"react-parallax-tilt@npm:^1.7.221":
+  version: 1.7.221
+  resolution: "react-parallax-tilt@npm:1.7.221"
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: 32b646b9d374e74b0b935ab8e25042e744dad703d737afcc2370dbe117137a89c9570af8354fbc549f49d169d03bd2e4fb4696d34c585a18f0093dc69e7fa7f9
   languageName: node
   linkType: hard
 

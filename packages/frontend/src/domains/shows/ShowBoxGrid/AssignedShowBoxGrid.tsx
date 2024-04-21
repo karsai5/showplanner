@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { getApi } from "core/api";
+import { ShowDTO } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
+import dayjs from "dayjs";
 import { ShowBox } from "domains/shows/ShowBox/ShowBox";
 import { groupBy, orderBy } from "lodash";
 import Image from "next/image";
 
 import missingImg from "./missing.png";
-import { ShowDTO } from "core/api/generated";
-import dayjs from "dayjs";
 
 export const AssignedShowBoxGrid: React.FC = () => {
   const api = getApi();
@@ -38,8 +38,6 @@ export const AssignedShowBoxGrid: React.FC = () => {
     }
     return "future";
   });
-
-  console.log("groupedShows", groupedShows);
 
   return (
     <>
