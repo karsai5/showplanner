@@ -15,6 +15,12 @@ var Admin = GeneralRole{
 	Permissions: []string{AddShow.perm},
 }
 
+var ShowRosterer = ShowRole{
+	Name:        "Rosterer",
+	key:         "Rosterer",
+	Permissions: []ShowPermission{ViewEvents, Rostering},
+}
+
 var ShowManager = ShowRole{
 	Name:        "Manager",
 	key:         "manager",
@@ -34,4 +40,5 @@ var Roles = []GeneralRole{
 var ShowRoles = []ShowRole{
 	ShowManager,
 	ShowMember,
+	ShowRosterer,
 }
