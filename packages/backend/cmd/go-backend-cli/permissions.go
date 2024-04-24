@@ -6,16 +6,13 @@ import (
 	"strconv"
 	"strings"
 
-	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/permissions"
 
-	"github.com/muesli/termenv"
 	"github.com/supertokens/supertokens-golang/recipe/userroles"
 	"github.com/urfave/cli/v2"
 
-	"github.com/erikgeiser/promptkit/selection"
 	"github.com/erikgeiser/promptkit/textinput"
 )
 
@@ -118,46 +115,16 @@ func GiveRole() *cli.Command {
 			}()
 
 			permissions.InitSupertokens()
-			people, err := database.GetAllPeople()
 
+			selectedPerson, err := selectPerson()
 			if err != nil {
 				return err
 			}
 
-			blue := termenv.String().Foreground(termenv.ANSI256Color(32)) //nolint:gomnd
-
-			sp := selection.New("Pick user", people)
-			sp.PageSize = 5
-			sp.SelectedChoiceStyle = func(c *selection.Choice[database.Person]) string {
-				return (blue.Bold().Styled(getName(c.Value)) + " " +
-					termenv.String("("+getMetadata(c.Value)+")").Faint().String())
-			}
-			sp.UnselectedChoiceStyle = func(c *selection.Choice[database.Person]) string {
-				return (getName(c.Value) + " " + termenv.String("("+getMetadata(c.Value)+")").Faint().String())
-			}
-
-			selectedPerson, err := sp.RunPrompt()
+			selectedRole, err := selectRole()
 			if err != nil {
 				return err
 			}
-
-			roles := getRoleOptions()
-			sr := selection.New("Pick role", roles)
-			sr.PageSize = 5
-			sr.SelectedChoiceStyle = func(c *selection.Choice[RoleSelection]) string {
-				return (blue.Bold().Styled(c.Value.Name) + " " +
-					termenv.String("("+c.Value.FullKey+")").Faint().String())
-			}
-			sr.UnselectedChoiceStyle = func(c *selection.Choice[RoleSelection]) string {
-				return (c.Value.Name + " " + termenv.String("("+c.Value.FullKey+")").Faint().String())
-			}
-
-			selectedRole, err := sr.RunPrompt()
-			if err != nil {
-				return err
-			}
-
-			_, _ = selectedPerson, selectedRole
 
 			confStr := fmt.Sprintf("Are you sure you want to give %s the role of %s on the show %s", getName(selectedPerson), selectedRole.Name, selectedRole.Show)
 
@@ -176,38 +143,6 @@ func GiveRole() *cli.Command {
 			return permissions.GiveRole(selectedRole.FullKey, selectedPerson.ID)
 		},
 	}
-}
-
-func getRoleOptions() []RoleSelection {
-	roles := []RoleSelection{}
-	for _, r := range permissions.Roles {
-		roles = append(roles, RoleSelection{
-			Name:    r.Name,
-			FullKey: r.Key,
-		})
-	}
-
-	shows, err := database.GetAllShows()
-	if err != nil {
-		return roles
-	}
-
-	for _, s := range shows {
-		for _, r := range permissions.ShowRoles {
-			roles = append(roles, RoleSelection{
-				Name:    fmt.Sprintf("%s - %s", s.Name, r.Name),
-				FullKey: r.Key(conv.UintToString(&s.ID)),
-				Show:    s.Name,
-			})
-		}
-	}
-	return roles
-}
-
-type RoleSelection struct {
-	Name    string
-	FullKey string
-	Show    string
 }
 
 func getName(p database.Person) string {
