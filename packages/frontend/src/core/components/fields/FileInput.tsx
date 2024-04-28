@@ -6,7 +6,9 @@ import { toast } from "react-toastify";
 const FileInput: React.FC<{
   onChange: (media: MediaDTO) => void;
   label: string;
-}> = ({ label, onChange }) => {
+  path: string;
+  fileName?: string;
+}> = ({ label, onChange, path, fileName }) => {
   const [loading, setLoading] = useState(false);
 
   const saveFile = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -16,10 +18,19 @@ const FileInput: React.FC<{
       return;
     }
 
+    let finalName = file.name;
+    if (fileName) {
+      if (fileName.includes(".")) {
+        finalName = fileName;
+      } else {
+        finalName = `${fileName}.${file.name.split(".").pop()}`;
+      }
+    }
+
     try {
       const result = await api.mediaUploadPost({
         file: file,
-        key: file.name,
+        key: `${path}/${finalName}`,
       });
       onChange(result);
     } catch (e) {

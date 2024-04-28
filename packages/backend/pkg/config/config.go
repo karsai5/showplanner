@@ -9,6 +9,10 @@ var SMTP_HOST = getEnvVariable("SMTP_HOST", IsProd)
 var SMTP_USER = getEnvVariable("SMTP_USER", IsProd)
 var SMTP_PASS = getEnvVariable("SMTP_PASS", IsProd)
 
+var AWS_ACCESS_KEY_ID = getEnvVariable("AWS_ACCESS_KEY_ID", IsProd)
+var AWS_SECRET_ACCESS_KEY = getEnvVariable("AWS_SECRET_ACCESS_KEY", IsProd)
+var AWS_BUCKET = getEnvVariable("AWS_BUCKET", true)
+
 var KAFKA_URL = getEnvVariable("KAFKA_URL", true)
 
 // Database

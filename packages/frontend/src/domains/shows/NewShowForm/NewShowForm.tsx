@@ -7,6 +7,7 @@ import { useRefreshToken } from "pages/me/refresh";
 import React, { FC } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
 
 type Inputs = {
   name: string;
@@ -66,6 +67,8 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
       <FileInput
         label="Image for show"
         onChange={(media) => setValue("file", media)}
+        path="show-images"
+        fileName={uuidv4()}
       />
       <Input
         register={register("name", { required: true })}
