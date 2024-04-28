@@ -37,6 +37,12 @@ export interface CreateShowDTO {
    * @memberof CreateShowDTO
    */
   slug: string;
+  /**
+   *
+   * @type {number}
+   * @memberof CreateShowDTO
+   */
+  imageId?: number;
 }
 
 /**
@@ -66,6 +72,7 @@ export function CreateShowDTOFromJSONTyped(
     name: json["name"],
     company: json["company"],
     slug: json["slug"],
+    imageId: !exists(json, "imageId") ? undefined : json["imageId"],
   };
 }
 
@@ -80,5 +87,6 @@ export function CreateShowDTOToJSON(value?: CreateShowDTO | null): any {
     name: value.name,
     company: value.company,
     slug: value.slug,
+    imageId: value.imageId,
   };
 }

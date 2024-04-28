@@ -39,7 +39,8 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		APIKeyAuthenticator: security.APIKeyAuth,
 		BearerAuthenticator: security.BearerAuth,
 
-		JSONConsumer: runtime.JSONConsumer(),
+		JSONConsumer:          runtime.JSONConsumer(),
+		MultipartformConsumer: runtime.DiscardConsumer,
 
 		JSONProducer: runtime.JSONProducer(),
 		TextCalendarProducer: runtime.ProducerFunc(func(w io.Writer, data interface{}) error {
@@ -109,6 +110,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		PostMeHandler: PostMeHandlerFunc(func(params PostMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostMe has not yet been implemented")
 		}),
+		PostMediaUploadHandler: PostMediaUploadHandlerFunc(func(params PostMediaUploadParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostMediaUpload has not yet been implemented")
+		}),
 		PostPersonnelAssignHandler: PostPersonnelAssignHandlerFunc(func(params PostPersonnelAssignParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostPersonnelAssign has not yet been implemented")
 		}),
@@ -158,6 +162,9 @@ type GoBackendAPI struct {
 	// JSONConsumer registers a consumer for the following mime types:
 	//   - application/json
 	JSONConsumer runtime.Consumer
+	// MultipartformConsumer registers a consumer for the following mime types:
+	//   - multipart/form-data
+	MultipartformConsumer runtime.Consumer
 
 	// JSONProducer registers a producer for the following mime types:
 	//   - application/json
@@ -208,6 +215,8 @@ type GoBackendAPI struct {
 	PostEventsIDHandler PostEventsIDHandler
 	// PostMeHandler sets the operation handler for the post me operation
 	PostMeHandler PostMeHandler
+	// PostMediaUploadHandler sets the operation handler for the post media upload operation
+	PostMediaUploadHandler PostMediaUploadHandler
 	// PostPersonnelAssignHandler sets the operation handler for the post personnel assign operation
 	PostPersonnelAssignHandler PostPersonnelAssignHandler
 	// PostRolesHandler sets the operation handler for the post roles operation
@@ -292,6 +301,9 @@ func (o *GoBackendAPI) Validate() error {
 	if o.JSONConsumer == nil {
 		unregistered = append(unregistered, "JSONConsumer")
 	}
+	if o.MultipartformConsumer == nil {
+		unregistered = append(unregistered, "MultipartformConsumer")
+	}
 
 	if o.JSONProducer == nil {
 		unregistered = append(unregistered, "JSONProducer")
@@ -363,6 +375,9 @@ func (o *GoBackendAPI) Validate() error {
 	if o.PostMeHandler == nil {
 		unregistered = append(unregistered, "PostMeHandler")
 	}
+	if o.PostMediaUploadHandler == nil {
+		unregistered = append(unregistered, "PostMediaUploadHandler")
+	}
 	if o.PostPersonnelAssignHandler == nil {
 		unregistered = append(unregistered, "PostPersonnelAssignHandler")
 	}
@@ -412,6 +427,8 @@ func (o *GoBackendAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Cons
 		switch mt {
 		case "application/json":
 			result["application/json"] = o.JSONConsumer
+		case "multipart/form-data":
+			result["multipart/form-data"] = o.MultipartformConsumer
 		}
 
 		if c, ok := o.customConsumers[mt]; ok {
@@ -555,6 +572,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/me"] = NewPostMe(o.context, o.PostMeHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/media/upload"] = NewPostMediaUpload(o.context, o.PostMediaUploadHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

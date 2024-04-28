@@ -44,6 +44,8 @@ type Show struct {
 	Events  []Event
 	Roles   []Role
 	People  []Person `gorm:"many2many:show_people;"`
+	ImageID *uint
+	Image   *Media
 }
 
 type Availability struct {
@@ -105,4 +107,13 @@ type Role struct {
 	PersonID *uuid.UUID
 	Person   *Person
 	Name     string
+}
+
+type Media struct {
+	gorm.Model
+	Key string `gorm:"unique"`
+}
+
+func (e *Media) GetUrl() string {
+	return ""
 }

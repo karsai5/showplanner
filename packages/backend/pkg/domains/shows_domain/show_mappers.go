@@ -3,6 +3,7 @@ package shows_domain
 import (
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/domains/media_domain"
 	"showplanner.io/pkg/models"
 )
 
@@ -34,6 +35,10 @@ func MapShow(show database.Show) *models.ShowDTO {
 		}
 		mappedShow.Start = conv.TimeToDateTime(&start)
 		mappedShow.End = conv.TimeToDateTime(&end)
+	}
+
+	if show.Image != nil {
+		mappedShow.Image = conv.Pointer(media_domain.MapToMediaDTO(*show.Image))
 	}
 
 	return mappedShow

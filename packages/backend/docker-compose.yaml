@@ -2,6 +2,17 @@
 version: '3.1'
 
 services:
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+    environment:
+      - DEBUG=${DEBUG:-0}
+      - SERICES=s3
+    volumes:
+      - "localstack:/var/lib/localstack"
+      - ./localstack:/etc/localstack/init/ready.d
+      - "/var/run/docker.sock:/var/run/docker.sock"
   nginx:
     build: nginx-local
     depends_on:
@@ -74,3 +85,4 @@ services:
   #     KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
 volumes:
   database_volume:
+  localstack:

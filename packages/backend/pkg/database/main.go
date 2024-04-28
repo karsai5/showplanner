@@ -61,39 +61,18 @@ func initDB() *gorm.DB {
 		db = getSQLiteDatabase()
 	}
 
-	err := db.AutoMigrate(&Event{})
+	err := db.AutoMigrate(
+		&Event{},
+		&Show{},
+		&Availability{},
+		&Person{},
+		&Role{},
+		&Assignment{},
+		&Shadow{},
+		&Media{},
+	)
 	if err != nil {
-		panic("Failed to migrate event")
-	}
-
-	err = db.AutoMigrate(&Show{})
-	if err != nil {
-		panic("Failed to migrate show")
-	}
-
-	err = db.AutoMigrate(&Availability{})
-	if err != nil {
-		panic("Failed to migrate availabilities")
-	}
-
-	err = db.AutoMigrate(&Person{})
-	if err != nil {
-		panic("Failed to migrate person")
-	}
-
-	err = db.AutoMigrate(&Role{})
-	if err != nil {
-		panic("Failed to migrate role")
-	}
-
-	err = db.AutoMigrate(&Assignment{})
-	if err != nil {
-		panic("Failed to migrate assignment")
-	}
-
-	err = db.AutoMigrate(&Shadow{})
-	if err != nil {
-		panic("Failed to migrate shadow")
+		panic("Failed to run migrations")
 	}
 
 	return db

@@ -23,6 +23,9 @@ type CreateShowDTO struct {
 	// Required: true
 	Company *string `json:"company"`
 
+	// image Id
+	ImageID int64 `json:"imageId,omitempty"`
+
 	// name
 	// Required: true
 	Name *string `json:"name"`

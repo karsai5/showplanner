@@ -14,6 +14,7 @@ models/EventDTO.ts
 models/EventPublicDTO.ts
 models/HealthCheck.ts
 models/MeDetailsDTO.ts
+models/MediaDTO.ts
 models/ModelError.ts
 models/PersonSummaryDTO.ts
 models/PersonSummaryDTOPrivate.ts

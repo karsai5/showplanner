@@ -31,6 +31,9 @@ type ShowDTO struct {
 	// Required: true
 	ID *int64 `json:"id"`
 
+	// image
+	Image *MediaDTO `json:"image,omitempty"`
+
 	// name
 	// Required: true
 	Name *string `json:"name"`
@@ -57,6 +60,10 @@ func (m *ShowDTO) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateID(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateImage(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -108,6 +115,25 @@ func (m *ShowDTO) validateID(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *ShowDTO) validateImage(formats strfmt.Registry) error {
+	if swag.IsZero(m.Image) { // not required
+		return nil
+	}
+
+	if m.Image != nil {
+		if err := m.Image.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("image")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("image")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (m *ShowDTO) validateName(formats strfmt.Registry) error {
 
 	if err := validate.Required("name", "body", m.Name); err != nil {
@@ -138,8 +164,38 @@ func (m *ShowDTO) validateStart(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this show d t o based on context it is used
+// ContextValidate validate this show d t o based on the context it is used
 func (m *ShowDTO) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateImage(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *ShowDTO) contextValidateImage(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Image != nil {
+
+		if swag.IsZero(m.Image) { // not required
+			return nil
+		}
+
+		if err := m.Image.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("image")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("image")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

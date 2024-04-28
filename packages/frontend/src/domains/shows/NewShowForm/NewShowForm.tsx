@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getApi } from "core/api";
+import { MediaDTO } from "core/api/generated";
+import FileInput from "core/components/fields/FileInput";
 import Input from "core/components/fields/TextInput";
 import { useRefreshToken } from "pages/me/refresh";
 import React, { FC } from "react";
@@ -12,6 +14,7 @@ type Inputs = {
   slug: string;
   bannerimage: string;
   publishedAt: Date;
+  file: MediaDTO;
   crews: Array<string>;
 };
 
@@ -29,10 +32,17 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<Inputs>();
 
   const mutation = useMutation<unknown, unknown, Inputs>({
-    mutationFn: (data) => api.showsPost({ show: data }),
+    mutationFn: (show) =>
+      api.showsPost({
+        show: {
+          ...show,
+          imageId: show.file?.id,
+        },
+      }),
     onError: (e) => {
       toast.error("Something went wrong creating new show");
       console.error("Could not create show", e);
@@ -53,6 +63,10 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
       data-testid="NewShowForm"
       onSubmit={handleSubmit((data) => mutation.mutate(data))}
     >
+      <FileInput
+        label="Image for show"
+        onChange={(media) => setValue("file", media)}
+      />
       <Input
         register={register("name", { required: true })}
         placeholder="Name"

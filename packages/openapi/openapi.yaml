@@ -546,6 +546,28 @@ paths:
           description: Details about logged in user
           schema:
             $ref: './schemas/People.yaml#/MeDetailsDTO'
+  /media/upload:
+    post:
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: file
+          in: formData   # <-----
+          description: The uploaded file data
+          required: true
+          type: file     # <-----
+        - name: key
+          in: formData   
+          description: Key of file
+          required: true
+          type: string
+      responses:
+        500:
+        404:
+        200:
+          description: Upload succesful
+          schema:
+            $ref: './schemas/Media.yaml#/MediaDTO'
 
 responses:
   Error:

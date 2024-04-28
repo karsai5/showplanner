@@ -6,6 +6,7 @@ import (
 
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/domains/media_domain"
 	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
@@ -16,21 +17,32 @@ import (
 )
 
 var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetShowsParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting shows", &operations.GetShowsInternalServerError{})
+
 	userId, err := permissions.GetUserId(params.HTTPRequest)
 	if err != nil {
-		logger.Error("Could not get shows", err)
-		return &operations.PostShowsInternalServerError{}
+		return logError(&err)
 	}
 
 	shows, err := database.GetShowsForUser(userId)
 
 	if err != nil {
-		logger.Error("Could not get shows", err)
-		return &operations.PostShowsInternalServerError{}
+		return logError(&err)
+	}
+
+	mappedShows := conv.MapArray(shows, MapShow)
+
+	for _, show := range mappedShows {
+		if show.Image != nil {
+			err := media_domain.AddSignedURL(show.Image)
+			if err != nil {
+				return logError(&err)
+			}
+		}
 	}
 
 	return &operations.GetShowsOK{
-		Payload: conv.MapArray(shows, MapShow),
+		Payload: mappedShows,
 	}
 })
 
@@ -74,11 +86,17 @@ var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostS
 		return &operations.PostShowsUnauthorized{}
 	}
 
-	show, err := database.CreateShow(database.Show{
+	show := database.Show{
 		Name:    *psp.Show.Name,
 		Slug:    *psp.Show.Slug,
 		Company: *psp.Show.Company,
-	})
+		ImageID: nil,
+	}
+	if psp.Show.ImageID != 0 {
+		show.ImageID = conv.Pointer(uint(psp.Show.ImageID))
+	}
+
+	show, err = database.CreateShow(show)
 
 	if err != nil {
 		code := "400"

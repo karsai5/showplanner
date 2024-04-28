@@ -1,5 +1,5 @@
 watch:
-	nodemon -e go --signal SIGTERM --exec 'make' build-and-serve || exit 1
+	nodemon -e go --signal SIGTERM --exec 'make build-and-serve || exit 1'
 
 watch-swagger:
 	nodemon -e yaml --exec 'make' generate

@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import cc from "classnames";
 import ColorHash from "color-hash";
-import { ShowDTO } from "core/api/generated";
+import { MediaDTO, ShowDTO } from "core/api/generated";
 import dayjs from "dayjs";
 import Link from "next/link";
 import Tilt from "react-parallax-tilt";
@@ -19,10 +20,10 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
 
   let dates = [show.start, show.end]
     .filter((d) => d)
-    .map((d) => dayjs(d).format("MMM"))
+    .map((d) => dayjs(d).format("MMM"));
 
   if (dates.length == 2 && dates[0] === dates[1]) {
-    dates = [dates[0]]
+    dates = [dates[0]];
   }
 
   return (
@@ -42,12 +43,11 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
         )}
       >
         <figure className="relative h-40">
-          <div
-            style={{ backgroundColor: colorHash.hex(show.name) }}
-            className="text-white h-40 w-full flex items-center justify-center text-3xl"
-          >
-            <div>{show.name}</div>
-          </div>
+          {show.image?.url ? (
+            <ImageBox image={show.image} />
+          ) : (
+            <ColorBox showName={show.name} />
+          )}
         </figure>
         <div className="card-body">
           <div className="flex flex-col">
@@ -57,7 +57,7 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
             </h2>
             <div className="flex gap-2 justify-between">
               <div>{show.company}</div>
-              <div className="whitespace-nowrap">{dates.join(' - ')}</div>
+              <div className="whitespace-nowrap">{dates.join(" - ")}</div>
             </div>
           </div>
           <div className="card-actions">
@@ -69,5 +69,26 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
         </div>
       </Link>
     </Tilt>
+  );
+};
+
+const ColorBox: React.FunctionComponent<{ showName: string }> = ({
+  showName,
+}) => {
+  return (
+    <div
+      style={{ backgroundColor: colorHash.hex(showName) }}
+      className="text-white h-40 w-full flex items-center justify-center text-3xl"
+    >
+      <div>{showName}</div>
+    </div>
+  );
+};
+
+const ImageBox: React.FunctionComponent<{ image: MediaDTO }> = ({ image }) => {
+  return (
+    <div className="h-40 w-full flex items-center justify-center">
+      <img src={image.url} alt="" className="object-cover h-full w-full" />
+    </div>
   );
 };

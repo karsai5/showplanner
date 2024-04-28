@@ -16,7 +16,7 @@ func GetAllShows() ([]Show, error) {
 
 func GetShowsForUser(id uuid.UUID) ([]Show, error) {
 	person := Person{}
-	res := db.Preload("Shows.Events").First(&person, id)
+	res := db.Preload("Shows.Events").Preload("Shows.Image").First(&person, id)
 	return person.Shows, res.Error
 }
 

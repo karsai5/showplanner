@@ -1,12 +1,13 @@
+import { api } from "core/api";
+import { MediaDTO } from "core/api/generated";
 import { ChangeEvent, useState } from "react";
 import { toast } from "react-toastify";
 
 const FileInput: React.FC<{
-  onChange: (id: string) => void;
+  onChange: (media: MediaDTO) => void;
   label: string;
-}> = ({ label }) => {
+}> = ({ label, onChange }) => {
   const [loading, setLoading] = useState(false);
-  // const client = useAuthenticatedAxiosClient();
 
   const saveFile = async (event: ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
@@ -15,14 +16,12 @@ const FileInput: React.FC<{
       return;
     }
 
-    const formData = new FormData();
-    formData.append("files", file);
-
     try {
-      // const result = await client.post("/upload", formData);
-      // if (onChange) {
-      //   onChange(result.data?.[0]?.id);
-      // }
+      const result = await api.mediaUploadPost({
+        file: file,
+        key: file.name,
+      });
+      onChange(result);
     } catch (e) {
       toast.error("Failed to upload file");
       console.error("Failed to upload file", e);

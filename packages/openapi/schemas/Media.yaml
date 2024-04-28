@@ -1,0 +1,13 @@
+MediaDTO:
+  properties:
+    id:
+      type: integer
+    key:
+      type: string
+    url:
+      type: string
+  required:
+    - id
+    - key
+    - url
+  

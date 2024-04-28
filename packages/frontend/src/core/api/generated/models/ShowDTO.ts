@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from "../runtime";
+import type { MediaDTO } from "./MediaDTO";
+import {
+  MediaDTOFromJSON,
+  MediaDTOFromJSONTyped,
+  MediaDTOToJSON,
+} from "./MediaDTO";
+
 /**
  *
  * @export
@@ -55,6 +62,12 @@ export interface ShowDTO {
    * @memberof ShowDTO
    */
   end?: Date | null;
+  /**
+   *
+   * @type {MediaDTO}
+   * @memberof ShowDTO
+   */
+  image?: MediaDTO;
 }
 
 /**
@@ -96,6 +109,7 @@ export function ShowDTOFromJSONTyped(
       : json["end"] === null
       ? null
       : new Date(json["end"]),
+    image: !exists(json, "image") ? undefined : MediaDTOFromJSON(json["image"]),
   };
 }
 
@@ -123,5 +137,6 @@ export function ShowDTOToJSON(value?: ShowDTO | null): any {
         : value.end === null
         ? null
         : value.end.toISOString(),
+    image: MediaDTOToJSON(value.image),
   };
 }

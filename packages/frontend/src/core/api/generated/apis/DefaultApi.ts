@@ -25,6 +25,7 @@ import type {
   EventDTO,
   HealthCheck,
   MeDetailsDTO,
+  MediaDTO,
   PersonUpdateDTO,
   PublicScheduleGet200Response,
   RoleDTO,
@@ -58,6 +59,8 @@ import {
   HealthCheckToJSON,
   MeDetailsDTOFromJSON,
   MeDetailsDTOToJSON,
+  MediaDTOFromJSON,
+  MediaDTOToJSON,
   PersonUpdateDTOFromJSON,
   PersonUpdateDTOToJSON,
   PublicScheduleGet200ResponseFromJSON,
@@ -114,6 +117,11 @@ export interface EventsPostRequest {
 
 export interface MePostRequest {
   personalDetails?: PersonUpdateDTO;
+}
+
+export interface MediaUploadPostRequest {
+  file: Blob;
+  key: string;
 }
 
 export interface PersonnelAssignPostRequest {
@@ -616,6 +624,86 @@ export class DefaultApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<void> {
     await this.mePostRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   */
+  async mediaUploadPostRaw(
+    requestParameters: MediaUploadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<MediaDTO>> {
+    if (
+      requestParameters.file === null ||
+      requestParameters.file === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "file",
+        "Required parameter requestParameters.file was null or undefined when calling mediaUploadPost."
+      );
+    }
+
+    if (requestParameters.key === null || requestParameters.key === undefined) {
+      throw new runtime.RequiredError(
+        "key",
+        "Required parameter requestParameters.key was null or undefined when calling mediaUploadPost."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const consumes: runtime.Consume[] = [
+      { contentType: "multipart/form-data" },
+    ];
+    // @ts-ignore: canConsumeForm may be unused
+    const canConsumeForm = runtime.canConsumeForm(consumes);
+
+    let formParams: { append(param: string, value: any): any };
+    let useForm = false;
+    // use FormData to transmit files using content-type "multipart/form-data"
+    useForm = canConsumeForm;
+    if (useForm) {
+      formParams = new FormData();
+    } else {
+      formParams = new URLSearchParams();
+    }
+
+    if (requestParameters.file !== undefined) {
+      formParams.append("file", requestParameters.file as any);
+    }
+
+    if (requestParameters.key !== undefined) {
+      formParams.append("key", requestParameters.key as any);
+    }
+
+    const response = await this.request(
+      {
+        path: `/media/upload`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: formParams,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      MediaDTOFromJSON(jsonValue)
+    );
+  }
+
+  /**
+   */
+  async mediaUploadPost(
+    requestParameters: MediaUploadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<MediaDTO> {
+    const response = await this.mediaUploadPostRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
   }
 
   /**

@@ -338,6 +338,43 @@ func init() {
         }
       }
     },
+    "/media/upload": {
+      "post": {
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "type": "file",
+            "description": "The uploaded file data",
+            "name": "file",
+            "in": "formData",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Key of file",
+            "name": "key",
+            "in": "formData",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Upload succesful",
+            "schema": {
+              "$ref": "./schemas/Media.yaml#/MediaDTO"
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/personnel/assign": {
       "post": {
         "produces": [
@@ -1315,6 +1352,43 @@ func init() {
           },
           "500": {
             "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/media/upload": {
+      "post": {
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "type": "file",
+            "description": "The uploaded file data",
+            "name": "file",
+            "in": "formData",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Key of file",
+            "name": "key",
+            "in": "formData",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Upload succesful",
+            "schema": {
+              "$ref": "#/definitions/mediaDTO"
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "description": ""
           }
         }
       }
@@ -2303,6 +2377,9 @@ func init() {
         "company": {
           "type": "string"
         },
+        "imageId": {
+          "type": "integer"
+        },
         "name": {
           "type": "string"
         },
@@ -2398,6 +2475,24 @@ func init() {
           "type": "string"
         },
         "firstName": {
+          "type": "string"
+        }
+      }
+    },
+    "mediaDTO": {
+      "required": [
+        "id",
+        "key",
+        "url"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "key": {
+          "type": "string"
+        },
+        "url": {
           "type": "string"
         }
       }
@@ -2653,6 +2748,9 @@ func init() {
         },
         "id": {
           "type": "integer"
+        },
+        "image": {
+          "$ref": "#/definitions/mediaDTO"
         },
         "name": {
           "type": "string"

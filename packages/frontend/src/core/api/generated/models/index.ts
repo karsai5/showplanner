@@ -13,6 +13,7 @@ export * from "./EventDTO";
 export * from "./EventPublicDTO";
 export * from "./HealthCheck";
 export * from "./MeDetailsDTO";
+export * from "./MediaDTO";
 export * from "./ModelError";
 export * from "./PersonSummaryDTO";
 export * from "./PersonSummaryDTOPrivate";

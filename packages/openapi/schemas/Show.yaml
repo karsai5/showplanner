@@ -31,6 +31,8 @@ ShowDTO:
       type: string
       format: date-time
       x-nullable: true
+    image:
+      $ref: './Media.yaml#/MediaDTO'
   required:
     - id
     - name
@@ -44,6 +46,8 @@ CreateShowDTO:
       type: string
     slug:
       type: string
+    imageId:
+      type: integer
   required:
     - name
     - company
