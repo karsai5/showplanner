@@ -85,7 +85,7 @@ export const ShowNavList: React.FC<{ className?: string }> = ({
   const show = useShowSummary();
 
   return (
-    <ul className={className}>
+    <ul className={className} tabIndex={0}>
       <Item
         url={`/shows/${slug}`}
         name={"Schedule"}
