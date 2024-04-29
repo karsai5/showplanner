@@ -32,6 +32,7 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
       transitionSpeed={2000}
       tiltMaxAngleX={10}
       tiltMaxAngleY={10}
+      className="w-full"
     >
       <Link
         href={`/shows/${show.slug}`}
@@ -39,7 +40,7 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
           {
             grayscale: pastEvent,
           },
-          "card card-compact w-full sm:w-80 bg-base-100 shadow-xl"
+          "card card-compact w-full bg-base-100 shadow-xl"
         )}
       >
         <figure className="relative h-40">

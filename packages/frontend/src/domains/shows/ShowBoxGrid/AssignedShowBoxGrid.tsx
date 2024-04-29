@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import cc from "classnames";
 import { getApi } from "core/api";
 import { ShowDTO } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
@@ -8,6 +9,7 @@ import { groupBy, orderBy } from "lodash";
 import Image from "next/image";
 
 import missingImg from "./missing.png";
+import styles from "./styles.module.scss";
 
 export const AssignedShowBoxGrid: React.FC = () => {
   const api = getApi();
@@ -65,7 +67,7 @@ export const AssignedShowBoxGrid: React.FC = () => {
         </div>
       )}
 
-      <div className="flex gap-4 flex-wrap">
+      <div className={cc("grid gap-2", styles.grid)}>
         {groupedShows?.nodates &&
           groupedShows.nodates.map((show) => (
             <ShowBox key={show.id} show={show} />
