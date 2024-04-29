@@ -1,10 +1,16 @@
-.mobile {
-  > div {
-    width: auto;
-  }
-  li {
-    .label {
-      display: none;
+.sidebar {
+  transition: width 200ms ease-in-out;
+  width: 4.5rem;
+
+  &:hover {
+    ul > li > a > span {
+      display: block;
     }
+
+    width: 10rem;
+  }
+
+  ul > li > a > span {
+    display: none;
   }
 }

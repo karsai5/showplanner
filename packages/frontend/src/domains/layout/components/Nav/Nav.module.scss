@@ -1,0 +1,10 @@
+.mobile {
+  > div {
+    width: auto;
+  }
+  li {
+    .label {
+      display: none;
+    }
+  }
+}

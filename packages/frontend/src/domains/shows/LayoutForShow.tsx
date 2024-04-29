@@ -9,7 +9,7 @@ import { Footer } from "domains/layout/components/Footer";
 import { Nav } from "domains/layout/components/Nav";
 import Sidebar from "domains/shows/Sidebar/Sidebar";
 import { useRouter } from "next/router";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import { PermissionClaim } from "supertokens-auth-react/recipe/userroles";
 
@@ -19,23 +19,8 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const api = getApi();
-  const [sidebarOpen, setSidebarOpen] = useState(
-    getInitiaValueForSidebarOpen()
-  );
   const isSmall = useBreakpoint("sm");
 
-  useEffect(() => {
-    if (isSmall) {
-      setSidebarOpen(getInitiaValueForSidebarOpen());
-    } else {
-      setSidebarOpen(true);
-    }
-  }, [isSmall]);
-
-  const handleSidebar = (value: boolean) => {
-    setSidebarOpen(value);
-    storeValueForSidebarOpen(value);
-  };
   const {
     query: { slug },
   } = useRouter();
@@ -53,7 +38,7 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
   return (
     <SessionAuth>
       <div className="flex flex-col h-screen overflow-auto">
-        <Nav mobile={{ toggleSidebar: () => handleSidebar(!sidebarOpen) }} />
+        {(isLoading || isError) && <Nav />}
         {isLoading && <LoadingBox className="flex-1" />}
         {isError && <ErrorBox>Something went wrong getting show</ErrorBox>}
         {show && !isError && (
@@ -67,11 +52,14 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
             ]}
           >
             {show && (
-              <ShowSummaryContext.Provider value={show}>
-                <Sidebar isOpen={sidebarOpen}>
-                  <div className="p-6 w-full">{children}</div>
-                </Sidebar>
-              </ShowSummaryContext.Provider>
+              <>
+                <ShowSummaryContext.Provider value={show}>
+                  <Nav showShowMenu />
+                  <Sidebar isOpen={!isSmall}>
+                    <div className="p-6 w-full">{children}</div>
+                  </Sidebar>
+                </ShowSummaryContext.Provider>
+              </>
             )}
           </SessionAuth>
         )}
@@ -79,28 +67,4 @@ export const LayoutWithShowSidebar: React.FC<{ children: ReactNode }> = ({
       </div>
     </SessionAuth>
   );
-};
-
-const SIDEBAR_OPEN = "sidebarOpen";
-
-const getInitiaValueForSidebarOpen = (): boolean => {
-  if (typeof window === "undefined") {
-    return true;
-  }
-
-  const res = localStorage.getItem(SIDEBAR_OPEN);
-  switch (res) {
-    case "true":
-      return true;
-    default:
-    case "false":
-      return false;
-  }
-};
-
-const storeValueForSidebarOpen = (value: boolean) => {
-  if (typeof window === "undefined") {
-    return;
-  }
-  localStorage.setItem(SIDEBAR_OPEN, `${value}`);
 };

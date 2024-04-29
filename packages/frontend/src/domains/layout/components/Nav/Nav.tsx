@@ -1,14 +1,27 @@
+import {
+  CalendarDaysIcon,
+  DocumentCheckIcon,
+  HomeIcon,
+  UsersIcon,
+} from "@heroicons/react/24/outline";
+import cc from "classnames";
 import { BarsThreeLeft, BarsThreeRight } from "core/components/Icons";
 import { useBreakpoint } from "core/hooks/useBreakpoint";
+import { HasPermission, PERMISSION } from "core/permissions";
+import { useShowSlugFromUrl } from "domains/shows/lib/helpers";
+import { useShowSummary } from "domains/shows/lib/summaryContext";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Session from "supertokens-auth-react/recipe/session";
 import { signOut } from "supertokens-auth-react/recipe/thirdpartyemailpassword";
 
-export const Nav: React.FC<{ mobile?: MobileNavProps }> = ({ mobile }) => {
+import styles from "./Nav.module.scss";
+
+export const Nav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
   const isSmall = useBreakpoint("sm");
 
   if (isSmall) {
-    return <MobileNav {...mobile} />;
+    return <MobileNav showShowMenu={showShowMenu} />;
   }
   return (
     <div className="navbar bg-base-100 drop-shadow-md rounded-md z-50 sticky left-0">
@@ -22,22 +35,17 @@ export const Nav: React.FC<{ mobile?: MobileNavProps }> = ({ mobile }) => {
   );
 };
 
-type MobileNavProps = {
-  toggleSidebar?: () => void;
-};
-
-const MobileNav: React.FC<MobileNavProps> = ({ toggleSidebar }) => {
+const MobileNav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
   return (
     <div className="navbar bg-base-100 drop-shadow-md rounded-md z-50 sticky left-0">
       <div className="navbar-start">
-        {toggleSidebar && (
-          <button
-            tabIndex={0}
-            className="btn btn-ghost btn-circle"
-            onClick={toggleSidebar}
-          >
-            <BarsThreeLeft />
-          </button>
+        {showShowMenu && (
+          <div className="dropdown">
+            <label tabIndex={0} className="btn btn-ghost btn-circle">
+              <BarsThreeLeft />
+            </label>
+            <ShowNavList className="menu menu-compact dropdown-content left-0 mt-3 p-2 shadow bg-base-100 rounded-box w-52" />
+          </div>
         )}
       </div>
       <div className="navbar-center">
@@ -69,6 +77,61 @@ const NavList: React.FC<{ className?: string }> = ({ className }) => (
     <AuthItems />
   </ul>
 );
+
+export const ShowNavList: React.FC<{ className?: string }> = ({
+  className,
+}) => {
+  const slug = useShowSlugFromUrl();
+  const show = useShowSummary();
+
+  return (
+    <ul className={className}>
+      <Item
+        url={`/shows/${slug}`}
+        name={"Schedule"}
+        icon={<HomeIcon className="h-6 w-6" />}
+      />
+      <HasPermission showId={show.id} permission={PERMISSION.rostering}>
+        <Item
+          url={`/shows/${slug}/availabilities`}
+          name={"Availabilities"}
+          icon={<DocumentCheckIcon className="h-6 w-6" />}
+        />
+      </HasPermission>
+      <HasPermission showId={show.id} permission={PERMISSION.personnel}>
+        <Item
+          url={`/shows/${slug}/people`}
+          name={"People"}
+          icon={<UsersIcon className="h-6 w-6" />}
+        />
+      </HasPermission>
+      <HasPermission showId={show.id} permission={PERMISSION.rostering}>
+        <Item
+          url={`/shows/${slug}/roster`}
+          name={"Roster"}
+          icon={<CalendarDaysIcon className="h-6 w-6" />}
+        />
+      </HasPermission>
+    </ul>
+  );
+};
+
+const Item: React.FC<{
+  url: string;
+  name: string;
+  icon: React.ReactNode;
+}> = ({ url, name, icon }) => {
+  const path = usePathname();
+  const active = path === url;
+  return (
+    <li>
+      <Link href={url} className={cc({ active: active })}>
+        {icon}
+        <span className={styles.label}>{name}</span>
+      </Link>
+    </li>
+  );
+};
 
 const AuthItems: React.FC = () => {
   async function onLogout() {
