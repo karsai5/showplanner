@@ -83,11 +83,7 @@ func AddManagerToShow(showId string, userId uuid.UUID) error {
 func GiveRole(role string, userId uuid.UUID) error {
 	user, err := GetUserById(userId)
 
-	if err != nil {
-		return fmt.Errorf("Could not give %s role %s: %w", userId, role, err)
-	}
-
-	if user == nil {
+	if err != nil || user == nil {
 		return fmt.Errorf("Could not find user with id %s", userId)
 	}
 
@@ -95,8 +91,40 @@ func GiveRole(role string, userId uuid.UUID) error {
 
 	if err != nil {
 		return fmt.Errorf("Could not give %s role %s: %w", userId, role, err)
+	} 
+
+	if response.UnknownRoleError != nil {
+		return fmt.Errorf("Role %s does not exist", role)
 	}
 
+	refreshClaims(*user)
+
+	return nil
+}
+
+func RemoveRole(role string, userId uuid.UUID) error {
+	user, err := GetUserById(userId)
+
+	if err != nil || user == nil {
+		return fmt.Errorf("Could not find user with id %s", userId)
+	}
+
+	response, err := userroles.RemoveUserRole("public", user.ID, role)
+
+	if err != nil {
+		return fmt.Errorf("Could not remove %s role %s: %w", userId, role, err)
+	} 
+
+	if response.UnknownRoleError != nil {
+		return fmt.Errorf("Role %s does not exist", role)
+	}
+
+	refreshClaims(*user)
+
+	return nil
+}
+
+func refreshClaims(user tpepmodels.User) {
 	sessionHandles, err := session.GetAllSessionHandlesForUser(user.ID, nil)
 
 	if err != nil {
@@ -113,10 +141,4 @@ func GiveRole(role string, userId uuid.UUID) error {
 			logger.Error("Could not fetch and set permissions", err)
 		}
 	}
-
-	if response.UnknownRoleError != nil {
-		return fmt.Errorf("Role %s does not exist", role)
-	}
-
-	return nil
 }

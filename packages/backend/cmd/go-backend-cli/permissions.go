@@ -102,6 +102,27 @@ func AddToShow() *cli.Command {
 	}
 }
 
+func RemoveFromShow() *cli.Command {
+	return &cli.Command{
+		Name:  "remove-member",
+		Usage: "Remove a user from a show",
+		Flags: []cli.Flag{},
+		Action: func(ctx *cli.Context) error {
+			permissions.InitSupertokens()
+
+			show, err := selectShow()
+			if err != nil {
+				return err
+			}
+
+			person, err := selectPersonForShow(show.ID)
+
+			permissions.InitSupertokens()
+			return personnel_domain.RemoveFromShow(show.ID, person.ID)
+		},
+	}
+}
+
 func GiveRole() *cli.Command {
 	return &cli.Command{
 		Name:  "give-role",
@@ -113,8 +134,6 @@ func GiveRole() *cli.Command {
 					os.Exit(1)
 				}
 			}()
-
-			permissions.InitSupertokens()
 
 			selectedPerson, err := selectPerson()
 			if err != nil {
@@ -140,6 +159,7 @@ func GiveRole() *cli.Command {
 				return fmt.Errorf("Names do not match %s != %s", name, selectedPerson.LastName)
 			}
 
+			permissions.InitSupertokens()
 			return permissions.GiveRole(selectedRole.FullKey, selectedPerson.ID)
 		},
 	}

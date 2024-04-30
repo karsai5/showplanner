@@ -36,6 +36,28 @@ func AddPersonToShow(showId uint, id uuid.UUID) error {
 	return nil
 }
 
+func RemovePersonFromShow(showId uint, id uuid.UUID) (err error) {
+	defer func() {
+		if err != nil {
+			err = fmt.Errorf("while removing person from show: %w", err)
+		}
+	}()
+
+	var show = Show{Model: gorm.Model{ID: showId}}
+	person, err := GetPerson(id)
+	if err != nil {
+		return fmt.Errorf("while getting person: %w", err)
+	}
+
+	err = db.Model(&show).Association("People").Delete(&person)
+
+	if err != nil {
+		return fmt.Errorf("while deleting person from association: %w", err)
+	}
+
+	return nil
+}
+
 func GetShowBySlug(slug string) (Show, error) {
 	show := Show{}
 	res := db.First(&show, "slug = ?", slug)
