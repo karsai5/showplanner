@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import cc from "classnames";
 import { api } from "core/api";
 import Input from "core/components/fields/TextInput";
 import { useModal } from "core/components/Modal/Modal";
 import { showToastError } from "core/utils/errors";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import cc from "classnames";
 
 type Inputs = {
   name: string;

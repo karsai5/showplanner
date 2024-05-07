@@ -293,6 +293,7 @@ const Shadows: React.FC<{
           people={people}
           onChange={(p) => handleChange(p)}
           selectedPersonId={assignment?.person?.id}
+          onClose={() => setShowPersonSelector(false)}
         />
       )}
     </>
@@ -362,6 +363,7 @@ const Cover: React.FC<{
       )}
       {showPersonSelector && (
         <PersonSelectorModal
+          onClose={() => setShowPersonSelector(false)}
           loading={mutation.isLoading}
           people={filteredPeople}
           nameComponent={colorCodednameComponent(event)}

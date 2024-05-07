@@ -3,7 +3,7 @@ import { FC, ReactNode } from "react";
 const TOGGLES = {
   availabilities_menu: false,
   availabilities_shadow_menu: true,
-  role_dropdown: true,
+  old_roles_in_people_page: false,
 };
 
 export const isToggledOn = (key: keyof typeof TOGGLES): boolean => {

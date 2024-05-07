@@ -23,7 +23,7 @@
     "@graphql-codegen/typescript": "^2.5.1",
     "@graphql-codegen/typescript-operations": "^2.4.2",
     "@graphql-codegen/typescript-react-query": "^3.5.14",
-    "@headlessui/react": "^1.7.18",
+    "@headlessui/react": "2",
     "@heroicons/react": "^2.1.1",
     "@sentry/nextjs": "^7.93.0",
     "@showplanner/common": "^2.0.0",

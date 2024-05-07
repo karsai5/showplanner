@@ -1,6 +1,7 @@
 import { AccessDenied } from "core/components/AccessDenied/AccessDenied";
 import { H2, H3 } from "core/components/Typography";
 import { PERMISSION, showPermission } from "core/permissions";
+import { Toggle } from "core/toggles/toggles";
 import { AddPersonModal } from "domains/personnel/AddPersonModal/AddPersonModal";
 import { PeopleTable } from "domains/personnel/PeopleTable/PeopleTable";
 import { AddRoleModal } from "domains/rostering/AddRoleModal/AddRoleModal";
@@ -32,13 +33,15 @@ const ShowPage = () => {
         <H2 className="mb-4">{show.name} - People</H2>
       </div>
       <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex-none">
-          <div className="flex justify-between">
-            <H3>Roles</H3>
-            <AddRoleModal showId={show.id} />
+        <Toggle toggle="old_roles_in_people_page">
+          <div className="flex-none">
+            <div className="flex justify-between">
+              <H3>Roles</H3>
+              <AddRoleModal showId={show.id} />
+            </div>
+            <RolesTable />
           </div>
-          <RolesTable />
-        </div>
+        </Toggle>
         <div className="flex-1">
           <div className="flex justify-between">
             <H3>People</H3>

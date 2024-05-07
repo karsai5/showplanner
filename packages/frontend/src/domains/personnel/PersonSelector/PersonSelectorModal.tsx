@@ -12,12 +12,13 @@ type NameComponentType = FC<{ person: PersonSummaryDTO }>;
 export const PersonSelectorModal: React.FC<{
   people: Array<PersonSummaryDTO>;
   onChange: (person: PersonSummaryDTO) => void;
-  loading?: boolean;
   selectedPersonId: string | undefined;
+  loading?: boolean;
   openOnLoad?: boolean;
   className?: string;
   nameComponent?: NameComponentType;
   placeholder?: string;
+  onClose: () => void;
 }> = ({
   people,
   onChange,
@@ -26,9 +27,10 @@ export const PersonSelectorModal: React.FC<{
   openOnLoad,
   className,
   placeholder,
+  onClose,
   nameComponent: NameComponent = PersonDisplayName,
 }) => {
-  const { Modal, close, isOpen } = useModal(true);
+  const { Modal } = useModal(true);
 
   const unassignedPerson: PersonSummaryDTO = useMemo(() => {
     return {
@@ -94,7 +96,7 @@ export const PersonSelectorModal: React.FC<{
 
   return (
     <div className="">
-      <Modal close={() => close()} isOpen={isOpen}>
+      <Modal close={() => onClose && onClose()} isOpen={true}>
         <Combobox value={selected} onChange={handleChange}>
           {({ open }) => (
             <div className="relative">

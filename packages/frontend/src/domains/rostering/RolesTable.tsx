@@ -172,6 +172,7 @@ export const RenameRole: React.FC<{
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["show-roles"] });
+      queryClient.invalidateQueries({ queryKey: ["roster"] });
       onClose();
     },
   });
