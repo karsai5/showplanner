@@ -4,15 +4,25 @@ import { KeyboardEventHandler } from "react";
 export const Td: React.FC<{
   children: React.ReactNode;
   rowSpan?: number;
+  colSpan?: number;
   className?: string;
   onClick?: () => void;
   tabIndex?: number | undefined;
   onKeyDown?: KeyboardEventHandler<HTMLTableDataCellElement> | undefined;
-}> = ({ children, rowSpan, className, onClick, tabIndex, onKeyDown }) => {
+}> = ({
+  children,
+  rowSpan,
+  colSpan,
+  className,
+  onClick,
+  tabIndex,
+  onKeyDown,
+}) => {
   return (
     <td
       className={cc("border-l border-slate-200 last:border-r", className)}
       rowSpan={rowSpan}
+      colSpan={colSpan}
       onClick={onClick}
       tabIndex={tabIndex}
       onKeyDown={onKeyDown}

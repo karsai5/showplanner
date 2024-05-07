@@ -22,10 +22,10 @@ const ShowPage = () => {
       ]}
     >
       <Head>
-        <title>Availabilities - {show.name} - ShowPlanner</title>
+        <title>Roster - {show.name} - ShowPlanner</title>
       </Head>
       <div className="flex flex-col justify-between sm:flex-row gap-4">
-        <H2 className="mb-4">{show.name} - Availabilities</H2>
+        <H2 className="mb-4">{show.name} - Roster</H2>
       </div>
       <RosterTable showId={show.id} />
     </SessionAuth>

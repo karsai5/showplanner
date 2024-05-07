@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "core/api";
-import { RosterDTOEventsInner } from "core/api/generated";
+import { RoleDTO, RosterDTOEventsInner } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { GapRow, Td } from "core/components/tables/tables";
 import { TimeRangeWithCurtainsUp } from "core/components/tables/TimeRangeWithCurtainsUp";
@@ -11,6 +11,10 @@ import sortBy from "lodash/sortBy";
 import React, { Fragment } from "react";
 
 import { AssignmentCell } from "./AssignmentCell";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { Toggle } from "core/toggles/toggles";
+import { AddRoleModal } from "../AddRoleModal/AddRoleModal";
+import { HasPermission, PERMISSION } from "core/permissions";
 
 export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
   const rosterRequest = useQuery(["roster", showId], () =>
@@ -35,10 +39,7 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
             <th></th>
             <th></th>
             {roster.roles?.map((r) => (
-              <th key={r.id} className="sticky top-0 bg-white z-40">
-                <div>{r.name}</div>
-                {r.person && <PersonDisplayName person={r.person} />}
-              </th>
+              <RosterName key={r.id} role={r} />
             ))}
           </tr>
         </thead>
@@ -65,7 +66,7 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
                           {displayDate(e.start)}
                         </Td>
                       )}
-                      <Td className="w-40 sticky left-0 bg-white z-40 pl-0">
+                      <Td className="w-40 sticky left-0 bg-white z-30 pl-0">
                         <TimeRangeWithCurtainsUp event={e} />
                       </Td>
                       {roster.roles?.map((r) => {
@@ -83,6 +84,24 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
                           />
                         );
                       })}
+                      <HasPermission
+                        showId={showId}
+                        permission={PERMISSION.rostering}
+                      >
+                        {i === 0 && (
+                          <Td
+                            className="whitespace-nowrap"
+                            rowSpan={thisGroupEvents.length}
+                          >
+                            <div className="flex justify-center">
+                              <AddRoleModal
+                                showId={showId}
+                                className="btn-outline text-slate-500"
+                              />
+                            </div>
+                          </Td>
+                        )}
+                      </HasPermission>
                     </tr>
                   );
                 })}
@@ -95,4 +114,38 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
     );
   }
   return null;
+};
+
+const RosterName: React.FC<{ role: RoleDTO }> = ({ role }) => {
+  return (
+    <th className="sticky top-0 bg-white z-40">
+      <div className="flex gap-2 justify-between">
+        <div>
+          <div>{role.name}</div>
+          {role.person && <PersonDisplayName person={role.person} />}
+        </div>
+        <Toggle toggle="role_dropdown">
+          <div className="dropdown dropdown-end">
+            <div tabIndex={0} role="button">
+              <EllipsisHorizontalIcon className="h-6 w-6" />
+            </div>
+            <ul
+              tabIndex={0}
+              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <a>Rename</a>
+              </li>
+              <li>
+                <a>Unassign</a>
+              </li>
+              <li>
+                <a>Delete role</a>
+              </li>
+            </ul>
+          </div>
+        </Toggle>
+      </div>
+    </th>
+  );
 };

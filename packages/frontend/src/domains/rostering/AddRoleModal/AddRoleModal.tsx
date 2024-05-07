@@ -5,6 +5,7 @@ import { useModal } from "core/components/Modal/Modal";
 import { showToastError } from "core/utils/errors";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import cc from "classnames";
 
 type Inputs = {
   name: string;
@@ -12,7 +13,8 @@ type Inputs = {
 
 export const AddRoleModal: React.FC<{
   showId: number;
-}> = ({ showId }) => {
+  className?: string;
+}> = ({ showId, className }) => {
   const { Modal, open, close, isOpen } = useModal();
 
   const {
@@ -38,6 +40,7 @@ export const AddRoleModal: React.FC<{
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["show-roles", showId] });
+      queryClient.invalidateQueries({ queryKey: ["roster", showId] });
       close();
       reset();
     },
@@ -51,7 +54,7 @@ export const AddRoleModal: React.FC<{
 
   return (
     <>
-      <button className="btn btn-sm" onClick={() => open()}>
+      <button className={cc(className, "btn btn-sm")} onClick={() => open()}>
         Add Role
       </button>
       {isOpen && (
