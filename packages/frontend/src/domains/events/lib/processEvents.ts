@@ -5,16 +5,24 @@ import orderBy from "lodash/orderBy";
 import uniqBy from "lodash/uniqBy";
 
 export const processEvents = <T>(
-  unprocessedEvents?: Array<{ start: Date }>
+  unprocessedEvents?: Array<{ start: Date }>,
+  hidePastEvents?: boolean
 ) => {
+  const startOfToday = dayjs().startOf("day");
+  const filteredEvents =
+    unprocessedEvents?.filter((e) => {
+      if (!hidePastEvents) return true;
+      return dayjs(e.start).isAfter(startOfToday);
+    }) || [];
+
   const uniqueDays = uniqBy(
-    orderBy(unprocessedEvents, [(e) => e.start], ["asc"]).map((e) =>
+    orderBy(filteredEvents, [(e) => e.start], ["asc"]).map((e) =>
       dayjs(e.start).startOf("day")
     ),
     (day) => day.toString()
   );
 
-  const groupedEvents = groupBy(unprocessedEvents, (e) =>
+  const groupedEvents = groupBy(filteredEvents, (e) =>
     dayjs(e.start).startOf("day")
   ) as Dictionary<T[]>;
 

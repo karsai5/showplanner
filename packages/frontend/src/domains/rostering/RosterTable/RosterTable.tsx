@@ -27,7 +27,10 @@ import React, { Fragment, useState } from "react";
 
 import { AssignmentCell } from "./AssignmentCell";
 
-export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
+export const RosterTable: React.FC<{
+  showId: number;
+  showPastEvents?: boolean;
+}> = ({ showId, showPastEvents }) => {
   const rosterRequest = useQuery(["roster", showId], () =>
     api.rosterGet({ showId: showId })
   );
@@ -41,7 +44,8 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
   if (rosterRequest.data) {
     const roster = rosterRequest.data;
     const { dates, groupedEvents } = processEvents<RosterDTOEventsInner>(
-      roster.events
+      roster.events,
+      !showPastEvents
     );
     return (
       <table className="table table-sm">
