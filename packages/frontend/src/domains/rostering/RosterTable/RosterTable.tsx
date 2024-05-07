@@ -54,7 +54,7 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
                 key={r.id}
                 role={r}
                 showId={showId}
-                roles={roster.roles}
+                roles={roster.roles as Array<RoleDTO>}
               />
             ))}
           </tr>
