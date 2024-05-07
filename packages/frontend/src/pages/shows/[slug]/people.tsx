@@ -31,6 +31,7 @@ const ShowPage = () => {
       </Head>
       <div className="flex flex-col justify-between sm:flex-row gap-4">
         <H2 className="mb-4">{show.name} - People</H2>
+        <AddPersonModal showId={show.id} />
       </div>
       <div className="flex flex-col md:flex-row gap-4">
         <Toggle toggle="old_roles_in_people_page">
@@ -42,13 +43,7 @@ const ShowPage = () => {
             <RolesTable />
           </div>
         </Toggle>
-        <div className="flex-1">
-          <div className="flex justify-between">
-            <H3>People</H3>
-            <AddPersonModal showId={show.id} />
-          </div>
-          <PeopleTable showId={show.id} />
-        </div>
+        <PeopleTable showId={show.id} />
       </div>
     </SessionAuth>
   );

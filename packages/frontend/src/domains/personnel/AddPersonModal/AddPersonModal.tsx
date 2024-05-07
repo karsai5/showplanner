@@ -37,8 +37,8 @@ export const AddPersonModal: React.FC<{
 
   return (
     <>
-      <button className="btn btn-sm" onClick={() => open()}>
-        Add Person
+      <button className="btn" onClick={() => open()}>
+        Add person to show
       </button>
       <Modal isOpen={isOpen} close={close} title="Add person to show">
         {isLoading && <LoadingBox />}
