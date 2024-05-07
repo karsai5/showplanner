@@ -1,19 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { getApi } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
-import { useModal } from "core/components/Modal/Modal";
 import { H2 } from "core/components/Typography";
 import { HasPermission, PERMISSION } from "core/permissions";
 import dayjs from "dayjs";
 import { Schedule } from "domains/events/EventTable/Schedule";
-import NewEventForm from "domains/events/NewEventForm/NewEventForm";
-import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
 import Head from "next/head";
 import Link from "next/link";
-import { FC, ReactElement, useState } from "react";
+import { AddEventButton } from ".";
 
-const ShowPage = () => {
+export const ShowPage = () => {
   const api = getApi();
   const show = useShowSummary();
   const {
@@ -23,13 +20,9 @@ const ShowPage = () => {
   } = useQuery(["EventsList", show.id], () =>
     api.scheduleGet({ showId: show.id })
   );
-  const [showOldEvents, setShowOldEvents] = useState(false);
   const startOfToday = dayjs().startOf("day");
   const filteredEvents =
-    events?.filter((e) => {
-      if (showOldEvents) return true;
-      return dayjs(e.start).isAfter(startOfToday);
-    }) || [];
+    events?.filter((e) => dayjs(e.start).isAfter(startOfToday)) || [];
   return (
     <>
       <Head>
@@ -44,12 +37,7 @@ const ShowPage = () => {
           <Link href={`${show.slug}/public`} target="_blank" className="btn">
             View public schedule
           </Link>
-          <button
-            className="btn"
-            onClick={() => setShowOldEvents(!showOldEvents)}
-          >
-            {showOldEvents ? "Hide" : "Show"} past events
-          </button>
+          <button className="btn">Show old events</button>
         </div>
       </div>
       {isError && <ErrorBox>Could not get shows</ErrorBox>}
@@ -58,23 +46,3 @@ const ShowPage = () => {
     </>
   );
 };
-
-const AddEventButton: FC<{ showId: number }> = ({ showId }) => {
-  const { Modal, open, close, isOpen } = useModal();
-  return (
-    <>
-      <button className="btn mb-2" onClick={open}>
-        Add event
-      </button>
-      <Modal isOpen={isOpen} close={close} title="Add a new show">
-        <NewEventForm onSuccess={close} showId={showId} />
-      </Modal>
-    </>
-  );
-};
-
-ShowPage.getLayout = (page: ReactElement) => (
-  <LayoutWithShowSidebar>{page}</LayoutWithShowSidebar>
-);
-
-export default ShowPage;
