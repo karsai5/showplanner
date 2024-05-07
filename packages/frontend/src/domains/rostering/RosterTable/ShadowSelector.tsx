@@ -113,6 +113,7 @@ export const ShadowSelectorPure: FC<{
           onChange={(p) => handleChange(p)}
           nameComponent={colorCodednameComponent(event)}
           selectedPersonId={undefined}
+          onClose={() => setShowPersonSelector(false)}
         />
       )}
       <button

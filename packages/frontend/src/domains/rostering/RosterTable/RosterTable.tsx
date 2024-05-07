@@ -60,7 +60,7 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
           </tr>
         </thead>
         <tbody>
-          {dates.map((date) => {
+          {dates.map((date, datei) => {
             const thisGroupEvents = sortBy(
               groupedEvents[date.date.toString()],
               "start",
@@ -104,10 +104,13 @@ export const RosterTable: React.FC<{ showId: number }> = ({ showId }) => {
                         showId={showId}
                         permission={PERMISSION.rostering}
                       >
-                        {i === 0 && (
+                        {i === 0 && datei === 0 && (
                           <Td
                             className="whitespace-nowrap"
-                            rowSpan={thisGroupEvents.length}
+                            rowSpan={
+                              (roster.events?.length || 0) +
+                              Object.keys(groupedEvents).length
+                            }
                           >
                             <div className="flex justify-center">
                               <AddRoleModal
