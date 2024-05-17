@@ -1,5 +1,5 @@
- # yaml-language-server: $schema=https://json.schemastore.org/swagger-2.0.json
-swagger: "2.0"
+# yaml-language-server: $schema=https://json.schemastore.org/swagger-2.0.json
+swagger: '2.0'
 info:
   title: Showplanner backend
   description: API description in Markdown.
@@ -204,7 +204,7 @@ paths:
           description: OK
           schema:
             type: object
-            properties: 
+            properties:
               showName:
                 type: string
               events:
@@ -310,10 +310,44 @@ paths:
         404:
           $ref: '#/responses/Error'
         200:
-          description: "Show"
+          description: 'Show'
           schema:
             $ref: './schemas/Show.yaml#/ShowSummaryDTO'
+  /personnel:
+    get:
+      summary: Returns all people
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/People.yaml#/ArrayOfPersonSummaryDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
   /personnel/assignable:
+    get:
+      parameters:
+        - in: query
+          required: true
+          name: showId
+          type: integer
+          description: ID of the show to get people for
+      summary: Returns people for a show
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/People.yaml#/ArrayOfPersonSummaryDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+  /personnel/assigned:
     get:
       parameters:
         - in: query
@@ -340,12 +374,12 @@ paths:
           required: true
           name: showId
           type: integer
-          description: ID of the show 
+          description: ID of the show
         - in: query
           required: true
           name: personId
           type: string
-          format: uuid 
+          format: uuid
           description: ID of the person
       summary: Adds a person to a show
       produces:
@@ -353,26 +387,6 @@ paths:
       responses:
         200:
           description: OK
-        401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
-  /personnel/assigned:
-    get:
-      parameters:
-        - in: query
-          required: true
-          name: showId
-          type: integer
-          description: ID of the show to get people for
-      summary: Returns people for a show
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: './schemas/People.yaml#/ArrayOfPersonSummaryDTO'
         401:
           $ref: '#/responses/Error'
         500:
@@ -501,7 +515,7 @@ paths:
     post:
       summary: Create or update availability
       produces:
-        - application/json  
+        - application/json
       parameters:
         - in: body
           name: availability
@@ -517,10 +531,27 @@ paths:
           description: OK
           schema:
             $ref: './schemas/Rostering.yaml#/AvailabilityDTO'
+  /impersonate:
+    post:
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          required: true
+          name: userId
+          type: string
+          description: ID of the user to impersonate
+      responses:
+        500:
+          description: Internal server error
+        401:
+          $ref: '#/responses/Error'
+        200:
+          description: OK
   /me:
     post:
       produces:
-        - application/json  
+        - application/json
       parameters:
         - in: body
           description: The availability to create or update
@@ -536,7 +567,7 @@ paths:
           description: OK
     get:
       produces:
-        - application/json  
+        - application/json
       responses:
         500:
           description: Internal server error
@@ -552,12 +583,12 @@ paths:
         - multipart/form-data
       parameters:
         - name: file
-          in: formData   # <-----
+          in: formData # <-----
           description: The uploaded file data
           required: true
-          type: file     # <-----
+          type: file # <-----
         - name: key
-          in: formData   
+          in: formData
           description: Key of file
           required: true
           type: string
@@ -602,12 +633,12 @@ definitions:
       events:
         type: array
         items:
-          allOf: 
-          - $ref: './schemas/Event.yaml#/EventDTO'
-          - type: object
-            properties:
-              availabilities: 
-                x-nullable: true
-                type: array
-                items:
-                  $ref: './schemas/Rostering.yaml#/AvailabilityDTO'
+          allOf:
+            - $ref: './schemas/Event.yaml#/EventDTO'
+            - type: object
+              properties:
+                availabilities:
+                  x-nullable: true
+                  type: array
+                  items:
+                    $ref: './schemas/Rostering.yaml#/AvailabilityDTO'

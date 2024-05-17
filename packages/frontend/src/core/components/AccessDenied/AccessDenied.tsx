@@ -1,3 +1,5 @@
+import ErrorBox from "core/components/ErrorBox/ErrorBox";
+
 export const AccessDenied = () => {
-  return <div className="flex-1">AccessDenied</div>;
+  return <ErrorBox>AccessDenied</ErrorBox>;
 };

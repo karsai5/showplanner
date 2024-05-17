@@ -2,12 +2,15 @@ package people_domain
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	uuid "github.com/satori/go.uuid"
+	"github.com/supertokens/supertokens-golang/recipe/session"
 	"gorm.io/gorm"
+	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
@@ -127,6 +130,27 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 
 		return middleware.ResponderFunc(func(w http.ResponseWriter, p runtime.Producer) {
 			w.Write([]byte(calendarString))
+		})
+	})
+
+	api.PostImpersonateHandler = operations.PostImpersonateHandlerFunc(func(params operations.PostImpersonateParams) middleware.Responder {
+		logErr := logger.CreateLogErrorFunc("Impersondating", &operations.PostImpersonateInternalServerError{})
+		userId, err := uuid.FromString(params.UserID)
+		if err != nil {
+			return logErr(&err)
+		}
+		user, err := permissions.GetUserById(userId)
+		if err != nil {
+			return logErr(&err)
+		}
+		if user == nil {
+			return logErr(conv.Pointer(fmt.Errorf("User does not exist")))
+		}
+
+		return middleware.ResponderFunc(func(w http.ResponseWriter, p runtime.Producer) {
+			_, err = session.CreateNewSession(params.HTTPRequest, w, "public", user.ID, map[string]interface{}{
+				"isImpersonation": true,
+			}, nil)
 		})
 	})
 }

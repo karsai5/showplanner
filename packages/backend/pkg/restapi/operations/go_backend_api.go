@@ -65,6 +65,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetMeHandler: GetMeHandlerFunc(func(params GetMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetMe has not yet been implemented")
 		}),
+		GetPersonnelHandler: GetPersonnelHandlerFunc(func(params GetPersonnelParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetPersonnel has not yet been implemented")
+		}),
 		GetPersonnelAssignableHandler: GetPersonnelAssignableHandlerFunc(func(params GetPersonnelAssignableParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPersonnelAssignable has not yet been implemented")
 		}),
@@ -106,6 +109,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		}),
 		PostEventsIDHandler: PostEventsIDHandlerFunc(func(params PostEventsIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostEventsID has not yet been implemented")
+		}),
+		PostImpersonateHandler: PostImpersonateHandlerFunc(func(params PostImpersonateParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostImpersonate has not yet been implemented")
 		}),
 		PostMeHandler: PostMeHandlerFunc(func(params PostMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostMe has not yet been implemented")
@@ -185,6 +191,8 @@ type GoBackendAPI struct {
 	GetAvailabilitiesHandler GetAvailabilitiesHandler
 	// GetMeHandler sets the operation handler for the get me operation
 	GetMeHandler GetMeHandler
+	// GetPersonnelHandler sets the operation handler for the get personnel operation
+	GetPersonnelHandler GetPersonnelHandler
 	// GetPersonnelAssignableHandler sets the operation handler for the get personnel assignable operation
 	GetPersonnelAssignableHandler GetPersonnelAssignableHandler
 	// GetPersonnelAssignedHandler sets the operation handler for the get personnel assigned operation
@@ -213,6 +221,8 @@ type GoBackendAPI struct {
 	PostEventsHandler PostEventsHandler
 	// PostEventsIDHandler sets the operation handler for the post events ID operation
 	PostEventsIDHandler PostEventsIDHandler
+	// PostImpersonateHandler sets the operation handler for the post impersonate operation
+	PostImpersonateHandler PostImpersonateHandler
 	// PostMeHandler sets the operation handler for the post me operation
 	PostMeHandler PostMeHandler
 	// PostMediaUploadHandler sets the operation handler for the post media upload operation
@@ -330,6 +340,9 @@ func (o *GoBackendAPI) Validate() error {
 	if o.GetMeHandler == nil {
 		unregistered = append(unregistered, "GetMeHandler")
 	}
+	if o.GetPersonnelHandler == nil {
+		unregistered = append(unregistered, "GetPersonnelHandler")
+	}
 	if o.GetPersonnelAssignableHandler == nil {
 		unregistered = append(unregistered, "GetPersonnelAssignableHandler")
 	}
@@ -371,6 +384,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.PostEventsIDHandler == nil {
 		unregistered = append(unregistered, "PostEventsIDHandler")
+	}
+	if o.PostImpersonateHandler == nil {
+		unregistered = append(unregistered, "PostImpersonateHandler")
 	}
 	if o.PostMeHandler == nil {
 		unregistered = append(unregistered, "PostMeHandler")
@@ -515,6 +531,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
+	o.handlers["GET"]["/personnel"] = NewGetPersonnel(o.context, o.GetPersonnelHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
 	o.handlers["GET"]["/personnel/assignable"] = NewGetPersonnelAssignable(o.context, o.GetPersonnelAssignableHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -568,6 +588,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/events/{id}"] = NewPostEventsID(o.context, o.PostEventsIDHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/impersonate"] = NewPostImpersonate(o.context, o.PostImpersonateHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

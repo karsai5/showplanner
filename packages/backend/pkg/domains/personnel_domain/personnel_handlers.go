@@ -18,6 +18,7 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 	api.GetPersonnelAssignedHandler = handleAssignedPersonnel
 	api.GetPersonnelAssignableHandler = handleAssignablePersonnel
 	api.PostPersonnelAssignHandler = handleAddPersonToShow
+	api.GetPersonnelHandler = handleGetPersonnel
 }
 
 var handleAddPersonToShow = operations.PostPersonnelAssignHandlerFunc(func(params operations.PostPersonnelAssignParams) middleware.Responder {
@@ -108,6 +109,30 @@ var handleAssignablePersonnel = operations.GetPersonnelAssignableHandlerFunc(fun
 	return &operations.GetPersonnelAssignableOK{
 		Payload: &models.ArrayOfPersonSummaryDTO{
 			People: conv.MapArrayOfPointer(people, MapToPersonSummaryDTO),
+		},
+	}
+})
+
+var handleGetPersonnel = operations.GetPersonnelHandlerFunc(func(params operations.GetPersonnelParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting all personnel", &operations.GetPersonnelInternalServerError{})
+
+	hasPerm, err := permissions.HasRole(params.HTTPRequest, "admin")
+
+	if err != nil {
+		return logError(&err)
+	}
+	if !hasPerm {
+		return &operations.GetPersonnelUnauthorized{}
+	}
+
+	people, err := database.GetAllPeople()
+
+	if err != nil {
+		return logError(&err)
+	}
+	return &operations.GetPersonnelOK{
+		Payload: &models.ArrayOfPersonSummaryDTO{
+			People: conv.MapArrayOfPointer(people, MapToPersonSummaryDTOWithEmail),
 		},
 	}
 })

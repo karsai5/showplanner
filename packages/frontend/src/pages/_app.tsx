@@ -5,16 +5,26 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
-import { MeContextWrapper } from "core/components/MeContext/MeContext";
+import {
+  MeContext,
+  MeContextWrapper,
+} from "core/components/MeContext/MeContext";
 import { ConfirmationModalWrapper } from "core/components/Modal/ConfirmationModal";
 import { DefaultLayout } from "domains/layout/DefaultLayout";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Router } from "next/router";
-import { ReactElement, ReactNode, useEffect, useState } from "react";
+import {
+  ReactElement,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { ToastContainer, Zoom } from "react-toastify";
 import SuperTokensReact from "supertokens-auth-react";
 import { SuperTokensWrapper } from "supertokens-auth-react";
+import Session from "supertokens-auth-react/recipe/session";
 
 import { frontendConfig } from "../../config/frontendConfig";
 
@@ -75,6 +85,7 @@ function MyApp({ Component }: AppPropsWithLayout) {
                 <title>ShowPlanner</title>
               </Head>
 
+              <ImpersonnatingWarning />
               {loading ? <LoadingBox /> : <Component />}
             </MeContextWrapper>
           )}
@@ -85,6 +96,22 @@ function MyApp({ Component }: AppPropsWithLayout) {
     </SuperTokensWrapper>
   );
 }
+
+const ImpersonnatingWarning = () => {
+  const session = Session.useSessionContext();
+  const me = useContext(MeContext);
+  if (session.loading) {
+    return null;
+  }
+  if (session.accessTokenPayload.isImpersonation) {
+    return (
+      <div className="bg-red-500 text-white absolute -top-6 -left-6 -right-6 text-center">
+        Impersonating {me?.firstName}
+      </div>
+    );
+  }
+  return null;
+};
 
 const usePageLoading = () => {
   const [loading, setLoading] = useState(false);

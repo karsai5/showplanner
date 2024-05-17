@@ -115,6 +115,10 @@ export interface EventsPostRequest {
   event?: CreateEventDTO;
 }
 
+export interface ImpersonatePostRequest {
+  userId: string;
+}
+
 export interface MePostRequest {
   personalDetails?: PersonUpdateDTO;
 }
@@ -560,6 +564,52 @@ export class DefaultApi extends runtime.BaseAPI {
 
   /**
    */
+  async impersonatePostRaw(
+    requestParameters: ImpersonatePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (
+      requestParameters.userId === null ||
+      requestParameters.userId === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "userId",
+        "Required parameter requestParameters.userId was null or undefined when calling impersonatePost."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters.userId !== undefined) {
+      queryParameters["userId"] = requestParameters.userId;
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/impersonate`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   */
+  async impersonatePost(
+    requestParameters: ImpersonatePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.impersonatePostRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   */
   async meGetRaw(
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<MeDetailsDTO>> {
@@ -873,6 +923,41 @@ export class DefaultApi extends runtime.BaseAPI {
       requestParameters,
       initOverrides
     );
+    return await response.value();
+  }
+
+  /**
+   * Returns all people
+   */
+  async personnelGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ArrayOfPersonSummaryDTO>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/personnel`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      ArrayOfPersonSummaryDTOFromJSON(jsonValue)
+    );
+  }
+
+  /**
+   * Returns all people
+   */
+  async personnelGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ArrayOfPersonSummaryDTO> {
+    const response = await this.personnelGetRaw(initOverrides);
     return await response.value();
   }
 

@@ -19,6 +19,14 @@ func MapToPersonSummaryDTO(person database.Person) models.PersonSummaryDTO {
 	return dto
 }
 
+func MapToPersonSummaryDTOWithEmail(p database.Person) models.PersonSummaryDTO {
+	dto := MapToPersonSummaryDTO(p)
+	dto.Private = &models.PersonSummaryDTOPrivate{
+		Email: p.Email,
+	}
+	return dto
+}
+
 func MapToPersonSummaryDTOWithPrivateInfo(p database.Person) models.PersonSummaryDTO {
 	dto := MapToPersonSummaryDTO(p)
 	dto.Private = &models.PersonSummaryDTOPrivate{

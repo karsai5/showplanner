@@ -291,6 +291,33 @@ func init() {
         }
       }
     },
+    "/impersonate": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "description": "ID of the user to impersonate",
+            "name": "userId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/me": {
       "get": {
         "produces": [
@@ -371,6 +398,28 @@ func init() {
           },
           "500": {
             "description": ""
+          }
+        }
+      }
+    },
+    "/personnel": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns all people",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/People.yaml#/ArrayOfPersonSummaryDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
           }
         }
       }
@@ -1306,6 +1355,36 @@ func init() {
         }
       }
     },
+    "/impersonate": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "description": "ID of the user to impersonate",
+            "name": "userId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/me": {
       "get": {
         "produces": [
@@ -1389,6 +1468,34 @@ func init() {
           },
           "500": {
             "description": ""
+          }
+        }
+      }
+    },
+    "/personnel": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns all people",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/arrayOfPersonSummaryDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
