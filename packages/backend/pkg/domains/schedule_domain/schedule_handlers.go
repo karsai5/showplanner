@@ -86,7 +86,7 @@ func MapRoles(roles []database.Role, event database.Event, userId uuid.UUID) []*
 		arr = append(arr, getBaseRole(role, event, userId))
 	}
 
-	// Add shadows (note: you can't get covered for an assignment)
+	// Add assignments
 	arr = append(arr, getAssignmentsAndCovers(event, userId)...)
 
 	// Add any shadows
