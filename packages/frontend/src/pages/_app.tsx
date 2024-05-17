@@ -105,7 +105,7 @@ const ImpersonnatingWarning = () => {
   }
   if (session.accessTokenPayload.isImpersonation) {
     return (
-      <div className="bg-red-500 text-white absolute -top-6 -left-6 -right-6 text-center">
+      <div className="bg-red-400 text-white w-full p-2 text-center mb-2">
         Impersonating {me?.firstName}
       </div>
     );
