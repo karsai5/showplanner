@@ -100,6 +100,28 @@ type Person struct {
 	Shows []Show `gorm:"many2many:show_people;"`
 }
 
+type ShowReport struct {
+	gorm.Model
+
+	Title    string
+	Subtitle string
+	Author   string
+
+	ShowStart     time.Time
+	ShowEnd       time.Time
+	IntervalStart *time.Time
+	IntervalEnd   *time.Time
+
+	HouseOpen          *time.Time
+	ActOneFOHClearance *time.Time
+	ActTwoFOHClearance *time.Time
+
+	Notes string
+
+	EventID *uint
+	Event   *Event
+}
+
 type Role struct {
 	gorm.Model
 	ShowID   uint
