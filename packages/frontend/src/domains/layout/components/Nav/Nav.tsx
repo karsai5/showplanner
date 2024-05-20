@@ -1,11 +1,13 @@
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import {
+  Bars3BottomRightIcon,
   CalendarDaysIcon,
   DocumentCheckIcon,
   HomeIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
 import cc from "classnames";
-import { BarsThreeLeft, BarsThreeRight } from "core/components/Icons";
+import { BarsThreeLeft } from "core/components/Icons";
 import { useBreakpoint } from "core/hooks/useBreakpoint";
 import { HasPermission, PERMISSION } from "core/permissions";
 import { useShowSlugFromUrl } from "domains/shows/lib/helpers";
@@ -17,8 +19,52 @@ import { signOut } from "supertokens-auth-react/recipe/thirdpartyemailpassword";
 
 import styles from "./Nav.module.scss";
 
+type NavItem = {
+  title: string;
+  href?: string;
+  onClick?: () => void;
+};
+
+const useMainNavItems = (): NavItem[] => {
+  const mainNav: NavItem[] = [
+    {
+      title: "ShowTimer",
+      href: "/tools/showtimer",
+    },
+  ];
+
+  async function onLogout() {
+    await signOut();
+    window.location.href = "/";
+  }
+  const session = Session.useSessionContext();
+  if (session.loading) {
+    return mainNav;
+  }
+
+  if (session.doesSessionExist) {
+    mainNav.push(
+      {
+        title: "Shows",
+        href: "/shows",
+      },
+      {
+        title: "Log out",
+        onClick: () => onLogout(),
+      }
+    );
+  } else {
+    mainNav.push({
+      title: "Log in",
+      href: "/auth",
+    });
+  }
+  return mainNav;
+};
+
 export const Nav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
   const isSmall = useBreakpoint("sm");
+  const mainNavItems = useMainNavItems();
 
   if (isSmall) {
     return <MobileNav showShowMenu={showShowMenu} />;
@@ -29,13 +75,32 @@ export const Nav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
         <Title />
       </div>
       <div className="flex-none">
-        <NavList className="menu menu-horizontal p-0" />
+        <ul className="menu menu-horizontal p-0">
+          {mainNavItems.map((item, i) => {
+            if (item.href) {
+              return (
+                <li key={i}>
+                  <Link href={item.href} onClick={item.onClick}>
+                    {item.title}
+                  </Link>
+                </li>
+              );
+            } else {
+              return (
+                <li key={i}>
+                  <a onClick={item.onClick}>{item.title}</a>
+                </li>
+              );
+            }
+          })}
+        </ul>
       </div>
     </div>
   );
 };
 
 const MobileNav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
+  const mainNavItems = useMainNavItems();
   return (
     <div className="navbar bg-base-100 drop-shadow-md rounded-md z-50 sticky left-0">
       <div className="navbar-start">
@@ -52,12 +117,38 @@ const MobileNav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
         <Title />
       </div>
       <div className="navbar-end">
-        <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost btn-circle">
-            <BarsThreeRight />
-          </label>
-          <NavList className="menu menu-compact dropdown-content right-0 mt-3 p-2 shadow bg-base-100 rounded-box w-52" />
-        </div>
+        <Menu as="div" className="dropdown">
+          <MenuButton className="btn btn-ghost btn-circle">
+            <Bars3BottomRightIcon className="w-6 h-6" />
+          </MenuButton>
+          <MenuItems
+            as="ul"
+            anchor="bottom"
+            className="menu menu-compact dropdown-content right-0 mt-4 p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            {mainNavItems.map((item, i) => (
+              <MenuItem as="li" key={i}>
+                {({ close }) => {
+                  const handleOnClick = () => {
+                    if (item.onClick) {
+                      item.onClick();
+                    }
+                    close();
+                  };
+                  if (item.href) {
+                    return (
+                      <Link href={item.href} onClick={handleOnClick}>
+                        {item.title}
+                      </Link>
+                    );
+                  } else {
+                    return <a onClick={handleOnClick}>{item.title}</a>;
+                  }
+                }}
+              </MenuItem>
+            ))}
+          </MenuItems>
+        </Menu>
       </div>
     </div>
   );
@@ -67,15 +158,6 @@ const Title = () => (
   <Link href="/" className="btn btn-ghost normal-case text-xl">
     ShowPlanner
   </Link>
-);
-
-const NavList: React.FC<{ className?: string }> = ({ className }) => (
-  <ul className={className} tabIndex={0}>
-    <li>
-      <Link href="/tools/showtimer">ShowTimer</Link>
-    </li>
-    <AuthItems />
-  </ul>
 );
 
 export const ShowNavList: React.FC<{ className?: string }> = ({
@@ -130,38 +212,6 @@ const Item: React.FC<{
         <span className={styles.label}>{name}</span>
       </Link>
     </li>
-  );
-};
-
-const AuthItems: React.FC = () => {
-  async function onLogout() {
-    await signOut();
-    window.location.href = "/";
-  }
-  const session = Session.useSessionContext();
-  if (session.loading) {
-    return null;
-  }
-
-  if (session.doesSessionExist) {
-    return (
-      <>
-        <li>
-          <Link href="/shows">Shows</Link>
-        </li>
-        <li>
-          <a onClick={onLogout}>Log out</a>
-        </li>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <li>
-        <Link href="/auth">Log in</Link>
-      </li>
-    </>
   );
 };
 
