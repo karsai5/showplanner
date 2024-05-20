@@ -5,10 +5,10 @@ import (
 	"os"
 	"time"
 
-	"gorm.io/gorm"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/showreports"
 
+	uuid "github.com/satori/go.uuid"
 	"github.com/urfave/cli/v2"
 )
 
@@ -35,10 +35,9 @@ func CreateShowReport() *cli.Command {
 		Name:  "showreport",
 		Usage: "create show report",
 		Action: func(ctx *cli.Context) error {
+			id, _ := uuid.FromString("eba20525-f4e8-455e-aa37-9ca17e588d50")
 			sr := database.ShowReport{
-				Model: gorm.Model{
-					ID: 24601,
-				},
+				ID:                 id,
 				Title:              "Les Misérables Show 10 Report",
 				Subtitle:           "Saturday 7.30pm, 5th August 2023",
 				Author:             "Linus Karsai",

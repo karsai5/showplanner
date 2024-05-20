@@ -101,7 +101,10 @@ type Person struct {
 }
 
 type ShowReport struct {
-	gorm.Model
+	ID        uuid.UUID `gorm:"type:uuid;primary_key;"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time `gorm:"index"`
 
 	Title    string
 	Subtitle string
