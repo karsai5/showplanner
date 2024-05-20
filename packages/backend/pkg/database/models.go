@@ -110,8 +110,8 @@ type ShowReport struct {
 	Subtitle string
 	Author   string
 
-	ShowStart     time.Time
-	ShowEnd       time.Time
+	ShowStart     *time.Time
+	ShowEnd       *time.Time
 	IntervalStart *time.Time
 	IntervalEnd   *time.Time
 
@@ -121,8 +121,13 @@ type ShowReport struct {
 
 	Notes string
 
+	// linked event
 	EventID *uint
 	Event   *Event
+
+	// linked person
+	CreatedById uuid.UUID
+	CreatedBy   Person
 }
 
 type Role struct {
