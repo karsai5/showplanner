@@ -1,15 +1,15 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import {
+  Bars3BottomLeftIcon,
   Bars3BottomRightIcon,
   CalendarDaysIcon,
   DocumentCheckIcon,
   HomeIcon,
-  UsersIcon,
 } from "@heroicons/react/24/outline";
 import cc from "classnames";
-import { BarsThreeLeft } from "core/components/Icons";
+import { UserIcon } from "core/components/Icons";
 import { useBreakpoint } from "core/hooks/useBreakpoint";
-import { HasPermission, PERMISSION } from "core/permissions";
+import { PERMISSION, showPermission, useHasPermission } from "core/permissions";
 import { useShowSlugFromUrl } from "domains/shows/lib/helpers";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
 import Link from "next/link";
@@ -23,6 +23,7 @@ type NavItem = {
   title: string;
   href?: string;
   onClick?: () => void;
+  icon?: React.ReactNode;
 };
 
 const useMainNavItems = (): NavItem[] => {
@@ -62,6 +63,47 @@ const useMainNavItems = (): NavItem[] => {
   return mainNav;
 };
 
+const useNavItemsForShow = (): NavItem[] => {
+  const slug = useShowSlugFromUrl();
+  const show = useShowSummary();
+
+  const hasPermission = useHasPermission();
+
+  const navItems: NavItem[] = [
+    {
+      title: "Schedule",
+      href: `/shows/${slug}`,
+      icon: <HomeIcon className="h-6 w-6" />,
+    },
+  ];
+
+  if (hasPermission(showPermission(show.id, PERMISSION.rostering))) {
+    navItems.push({
+      title: "Availabilities",
+      href: `/shows/${slug}/availabilities`,
+      icon: <DocumentCheckIcon className="h-6 w-6" />,
+    });
+  }
+
+  if (hasPermission(showPermission(show.id, PERMISSION.personnel))) {
+    navItems.push({
+      title: "People",
+      href: `/shows/${slug}/people`,
+      icon: <UserIcon className="h-6 w-6" />,
+    });
+  }
+
+  if (hasPermission(showPermission(show.id, PERMISSION.rostering))) {
+    navItems.push({
+      title: "Roster",
+      href: `/shows/${slug}/roster`,
+      icon: <CalendarDaysIcon className="h-6 w-6" />,
+    });
+  }
+
+  return navItems;
+};
+
 export const Nav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
   const isSmall = useBreakpoint("sm");
   const mainNavItems = useMainNavItems();
@@ -99,20 +141,48 @@ export const Nav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
   );
 };
 
+const DropdownItem: React.FC<{ item: NavItem }> = ({ item }) => {
+  const path = usePathname();
+  const active = path === item.href;
+
+  return (
+    <MenuItem as="li">
+      {({ close }) => {
+        const handleOnClick = () => {
+          if (item.onClick) {
+            item.onClick();
+          }
+          close();
+        };
+        if (item.href) {
+          return (
+            <Link
+              href={item.href}
+              onClick={handleOnClick}
+              className={cc({ active })}
+            >
+              {item.icon && item.icon}
+              {item.title}
+            </Link>
+          );
+        } else {
+          return (
+            <a onClick={handleOnClick}>
+              {item.icon && item.icon}
+              {item.title}
+            </a>
+          );
+        }
+      }}
+    </MenuItem>
+  );
+};
+
 const MobileNav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
   const mainNavItems = useMainNavItems();
   return (
     <div className="navbar bg-base-100 drop-shadow-md rounded-md z-50 sticky left-0">
-      <div className="navbar-start">
-        {showShowMenu && (
-          <div className="dropdown">
-            <label tabIndex={0} className="btn btn-ghost btn-circle">
-              <BarsThreeLeft />
-            </label>
-            <ShowNavList className="menu menu-compact dropdown-content left-0 mt-3 p-2 shadow bg-base-100 rounded-box w-52" />
-          </div>
-        )}
-      </div>
+      <div className="navbar-start">{showShowMenu && <MobileShowMenu />}</div>
       <div className="navbar-center">
         <Title />
       </div>
@@ -124,33 +194,37 @@ const MobileNav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
           <MenuItems
             as="ul"
             anchor="bottom"
-            className="menu menu-compact dropdown-content right-0 mt-4 p-2 shadow bg-base-100 rounded-box w-52"
+            className="menu menu-compact dropdown-content right-0 mt-4 p-2 shadow bg-base-100 rounded-box w-52 z-50"
           >
             {mainNavItems.map((item, i) => (
-              <MenuItem as="li" key={i}>
-                {({ close }) => {
-                  const handleOnClick = () => {
-                    if (item.onClick) {
-                      item.onClick();
-                    }
-                    close();
-                  };
-                  if (item.href) {
-                    return (
-                      <Link href={item.href} onClick={handleOnClick}>
-                        {item.title}
-                      </Link>
-                    );
-                  } else {
-                    return <a onClick={handleOnClick}>{item.title}</a>;
-                  }
-                }}
-              </MenuItem>
+              <DropdownItem key={i} item={item} />
             ))}
           </MenuItems>
         </Menu>
       </div>
     </div>
+  );
+};
+
+const MobileShowMenu = () => {
+  const navItemsForShow = useNavItemsForShow();
+  return (
+    <>
+      <Menu as="div" className="dropdown">
+        <MenuButton className="btn btn-ghost btn-circle">
+          <Bars3BottomLeftIcon className="w-6 h-6" />
+        </MenuButton>
+        <MenuItems
+          as="ul"
+          anchor="bottom"
+          className="menu menu-compact dropdown-content right-0 mt-4 p-2 shadow bg-base-100 rounded-box w-52 z-50"
+        >
+          {navItemsForShow.map((item, i) => (
+            <DropdownItem key={i} item={item} />
+          ))}
+        </MenuItems>
+      </Menu>
+    </>
   );
 };
 
@@ -163,55 +237,23 @@ const Title = () => (
 export const ShowNavList: React.FC<{ className?: string }> = ({
   className,
 }) => {
-  const slug = useShowSlugFromUrl();
-  const show = useShowSummary();
+  const navItems = useNavItemsForShow();
+  const path = usePathname();
 
   return (
     <ul className={className} tabIndex={0}>
-      <Item
-        url={`/shows/${slug}`}
-        name={"Schedule"}
-        icon={<HomeIcon className="h-6 w-6" />}
-      />
-      <HasPermission showId={show.id} permission={PERMISSION.rostering}>
-        <Item
-          url={`/shows/${slug}/availabilities`}
-          name={"Availabilities"}
-          icon={<DocumentCheckIcon className="h-6 w-6" />}
-        />
-      </HasPermission>
-      <HasPermission showId={show.id} permission={PERMISSION.personnel}>
-        <Item
-          url={`/shows/${slug}/people`}
-          name={"People"}
-          icon={<UsersIcon className="h-6 w-6" />}
-        />
-      </HasPermission>
-      <HasPermission showId={show.id} permission={PERMISSION.rostering}>
-        <Item
-          url={`/shows/${slug}/roster`}
-          name={"Roster"}
-          icon={<CalendarDaysIcon className="h-6 w-6" />}
-        />
-      </HasPermission>
+      {navItems.map((item, i) => {
+        const active = path === item.href;
+        return (
+          <li key={i}>
+            <Link href={item.href as string} className={cc({ active: active })}>
+              {item.icon}
+              <span className={styles.label}>{item.title}</span>
+            </Link>
+          </li>
+        );
+      })}
     </ul>
-  );
-};
-
-const Item: React.FC<{
-  url: string;
-  name: string;
-  icon: React.ReactNode;
-}> = ({ url, name, icon }) => {
-  const path = usePathname();
-  const active = path === url;
-  return (
-    <li>
-      <Link href={url} className={cc({ active: active })}>
-        {icon}
-        <span className={styles.label}>{name}</span>
-      </Link>
-    </li>
   );
 };
 
