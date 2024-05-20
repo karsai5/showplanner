@@ -42,6 +42,7 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		JSONConsumer:          runtime.JSONConsumer(),
 		MultipartformConsumer: runtime.DiscardConsumer,
 
+		BinProducer:  runtime.ByteStreamProducer(),
 		JSONProducer: runtime.JSONProducer(),
 		TextCalendarProducer: runtime.ProducerFunc(func(w io.Writer, data interface{}) error {
 			return errors.NotImplemented("textCalendar producer has not yet been implemented")
@@ -92,6 +93,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetScheduleHandler: GetScheduleHandlerFunc(func(params GetScheduleParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetSchedule has not yet been implemented")
 		}),
+		GetShowreportIDPdfHandler: GetShowreportIDPdfHandlerFunc(func(params GetShowreportIDPdfParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetShowreportIDPdf has not yet been implemented")
+		}),
 		GetShowsHandler: GetShowsHandlerFunc(func(params GetShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetShows has not yet been implemented")
 		}),
@@ -127,6 +131,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		}),
 		PostShadowHandler: PostShadowHandlerFunc(func(params PostShadowParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostShadow has not yet been implemented")
+		}),
+		PostShowreportIDHandler: PostShowreportIDHandlerFunc(func(params PostShowreportIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostShowreportID has not yet been implemented")
 		}),
 		PostShowsHandler: PostShowsHandlerFunc(func(params PostShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostShows has not yet been implemented")
@@ -172,6 +179,9 @@ type GoBackendAPI struct {
 	//   - multipart/form-data
 	MultipartformConsumer runtime.Consumer
 
+	// BinProducer registers a producer for the following mime types:
+	//   - application/pdf
+	BinProducer runtime.Producer
 	// JSONProducer registers a producer for the following mime types:
 	//   - application/json
 	JSONProducer runtime.Producer
@@ -209,6 +219,8 @@ type GoBackendAPI struct {
 	GetRosterHandler GetRosterHandler
 	// GetScheduleHandler sets the operation handler for the get schedule operation
 	GetScheduleHandler GetScheduleHandler
+	// GetShowreportIDPdfHandler sets the operation handler for the get showreport ID pdf operation
+	GetShowreportIDPdfHandler GetShowreportIDPdfHandler
 	// GetShowsHandler sets the operation handler for the get shows operation
 	GetShowsHandler GetShowsHandler
 	// GetShowsShowSlugSummaryHandler sets the operation handler for the get shows show slug summary operation
@@ -233,6 +245,8 @@ type GoBackendAPI struct {
 	PostRolesHandler PostRolesHandler
 	// PostShadowHandler sets the operation handler for the post shadow operation
 	PostShadowHandler PostShadowHandler
+	// PostShowreportIDHandler sets the operation handler for the post showreport ID operation
+	PostShowreportIDHandler PostShowreportIDHandler
 	// PostShowsHandler sets the operation handler for the post shows operation
 	PostShowsHandler PostShowsHandler
 	// PutAssignmentIDHandler sets the operation handler for the put assignment ID operation
@@ -315,6 +329,9 @@ func (o *GoBackendAPI) Validate() error {
 		unregistered = append(unregistered, "MultipartformConsumer")
 	}
 
+	if o.BinProducer == nil {
+		unregistered = append(unregistered, "BinProducer")
+	}
 	if o.JSONProducer == nil {
 		unregistered = append(unregistered, "JSONProducer")
 	}
@@ -367,6 +384,9 @@ func (o *GoBackendAPI) Validate() error {
 	if o.GetScheduleHandler == nil {
 		unregistered = append(unregistered, "GetScheduleHandler")
 	}
+	if o.GetShowreportIDPdfHandler == nil {
+		unregistered = append(unregistered, "GetShowreportIDPdfHandler")
+	}
 	if o.GetShowsHandler == nil {
 		unregistered = append(unregistered, "GetShowsHandler")
 	}
@@ -402,6 +422,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.PostShadowHandler == nil {
 		unregistered = append(unregistered, "PostShadowHandler")
+	}
+	if o.PostShowreportIDHandler == nil {
+		unregistered = append(unregistered, "PostShowreportIDHandler")
 	}
 	if o.PostShowsHandler == nil {
 		unregistered = append(unregistered, "PostShowsHandler")
@@ -460,6 +483,8 @@ func (o *GoBackendAPI) ProducersFor(mediaTypes []string) map[string]runtime.Prod
 	result := make(map[string]runtime.Producer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
+		case "application/pdf":
+			result["application/pdf"] = o.BinProducer
 		case "application/json":
 			result["application/json"] = o.JSONProducer
 		case "text/calendar":
@@ -567,6 +592,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
+	o.handlers["GET"]["/showreport/{id}/pdf"] = NewGetShowreportIDPdf(o.context, o.GetShowreportIDPdfHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
 	o.handlers["GET"]["/shows"] = NewGetShows(o.context, o.GetShowsHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -612,6 +641,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/shadow"] = NewPostShadow(o.context, o.PostShadowHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/showreport/{id}"] = NewPostShowreportID(o.context, o.PostShowreportIDHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

@@ -70,6 +70,7 @@ func initDB() *gorm.DB {
 		&Assignment{},
 		&Shadow{},
 		&Media{},
+		&ShowReport{},
 	)
 	if err != nil {
 		panic("Failed to run migrations")

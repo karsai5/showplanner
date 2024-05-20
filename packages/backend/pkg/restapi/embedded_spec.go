@@ -861,6 +861,75 @@ func init() {
         }
       }
     },
+    "/showreport/{id}": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Adds a person to a show",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the show report",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Show report",
+            "name": "report",
+            "in": "body",
+            "schema": {
+              "$ref": "./schemas/ShowReport.yaml#/UpdateShowreportDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/showreport/{id}/pdf": {
+      "get": {
+        "produces": [
+          "application/pdf"
+        ],
+        "summary": "Returns the report in the PDF format",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the show report",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A PDF file",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/shows": {
       "get": {
         "produces": [
@@ -2015,6 +2084,87 @@ func init() {
         }
       }
     },
+    "/showreport/{id}": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Adds a person to a show",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the show report",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "Show report",
+            "name": "report",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/updateShowreportDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/showreport/{id}/pdf": {
+      "get": {
+        "produces": [
+          "application/pdf"
+        ],
+        "summary": "Returns the report in the PDF format",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the show report",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A PDF file",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/shows": {
       "get": {
         "produces": [
@@ -2903,6 +3053,57 @@ func init() {
         "personId": {
           "type": "string",
           "format": "uuid"
+        }
+      }
+    },
+    "updateShowreportDTO": {
+      "properties": {
+        "actOneFOHClearance": {
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "actTwoFOHClearance": {
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "houseOpen": {
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "intervalEnd": {
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "intervalStart": {
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "notes": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "showEnd": {
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "showStart": {
+          "type": "string",
+          "format": "date-time",
+          "x-nullable": true
+        },
+        "subtitle": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "title": {
+          "type": "string",
+          "x-nullable": true
         }
       }
     }

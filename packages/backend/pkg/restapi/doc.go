@@ -14,6 +14,7 @@
 //	  - multipart/form-data
 //
 //	Produces:
+//	  - application/pdf
 //	  - application/json
 //	  - text/calendar
 //

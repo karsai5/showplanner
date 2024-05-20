@@ -31,3 +31,4 @@ export * from "./ShadowDTO";
 export * from "./ShowDTO";
 export * from "./ShowSummaryDTO";
 export * from "./UpdateAssignedDTO";
+export * from "./UpdateShowreportDTO";

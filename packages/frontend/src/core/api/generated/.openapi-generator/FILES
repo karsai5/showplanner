@@ -32,5 +32,6 @@ models/ShadowDTO.ts
 models/ShowDTO.ts
 models/ShowSummaryDTO.ts
 models/UpdateAssignedDTO.ts
+models/UpdateShowreportDTO.ts
 models/index.ts
 runtime.ts

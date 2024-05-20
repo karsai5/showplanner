@@ -1,0 +1,43 @@
+UpdateShowreportDTO:
+  properties:
+    title:
+      type: string
+      x-nullable: true
+    subtitle:
+      type: string
+      x-nullable: true
+    showStart:
+      type: string
+      format: date-time
+      x-nullable: true
+    showEnd:
+      type: string
+      format: date-time
+      x-nullable: true
+    intervalStart:
+      type: string
+      format: date-time
+      x-nullable: true
+    intervalEnd:
+      type: string
+      format: date-time
+      x-nullable: true
+    houseOpen:
+      type: string
+      format: date-time
+      x-nullable: true
+    actOneFOHClearance:
+      type: string
+      format: date-time
+      x-nullable: true
+    actTwoFOHClearance:
+      type: string
+      format: date-time
+      x-nullable: true
+    notes:
+      type: string
+      x-nullable: true
+
+ShowReportDTO:
+  allOf:
+    - $ref: '#/UpdateShowreportDTO'

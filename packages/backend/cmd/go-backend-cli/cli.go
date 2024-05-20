@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/showreports"
 
@@ -40,9 +41,8 @@ func CreateShowReport() *cli.Command {
 				ID:                 id,
 				Title:              "Les Misérables Show 10 Report",
 				Subtitle:           "Saturday 7.30pm, 5th August 2023",
-				Author:             "Linus Karsai",
-				ShowStart:          time.Date(2023, 11, 17, 19, 32, 0, 0, time.UTC),
-				ShowEnd:            time.Date(2023, 11, 17, 22, 02, 0, 0, time.UTC),
+				ShowStart:          conv.Pointer(time.Date(2023, 11, 17, 19, 32, 0, 0, time.UTC)),
+				ShowEnd:            conv.Pointer(time.Date(2023, 11, 17, 22, 02, 0, 0, time.UTC)),
 				IntervalStart:      nil,
 				IntervalEnd:        nil,
 				HouseOpen:          nil,

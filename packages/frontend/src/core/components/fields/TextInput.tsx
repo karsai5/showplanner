@@ -43,7 +43,7 @@ const Input: FC<{
       <input
         id={id}
         type={type}
-        placeholder={`${placeholder}${showRequired ? " *" : ""}`}
+        placeholder={`${placeholder || ""}${showRequired ? " *" : ""}`}
         className={cc(
           { ["input-error"]: !!error, ["input-sm"]: sm },
           "input input-bordered"

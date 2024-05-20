@@ -108,7 +108,6 @@ type ShowReport struct {
 
 	Title    string
 	Subtitle string
-	Author   string
 
 	ShowStart     *time.Time
 	ShowEnd       *time.Time

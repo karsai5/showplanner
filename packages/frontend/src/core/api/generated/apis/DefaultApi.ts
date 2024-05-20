@@ -35,6 +35,7 @@ import type {
   ShowDTO,
   ShowSummaryDTO,
   UpdateAssignedDTO,
+  UpdateShowreportDTO,
 } from "../models/index";
 import {
   ArrayOfPersonSummaryDTOFromJSON,
@@ -79,6 +80,8 @@ import {
   ShowSummaryDTOToJSON,
   UpdateAssignedDTOFromJSON,
   UpdateAssignedDTOToJSON,
+  UpdateShowreportDTOFromJSON,
+  UpdateShowreportDTOToJSON,
 } from "../models/index";
 
 export interface AssignmentIdDeleteRequest {
@@ -180,6 +183,15 @@ export interface ShadowIdDeleteRequest {
 
 export interface ShadowPostRequest {
   shadow?: CreateShadowDTO;
+}
+
+export interface ShowreportIdPdfGetRequest {
+  id: string;
+}
+
+export interface ShowreportIdPostRequest {
+  id: string;
+  report?: UpdateShowreportDTO;
 }
 
 export interface ShowsPostRequest {
@@ -1475,6 +1487,101 @@ export class DefaultApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<void> {
     await this.shadowPostRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Returns the report in the PDF format
+   */
+  async showreportIdPdfGetRaw(
+    requestParameters: ShowreportIdPdfGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Blob>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling showreportIdPdfGet."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/showreport/{id}/pdf`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.BlobApiResponse(response);
+  }
+
+  /**
+   * Returns the report in the PDF format
+   */
+  async showreportIdPdfGet(
+    requestParameters: ShowreportIdPdfGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Blob> {
+    const response = await this.showreportIdPdfGetRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
+  /**
+   * Adds a person to a show
+   */
+  async showreportIdPostRaw(
+    requestParameters: ShowreportIdPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling showreportIdPost."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    headerParameters["Content-Type"] = "application/json";
+
+    const response = await this.request(
+      {
+        path: `/showreport/{id}`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: UpdateShowreportDTOToJSON(requestParameters.report),
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Adds a person to a show
+   */
+  async showreportIdPost(
+    requestParameters: ShowreportIdPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.showreportIdPostRaw(requestParameters, initOverrides);
   }
 
   /**
