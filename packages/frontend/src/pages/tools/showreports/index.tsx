@@ -5,8 +5,7 @@ import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { H2 } from "core/components/Typography";
 import { dayMonthYearStringReadable } from "core/dates/datesConstants";
 import dayjs from "dayjs";
-import { displayDate } from "domains/events/lib/displayDate";
-import { orderBy, sortBy } from "lodash";
+import { orderBy } from "lodash";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
 
@@ -28,7 +27,12 @@ const ShowReport = () => {
 
   return (
     <div>
-      <H2 className="mb-4">Show reports</H2>
+      <div className="flex flex-col justify-between sm:flex-row gap-4">
+        <H2 className="mb-4">Show reports</H2>
+        <button className="btn mt-4" onClick={() => createNewShowReport()}>
+          Create new show report
+        </button>
+      </div>
       {isLoading && <LoadingBox />}
       {isError && <ErrorBox>Could not load show reports</ErrorBox>}
       {data && (
@@ -56,9 +60,6 @@ const ShowReport = () => {
           </tbody>
         </table>
       )}
-      <button className="btn" onClick={() => createNewShowReport()}>
-        Create new show report
-      </button>
     </div>
   );
 };
