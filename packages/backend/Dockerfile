@@ -5,6 +5,7 @@ WORKDIR /app
 RUN apt update
 RUN apt install -y pandoc
 RUN apt install -y texlive
+RUN apt install -y texlive-latex-extra
 
 COPY go.mod go.sum ./
 
