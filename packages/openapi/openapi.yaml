@@ -599,7 +599,47 @@ paths:
           description: Upload succesful
           schema:
             $ref: './schemas/Media.yaml#/MediaDTO'
-  /showreport/{id}:
+  /showreports:
+    get:
+      summary: Get users show reports
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: './schemas/ShowReport.yaml#/ShowReportSummaryDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+  /showreports/{id}:
+    get:
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: string
+          format: uuid
+          description: ID of the show report
+      summary: Adds a person to a show
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/ShowReport.yaml#/ShowReportDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
     post:
       parameters:
         - in: path
@@ -619,11 +659,13 @@ paths:
       responses:
         200:
           description: OK
+          schema:
+            $ref: './schemas/ShowReport.yaml#/ShowReportDTO'
         401:
           $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'
-  /showreport/{id}/pdf:
+  /showreports/{id}/pdf:
     get:
       parameters:
         - in: path
@@ -641,6 +683,8 @@ paths:
           schema:
             type: file
         401:
+          $ref: '#/responses/Error'
+        404:
           $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'

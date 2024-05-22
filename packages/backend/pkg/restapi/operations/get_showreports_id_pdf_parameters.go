@@ -9,27 +9,24 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/errors"
-	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/validate"
-
-	"showplanner.io/pkg/models"
 )
 
-// NewPostShowreportIDParams creates a new PostShowreportIDParams object
+// NewGetShowreportsIDPdfParams creates a new GetShowreportsIDPdfParams object
 //
 // There are no default values defined in the spec.
-func NewPostShowreportIDParams() PostShowreportIDParams {
+func NewGetShowreportsIDPdfParams() GetShowreportsIDPdfParams {
 
-	return PostShowreportIDParams{}
+	return GetShowreportsIDPdfParams{}
 }
 
-// PostShowreportIDParams contains all the bound params for the post showreport ID operation
+// GetShowreportsIDPdfParams contains all the bound params for the get showreports ID pdf operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters PostShowreportID
-type PostShowreportIDParams struct {
+// swagger:parameters GetShowreportsIDPdf
+type GetShowreportsIDPdfParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
@@ -39,17 +36,13 @@ type PostShowreportIDParams struct {
 	  In: path
 	*/
 	ID strfmt.UUID
-	/*Show report
-	  In: body
-	*/
-	Report *models.UpdateShowreportDTO
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewPostShowreportIDParams() beforehand.
-func (o *PostShowreportIDParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewGetShowreportsIDPdfParams() beforehand.
+func (o *GetShowreportsIDPdfParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r
@@ -58,28 +51,6 @@ func (o *PostShowreportIDParams) BindRequest(r *http.Request, route *middleware.
 	if err := o.bindID(rID, rhkID, route.Formats); err != nil {
 		res = append(res, err)
 	}
-
-	if runtime.HasBody(r) {
-		defer r.Body.Close()
-		var body models.UpdateShowreportDTO
-		if err := route.Consumer.Consume(r.Body, &body); err != nil {
-			res = append(res, errors.NewParseError("report", "body", "", err))
-		} else {
-			// validate body object
-			if err := body.Validate(route.Formats); err != nil {
-				res = append(res, err)
-			}
-
-			ctx := validate.WithOperationRequest(r.Context())
-			if err := body.ContextValidate(ctx, route.Formats); err != nil {
-				res = append(res, err)
-			}
-
-			if len(res) == 0 {
-				o.Report = &body
-			}
-		}
-	}
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
@@ -87,7 +58,7 @@ func (o *PostShowreportIDParams) BindRequest(r *http.Request, route *middleware.
 }
 
 // bindID binds and validates parameter ID from path.
-func (o *PostShowreportIDParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *GetShowreportsIDPdfParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
@@ -111,7 +82,7 @@ func (o *PostShowreportIDParams) bindID(rawData []string, hasKey bool, formats s
 }
 
 // validateID carries on validations for parameter ID
-func (o *PostShowreportIDParams) validateID(formats strfmt.Registry) error {
+func (o *GetShowreportsIDPdfParams) validateID(formats strfmt.Registry) error {
 
 	if err := validate.FormatOf("id", "path", "uuid", o.ID.String(), formats); err != nil {
 		return err

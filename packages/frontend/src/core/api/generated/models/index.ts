@@ -29,6 +29,8 @@ export * from "./ScheduleEventDTO";
 export * from "./ScheduleEventDTOAllOfRoles";
 export * from "./ShadowDTO";
 export * from "./ShowDTO";
+export * from "./ShowReportDTO";
+export * from "./ShowReportSummaryDTO";
 export * from "./ShowSummaryDTO";
 export * from "./UpdateAssignedDTO";
 export * from "./UpdateShowreportDTO";

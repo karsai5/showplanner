@@ -861,7 +861,68 @@ func init() {
         }
       }
     },
-    "/showreport/{id}": {
+    "/showreports": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get users show reports",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "./schemas/ShowReport.yaml#/ShowReportSummaryDTO"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/showreports/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Adds a person to a show",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the show report",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/ShowReport.yaml#/ShowReportDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      },
       "post": {
         "produces": [
           "application/json"
@@ -887,7 +948,10 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/ShowReport.yaml#/ShowReportDTO"
+            }
           },
           "401": {
             "$ref": "#/responses/Error"
@@ -898,7 +962,7 @@ func init() {
         }
       }
     },
-    "/showreport/{id}/pdf": {
+    "/showreports/{id}/pdf": {
       "get": {
         "produces": [
           "application/pdf"
@@ -922,6 +986,9 @@ func init() {
             }
           },
           "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
             "$ref": "#/responses/Error"
           },
           "500": {
@@ -2084,7 +2151,86 @@ func init() {
         }
       }
     },
-    "/showreport/{id}": {
+    "/showreports": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get users show reports",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/showReportSummaryDTO"
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/showreports/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Adds a person to a show",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the show report",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/showReportDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
       "post": {
         "produces": [
           "application/json"
@@ -2110,7 +2256,10 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/showReportDTO"
+            }
           },
           "401": {
             "description": "Error",
@@ -2127,7 +2276,7 @@ func init() {
         }
       }
     },
-    "/showreport/{id}/pdf": {
+    "/showreports/{id}/pdf": {
       "get": {
         "produces": [
           "application/pdf"
@@ -2151,6 +2300,12 @@ func init() {
             }
           },
           "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
             "description": "Error",
             "schema": {
               "$ref": "#/definitions/Error"
@@ -3019,6 +3174,37 @@ func init() {
           "type": "string",
           "format": "date-time",
           "x-nullable": true
+        }
+      }
+    },
+    "showReportDTO": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/updateShowreportDTO"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "test": {
+              "description": "test",
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "showReportSummaryDTO": {
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "lastUpdated": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "title": {
+          "type": "string"
         }
       }
     },

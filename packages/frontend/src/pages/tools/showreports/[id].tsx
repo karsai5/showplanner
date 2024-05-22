@@ -1,37 +1,35 @@
 import { useMutation } from "@tanstack/react-query";
-import { api } from "core/api";
+import { api, serverSideApi } from "core/api";
+import { ShowReportDTO } from "core/api/generated";
 import TextArea from "core/components/fields/TextArea";
 import Input from "core/components/fields/TextInput";
 import { H2 } from "core/components/Typography";
 import { showToastError } from "core/utils/errors";
+import { pickBy } from "lodash";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useParams } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-type Inputs = {
-  title: string;
-  subtitle: string;
-  notes: string;
+type Props = {
+  initialValues?: Inputs;
 };
 
-const ShowReport = () => {
+type Inputs = {
+  title?: string;
+  subtitle?: string;
+  notes?: string;
+};
+
+export default function ShowReport({
+  initialValues,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
   } = useForm<Inputs>({
-    defaultValues: {
-      notes: `# General notes
-
-- note 1
-- note 2
-
-# Performance notes
-
-- note 1
-- note 2
-`,
-    },
+    defaultValues: initialValues,
   });
 
   const title = watch("title");
@@ -40,7 +38,7 @@ const ShowReport = () => {
 
   const mutation = useMutation<unknown, Error, Inputs>({
     mutationFn: (formData) => {
-      return api.showreportIdPost({
+      return api.showreportsIdPost({
         id: params.id as string,
         report: {
           title: formData.title,
@@ -55,7 +53,7 @@ const ShowReport = () => {
   });
   const downloadMutation = useMutation<Blob>({
     mutationFn: () => {
-      return api.showreportIdPdfGet({ id: params.id as string });
+      return api.showreportsIdPdfGet({ id: params.id as string });
     },
     onError: () => {
       showToastError("Something went wrong creating a pdf of this report");
@@ -114,6 +112,44 @@ const ShowReport = () => {
       </a>
     </div>
   );
-};
+}
 
-export default ShowReport;
+export const getServerSideProps = (async (context) => {
+  const id = context.query.id;
+  const ssrApi = serverSideApi(context);
+
+  if (typeof id !== "string") {
+    throw new Error("Incorrect ID format");
+  }
+  let showReport = null;
+  try {
+    showReport = await ssrApi.showreportsIdGet({ id });
+  } catch (err) {
+    // If the show report doesn't exist, we'll just show the form with default values
+  }
+  return { props: { initialValues: getDefaultValues(showReport) } };
+}) satisfies GetServerSideProps<Props>;
+
+const getDefaultValues = (showReport: ShowReportDTO | null): Inputs => {
+  if (!showReport) {
+    return {
+      notes: `# General notes
+
+- note 1
+- note 2
+
+# Performance notes
+
+- note 1
+- note 2
+`,
+    };
+  }
+  const valuesFromShowReport = {
+    title: showReport.title || undefined,
+    subtitle: showReport.subtitle || undefined,
+    notes: showReport.notes || undefined,
+  };
+
+  return pickBy(valuesFromShowReport, (x) => x);
+};

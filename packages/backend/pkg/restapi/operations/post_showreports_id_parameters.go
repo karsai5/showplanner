@@ -17,26 +17,26 @@ import (
 	"showplanner.io/pkg/models"
 )
 
-// NewPostShowreportParams creates a new PostShowreportParams object
+// NewPostShowreportsIDParams creates a new PostShowreportsIDParams object
 //
 // There are no default values defined in the spec.
-func NewPostShowreportParams() PostShowreportParams {
+func NewPostShowreportsIDParams() PostShowreportsIDParams {
 
-	return PostShowreportParams{}
+	return PostShowreportsIDParams{}
 }
 
-// PostShowreportParams contains all the bound params for the post showreport operation
+// PostShowreportsIDParams contains all the bound params for the post showreports ID operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters PostShowreport
-type PostShowreportParams struct {
+// swagger:parameters PostShowreportsID
+type PostShowreportsIDParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
 	/*ID of the show report
 	  Required: true
-	  In: query
+	  In: path
 	*/
 	ID strfmt.UUID
 	/*Show report
@@ -48,16 +48,14 @@ type PostShowreportParams struct {
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewPostShowreportParams() beforehand.
-func (o *PostShowreportParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewPostShowreportsIDParams() beforehand.
+func (o *PostShowreportsIDParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r
 
-	qs := runtime.Values(r.URL.Query())
-
-	qID, qhkID, _ := qs.GetOK("id")
-	if err := o.bindID(qID, qhkID, route.Formats); err != nil {
+	rID, rhkID, _ := route.Params.GetOK("id")
+	if err := o.bindID(rID, rhkID, route.Formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -88,27 +86,20 @@ func (o *PostShowreportParams) BindRequest(r *http.Request, route *middleware.Ma
 	return nil
 }
 
-// bindID binds and validates parameter ID from query.
-func (o *PostShowreportParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
-	if !hasKey {
-		return errors.Required("id", "query", rawData)
-	}
+// bindID binds and validates parameter ID from path.
+func (o *PostShowreportsIDParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
 	}
 
 	// Required: true
-	// AllowEmptyValue: false
-
-	if err := validate.RequiredString("id", "query", raw); err != nil {
-		return err
-	}
+	// Parameter is provided by construction from the route
 
 	// Format: uuid
 	value, err := formats.Parse("uuid", raw)
 	if err != nil {
-		return errors.InvalidType("id", "query", "strfmt.UUID", raw)
+		return errors.InvalidType("id", "path", "strfmt.UUID", raw)
 	}
 	o.ID = *(value.(*strfmt.UUID))
 
@@ -120,9 +111,9 @@ func (o *PostShowreportParams) bindID(rawData []string, hasKey bool, formats str
 }
 
 // validateID carries on validations for parameter ID
-func (o *PostShowreportParams) validateID(formats strfmt.Registry) error {
+func (o *PostShowreportsIDParams) validateID(formats strfmt.Registry) error {
 
-	if err := validate.FormatOf("id", "query", "uuid", o.ID.String(), formats); err != nil {
+	if err := validate.FormatOf("id", "path", "uuid", o.ID.String(), formats); err != nil {
 		return err
 	}
 	return nil

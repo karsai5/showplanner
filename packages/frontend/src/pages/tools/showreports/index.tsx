@@ -1,4 +1,12 @@
+import { useQuery } from "@tanstack/react-query";
+import { api } from "core/api";
+import ErrorBox from "core/components/ErrorBox/ErrorBox";
+import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { H2 } from "core/components/Typography";
+import { dayMonthYearStringReadable } from "core/dates/datesConstants";
+import dayjs from "dayjs";
+import { displayDate } from "domains/events/lib/displayDate";
+import { orderBy, sortBy } from "lodash";
 import { useRouter } from "next/router";
 import { v4 as uuidv4 } from "uuid";
 
@@ -7,11 +15,47 @@ const ShowReport = () => {
 
   const createNewShowReport = () => {
     const id = uuidv4();
+    gotoShowReport(id);
+  };
+
+  const gotoShowReport = (id: string) => {
     router.push(`/tools/showreports/${id}`);
   };
+
+  const { data, isLoading, isError } = useQuery(["showreports"], async () =>
+    api.showreportsGet()
+  );
+
   return (
     <div>
       <H2 className="mb-4">Show reports</H2>
+      {isLoading && <LoadingBox />}
+      {isError && <ErrorBox>Could not load show reports</ErrorBox>}
+      {data && (
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Last udpated</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orderBy(data, "lastUpdated", "desc").map((sr) => (
+              <tr
+                key={sr.id}
+                className="hover cursor-pointer"
+                onClick={() => gotoShowReport(sr.id as string)}
+              >
+                <td>{sr.title}</td>
+                <td>
+                  {sr.lastUpdated &&
+                    dayjs(sr.lastUpdated).format(dayMonthYearStringReadable)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
       <button className="btn" onClick={() => createNewShowReport()}>
         Create new show report
       </button>

@@ -33,6 +33,8 @@ import type {
   RosterDTO,
   ScheduleEventDTO,
   ShowDTO,
+  ShowReportDTO,
+  ShowReportSummaryDTO,
   ShowSummaryDTO,
   UpdateAssignedDTO,
   UpdateShowreportDTO,
@@ -76,6 +78,10 @@ import {
   ScheduleEventDTOToJSON,
   ShowDTOFromJSON,
   ShowDTOToJSON,
+  ShowReportDTOFromJSON,
+  ShowReportDTOToJSON,
+  ShowReportSummaryDTOFromJSON,
+  ShowReportSummaryDTOToJSON,
   ShowSummaryDTOFromJSON,
   ShowSummaryDTOToJSON,
   UpdateAssignedDTOFromJSON,
@@ -185,11 +191,15 @@ export interface ShadowPostRequest {
   shadow?: CreateShadowDTO;
 }
 
-export interface ShowreportIdPdfGetRequest {
+export interface ShowreportsIdGetRequest {
   id: string;
 }
 
-export interface ShowreportIdPostRequest {
+export interface ShowreportsIdPdfGetRequest {
+  id: string;
+}
+
+export interface ShowreportsIdPostRequest {
   id: string;
   report?: UpdateShowreportDTO;
 }
@@ -1490,16 +1500,51 @@ export class DefaultApi extends runtime.BaseAPI {
   }
 
   /**
-   * Returns the report in the PDF format
+   * Get users show reports
    */
-  async showreportIdPdfGetRaw(
-    requestParameters: ShowreportIdPdfGetRequest,
+  async showreportsGetRaw(
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<Blob>> {
+  ): Promise<runtime.ApiResponse<Array<ShowReportSummaryDTO>>> {
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/showreports`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      jsonValue.map(ShowReportSummaryDTOFromJSON)
+    );
+  }
+
+  /**
+   * Get users show reports
+   */
+  async showreportsGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<ShowReportSummaryDTO>> {
+    const response = await this.showreportsGetRaw(initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Adds a person to a show
+   */
+  async showreportsIdGetRaw(
+    requestParameters: ShowreportsIdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ShowReportDTO>> {
     if (requestParameters.id === null || requestParameters.id === undefined) {
       throw new runtime.RequiredError(
         "id",
-        "Required parameter requestParameters.id was null or undefined when calling showreportIdPdfGet."
+        "Required parameter requestParameters.id was null or undefined when calling showreportsIdGet."
       );
     }
 
@@ -1509,7 +1554,57 @@ export class DefaultApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        path: `/showreport/{id}/pdf`.replace(
+        path: `/showreports/{id}`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      ShowReportDTOFromJSON(jsonValue)
+    );
+  }
+
+  /**
+   * Adds a person to a show
+   */
+  async showreportsIdGet(
+    requestParameters: ShowreportsIdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ShowReportDTO> {
+    const response = await this.showreportsIdGetRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
+  /**
+   * Returns the report in the PDF format
+   */
+  async showreportsIdPdfGetRaw(
+    requestParameters: ShowreportsIdPdfGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Blob>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling showreportsIdPdfGet."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/showreports/{id}/pdf`.replace(
           `{${"id"}}`,
           encodeURIComponent(String(requestParameters.id))
         ),
@@ -1526,11 +1621,11 @@ export class DefaultApi extends runtime.BaseAPI {
   /**
    * Returns the report in the PDF format
    */
-  async showreportIdPdfGet(
-    requestParameters: ShowreportIdPdfGetRequest,
+  async showreportsIdPdfGet(
+    requestParameters: ShowreportsIdPdfGetRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Blob> {
-    const response = await this.showreportIdPdfGetRaw(
+    const response = await this.showreportsIdPdfGetRaw(
       requestParameters,
       initOverrides
     );
@@ -1540,14 +1635,14 @@ export class DefaultApi extends runtime.BaseAPI {
   /**
    * Adds a person to a show
    */
-  async showreportIdPostRaw(
-    requestParameters: ShowreportIdPostRequest,
+  async showreportsIdPostRaw(
+    requestParameters: ShowreportsIdPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<void>> {
+  ): Promise<runtime.ApiResponse<ShowReportDTO>> {
     if (requestParameters.id === null || requestParameters.id === undefined) {
       throw new runtime.RequiredError(
         "id",
-        "Required parameter requestParameters.id was null or undefined when calling showreportIdPost."
+        "Required parameter requestParameters.id was null or undefined when calling showreportsIdPost."
       );
     }
 
@@ -1559,7 +1654,7 @@ export class DefaultApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        path: `/showreport/{id}`.replace(
+        path: `/showreports/{id}`.replace(
           `{${"id"}}`,
           encodeURIComponent(String(requestParameters.id))
         ),
@@ -1571,17 +1666,23 @@ export class DefaultApi extends runtime.BaseAPI {
       initOverrides
     );
 
-    return new runtime.VoidApiResponse(response);
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      ShowReportDTOFromJSON(jsonValue)
+    );
   }
 
   /**
    * Adds a person to a show
    */
-  async showreportIdPost(
-    requestParameters: ShowreportIdPostRequest,
+  async showreportsIdPost(
+    requestParameters: ShowreportsIdPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<void> {
-    await this.showreportIdPostRaw(requestParameters, initOverrides);
+  ): Promise<ShowReportDTO> {
+    const response = await this.showreportsIdPostRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
   }
 
   /**

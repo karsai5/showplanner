@@ -1,4 +1,5 @@
 export const dayMonthYearString = "YYYY-MM-DD";
+export const dayMonthYearStringReadable = "DD/MM/YYYY";
 export const dateFormatString = "Do MMM";
 export const dateFormatStringWithDay = "ddd Do MMM";
 export const dateFormatStringWithDayAndTime = "ddd Do MMM h:mma";

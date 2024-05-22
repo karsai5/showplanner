@@ -14,8 +14,8 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// GetShowreportIDPdfURL generates an URL for the get showreport ID pdf operation
-type GetShowreportIDPdfURL struct {
+// GetShowreportsIDPdfURL generates an URL for the get showreports ID pdf operation
+type GetShowreportsIDPdfURL struct {
 	ID strfmt.UUID
 
 	_basePath string
@@ -26,7 +26,7 @@ type GetShowreportIDPdfURL struct {
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetShowreportIDPdfURL) WithBasePath(bp string) *GetShowreportIDPdfURL {
+func (o *GetShowreportsIDPdfURL) WithBasePath(bp string) *GetShowreportsIDPdfURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -34,21 +34,21 @@ func (o *GetShowreportIDPdfURL) WithBasePath(bp string) *GetShowreportIDPdfURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetShowreportIDPdfURL) SetBasePath(bp string) {
+func (o *GetShowreportsIDPdfURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *GetShowreportIDPdfURL) Build() (*url.URL, error) {
+func (o *GetShowreportsIDPdfURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/showreport/{id}/pdf"
+	var _path = "/showreports/{id}/pdf"
 
 	id := o.ID.String()
 	if id != "" {
 		_path = strings.Replace(_path, "{id}", id, -1)
 	} else {
-		return nil, errors.New("id is required on GetShowreportIDPdfURL")
+		return nil, errors.New("id is required on GetShowreportsIDPdfURL")
 	}
 
 	_basePath := o._basePath
@@ -61,7 +61,7 @@ func (o *GetShowreportIDPdfURL) Build() (*url.URL, error) {
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *GetShowreportIDPdfURL) Must(u *url.URL, err error) *url.URL {
+func (o *GetShowreportsIDPdfURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -72,17 +72,17 @@ func (o *GetShowreportIDPdfURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *GetShowreportIDPdfURL) String() string {
+func (o *GetShowreportsIDPdfURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *GetShowreportIDPdfURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *GetShowreportsIDPdfURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on GetShowreportIDPdfURL")
+		return nil, errors.New("scheme is required for a full url on GetShowreportsIDPdfURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on GetShowreportIDPdfURL")
+		return nil, errors.New("host is required for a full url on GetShowreportsIDPdfURL")
 	}
 
 	base, err := o.Build()
@@ -96,6 +96,6 @@ func (o *GetShowreportIDPdfURL) BuildFull(scheme, host string) (*url.URL, error)
 }
 
 // StringFull returns the string representation of a complete url
-func (o *GetShowreportIDPdfURL) StringFull(scheme, host string) string {
+func (o *GetShowreportsIDPdfURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

@@ -1,5 +1,9 @@
-generate: validate
+generate: validate generate-backend generate-frontend
+
+generate-backend:
 	(cd ../backend; make generate)
+
+generate-frontend:
 	(cd ../frontend; yarn generate)
 
 validate:

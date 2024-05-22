@@ -9,12 +9,13 @@ import (
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
+	"strings"
 
 	"github.com/go-openapi/strfmt"
 )
 
-// PostShowreportURL generates an URL for the post showreport operation
-type PostShowreportURL struct {
+// GetShowreportsIDURL generates an URL for the get showreports ID operation
+type GetShowreportsIDURL struct {
 	ID strfmt.UUID
 
 	_basePath string
@@ -25,7 +26,7 @@ type PostShowreportURL struct {
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *PostShowreportURL) WithBasePath(bp string) *PostShowreportURL {
+func (o *GetShowreportsIDURL) WithBasePath(bp string) *GetShowreportsIDURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -33,15 +34,22 @@ func (o *PostShowreportURL) WithBasePath(bp string) *PostShowreportURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *PostShowreportURL) SetBasePath(bp string) {
+func (o *GetShowreportsIDURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *PostShowreportURL) Build() (*url.URL, error) {
+func (o *GetShowreportsIDURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/showreport"
+	var _path = "/showreports/{id}"
+
+	id := o.ID.String()
+	if id != "" {
+		_path = strings.Replace(_path, "{id}", id, -1)
+	} else {
+		return nil, errors.New("id is required on GetShowreportsIDURL")
+	}
 
 	_basePath := o._basePath
 	if _basePath == "" {
@@ -49,20 +57,11 @@ func (o *PostShowreportURL) Build() (*url.URL, error) {
 	}
 	_result.Path = golangswaggerpaths.Join(_basePath, _path)
 
-	qs := make(url.Values)
-
-	idQ := o.ID.String()
-	if idQ != "" {
-		qs.Set("id", idQ)
-	}
-
-	_result.RawQuery = qs.Encode()
-
 	return &_result, nil
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *PostShowreportURL) Must(u *url.URL, err error) *url.URL {
+func (o *GetShowreportsIDURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -73,17 +72,17 @@ func (o *PostShowreportURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *PostShowreportURL) String() string {
+func (o *GetShowreportsIDURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *PostShowreportURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *GetShowreportsIDURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on PostShowreportURL")
+		return nil, errors.New("scheme is required for a full url on GetShowreportsIDURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on PostShowreportURL")
+		return nil, errors.New("host is required for a full url on GetShowreportsIDURL")
 	}
 
 	base, err := o.Build()
@@ -97,6 +96,6 @@ func (o *PostShowreportURL) BuildFull(scheme, host string) (*url.URL, error) {
 }
 
 // StringFull returns the string representation of a complete url
-func (o *PostShowreportURL) StringFull(scheme, host string) string {
+func (o *GetShowreportsIDURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

@@ -38,6 +38,21 @@ UpdateShowreportDTO:
       type: string
       x-nullable: true
 
+ShowReportSummaryDTO:
+  properties:
+    id:
+      type: string
+      format: uuid
+    title:
+      type: string
+    lastUpdated:
+      type: string
+      format: date-time
 ShowReportDTO:
   allOf:
-    - $ref: '#/UpdateShowreportDTO'
+    - $ref: './ShowReport.yaml#/UpdateShowreportDTO'
+    - type: object
+      properties:
+        test:
+          description: 'test'
+          type: string

@@ -7,6 +7,12 @@ func SaveShowReport(sr ShowReport) (ShowReport, error) {
 	return sr, res.Error
 }
 
+func GetShowReportsForUser(userId uuid.UUID) ([]ShowReport, error) {
+	srs := []ShowReport{}
+	res := db.Preload("CreatedBy").Where("created_by_id = ?", userId).Find(&srs)
+	return srs, res.Error
+}
+
 func GetShowReport(id uuid.UUID) (ShowReport, error) {
 	sr := ShowReport{}
 	res := db.Preload("CreatedBy").First(&sr, id)

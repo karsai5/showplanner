@@ -46,6 +46,10 @@ const useMainNavItems = (): NavItem[] => {
   if (session.doesSessionExist) {
     mainNav.push(
       {
+        title: "Show reports",
+        href: "/tools/showreports",
+      },
+      {
         title: "Shows",
         href: "/shows",
       },

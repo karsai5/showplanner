@@ -27,6 +27,7 @@ import { SuperTokensWrapper } from "supertokens-auth-react";
 import Session from "supertokens-auth-react/recipe/session";
 
 import { frontendConfig } from "../../config/frontendConfig";
+import { AppProps } from "next/app";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,7 +44,7 @@ export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
-type AppPropsWithLayout = {
+type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
@@ -52,7 +53,7 @@ if (typeof window !== "undefined") {
   SuperTokensReact.init(frontendConfig());
 }
 
-function MyApp({ Component }: AppPropsWithLayout) {
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const loading = usePageLoading();
   const getLayout =
     Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>);
@@ -86,7 +87,7 @@ function MyApp({ Component }: AppPropsWithLayout) {
               </Head>
 
               <ImpersonnatingWarning />
-              {loading ? <LoadingBox /> : <Component />}
+              {loading ? <LoadingBox /> : <Component {...pageProps} />}
             </MeContextWrapper>
           )}
         </ConfirmationModalWrapper>
