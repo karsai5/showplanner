@@ -32,6 +32,7 @@ export const getServerSideProps = (async (context) => {
     showReport = await ssrApi.showreportsIdGet({ id });
   } catch (err) {
     // If the show report doesn't exist, we'll just show the form with default values
+    // TODO: Should throw error if error is not a 400
   }
   return { props: { initialValues: getDefaultValues(showReport) } };
 }) satisfies GetServerSideProps<{ initialValues: ShowReportInputs }>;

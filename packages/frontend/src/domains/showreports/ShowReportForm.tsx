@@ -12,6 +12,7 @@ import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDownloadPdf } from "./useDownloadPdf";
 import dayjs from "dayjs";
+import { PersistantLoadingSpinner } from "core/components/LoadingBox/PersistantLoadingSpinner";
 
 export type ShowReportInputs = {
   title?: string;
@@ -166,9 +167,7 @@ export const ShowReportForm: React.FC<{
               ["btn-disabled"]: mutation.isLoading || isWaiting,
             })}
           >
-            {(mutation.isLoading || isWaiting) && (
-              <span className="loading loading-spinner"></span>
-            )}
+            {(mutation.isLoading || isWaiting) && <PersistantLoadingSpinner />}
             Save
           </button>
           <a
