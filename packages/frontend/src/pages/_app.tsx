@@ -12,6 +12,7 @@ import {
 import { ConfirmationModalWrapper } from "core/components/Modal/ConfirmationModal";
 import { DefaultLayout } from "domains/layout/DefaultLayout";
 import type { NextPage } from "next";
+import { AppProps } from "next/app";
 import Head from "next/head";
 import { Router } from "next/router";
 import {
@@ -27,7 +28,6 @@ import { SuperTokensWrapper } from "supertokens-auth-react";
 import Session from "supertokens-auth-react/recipe/session";
 
 import { frontendConfig } from "../../config/frontendConfig";
-import { AppProps } from "next/app";
 
 const queryClient = new QueryClient({
   defaultOptions: {

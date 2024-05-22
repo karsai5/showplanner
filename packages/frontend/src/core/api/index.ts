@@ -1,7 +1,7 @@
 import { API_URL } from "core/config";
+import { GetServerSidePropsContext } from "next";
 
 import { Configuration, DefaultApi } from "./generated";
-import { GetServerSidePropsContext } from "next";
 
 const config = new Configuration({
   basePath: API_URL,

@@ -1,20 +1,14 @@
 import { serverSideApi } from "core/api";
 import { ShowReportDTO } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
-import { ShowReportForm } from "domains/showreports/ShowReportForm";
+import dayjs from "dayjs";
+import {
+  ShowReportForm,
+  ShowReportInputs,
+} from "domains/showreports/ShowReportForm";
 import { pickBy } from "lodash";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useParams } from "next/navigation";
-
-type Props = {
-  initialValues?: Inputs;
-};
-
-type Inputs = {
-  title?: string;
-  subtitle?: string;
-  notes?: string;
-};
 
 export default function ShowReport({
   initialValues,
@@ -40,9 +34,11 @@ export const getServerSideProps = (async (context) => {
     // If the show report doesn't exist, we'll just show the form with default values
   }
   return { props: { initialValues: getDefaultValues(showReport) } };
-}) satisfies GetServerSideProps<Props>;
+}) satisfies GetServerSideProps<{ initialValues: ShowReportInputs }>;
 
-const getDefaultValues = (showReport: ShowReportDTO | null): Inputs => {
+const getDefaultValues = (
+  showReport: ShowReportDTO | null
+): ShowReportInputs => {
   if (!showReport) {
     return {
       notes: `# General notes
@@ -57,11 +53,26 @@ const getDefaultValues = (showReport: ShowReportDTO | null): Inputs => {
 `,
     };
   }
-  const valuesFromShowReport = {
+  const valuesFromShowReport: ShowReportInputs = {
     title: showReport.title || undefined,
     subtitle: showReport.subtitle || undefined,
     notes: showReport.notes || undefined,
+
+    showStart: parseTime(showReport.showStart),
+    showEnd: parseTime(showReport.showEnd),
+    intervalStart: parseTime(showReport.intervalStart),
+    intervalEnd: parseTime(showReport.intervalEnd),
+    houseOpen: parseTime(showReport.houseOpen),
+    actOneFOHClearance: parseTime(showReport.actOneFOHClearance),
+    actTwoFOHClearance: parseTime(showReport.actTwoFOHClearance),
   };
 
   return pickBy(valuesFromShowReport, (x) => x);
+};
+
+const parseTime = (time: Date | null | undefined) => {
+  if (!time) {
+    return undefined;
+  }
+  return dayjs(time).format("HH:mm");
 };

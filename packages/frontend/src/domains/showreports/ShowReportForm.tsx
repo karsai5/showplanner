@@ -1,3 +1,4 @@
+import cc from "classnames";
 import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "core/api";
@@ -9,15 +10,24 @@ import { debounce } from "lodash";
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDownloadPdf } from "./useDownloadPdf";
+import dayjs from "dayjs";
 
-type Inputs = {
+export type ShowReportInputs = {
   title?: string;
   subtitle?: string;
   notes?: string;
+  showStart?: string;
+  showEnd?: string;
+  intervalStart?: string;
+  intervalEnd?: string;
+  houseOpen?: string;
+  actOneFOHClearance?: string;
+  actTwoFOHClearance?: string;
 };
 
 export const ShowReportForm: React.FC<{
-  initialValues?: Inputs;
+  initialValues?: ShowReportInputs;
   id: string;
 }> = ({ initialValues }) => {
   const {
@@ -25,7 +35,7 @@ export const ShowReportForm: React.FC<{
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<Inputs>({
+  } = useForm<ShowReportInputs>({
     defaultValues: initialValues,
     mode: "onChange",
   });
@@ -36,7 +46,7 @@ export const ShowReportForm: React.FC<{
 
   const params = useParams();
 
-  const mutation = useMutation<unknown, Error, Inputs>({
+  const mutation = useMutation<unknown, Error, ShowReportInputs>({
     mutationFn: (formData) => {
       return api.showreportsIdPost({
         id: params.id as string,
@@ -44,6 +54,13 @@ export const ShowReportForm: React.FC<{
           title: formData.title,
           subtitle: formData.subtitle,
           notes: formData.notes,
+          showStart: parseTime(formData.showStart),
+          showEnd: parseTime(formData.showEnd),
+          intervalStart: parseTime(formData.intervalStart),
+          intervalEnd: parseTime(formData.intervalEnd),
+          houseOpen: parseTime(formData.houseOpen),
+          actOneFOHClearance: parseTime(formData.actOneFOHClearance),
+          actTwoFOHClearance: parseTime(formData.actTwoFOHClearance),
         },
       });
     },
@@ -52,23 +69,12 @@ export const ShowReportForm: React.FC<{
     },
   });
 
-  const downloadMutation = useMutation<Blob>({
-    mutationFn: () => {
-      return api.showreportsIdPdfGet({ id: params.id as string });
-    },
-    onError: () => {
-      showToastError("Something went wrong creating a pdf of this report");
-    },
-    onSuccess: (file) => {
-      const pdfUrl = window.URL.createObjectURL(file);
-      const tempLink = document.createElement("a");
-      tempLink.href = pdfUrl;
-      tempLink.setAttribute("download", `${title}.pdf`);
-      tempLink.click();
-    },
-  });
+  const downloadMutation = useDownloadPdf(
+    params.id as string,
+    title || "Show Report"
+  );
 
-  const onSubmit = (data: Inputs) => {
+  const onSubmit = (data: ShowReportInputs) => {
     mutation.mutate(data, {
       onSuccess: () => setIsWaiting(false),
     });
@@ -76,7 +82,7 @@ export const ShowReportForm: React.FC<{
 
   const onSubmitDebounce = useRef(debounce(onSubmit, 1000));
 
-  const handleOnChange = (data: Inputs) => {
+  const handleOnChange = (data: ShowReportInputs) => {
     setIsWaiting(true);
     onSubmitDebounce?.current(data);
   };
@@ -101,21 +107,74 @@ export const ShowReportForm: React.FC<{
           register={register("subtitle")}
           errors={errors}
         />
+        <div className="flex gap-2">
+          <Input
+            label="Show start"
+            register={register("showStart")}
+            errors={errors}
+            type="time"
+          />
+          <Input
+            label="Interval start"
+            register={register("intervalStart")}
+            errors={errors}
+            type="time"
+          />
+          <Input
+            label="Interval end"
+            register={register("intervalEnd")}
+            errors={errors}
+            type="time"
+          />
+          <Input
+            label="Show end"
+            register={register("showEnd")}
+            errors={errors}
+            type="time"
+          />
+        </div>
+        <div className="flex gap-2">
+          <Input
+            label="House open"
+            register={register("houseOpen")}
+            errors={errors}
+            type="time"
+          />
+          <Input
+            label="Act one FOH clearance"
+            register={register("actOneFOHClearance")}
+            errors={errors}
+            type="time"
+          />
+          <Input
+            label="Act two FOH clearance"
+            register={register("actTwoFOHClearance")}
+            errors={errors}
+            type="time"
+          />
+        </div>
         <TextArea
           register={register("notes")}
           placeholder="Use markdown for formatting"
           errors={errors}
-          className="h-20"
+          className="h-80"
         />
         <div className="flex mt-4 gap-2">
-          <button type="submit" className={"btn"}>
+          <button
+            type="submit"
+            className={cc("btn", {
+              ["btn-disabled"]: mutation.isLoading || isWaiting,
+            })}
+          >
             {(mutation.isLoading || isWaiting) && (
               <span className="loading loading-spinner"></span>
             )}
             Save
           </button>
           <a
-            className="btn"
+            className={cc("btn", {
+              ["btn-disabled"]: mutation.isLoading || isWaiting,
+            })}
             onClick={() => downloadMutation.mutate()}
             aria-disabled={downloadMutation.isLoading}
           >
@@ -130,4 +189,11 @@ export const ShowReportForm: React.FC<{
       </form>
     </div>
   );
+};
+
+const parseTime = (time: string | undefined) => {
+  if (!time) {
+    return undefined;
+  }
+  return dayjs(`1999-01-01 ${time}`, "YYYY-MM-DD HH:mm").toDate();
 };
