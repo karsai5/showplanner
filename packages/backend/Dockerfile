@@ -2,6 +2,10 @@ FROM golang:1.21
 
 WORKDIR /app
 
+RUN apt update
+RUN apt install -y pandoc
+RUN apt install -y texlive
+
 COPY go.mod go.sum ./
 
 RUN go mod download
