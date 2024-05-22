@@ -16,6 +16,8 @@ ADD pkg pkg
 RUN CGO_ENABLED=0 GOOS=linux go build ./cmd/go-backend-server
 RUN CGO_ENABLED=0 GOOS=linux go build ./cmd/go-backend-cli
 
+COPY template.tex ./
+
 COPY Makefile ./
 
 EXPOSE 8080
