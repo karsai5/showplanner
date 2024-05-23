@@ -27,6 +27,9 @@ type UpdateShowreportDTO struct {
 	// Format: date-time
 	ActTwoFOHClearance *strfmt.DateTime `json:"actTwoFOHClearance,omitempty"`
 
+	// event Id
+	EventID *int64 `json:"eventId,omitempty"`
+
 	// house open
 	// Format: date-time
 	HouseOpen *strfmt.DateTime `json:"houseOpen,omitempty"`

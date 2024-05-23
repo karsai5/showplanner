@@ -8,6 +8,8 @@ import {
 import { PERMISSION, showPermission, useHasPermission } from "core/permissions";
 import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FC } from "react";
 
 import { AvailabilityDropdown } from "./components/AvailabilityDropdown";
@@ -23,6 +25,7 @@ export const Schedule: React.FC<React.ComponentProps<typeof EventTable>> = (
   const canEditEvents = useHasPermission()(
     showPermission(show.id, PERMISSION.addEvents)
   );
+  const path = usePathname();
 
   return (
     <EventTable
@@ -43,13 +46,32 @@ export const Schedule: React.FC<React.ComponentProps<typeof EventTable>> = (
           </td>
         </>
       )}
-      rightHeaders={<>{canEditEvents && <th>Edit</th>}</>}
+      rightHeaders={
+        <>
+          {canEditEvents && (
+            <>
+              <th>Actions</th>
+              <th>Edit</th>
+            </>
+          )}
+        </>
+      }
       rightColums={(e) => (
         <>
           {canEditEvents && (
-            <td className="border border-slate-200 relative">
-              <AdminButtons event={e} />
-            </td>
+            <>
+              <td className="border border-slate-200 relative">
+                <Link
+                  href={`${path}/event/${e.id}/showreport`}
+                  className="link"
+                >
+                  Show report
+                </Link>
+              </td>
+              <td className="border border-slate-200 relative">
+                <AdminButtons event={e} />
+              </td>
+            </>
           )}
         </>
       )}

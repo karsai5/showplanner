@@ -31,6 +31,7 @@ models/ScheduleEventDTOAllOfRoles.ts
 models/ShadowDTO.ts
 models/ShowDTO.ts
 models/ShowReportDTO.ts
+models/ShowReportForEvent.ts
 models/ShowReportSummaryDTO.ts
 models/ShowSummaryDTO.ts
 models/UpdateAssignedDTO.ts

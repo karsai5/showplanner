@@ -31,8 +31,8 @@ func CreateShowReport(sr database.ShowReport) (io.ReadCloser, error) {
 	}
 	name := fmt.Sprintf("%s %s", firstName, sr.CreatedBy.LastName)
 
-	template = strings.Replace(template, "%TITLE%", sr.Title, 1)
-	template = strings.Replace(template, "%SUBTITLE%", sr.Subtitle, 1)
+	template = strings.Replace(template, "%TITLE%", sr.GetTitle(), 1)
+	template = strings.Replace(template, "%SUBTITLE%", sr.GetSubtitle(), 1)
 	template = strings.Replace(template, "%AUTHOR%", name, 1)
 	template = strings.Replace(template, "%NOTES%", latexNotes, 1)
 

@@ -253,6 +253,28 @@ paths:
         404:
           $ref: '#/responses/Error'
         200:
+  /events/{id}/showreport:
+    get:
+      summary: Return show report and info about show report
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: ID of the event
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/ShowReport.yaml#/ShowReportForEvent'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
   /shows:
     get:
       summary: Returns a list of shows

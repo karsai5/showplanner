@@ -14,7 +14,7 @@ func mapShowReportToSummaryDTO(sr database.ShowReport) models.ShowReportSummaryD
 	return models.ShowReportSummaryDTO{
 		LastUpdated: strfmt.DateTime(sr.UpdatedAt),
 		ID:          *conv.UUIDToStrmFmtUUID(sr.ID),
-		Title:       sr.Title,
+		Title:       sr.GetTitle(),
 	}
 }
 
@@ -34,14 +34,17 @@ func mapShowReportToDatabase(id uuid.UUID, createdByID uuid.UUID, dto models.Upd
 
 		CreatedById: createdByID,
 	}
+	if dto.EventID != nil {
+		sr.EventID = conv.Pointer(uint(*dto.EventID))
+	}
 	return sr
 }
 
 func mapShowReportToDTO(sr database.ShowReport) models.ShowReportDTO {
 	dto := models.ShowReportDTO{
+		ID: *conv.UUIDToStrmFmtUUID(sr.ID),
 		UpdateShowreportDTO: models.UpdateShowreportDTO{
 			ActOneFOHClearance: mapTimeIfExists(sr.ActOneFOHClearance),
-
 			ActTwoFOHClearance: mapTimeIfExists(sr.ActTwoFOHClearance),
 			HouseOpen:          mapTimeIfExists(sr.HouseOpen),
 			IntervalEnd:        mapTimeIfExists(sr.IntervalEnd),
@@ -49,9 +52,12 @@ func mapShowReportToDTO(sr database.ShowReport) models.ShowReportDTO {
 			Notes:              &sr.Notes,
 			ShowEnd:            mapTimeIfExists(sr.ShowEnd),
 			ShowStart:          mapTimeIfExists(sr.ShowStart),
-			Subtitle:           &sr.Subtitle,
-			Title:              &sr.Title,
+			Subtitle:           conv.Pointer(sr.GetSubtitle()),
+			Title:              conv.Pointer(sr.GetTitle()),
 		},
+	}
+	if sr.EventID != nil {
+		dto.EventID = conv.UintToInt64(*sr.EventID)
 	}
 	return dto
 }

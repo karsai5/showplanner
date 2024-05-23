@@ -63,6 +63,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetAvailabilitiesHandler: GetAvailabilitiesHandlerFunc(func(params GetAvailabilitiesParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetAvailabilities has not yet been implemented")
 		}),
+		GetEventsIDShowreportHandler: GetEventsIDShowreportHandlerFunc(func(params GetEventsIDShowreportParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetEventsIDShowreport has not yet been implemented")
+		}),
 		GetMeHandler: GetMeHandlerFunc(func(params GetMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetMe has not yet been implemented")
 		}),
@@ -205,6 +208,8 @@ type GoBackendAPI struct {
 	DeleteShadowIDHandler DeleteShadowIDHandler
 	// GetAvailabilitiesHandler sets the operation handler for the get availabilities operation
 	GetAvailabilitiesHandler GetAvailabilitiesHandler
+	// GetEventsIDShowreportHandler sets the operation handler for the get events ID showreport operation
+	GetEventsIDShowreportHandler GetEventsIDShowreportHandler
 	// GetMeHandler sets the operation handler for the get me operation
 	GetMeHandler GetMeHandler
 	// GetPersonnelHandler sets the operation handler for the get personnel operation
@@ -363,6 +368,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.GetAvailabilitiesHandler == nil {
 		unregistered = append(unregistered, "GetAvailabilitiesHandler")
+	}
+	if o.GetEventsIDShowreportHandler == nil {
+		unregistered = append(unregistered, "GetEventsIDShowreportHandler")
 	}
 	if o.GetMeHandler == nil {
 		unregistered = append(unregistered, "GetMeHandler")
@@ -565,6 +573,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/availabilities"] = NewGetAvailabilities(o.context, o.GetAvailabilitiesHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/events/{id}/showreport"] = NewGetEventsIDShowreport(o.context, o.GetEventsIDShowreportHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

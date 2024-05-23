@@ -34,6 +34,7 @@ import type {
   ScheduleEventDTO,
   ShowDTO,
   ShowReportDTO,
+  ShowReportForEvent,
   ShowReportSummaryDTO,
   ShowSummaryDTO,
   UpdateAssignedDTO,
@@ -80,6 +81,8 @@ import {
   ShowDTOToJSON,
   ShowReportDTOFromJSON,
   ShowReportDTOToJSON,
+  ShowReportForEventFromJSON,
+  ShowReportForEventToJSON,
   ShowReportSummaryDTOFromJSON,
   ShowReportSummaryDTOToJSON,
   ShowSummaryDTOFromJSON,
@@ -118,6 +121,10 @@ export interface EventsIdDeleteRequest {
 export interface EventsIdPostRequest {
   id: number;
   event?: CreateEventDTO;
+}
+
+export interface EventsIdShowreportGetRequest {
+  id: number;
 }
 
 export interface EventsPostRequest {
@@ -542,6 +549,56 @@ export class DefaultApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<void> {
     await this.eventsIdPostRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * Return show report and info about show report
+   */
+  async eventsIdShowreportGetRaw(
+    requestParameters: EventsIdShowreportGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ShowReportForEvent>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling eventsIdShowreportGet."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/events/{id}/showreport`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      ShowReportForEventFromJSON(jsonValue)
+    );
+  }
+
+  /**
+   * Return show report and info about show report
+   */
+  async eventsIdShowreportGet(
+    requestParameters: EventsIdShowreportGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ShowReportForEvent> {
+    const response = await this.eventsIdShowreportGetRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
   }
 
   /**

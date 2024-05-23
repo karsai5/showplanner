@@ -79,6 +79,12 @@ export interface UpdateShowreportDTO {
    * @memberof UpdateShowreportDTO
    */
   notes?: string | null;
+  /**
+   *
+   * @type {number}
+   * @memberof UpdateShowreportDTO
+   */
+  eventId?: number | null;
 }
 
 /**
@@ -140,6 +146,7 @@ export function UpdateShowreportDTOFromJSONTyped(
       ? null
       : new Date(json["actTwoFOHClearance"]),
     notes: !exists(json, "notes") ? undefined : json["notes"],
+    eventId: !exists(json, "eventId") ? undefined : json["eventId"],
   };
 }
 
@@ -198,5 +205,6 @@ export function UpdateShowreportDTOToJSON(
         ? null
         : value.actTwoFOHClearance.toISOString(),
     notes: value.notes,
+    eventId: value.eventId,
   };
 }

@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/go-openapi/strfmt"
@@ -34,6 +35,25 @@ func (e *Event) SetName(name string) {
 
 func (e *Event) IsNameEmpty() bool {
 	return e.Name == nil || *e.Name == ""
+}
+
+func (e *Event) GetCalculatedName() (string, error) {
+	if e.Name != nil && *e.Name != "" {
+		return *e.Name, nil
+	}
+	if e.CurtainsUp == nil {
+		return "", nil
+	}
+	events, err := GetEvents(e.ShowID)
+	if err != nil {
+		return "", err
+	}
+	for i, match := range events {
+		if match.ID == e.ID {
+			return fmt.Sprintf("Show %d", i+1), nil
+		}
+	}
+	return "", nil
 }
 
 type Show struct {

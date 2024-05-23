@@ -18,7 +18,7 @@ func UpdateEvent(id uint, event Event) (Event, error) {
 
 func GetEvents(showId uint) ([]Event, error) {
 	var events []Event
-	res := db.Where("show_id = ?", showId).Find(&events)
+	res := db.Order("start").Where("show_id = ?", showId).Find(&events)
 
 	return events, res.Error
 }
@@ -46,7 +46,7 @@ func GetEventsPreloaded(showId uint) ([]Event, error) {
 
 func GetEvent(id uint) (Event, error) {
 	existingEvent := Event{}
-	res := db.First(&existingEvent, id)
+	res := db.Preload("Show").First(&existingEvent, id)
 	return existingEvent, res.Error
 }
 

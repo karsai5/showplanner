@@ -11,6 +11,7 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 )
 
 // ShowReportDTO show report d t o
@@ -19,8 +20,9 @@ import (
 type ShowReportDTO struct {
 	UpdateShowreportDTO
 
-	// test
-	Test string `json:"test,omitempty"`
+	// id
+	// Format: uuid
+	ID strfmt.UUID `json:"id,omitempty"`
 }
 
 // UnmarshalJSON unmarshals this object from a JSON structure
@@ -34,13 +36,13 @@ func (m *ShowReportDTO) UnmarshalJSON(raw []byte) error {
 
 	// AO1
 	var dataAO1 struct {
-		Test string `json:"test,omitempty"`
+		ID strfmt.UUID `json:"id,omitempty"`
 	}
 	if err := swag.ReadJSON(raw, &dataAO1); err != nil {
 		return err
 	}
 
-	m.Test = dataAO1.Test
+	m.ID = dataAO1.ID
 
 	return nil
 }
@@ -55,10 +57,10 @@ func (m ShowReportDTO) MarshalJSON() ([]byte, error) {
 	}
 	_parts = append(_parts, aO0)
 	var dataAO1 struct {
-		Test string `json:"test,omitempty"`
+		ID strfmt.UUID `json:"id,omitempty"`
 	}
 
-	dataAO1.Test = m.Test
+	dataAO1.ID = m.ID
 
 	jsonDataAO1, errAO1 := swag.WriteJSON(dataAO1)
 	if errAO1 != nil {
@@ -77,9 +79,26 @@ func (m *ShowReportDTO) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateID(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *ShowReportDTO) validateID(formats strfmt.Registry) error {
+
+	if swag.IsZero(m.ID) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("id", "body", "uuid", m.ID.String(), formats); err != nil {
+		return err
+	}
+
 	return nil
 }
 

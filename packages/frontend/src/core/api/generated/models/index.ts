@@ -30,6 +30,7 @@ export * from "./ScheduleEventDTOAllOfRoles";
 export * from "./ShadowDTO";
 export * from "./ShowDTO";
 export * from "./ShowReportDTO";
+export * from "./ShowReportForEvent";
 export * from "./ShowReportSummaryDTO";
 export * from "./ShowSummaryDTO";
 export * from "./UpdateAssignedDTO";

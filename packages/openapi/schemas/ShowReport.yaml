@@ -37,6 +37,9 @@ UpdateShowreportDTO:
     notes:
       type: string
       x-nullable: true
+    eventId:
+      type: integer
+      x-nullable: true
 
 ShowReportSummaryDTO:
   properties:
@@ -48,11 +51,21 @@ ShowReportSummaryDTO:
     lastUpdated:
       type: string
       format: date-time
+
+ShowReportForEvent:
+  properties:
+    showReport:
+      $ref: './ShowReport.yaml#/ShowReportDTO'
+    title:
+      type: string
+    subtitle:
+      type: string
+
 ShowReportDTO:
   allOf:
     - $ref: './ShowReport.yaml#/UpdateShowreportDTO'
     - type: object
       properties:
-        test:
-          description: 'test'
+        id:
           type: string
+          format: uuid

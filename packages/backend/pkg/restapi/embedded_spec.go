@@ -291,6 +291,40 @@ func init() {
         }
       }
     },
+    "/events/{id}/showreport": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Return show report and info about show report",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the event",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/ShowReport.yaml#/ShowReportForEvent"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/impersonate": {
       "post": {
         "produces": [
@@ -1469,6 +1503,49 @@ func init() {
         "responses": {
           "200": {
             "description": ""
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/events/{id}/showreport": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Return show report and info about show report",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the event",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/showReportForEvent"
+            }
           },
           "401": {
             "description": "Error",
@@ -3185,13 +3262,26 @@ func init() {
         {
           "type": "object",
           "properties": {
-            "test": {
-              "description": "test",
-              "type": "string"
+            "id": {
+              "type": "string",
+              "format": "uuid"
             }
           }
         }
       ]
+    },
+    "showReportForEvent": {
+      "properties": {
+        "showReport": {
+          "$ref": "#/definitions/showReportDTO"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
     },
     "showReportSummaryDTO": {
       "properties": {
@@ -3252,6 +3342,10 @@ func init() {
         "actTwoFOHClearance": {
           "type": "string",
           "format": "date-time",
+          "x-nullable": true
+        },
+        "eventId": {
+          "type": "integer",
           "x-nullable": true
         },
         "houseOpen": {
