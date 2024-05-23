@@ -109,7 +109,7 @@ export const ShowReportForm: React.FC<{
           register={register("subtitle")}
           errors={errors}
         />
-        <div className="flex gap-2">
+        <div className="sm:flex sm:gap-2">
           <Input
             label="Show start"
             register={register("showStart")}
@@ -135,7 +135,7 @@ export const ShowReportForm: React.FC<{
             type="time"
           />
         </div>
-        <div className="flex gap-2">
+        <div className="sm:flex sm:gap-2">
           <Input
             label="House open"
             register={register("houseOpen")}

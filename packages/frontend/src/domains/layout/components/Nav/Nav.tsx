@@ -3,7 +3,9 @@ import {
   Bars3BottomLeftIcon,
   Bars3BottomRightIcon,
   CalendarDaysIcon,
+  ClockIcon,
   DocumentCheckIcon,
+  DocumentTextIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
 import cc from "classnames";
@@ -31,6 +33,7 @@ const useMainNavItems = (): NavItem[] => {
     {
       title: "ShowTimer",
       href: "/tools/showtimer",
+      icon: <ClockIcon className="h-6 w-6" />,
     },
   ];
 
@@ -48,6 +51,7 @@ const useMainNavItems = (): NavItem[] => {
       {
         title: "Show reports",
         href: "/tools/showreports",
+        icon: <DocumentTextIcon className="h-6 w-6" />,
       },
       {
         title: "Shows",
@@ -111,6 +115,7 @@ const useNavItemsForShow = (): NavItem[] => {
 export const Nav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
   const isSmall = useBreakpoint("sm");
   const mainNavItems = useMainNavItems();
+  const path = usePathname();
 
   if (isSmall) {
     return <MobileNav showShowMenu={showShowMenu} />;
@@ -123,10 +128,16 @@ export const Nav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
       <div className="flex-none">
         <ul className="menu menu-horizontal p-0">
           {mainNavItems.map((item, i) => {
+            const active = path === item.href;
             if (item.href) {
               return (
                 <li key={i}>
-                  <Link href={item.href} onClick={item.onClick}>
+                  <Link
+                    href={item.href}
+                    onClick={item.onClick}
+                    className={cc("gap-1", { active })}
+                  >
+                    {item.icon && item.icon}
                     {item.title}
                   </Link>
                 </li>
@@ -134,7 +145,10 @@ export const Nav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
             } else {
               return (
                 <li key={i}>
-                  <a onClick={item.onClick}>{item.title}</a>
+                  <a onClick={item.onClick}>
+                    {item.icon && item.icon}
+                    {item.title}
+                  </a>
                 </li>
               );
             }
