@@ -8,7 +8,7 @@ import { PersistantLoadingSpinner } from "core/components/LoadingBox/PersistantL
 import { H2 } from "core/components/Typography";
 import { showToastError } from "core/utils/errors";
 import dayjs from "dayjs";
-import { debounce } from "lodash";
+import { debounce, map } from "lodash";
 import { useParams } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -30,15 +30,19 @@ export type ShowReportInputs = {
 
 export const ShowReportForm: React.FC<{
   initialValues?: ShowReportInputs;
+  overrides?: ShowReportInputs;
   id: string;
-}> = ({ initialValues }) => {
+}> = ({ initialValues, overrides = {} }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
   } = useForm<ShowReportInputs>({
-    defaultValues: initialValues,
+    defaultValues: {
+      ...initialValues,
+      ...overrides,
+    },
     mode: "onChange",
   });
   const [isWaiting, setIsWaiting] = useState(false);
@@ -50,20 +54,28 @@ export const ShowReportForm: React.FC<{
 
   const mutation = useMutation<unknown, Error, ShowReportInputs>({
     mutationFn: (formData) => {
+      const report = {
+        title: formData.title,
+        subtitle: formData.subtitle,
+        showStart: parseTime(formData.showStart),
+        showEnd: parseTime(formData.showEnd),
+        intervalStart: parseTime(formData.intervalStart),
+        intervalEnd: parseTime(formData.intervalEnd),
+        houseOpen: parseTime(formData.houseOpen),
+        actOneFOHClearance: parseTime(formData.actOneFOHClearance),
+        actTwoFOHClearance: parseTime(formData.actTwoFOHClearance),
+        notes: formData.notes,
+      };
+
+      // filter out values that have overrides
+      map(overrides, (value: string, key: keyof ShowReportInputs) => {
+        if (value !== undefined) {
+          delete report[key];
+        }
+      });
       return api.showreportsIdPost({
         id: params.id as string,
-        report: {
-          title: formData.title,
-          subtitle: formData.subtitle,
-          notes: formData.notes,
-          showStart: parseTime(formData.showStart),
-          showEnd: parseTime(formData.showEnd),
-          intervalStart: parseTime(formData.intervalStart),
-          intervalEnd: parseTime(formData.intervalEnd),
-          houseOpen: parseTime(formData.houseOpen),
-          actOneFOHClearance: parseTime(formData.actOneFOHClearance),
-          actTwoFOHClearance: parseTime(formData.actTwoFOHClearance),
-        },
+        report: report,
       });
     },
     onError: () => {
@@ -100,37 +112,43 @@ export const ShowReportForm: React.FC<{
         <Input
           label="Title"
           placeholder="Les Misérables Show 17 Report"
-          register={register("title")}
+          register={register("title", { disabled: !!overrides.title })}
           errors={errors}
         />
         <Input
           label="Subtitle"
           placeholder="Saturday 2pm, 12th August 2023"
-          register={register("subtitle")}
+          register={register("subtitle", { disabled: !!overrides.subtitle })}
           errors={errors}
         />
         <div className="sm:flex sm:gap-2">
           <Input
             label="Show start"
-            register={register("showStart")}
+            register={register("showStart", {
+              disabled: !!overrides.showStart,
+            })}
             errors={errors}
             type="time"
           />
           <Input
             label="Interval start"
-            register={register("intervalStart")}
+            register={register("intervalStart", {
+              disabled: !!overrides.intervalStart,
+            })}
             errors={errors}
             type="time"
           />
           <Input
             label="Interval end"
-            register={register("intervalEnd")}
+            register={register("intervalEnd", {
+              disabled: !!overrides.intervalEnd,
+            })}
             errors={errors}
             type="time"
           />
           <Input
             label="Show end"
-            register={register("showEnd")}
+            register={register("showEnd", { disabled: !!overrides.showEnd })}
             errors={errors}
             type="time"
           />
@@ -138,19 +156,25 @@ export const ShowReportForm: React.FC<{
         <div className="sm:flex sm:gap-2">
           <Input
             label="House open"
-            register={register("houseOpen")}
+            register={register("houseOpen", {
+              disabled: !!overrides.houseOpen,
+            })}
             errors={errors}
             type="time"
           />
           <Input
             label="Act one FOH clearance"
-            register={register("actOneFOHClearance")}
+            register={register("actOneFOHClearance", {
+              disabled: !!overrides.actOneFOHClearance,
+            })}
             errors={errors}
             type="time"
           />
           <Input
             label="Act two FOH clearance"
-            register={register("actTwoFOHClearance")}
+            register={register("actTwoFOHClearance", {
+              disabled: !!overrides.actTwoFOHClearance,
+            })}
             errors={errors}
             type="time"
           />

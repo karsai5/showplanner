@@ -17,7 +17,13 @@ export default function ShowReport({
   if (!params.id || typeof params.id !== "string") {
     return <ErrorBox>Could not find show report id</ErrorBox>;
   }
-  return <ShowReportForm initialValues={initialValues} id={params.id} />;
+  return (
+    <ShowReportForm
+      initialValues={initialValues}
+      id={params.id}
+      overrides={{}} // TODO: Add overrides from event name
+    />
+  );
 }
 
 export const getServerSideProps = (async (context) => {
