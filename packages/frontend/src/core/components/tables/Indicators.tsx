@@ -17,7 +17,10 @@ export const Indicators: React.FC<{
           <div className="indicator-spacer w-5 h-full"></div>
           <div
             style={{ left: `${i * 1.25}rem` }}
-            className={cc(childClassName, "indicator-box w-5")}
+            className={cc(
+              childClassName,
+              "indicator-box w-5 whitespace-nowrap"
+            )}
           >
             {content}
           </div>

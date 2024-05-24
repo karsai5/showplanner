@@ -5,7 +5,7 @@ import { AvailabilitiesDTOEventsInner } from "core/api/generated";
 import { AccessDenied } from "core/components/AccessDenied/AccessDenied";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { GapRow, Td } from "core/components/tables/tables";
-import { TimeRangeWithCurtainsUp } from "core/components/tables/TimeRangeWithCurtainsUp";
+import { TimeRangeWithCurtainsUpCell } from "core/components/tables/TimeRangeWithCurtainsUp";
 import { H2 } from "core/components/Typography";
 import { PERMISSION, showPermission } from "core/permissions";
 import { displayDate } from "domains/events/lib/displayDate";
@@ -92,9 +92,7 @@ const AvailabilitiesTable: React.FC<{ showId: number }> = ({ showId }) => {
                           {displayDate(e.start)}
                         </Td>
                       )}
-                      <Td className="w-40 sticky left-0 pl-0 bg-white z-50">
-                        <TimeRangeWithCurtainsUp event={e} />
-                      </Td>
+                      <TimeRangeWithCurtainsUpCell event={e} />
                       {e.availabilities?.map((a, i) => {
                         if (a === null) {
                           return (

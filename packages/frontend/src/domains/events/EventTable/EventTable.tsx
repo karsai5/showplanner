@@ -1,7 +1,7 @@
 import { ScheduleEventDTO } from "core/api/generated";
 import Address from "core/components/Address/Address";
 import { GapRow, Td } from "core/components/tables/tables";
-import { TimeRangeWithCurtainsUp } from "core/components/tables/TimeRangeWithCurtainsUp";
+import { TimeRangeWithCurtainsUpCell } from "core/components/tables/TimeRangeWithCurtainsUp";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import { displayDate } from "domains/events/lib/displayDate";
@@ -83,9 +83,7 @@ export const EventTable: React.FC<{
                           {displayDate(e.start)}
                         </Td>
                       )}
-                      <Td className="w-40 sticky pl-0 bg-white z-50">
-                        <TimeRangeWithCurtainsUp event={e} />
-                      </Td>
+                      <TimeRangeWithCurtainsUpCell event={e} />
                       {leftColums && leftColums(e)}
                       {!hideLocation && (
                         <Td>

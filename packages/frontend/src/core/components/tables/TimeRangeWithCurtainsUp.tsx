@@ -1,7 +1,10 @@
+import cc from "classnames";
 import { ShortText } from "core/components/ShortText";
 import { getTimeRangeString } from "core/dates/dateEventHelpers";
 import { timeFormatString } from "core/dates/datesConstants";
+import { useIsSticky } from "core/utils/useIsSticky";
 import dayjs from "dayjs";
+import { useRef } from "react";
 
 import { Indicators } from "./Indicators";
 
@@ -12,28 +15,58 @@ export const TimeRangeWithCurtainsUp: React.FC<{
     curtainsUp?: Date | null | undefined;
     name?: string | null | undefined;
   };
-}> = ({ event }) => {
+  compact?: boolean;
+}> = ({ event, compact }) => {
   const { start, end, curtainsUp, name } = event;
 
   const timeRange = getTimeRangeString(start, end);
-  const indicators = curtainsUp
-    ? [
-        {
-          content: dayjs(curtainsUp).format(timeFormatString),
-          className: "bg-gray-100",
-        },
-      ]
-    : [];
+  const startTime = dayjs(start).format(timeFormatString);
+  const curtainsUpString = dayjs(curtainsUp).format(timeFormatString);
   return (
     <div className="flex">
-      <Indicators items={indicators} className="mr-1.5" />
       <div className="leading-4">
-        <span>
-          {name && <ShortText className="max-w-32">{name}</ShortText>}
-        </span>
+        {name && !compact ? (
+          <span className="whitespace-nowrap">{name}</span>
+        ) : (
+          <ShortText className="w-16">{name}</ShortText>
+        )}
+        {curtainsUpString && !compact && (
+          <span className="pl-1.5 text-xs whitespace-nowrap text-slate-500">
+            {curtainsUpString}
+          </span>
+        )}
         <br />
-        <span className="whitespace-nowrap text-sm">{timeRange}</span>
+        <span className="whitespace-nowrap text-sm">
+          {!compact ? timeRange : <>{startTime}</>}
+        </span>
       </div>
     </div>
+  );
+};
+
+export const TimeRangeWithCurtainsUpCell: React.FC<
+  React.ComponentProps<typeof TimeRangeWithCurtainsUp>
+> = (props) => {
+  const ref = useRef(null);
+  const isSticky = useIsSticky(ref);
+  const indicators = [
+    {
+      content: dayjs(props.event.start).format("ddd D/M"),
+      className: "bg-gray-100",
+    },
+  ];
+
+  return (
+    <td
+      className={cc(
+        "border-l border-slate-200 last:border-r w-40 sticky left-0 bg-white z-30 p-0"
+      )}
+      ref={ref}
+    >
+      <div className={cc({ ["border-r"]: isSticky }, "flex p-2")}>
+        {isSticky && <Indicators items={indicators} />}
+        <TimeRangeWithCurtainsUp {...props} compact={isSticky} />
+      </div>
+    </td>
   );
 };

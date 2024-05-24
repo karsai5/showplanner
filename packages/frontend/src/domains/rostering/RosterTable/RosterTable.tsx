@@ -13,7 +13,7 @@ import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { useConfirmationModal } from "core/components/Modal/ConfirmationModal";
 import { useModal } from "core/components/Modal/Modal";
 import { GapRow, Td } from "core/components/tables/tables";
-import { TimeRangeWithCurtainsUp } from "core/components/tables/TimeRangeWithCurtainsUp";
+import { TimeRangeWithCurtainsUpCell } from "core/components/tables/TimeRangeWithCurtainsUp";
 import {
   HasPermission,
   PERMISSION,
@@ -92,9 +92,7 @@ export const RosterTable: React.FC<{
                           {displayDate(e.start)}
                         </Td>
                       )}
-                      <Td className="w-40 sticky left-0 bg-white z-30 pl-0">
-                        <TimeRangeWithCurtainsUp event={e} />
-                      </Td>
+                      <TimeRangeWithCurtainsUpCell event={e} />
                       {roster.roles?.map((r) => {
                         if (r.id === undefined || e.assignments === undefined) {
                           throw new Error();
@@ -107,15 +105,6 @@ export const RosterTable: React.FC<{
                             showId={showId}
                             event={e}
                             role={r}
-                          />
-                        );
-                        return (
-                          <AssignmentCell
-                            assignment={a}
-                            showId={showId}
-                            event={e}
-                            role={r}
-                            key={r.id}
                           />
                         );
                       })}
