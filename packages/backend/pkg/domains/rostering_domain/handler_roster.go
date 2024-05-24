@@ -14,7 +14,7 @@ import (
 var handleGetRoster = operations.GetRosterHandlerFunc(func(params operations.GetRosterParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting roster", &operations.GetRosterInternalServerError{})
 
-	hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	hasPerm, err := permissions.ViewEvents.HasPermission(uint(params.ShowID), params.HTTPRequest)
 
 	if err != nil {
 		return logError(&err)

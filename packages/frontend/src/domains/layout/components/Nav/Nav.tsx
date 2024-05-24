@@ -101,13 +101,11 @@ const useNavItemsForShow = (): NavItem[] => {
     });
   }
 
-  if (hasPermission(showPermission(show.id, PERMISSION.rostering))) {
-    navItems.push({
-      title: "Roster",
-      href: `/shows/${slug}/roster`,
-      icon: <CalendarDaysIcon className="h-6 w-6" />,
-    });
-  }
+  navItems.push({
+    title: "Roster",
+    href: `/shows/${slug}/roster`,
+    icon: <CalendarDaysIcon className="h-6 w-6" />,
+  });
 
   return navItems;
 };

@@ -14,18 +14,24 @@ import { useConfirmationModal } from "core/components/Modal/ConfirmationModal";
 import { useModal } from "core/components/Modal/Modal";
 import { GapRow, Td } from "core/components/tables/tables";
 import { TimeRangeWithCurtainsUp } from "core/components/tables/TimeRangeWithCurtainsUp";
-import { HasPermission, PERMISSION } from "core/permissions";
+import {
+  HasPermission,
+  PERMISSION,
+  showPermission,
+  useHasPermission,
+} from "core/permissions";
 import { showToastError } from "core/utils/errors";
 import { displayDate } from "domains/events/lib/displayDate";
 import { processEvents } from "domains/events/lib/processEvents";
 import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
 import { PersonSelectorModal } from "domains/personnel/PersonSelector/PersonSelectorModal";
 import { AddRoleModal } from "domains/rostering/AddRoleModal/AddRoleModal";
+import { getBgColorForRoster } from "domains/rostering/helpers";
 import { RenameRole } from "domains/rostering/RolesTable";
 import sortBy from "lodash/sortBy";
 import React, { Fragment, useState } from "react";
 
-import { AssignmentCell } from "./AssignmentCell";
+import { AssignmentCell, AssignmentDisplay } from "./AssignmentCell";
 
 export const RosterTable: React.FC<{
   showId: number;
@@ -54,7 +60,7 @@ export const RosterTable: React.FC<{
             <th></th>
             <th></th>
             {roster.roles?.map((r) => (
-              <RosterName
+              <RoleNameHeader
                 key={r.id}
                 role={r}
                 showId={showId}
@@ -94,6 +100,15 @@ export const RosterTable: React.FC<{
                           throw new Error();
                         }
                         const a = e.assignments[r.id];
+                        return (
+                          <Cell
+                            key={r.id}
+                            assignment={a}
+                            showId={showId}
+                            event={e}
+                            role={r}
+                          />
+                        );
                         return (
                           <AssignmentCell
                             assignment={a}
@@ -139,11 +154,62 @@ export const RosterTable: React.FC<{
   return null;
 };
 
+const Cell: React.FC<React.ComponentProps<typeof AssignmentCell>> = (props) => {
+  const { assignment, event, role } = props;
+  const hasRosteringPermission = useHasPermission()(
+    showPermission(props.showId, PERMISSION.rostering)
+  );
+  if (hasRosteringPermission) {
+    return <AssignmentCell {...props} />;
+  }
+  let bgClassName = "";
+  if (assignment.person?.id) {
+    bgClassName = getBgColorForRoster(assignment.available);
+  }
+  return (
+    <Td className={cc(bgClassName, "relative p-0")}>
+      <AssignmentDisplay
+        assignment={assignment}
+        shadows={event.shadows}
+        roleId={role.id as number}
+      />
+    </Td>
+  );
+};
+
 const enum ModalType {
   RENAME,
 }
 
-const RosterName: React.FC<{
+const RoleNameHeader: React.FC<
+  React.ComponentProps<typeof ReadOnlyRoleNameHeader> &
+    React.ComponentProps<typeof EditableRoleNameHeader>
+> = (props) => {
+  const hasRosteringPermission = useHasPermission()(
+    showPermission(props.showId, PERMISSION.rostering)
+  );
+  if (hasRosteringPermission) {
+    return <EditableRoleNameHeader {...props} />;
+  }
+  return <ReadOnlyRoleNameHeader {...props} />;
+};
+
+const ReadOnlyRoleNameHeader: React.FC<{
+  role: RoleDTO;
+}> = ({ role }) => {
+  return (
+    <th className="sticky top-0 bg-white z-40">
+      <div className="flex gap-2 justify-between">
+        <div>
+          <div>{role.name}</div>
+          {role.person && <PersonDisplayName person={role.person} />}
+        </div>
+      </div>
+    </th>
+  );
+};
+
+const EditableRoleNameHeader: React.FC<{
   role: RoleDTO;
   showId: number;
   roles: RoleDTO[];
