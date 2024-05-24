@@ -1031,6 +1031,46 @@ func init() {
         }
       }
     },
+    "/showreports/{id}/tex": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns the report in the TEX format",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the show report",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tex file contents",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "contents": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/shows": {
       "get": {
         "produces": [
@@ -2374,6 +2414,55 @@ func init() {
             "description": "A PDF file",
             "schema": {
               "type": "file"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/showreports/{id}/tex": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns the report in the TEX format",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the show report",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tex file contents",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "contents": {
+                  "type": "string"
+                }
+              }
             }
           },
           "401": {

@@ -710,6 +710,32 @@ paths:
           $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'
+  /showreports/{id}/tex:
+    get:
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: string
+          format: uuid
+          description: ID of the show report
+      summary: Returns the report in the TEX format
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Tex file contents
+          schema:
+            type: object
+            properties:
+              contents:
+                type: string
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
 
 responses:
   Error:

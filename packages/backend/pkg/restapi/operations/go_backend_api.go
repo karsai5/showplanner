@@ -105,6 +105,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetShowreportsIDPdfHandler: GetShowreportsIDPdfHandlerFunc(func(params GetShowreportsIDPdfParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetShowreportsIDPdf has not yet been implemented")
 		}),
+		GetShowreportsIDTexHandler: GetShowreportsIDTexHandlerFunc(func(params GetShowreportsIDTexParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetShowreportsIDTex has not yet been implemented")
+		}),
 		GetShowsHandler: GetShowsHandlerFunc(func(params GetShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetShows has not yet been implemented")
 		}),
@@ -236,6 +239,8 @@ type GoBackendAPI struct {
 	GetShowreportsIDHandler GetShowreportsIDHandler
 	// GetShowreportsIDPdfHandler sets the operation handler for the get showreports ID pdf operation
 	GetShowreportsIDPdfHandler GetShowreportsIDPdfHandler
+	// GetShowreportsIDTexHandler sets the operation handler for the get showreports ID tex operation
+	GetShowreportsIDTexHandler GetShowreportsIDTexHandler
 	// GetShowsHandler sets the operation handler for the get shows operation
 	GetShowsHandler GetShowsHandler
 	// GetShowsShowSlugSummaryHandler sets the operation handler for the get shows show slug summary operation
@@ -410,6 +415,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.GetShowreportsIDPdfHandler == nil {
 		unregistered = append(unregistered, "GetShowreportsIDPdfHandler")
+	}
+	if o.GetShowreportsIDTexHandler == nil {
+		unregistered = append(unregistered, "GetShowreportsIDTexHandler")
 	}
 	if o.GetShowsHandler == nil {
 		unregistered = append(unregistered, "GetShowsHandler")
@@ -629,6 +637,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/showreports/{id}/pdf"] = NewGetShowreportsIDPdf(o.context, o.GetShowreportsIDPdfHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/showreports/{id}/tex"] = NewGetShowreportsIDTex(o.context, o.GetShowreportsIDTexHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

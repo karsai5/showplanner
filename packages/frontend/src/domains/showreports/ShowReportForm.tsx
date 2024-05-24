@@ -13,6 +13,7 @@ import { debounce } from "lodash";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { ShowLatexButton } from "./ShowLatex";
 import { useDownloadPdf } from "./useDownloadPdf";
 
 export type ShowReportInputs = {
@@ -190,6 +191,7 @@ export const ShowReportForm: React.FC<{
             )}
             Download
           </a>
+          <ShowLatexButton id={id} />
         </div>
       </form>
     </div>

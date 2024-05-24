@@ -51,7 +51,7 @@ func CreateShowReport() *cli.Command {
 				Notes:              "# General notes\n - one\n - two\n - three\n",
 			}
 
-			showreports.CreateShowReport(sr)
+			showreports.CreateShowReportPDF(sr)
 
 			return nil
 		},

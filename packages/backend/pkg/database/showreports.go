@@ -31,6 +31,9 @@ func GetShowReportForEvent(eventId uint) (ShowReport, error) {
 
 func (sr *ShowReport) GetTitle() string {
 	if sr.EventID == nil {
+		if sr.Title == "" {
+			return "Show report"
+		}
 		return sr.Title
 	}
 	e, err := GetEvent(*sr.EventID)

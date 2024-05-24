@@ -37,6 +37,7 @@ import type {
   ShowReportForEvent,
   ShowReportSummaryDTO,
   ShowSummaryDTO,
+  ShowreportsIdTexGet200Response,
   UpdateAssignedDTO,
   UpdateShowreportDTO,
 } from "../models/index";
@@ -87,6 +88,8 @@ import {
   ShowReportSummaryDTOToJSON,
   ShowSummaryDTOFromJSON,
   ShowSummaryDTOToJSON,
+  ShowreportsIdTexGet200ResponseFromJSON,
+  ShowreportsIdTexGet200ResponseToJSON,
   UpdateAssignedDTOFromJSON,
   UpdateAssignedDTOToJSON,
   UpdateShowreportDTOFromJSON,
@@ -209,6 +212,10 @@ export interface ShowreportsIdPdfGetRequest {
 export interface ShowreportsIdPostRequest {
   id: string;
   report?: UpdateShowreportDTO;
+}
+
+export interface ShowreportsIdTexGetRequest {
+  id: string;
 }
 
 export interface ShowsPostRequest {
@@ -1736,6 +1743,56 @@ export class DefaultApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ShowReportDTO> {
     const response = await this.showreportsIdPostRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
+  /**
+   * Returns the report in the TEX format
+   */
+  async showreportsIdTexGetRaw(
+    requestParameters: ShowreportsIdTexGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ShowreportsIdTexGet200Response>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling showreportsIdTexGet."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/showreports/{id}/tex`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      ShowreportsIdTexGet200ResponseFromJSON(jsonValue)
+    );
+  }
+
+  /**
+   * Returns the report in the TEX format
+   */
+  async showreportsIdTexGet(
+    requestParameters: ShowreportsIdTexGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ShowreportsIdTexGet200Response> {
+    const response = await this.showreportsIdTexGetRaw(
       requestParameters,
       initOverrides
     );

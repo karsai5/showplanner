@@ -17,6 +17,7 @@ import (
 func SetupHandlers(api *operations.GoBackendAPI) {
 	api.PostShowreportsIDHandler = handlePostShowreports
 	api.GetShowreportsIDPdfHandler = handleGetShowReportPDF
+	api.GetShowreportsIDTexHandler = handleGetShowReportTEX
 	api.GetShowreportsIDHandler = handleGetShowReport
 	api.GetShowreportsHandler = handleGetShowReports
 	api.GetEventsIDShowreportHandler = handleGetEventsShowReport
@@ -76,6 +77,30 @@ var handleGetShowReport = operations.GetShowreportsIDHandlerFunc(func(params ope
 	}
 })
 
+var handleGetShowReportTEX = operations.GetShowreportsIDTexHandlerFunc(func(params operations.GetShowreportsIDTexParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting show report PDF", &operations.GetShowreportsIDTexInternalServerError{})
+
+	showReport, err := database.GetShowReport(*conv.StrfmtUUIDToUUID(&params.ID))
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return &operations.GetShowreportsIDNotFound{}
+	}
+	if err != nil {
+		return logError(&err)
+	}
+
+	texString, err := GetShowReportTEX(showReport)
+	if err != nil {
+		return logError(&err)
+	}
+
+	return &operations.GetShowreportsIDTexOK{
+		Payload: &operations.GetShowreportsIDTexOKBody{
+			Contents: texString,
+		},
+	}
+})
+
 var handleGetShowReportPDF = operations.GetShowreportsIDPdfHandlerFunc(func(params operations.GetShowreportsIDPdfParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting show report PDF", &operations.GetShowreportsIDPdfInternalServerError{})
 
@@ -88,7 +113,10 @@ var handleGetShowReportPDF = operations.GetShowreportsIDPdfHandlerFunc(func(para
 		return logError(&err)
 	}
 
-	readclose, err := CreateShowReport(showReport)
+	readclose, err := CreateShowReportPDF(showReport)
+	if err != nil {
+		return logError(&err)
+	}
 
 	return &operations.GetShowreportsIDPdfOK{
 		Payload: readclose,

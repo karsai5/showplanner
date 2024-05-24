@@ -34,6 +34,7 @@ models/ShowReportDTO.ts
 models/ShowReportForEvent.ts
 models/ShowReportSummaryDTO.ts
 models/ShowSummaryDTO.ts
+models/ShowreportsIdTexGet200Response.ts
 models/UpdateAssignedDTO.ts
 models/UpdateShowreportDTO.ts
 models/index.ts

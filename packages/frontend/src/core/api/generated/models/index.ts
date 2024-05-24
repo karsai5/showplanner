@@ -33,5 +33,6 @@ export * from "./ShowReportDTO";
 export * from "./ShowReportForEvent";
 export * from "./ShowReportSummaryDTO";
 export * from "./ShowSummaryDTO";
+export * from "./ShowreportsIdTexGet200Response";
 export * from "./UpdateAssignedDTO";
 export * from "./UpdateShowreportDTO";
