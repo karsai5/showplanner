@@ -6,6 +6,7 @@ RUN apt update
 RUN apt install -y pandoc
 RUN apt install -y texlive
 RUN apt install -y texlive-latex-extra
+RUN apt install -y texlive-luatex
 
 COPY go.mod go.sum ./
 
@@ -18,6 +19,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build ./cmd/go-backend-server
 RUN CGO_ENABLED=0 GOOS=linux go build ./cmd/go-backend-cli
 
 COPY template.tex ./
+COPY emoji.sty ./
 
 COPY Makefile ./
 
