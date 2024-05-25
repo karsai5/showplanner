@@ -31,8 +31,8 @@ func createTexFileContext(sr database.ShowReport) (string, error) {
 	}
 	name := fmt.Sprintf("%s %s", firstName, sr.CreatedBy.LastName)
 
-	texString = strings.Replace(texString, "%TITLE%", gomoji.RemoveEmojis(sr.GetTitle()), 1)
-	texString = strings.Replace(texString, "%SUBTITLE%", gomoji.RemoveEmojis(sr.GetSubtitle()), 1)
+	texString = strings.Replace(texString, "%TITLE%", sr.GetTitle(), 1)
+	texString = strings.Replace(texString, "%SUBTITLE%", sr.GetSubtitle(), 1)
 	texString = strings.Replace(texString, "%AUTHOR%", name, 1)
 	texString = strings.Replace(texString, "%NOTES%", latexNotes, 1)
 
@@ -55,9 +55,7 @@ func createTexFileContext(sr database.ShowReport) (string, error) {
 	}
 
 	texString = strings.Replace(texString, "%TIMES%", strings.Join(durations, "\n"), 1)
-	texString = gomoji.ReplaceEmojisWithFunc(texString, func(em gomoji.Emoji) string {
-		return fmt.Sprintf("\\emoji{%s}", em.Slug)
-	})
+	texString = gomoji.RemoveEmojis(texString)
 	return texString, nil
 
 }
