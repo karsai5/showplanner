@@ -26,7 +26,7 @@ func createTexFileContext(sr database.ShowReport) (string, error) {
 	}
 
 	firstName := sr.CreatedBy.FirstName
-	if sr.CreatedBy.PreferredName != nil {
+	if sr.CreatedBy.PreferredName != nil && *sr.CreatedBy.PreferredName != "" {
 		firstName = *sr.CreatedBy.PreferredName
 	}
 	name := fmt.Sprintf("%s %s", firstName, sr.CreatedBy.LastName)
