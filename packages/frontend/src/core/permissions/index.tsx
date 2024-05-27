@@ -5,7 +5,10 @@ import jwksClient from "jwks-rsa";
 import { GetServerSidePropsContext } from "next/types";
 import { ReactNode } from "react";
 import Session from "supertokens-auth-react/recipe/session";
-import { PermissionClaim } from "supertokens-auth-react/recipe/userroles";
+import {
+  PermissionClaim,
+  UserRoleClaim,
+} from "supertokens-auth-react/recipe/userroles";
 
 const client = jwksClient({
   jwksUri: `${getRequiredEnvVariable(
@@ -98,6 +101,19 @@ export const useHasPermission = () => {
     const permissions = claimValue?.value;
 
     return Array.isArray(permissions) && permissions.includes(permission);
+  };
+};
+
+export const useHasRole = () => {
+  const claimValue = Session.useClaimValue(UserRoleClaim);
+
+  return (role: string) => {
+    if (claimValue.loading || !claimValue.doesSessionExist) {
+      return false;
+    }
+    const roles = claimValue?.value;
+
+    return Array.isArray(roles) && roles.includes(role);
   };
 };
 

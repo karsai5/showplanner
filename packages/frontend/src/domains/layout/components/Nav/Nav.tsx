@@ -2,113 +2,14 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import {
   Bars3BottomLeftIcon,
   Bars3BottomRightIcon,
-  CalendarDaysIcon,
-  ClockIcon,
-  DocumentCheckIcon,
-  DocumentTextIcon,
-  HomeIcon,
 } from "@heroicons/react/24/outline";
 import cc from "classnames";
-import { UserIcon } from "core/components/Icons";
 import { useBreakpoint } from "core/hooks/useBreakpoint";
-import { PERMISSION, showPermission, useHasPermission } from "core/permissions";
-import { useShowSlugFromUrl } from "domains/shows/lib/helpers";
-import { useShowSummary } from "domains/shows/lib/summaryContext";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Session from "supertokens-auth-react/recipe/session";
-import { signOut } from "supertokens-auth-react/recipe/thirdpartyemailpassword";
 
 import styles from "./Nav.module.scss";
-
-type NavItem = {
-  title: string;
-  href?: string;
-  onClick?: () => void;
-  icon?: React.ReactNode;
-};
-
-const useMainNavItems = (): NavItem[] => {
-  const mainNav: NavItem[] = [
-    {
-      title: "ShowTimer",
-      href: "/tools/showtimer",
-      icon: <ClockIcon className="h-6 w-6" />,
-    },
-  ];
-
-  async function onLogout() {
-    await signOut();
-    window.location.href = "/";
-  }
-  const session = Session.useSessionContext();
-  if (session.loading) {
-    return mainNav;
-  }
-
-  if (session.doesSessionExist) {
-    mainNav.push(
-      {
-        title: "Show reports",
-        href: "/tools/showreports",
-        icon: <DocumentTextIcon className="h-6 w-6" />,
-      },
-      {
-        title: "Shows",
-        href: "/shows",
-      },
-      {
-        title: "Log out",
-        onClick: () => onLogout(),
-      }
-    );
-  } else {
-    mainNav.push({
-      title: "Log in",
-      href: "/auth",
-    });
-  }
-  return mainNav;
-};
-
-const useNavItemsForShow = (): NavItem[] => {
-  const slug = useShowSlugFromUrl();
-  const show = useShowSummary();
-
-  const hasPermission = useHasPermission();
-
-  const navItems: NavItem[] = [
-    {
-      title: "Schedule",
-      href: `/shows/${slug}`,
-      icon: <HomeIcon className="h-6 w-6" />,
-    },
-  ];
-
-  if (hasPermission(showPermission(show.id, PERMISSION.rostering))) {
-    navItems.push({
-      title: "Availabilities",
-      href: `/shows/${slug}/availabilities`,
-      icon: <DocumentCheckIcon className="h-6 w-6" />,
-    });
-  }
-
-  if (hasPermission(showPermission(show.id, PERMISSION.personnel))) {
-    navItems.push({
-      title: "People",
-      href: `/shows/${slug}/people`,
-      icon: <UserIcon className="h-6 w-6" />,
-    });
-  }
-
-  navItems.push({
-    title: "Roster",
-    href: `/shows/${slug}/roster`,
-    icon: <CalendarDaysIcon className="h-6 w-6" />,
-  });
-
-  return navItems;
-};
+import { NavItem, useMainNavItems, useNavItemsForShow } from "./items";
 
 export const Nav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
   const isSmall = useBreakpoint("sm");
@@ -272,32 +173,3 @@ export const ShowNavList: React.FC<{ className?: string }> = ({
     </ul>
   );
 };
-
-// DROPDOWN example
-// const DropdownExample = () => {
-//   return (
-//     <li tabIndex={0}>
-//       <a>
-//         <ArchiveBoxIcon />
-//         Toolbox
-//         <svg
-//           className="fill-current"
-//           xmlns="http://www.w3.org/2000/svg"
-//           width="20"
-//           height="20"
-//           viewBox="0 0 24 24"
-//         >
-//           <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
-//         </svg>
-//       </a>
-//       <ul className="p-2 bg-base-100">
-//         <li>
-//           <a>
-//             <ClockIcon />
-//             ShowTimer
-//           </a>
-//         </li>
-//       </ul>
-//     </li>
-//   );
-// };
