@@ -737,6 +737,74 @@ paths:
         500:
           $ref: '#/responses/Error'
 
+  # SHOWTIMERS
+  /showtimers:
+    get:
+      summary: Get users show reports
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: './schemas/ShowTimer.yaml#/ShowTimerSummaryDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+  /showtimers/{id}:
+    get:
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: string
+          format: uuid
+          description: ID of the show report
+      summary: Adds a person to a show
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/ShowTimer.yaml#/ShowTimerDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+    post:
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: string
+          format: uuid
+          description: ID of the show report
+        - in: body
+          description: Show report
+          name: timer
+          schema:
+            $ref: './schemas/ShowTimer.yaml#/UpdateShowTimerDTO'
+      summary: Adds a person to a show
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/ShowTimer.yaml#/ShowTimerDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+
 responses:
   Error:
     description: Error

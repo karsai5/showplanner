@@ -4,7 +4,7 @@ import { useCopyToClipboard } from "core/hooks/useCopyToClipboard";
 import { NextButton } from "domains/showtimer/buttons/NextButton";
 import { ChronoButton } from "domains/showtimer/ChronoButton";
 import moment, { Moment } from "moment";
-import React, { createContext, FC, useEffect, useState } from "react";
+import React, { createContext, FC, useState } from "react";
 import { toast } from "react-toastify";
 
 import { Beginners } from "./Beginners";
@@ -14,9 +14,13 @@ import { Interval } from "./Interval";
 import { getShowLengths } from "./TimingDetails";
 import { calculateCurrentPhase, Phase, Timers } from "./types";
 
-const TIMERS_KEY = "timers";
-
 export const emptyTimers: Timers = {
+  expectedCurtainsUp: moment().set({
+    hour: 19,
+    minute: 30,
+    second: 0,
+    millisecond: 0,
+  }),
   actOneStart: null,
   intervalStart: null,
   intervalEnd: null,
@@ -30,32 +34,20 @@ export const emptyTimers: Timers = {
   orchestraEnd: null,
 };
 
-const rehydrateTimers = (timers: string | undefined) => {
-  if (timers) {
-    const parsedTimers = JSON.parse(timers);
-    Object.keys(parsedTimers).forEach((key) => {
-      const currentValue = parsedTimers[key];
-      parsedTimers[key] = currentValue ? moment(currentValue) : null;
-    });
-    return parsedTimers;
-  }
-  return emptyTimers;
-};
-
 export const ConfettiContext = createContext<
   (options: confetti.Options) => void
 >(() => {});
 
-export const ShowTimer: FC = () => {
+export const ShowTimer: FC<{
+  onChange?: (timers: Timers) => void;
+  initialTimers?: Partial<Timers>;
+}> = ({ onChange, initialTimers }) => {
   const [, copy] = useCopyToClipboard();
-  const initialTimers = rehydrateTimers(undefined);
-
-  const [timers, unsafeSetTimers] = useState<Timers>(initialTimers);
+  const [timers, unsafeSetTimers] = useState<Timers>({
+    ...emptyTimers,
+    ...initialTimers,
+  });
   const phase = calculateCurrentPhase(timers);
-
-  useEffect(() => {
-    window.localStorage.getItem(TIMERS_KEY);
-  }, []);
 
   const sendEmailOfTimes = () => window.open(getMailToLink(timers));
 
@@ -69,7 +61,7 @@ export const ShowTimer: FC = () => {
 
   const setTimers = (updatedTimers: Partial<Timers>) => {
     const newTimers = { ...timers, ...updatedTimers };
-    window.localStorage.setItem(TIMERS_KEY, JSON.stringify(newTimers));
+    if (onChange) onChange(newTimers);
     unsafeSetTimers(newTimers);
   };
 
@@ -85,7 +77,9 @@ export const ShowTimer: FC = () => {
             sendEmailOfTimes={sendEmailOfTimes}
           />
         </div>
-        {phase === Phase.beginners && <Beginners />}
+        {phase === Phase.beginners && (
+          <Beginners timers={timers} setTimers={setTimers} />
+        )}
         {phase === Phase.interval && <Interval timers={timers} />}
         <div className="flex gap-2 mb-4">
           <ChronoButton className="flex-1" id="one" />
@@ -117,12 +111,8 @@ export const ShowTimer: FC = () => {
 const getTimersAndNotesSummary = (timers: Timers) => {
   const formatTime = (value: Moment | null) =>
     value ? moment(value).format("hh:mma") : "";
-  const {
-    actTwoLength,
-    intervalLength,
-    showLength,
-    actOneLength,
-  } = getShowLengths(timers);
+  const { actTwoLength, intervalLength, showLength, actOneLength } =
+    getShowLengths(timers);
 
   const {
     houseOpen,

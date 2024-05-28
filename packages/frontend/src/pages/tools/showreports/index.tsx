@@ -40,7 +40,7 @@ const ShowReport = () => {
           <thead>
             <tr>
               <th>Title</th>
-              <th>Last udpated</th>
+              <th>Last updated</th>
             </tr>
           </thead>
           <tbody>

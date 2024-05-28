@@ -1,7 +1,7 @@
 import { useIsVisable } from "core/utils/useIsVisable";
 import { useRef } from "react";
 
-export const PersistantLoadingSpinner = () => {
+export const StickyLoadingSpinner = () => {
   const ref = useRef(null);
   const isVisable = useIsVisable(ref);
   return (

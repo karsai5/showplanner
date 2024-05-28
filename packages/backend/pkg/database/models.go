@@ -120,6 +120,32 @@ type Person struct {
 	Shows []Show `gorm:"many2many:show_people;"`
 }
 
+type ShowTimer struct {
+	ID        uuid.UUID `gorm:"type:uuid;primary_key;"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time `gorm:"index"`
+
+	ExpectedCurtainsUp *time.Time
+
+	ShowStart     *time.Time
+	ShowEnd       *time.Time
+	IntervalStart *time.Time
+	IntervalEnd   *time.Time
+
+	HouseOpen          *time.Time
+	ActOneFOHClearance *time.Time
+	ActTwoFOHClearance *time.Time
+
+	// linked event
+	EventID *uint
+	Event   *Event
+
+	// linked person
+	CreatedById uuid.UUID
+	CreatedBy   Person
+}
+
 type ShowReport struct {
 	ID        uuid.UUID `gorm:"type:uuid;primary_key;"`
 	CreatedAt time.Time

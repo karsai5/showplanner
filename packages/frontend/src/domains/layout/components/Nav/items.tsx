@@ -4,6 +4,7 @@ import {
   DocumentCheckIcon,
   DocumentTextIcon,
   HomeIcon,
+  ShieldCheckIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
 import { UserIcon } from "core/components/Icons";
@@ -23,6 +24,7 @@ export type NavItem = {
   href?: string;
   onClick?: () => void;
   icon?: React.ReactNode;
+  children?: NavItem[];
 };
 
 export const useMainNavItems = (): NavItem[] => {
@@ -34,28 +36,39 @@ export const useMainNavItems = (): NavItem[] => {
     window.location.href = "/";
   }
 
-  const mainNav: NavItem[] = [
-    {
-      title: "ShowTimer",
-      href: "/tools/showtimer",
-      icon: <ClockIcon className="h-6 w-6" />,
-    },
-  ];
+  const mainNav: NavItem[] = [];
 
   if (hasRole("admin")) {
     mainNav.push({
-      title: "Users",
-      href: "/admin/people",
-      icon: <UsersIcon className="h-6 w-6" />,
+      title: "Admin",
+      icon: <ShieldCheckIcon className="h-6 w-6" />,
+      children: [
+        {
+          title: "Users",
+          href: "/admin/people",
+          icon: <UsersIcon className="h-6 w-6" />,
+        },
+      ],
     });
   }
 
   if (isLoggedIn) {
     mainNav.push(
       {
-        title: "Show reports",
-        href: "/tools/showreports",
+        title: "Toolbox",
         icon: <DocumentTextIcon className="h-6 w-6" />,
+        children: [
+          {
+            title: "Show timers",
+            href: "/tools/showtimers",
+            icon: <ClockIcon className="h-6 w-6" />,
+          },
+          {
+            title: "Show reports",
+            href: "/tools/showreports",
+            icon: <DocumentTextIcon className="h-6 w-6" />,
+          },
+        ],
       },
       {
         title: "Shows",

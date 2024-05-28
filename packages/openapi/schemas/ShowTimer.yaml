@@ -1,0 +1,67 @@
+UpdateShowTimerDTO:
+  properties:
+    expectedCurtainsUp:
+      type: string
+      format: date-time
+      x-nullable: true
+    showStart:
+      type: string
+      format: date-time
+      x-nullable: true
+    showEnd:
+      type: string
+      format: date-time
+      x-nullable: true
+    intervalStart:
+      type: string
+      format: date-time
+      x-nullable: true
+    intervalEnd:
+      type: string
+      format: date-time
+      x-nullable: true
+    houseOpen:
+      type: string
+      format: date-time
+      x-nullable: true
+    actOneFOHClearance:
+      type: string
+      format: date-time
+      x-nullable: true
+    actTwoFOHClearance:
+      type: string
+      format: date-time
+      x-nullable: true
+    eventId:
+      type: integer
+      x-nullable: true
+
+ShowTimerSummaryDTO:
+  properties:
+    id:
+      type: string
+      format: uuid
+    showStart:
+      type: string
+      format: date-time
+      x-nullable: true
+    showEnd:
+      type: string
+      format: date-time
+      x-nullable: true
+
+ShowTimerForEvent:
+  properties:
+    ShowTimer:
+      $ref: './ShowTimer.yaml#/ShowTimerDTO'
+    title:
+      type: string
+
+ShowTimerDTO:
+  allOf:
+    - $ref: './ShowTimer.yaml#/UpdateShowTimerDTO'
+    - type: object
+      properties:
+        id:
+          type: string
+          format: uuid

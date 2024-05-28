@@ -1,6 +1,8 @@
 import { Moment } from "moment";
 
 export type Timers = {
+  expectedCurtainsUp: Moment | null;
+
   actOneStart: Moment | null;
   intervalStart: Moment | null;
   intervalEnd: Moment | null;
@@ -16,6 +18,7 @@ export type Timers = {
 
 export const TimerLabels = {
   actOneStart: "Act one start",
+  expectedCurtainsUp: "Expected curtains up",
   intervalStart: "Interval start",
   intervalEnd: "Act two start",
   actTwoEnd: "Curtains down",

@@ -114,6 +114,12 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetShowsShowSlugSummaryHandler: GetShowsShowSlugSummaryHandlerFunc(func(params GetShowsShowSlugSummaryParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetShowsShowSlugSummary has not yet been implemented")
 		}),
+		GetShowtimersHandler: GetShowtimersHandlerFunc(func(params GetShowtimersParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetShowtimers has not yet been implemented")
+		}),
+		GetShowtimersIDHandler: GetShowtimersIDHandlerFunc(func(params GetShowtimersIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetShowtimersID has not yet been implemented")
+		}),
 		PostAssignmentHandler: PostAssignmentHandlerFunc(func(params PostAssignmentParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostAssignment has not yet been implemented")
 		}),
@@ -149,6 +155,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		}),
 		PostShowsHandler: PostShowsHandlerFunc(func(params PostShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostShows has not yet been implemented")
+		}),
+		PostShowtimersIDHandler: PostShowtimersIDHandlerFunc(func(params PostShowtimersIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostShowtimersID has not yet been implemented")
 		}),
 		PutAssignmentIDHandler: PutAssignmentIDHandlerFunc(func(params PutAssignmentIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation PutAssignmentID has not yet been implemented")
@@ -245,6 +254,10 @@ type GoBackendAPI struct {
 	GetShowsHandler GetShowsHandler
 	// GetShowsShowSlugSummaryHandler sets the operation handler for the get shows show slug summary operation
 	GetShowsShowSlugSummaryHandler GetShowsShowSlugSummaryHandler
+	// GetShowtimersHandler sets the operation handler for the get showtimers operation
+	GetShowtimersHandler GetShowtimersHandler
+	// GetShowtimersIDHandler sets the operation handler for the get showtimers ID operation
+	GetShowtimersIDHandler GetShowtimersIDHandler
 	// PostAssignmentHandler sets the operation handler for the post assignment operation
 	PostAssignmentHandler PostAssignmentHandler
 	// PostAvailabilitiesHandler sets the operation handler for the post availabilities operation
@@ -269,6 +282,8 @@ type GoBackendAPI struct {
 	PostShowreportsIDHandler PostShowreportsIDHandler
 	// PostShowsHandler sets the operation handler for the post shows operation
 	PostShowsHandler PostShowsHandler
+	// PostShowtimersIDHandler sets the operation handler for the post showtimers ID operation
+	PostShowtimersIDHandler PostShowtimersIDHandler
 	// PutAssignmentIDHandler sets the operation handler for the put assignment ID operation
 	PutAssignmentIDHandler PutAssignmentIDHandler
 	// PutRolesIDHandler sets the operation handler for the put roles ID operation
@@ -425,6 +440,12 @@ func (o *GoBackendAPI) Validate() error {
 	if o.GetShowsShowSlugSummaryHandler == nil {
 		unregistered = append(unregistered, "GetShowsShowSlugSummaryHandler")
 	}
+	if o.GetShowtimersHandler == nil {
+		unregistered = append(unregistered, "GetShowtimersHandler")
+	}
+	if o.GetShowtimersIDHandler == nil {
+		unregistered = append(unregistered, "GetShowtimersIDHandler")
+	}
 	if o.PostAssignmentHandler == nil {
 		unregistered = append(unregistered, "PostAssignmentHandler")
 	}
@@ -460,6 +481,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.PostShowsHandler == nil {
 		unregistered = append(unregistered, "PostShowsHandler")
+	}
+	if o.PostShowtimersIDHandler == nil {
+		unregistered = append(unregistered, "PostShowtimersIDHandler")
 	}
 	if o.PutAssignmentIDHandler == nil {
 		unregistered = append(unregistered, "PutAssignmentIDHandler")
@@ -649,6 +673,14 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/shows/{showSlug}/summary"] = NewGetShowsShowSlugSummary(o.context, o.GetShowsShowSlugSummaryHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/showtimers"] = NewGetShowtimers(o.context, o.GetShowtimersHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/showtimers/{id}"] = NewGetShowtimersID(o.context, o.GetShowtimersIDHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
@@ -697,6 +729,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/shows"] = NewPostShows(o.context, o.PostShowsHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/showtimers/{id}"] = NewPostShowtimersID(o.context, o.PostShowtimersIDHandler)
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)
 	}

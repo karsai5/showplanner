@@ -71,6 +71,7 @@ func initDB() *gorm.DB {
 		&Shadow{},
 		&Media{},
 		&ShowReport{},
+		&ShowTimer{},
 	)
 	if err != nil {
 		panic("Failed to run migrations")

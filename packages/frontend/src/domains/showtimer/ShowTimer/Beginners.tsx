@@ -5,9 +5,9 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 
 import styles from "./styles.module.scss";
+import { Timers } from "./types";
 
 const BEGINNERS_DURATION = 5;
-const LOCALSTORAGE_KEY = "beginners-curtainsUp";
 
 type Call = {
   duration: number;
@@ -25,18 +25,14 @@ const calls: Array<Call> = [
   { duration: 5 },
 ];
 
-export const Beginners: React.FunctionComponent<
-  React.PropsWithChildren<unknown>
-> = () => {
-  const [initialTime, setInitialTime] = useState(new Date());
-  useEffect(() => {
-    const storedTime = window.localStorage.getItem(LOCALSTORAGE_KEY);
-    if (storedTime) {
-      setInitialTime(new Date(storedTime));
-    }
-  }, []);
-
-  const [curtainsUp, setCurtainsUp] = useState<Date | undefined>(initialTime);
+export const Beginners: React.FunctionComponent<{
+  timers: Timers;
+  setTimers: (updatedTimers: Partial<Timers>) => void;
+}> = ({ timers, setTimers }) => {
+  const curtainsUp = timers.expectedCurtainsUp;
+  const setCurtainsUp = (newTime: Date) => {
+    setTimers({ expectedCurtainsUp: moment(newTime) });
+  };
   const [nowPerSecond, setNow] = useState(moment());
 
   useEffect(() => {
@@ -50,7 +46,6 @@ export const Beginners: React.FunctionComponent<
 
   const handleUpdate = (newTime: Date) => {
     setCurtainsUp(newTime);
-    window.localStorage.setItem(LOCALSTORAGE_KEY, newTime.toISOString());
   };
   const beginners = moment(curtainsUp).subtract(BEGINNERS_DURATION, "m");
 

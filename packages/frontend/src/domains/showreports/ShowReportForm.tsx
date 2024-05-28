@@ -5,7 +5,7 @@ import { api } from "core/api";
 import { UpdateShowreportDTO } from "core/api/generated";
 import TextArea from "core/components/fields/TextArea";
 import Input from "core/components/fields/TextInput";
-import { PersistantLoadingSpinner } from "core/components/LoadingBox/PersistantLoadingSpinner";
+import { StickyLoadingSpinner } from "core/components/LoadingBox/PersistantLoadingSpinner";
 import { H2 } from "core/components/Typography";
 import { showToastError } from "core/utils/errors";
 import dayjs from "dayjs";
@@ -174,7 +174,7 @@ export const ShowReportForm: React.FC<{
               ["btn-disabled"]: mutation.isLoading || isWaiting,
             })}
           >
-            {(mutation.isLoading || isWaiting) && <PersistantLoadingSpinner />}
+            {(mutation.isLoading || isWaiting) && <StickyLoadingSpinner />}
             Save
           </button>
           <a
