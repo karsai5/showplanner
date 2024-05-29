@@ -39,7 +39,7 @@ func mapShowTimerToSummaryDTO(sr database.ShowTimer) models.ShowTimerSummaryDTO 
 }
 
 func mapShowTimerToDTO(sr database.ShowTimer) models.ShowTimerDTO {
-	return models.ShowTimerDTO{
+	dto := models.ShowTimerDTO{
 		ID: *conv.UUIDToStrmFmtUUID(sr.ID),
 		UpdateShowTimerDTO: models.UpdateShowTimerDTO{
 			ActOneFOHClearance: mapTimeIfExists(sr.ActOneFOHClearance),
@@ -52,6 +52,11 @@ func mapShowTimerToDTO(sr database.ShowTimer) models.ShowTimerDTO {
 			ExpectedCurtainsUp: mapTimeIfExists(sr.ExpectedCurtainsUp),
 		},
 	}
+	if sr.EventID != nil {
+		dto.EventID = conv.UintToInt64(*sr.EventID)
+	}
+
+	return dto
 }
 
 func mapTimeIfExists(t *time.Time) *strfmt.DateTime {

@@ -61,14 +61,24 @@ export const Schedule: React.FC<React.ComponentProps<typeof EventTable>> = (
           {canEditEvents && (
             <>
               <td className="border border-slate-200 relative">
-                <Link
-                  href={`${path}/event/${e.id}/showreport`}
-                  className={cc("link whitespace-nowrap", {
-                    ["text-slate-400"]: !e.showReport,
-                  })}
-                >
-                  Show report
-                </Link>
+                <div className="flex gap-2">
+                  <Link
+                    href={`${path}/event/${e.id}/showreport`}
+                    className={cc("link whitespace-nowrap", {
+                      ["text-slate-400"]: !e.showReport,
+                    })}
+                  >
+                    Show report
+                  </Link>
+                  <Link
+                    href={`${path}/event/${e.id}/showtimer`}
+                    className={cc("link whitespace-nowrap", {
+                      ["text-slate-400"]: !e.showTimer,
+                    })}
+                  >
+                    Show timer
+                  </Link>
+                </div>
               </td>
               <td className="border border-slate-200 relative">
                 <AdminButtons event={e} />

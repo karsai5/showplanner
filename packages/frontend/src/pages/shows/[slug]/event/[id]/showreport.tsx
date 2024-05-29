@@ -28,21 +28,7 @@ export const getServerSideProps = (async (context) => {
     id: Number(id),
   });
 
-  if (!event.showReport) {
-    const newShowReport = await ssrApi.showreportsIdPost({
-      id: uuidv4().toString(),
-      report: {
-        eventId: Number(id),
-      },
-    });
-
-    return {
-      props: {
-        initialValues: getDefaultValuesForShowReport(newShowReport),
-        id: newShowReport.id as string,
-      },
-    };
-  } else {
+  if (event.showReport) {
     const showReport = await ssrApi.showreportsIdGet({
       id: event.showReport,
     });
@@ -53,6 +39,20 @@ export const getServerSideProps = (async (context) => {
       },
     };
   }
+
+  const newShowReport = await ssrApi.showreportsIdPost({
+    id: uuidv4().toString(),
+    report: {
+      eventId: Number(id),
+    },
+  });
+
+  return {
+    props: {
+      initialValues: getDefaultValuesForShowReport(newShowReport),
+      id: newShowReport.id as string,
+    },
+  };
 }) satisfies GetServerSideProps<{
   initialValues?: ShowReportInputs;
   id: string;

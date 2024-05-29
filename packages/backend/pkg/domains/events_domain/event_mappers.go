@@ -73,5 +73,10 @@ func MapEventToEventDTO(e database.Event) models.EventDTO {
 	if e.ShowReport != nil {
 		dto.ShowReport = conv.UUIDToStrmFmtUUID(e.ShowReport.ID)
 	}
+
+	if e.ShowTimer != nil {
+		dto.ShowTimer = conv.UUIDToStrmFmtUUID(e.ShowTimer.ID)
+	}
+
 	return dto
 }
