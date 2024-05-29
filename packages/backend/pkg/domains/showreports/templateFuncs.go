@@ -13,6 +13,7 @@ import (
 )
 
 func createTexFileContext(sr database.ShowReport) (string, error) {
+	sr.GenerateDetailsFromEvent()
 	latexNotes, err := convertMarkdownToLatex(sr.Notes)
 	if err != nil {
 		fmt.Printf("err: %s", err.Error())
@@ -31,8 +32,8 @@ func createTexFileContext(sr database.ShowReport) (string, error) {
 	}
 	name := fmt.Sprintf("%s %s", firstName, sr.CreatedBy.LastName)
 
-	texString = strings.Replace(texString, "%TITLE%", sr.GetTitle(), 1)
-	texString = strings.Replace(texString, "%SUBTITLE%", sr.GetSubtitle(), 1)
+	texString = strings.Replace(texString, "%TITLE%", sr.Title, 1)
+	texString = strings.Replace(texString, "%SUBTITLE%", sr.Subtitle, 1)
 	texString = strings.Replace(texString, "%AUTHOR%", name, 1)
 	texString = strings.Replace(texString, "%NOTES%", latexNotes, 1)
 

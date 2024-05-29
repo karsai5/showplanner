@@ -12,6 +12,8 @@ import { Timers } from "domains/showtimer/ShowTimer/types";
 import moment from "moment";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ReactElement } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -20,6 +22,8 @@ export default function ShowTimerPage({
   initialTimers: ssrTimers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const queryClient = useQueryClient();
+  const path = usePathname();
+  const showReportUrl = path.replace(/\/[^/]*$/, "/showreport");
 
   const mutation = useMutation<unknown, Error, Timers | undefined>({
     mutationFn: (timers) => {
@@ -62,10 +66,15 @@ export default function ShowTimerPage({
       <Head>
         <title>ShowTimer</title>
       </Head>
-      <H2 className="mb-6 flex items-center gap-2">
-        {mutation.isLoading ? <StickyLoadingSpinner /> : <ClockIcon />}
-        ShowTimer
-      </H2>
+      <div className="flex gap-4 justify-between">
+        <H2 className="mb-6 flex items-center gap-2">
+          ShowTimer
+          {mutation.isLoading ? <StickyLoadingSpinner /> : <ClockIcon />}
+        </H2>
+        <Link href={showReportUrl}>
+          <button className="btn">Show Report</button>
+        </Link>
+      </div>
       <ShowTimer
         onChange={(timers) => handleOnChange(timers)}
         initialTimers={initialTimers}

@@ -6,7 +6,6 @@ import { UpdateShowreportDTO } from "core/api/generated";
 import TextArea from "core/components/fields/TextArea";
 import Input from "core/components/fields/TextInput";
 import { StickyLoadingSpinner } from "core/components/LoadingBox/PersistantLoadingSpinner";
-import { H2 } from "core/components/Typography";
 import { showToastError } from "core/utils/errors";
 import dayjs from "dayjs";
 import { debounce } from "lodash";
@@ -33,8 +32,9 @@ export type ShowReportInputs = {
 export const ShowReportForm: React.FC<{
   initialValues?: ShowReportInputs;
   id: string;
-}> = ({ initialValues, id }) => {
-  const hasEvent = !!initialValues?.eventId;
+  readOnlyTimers?: boolean;
+  readOnlyTitles?: boolean;
+}> = ({ initialValues, id, readOnlyTimers, readOnlyTitles }) => {
   const {
     register,
     handleSubmit,
@@ -96,105 +96,106 @@ export const ShowReportForm: React.FC<{
   };
 
   return (
-    <div>
-      <H2>Show Report</H2>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        onChange={handleSubmit(handleOnChange)}
-        ref={formRef}
-      >
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      onChange={handleSubmit(handleOnChange)}
+      ref={formRef}
+    >
+      <Input
+        label="Title"
+        placeholder="Les Misérables Show 17 Report"
+        register={register("title", { disabled: readOnlyTitles })}
+        errors={errors}
+      />
+      <Input
+        label="Subtitle"
+        placeholder="Saturday 2pm, 12th August 2023"
+        register={register("subtitle", { disabled: readOnlyTitles })}
+        errors={errors}
+      />
+      <div className="sm:flex sm:gap-2">
         <Input
-          label="Title"
-          placeholder="Les Misérables Show 17 Report"
-          register={register("title", { disabled: hasEvent })}
+          label="Show start"
+          register={register("showStart", { disabled: readOnlyTimers })}
           errors={errors}
+          type="time"
         />
         <Input
-          label="Subtitle"
-          placeholder="Saturday 2pm, 12th August 2023"
-          register={register("subtitle", { disabled: hasEvent })}
+          label="Interval start"
+          register={register("intervalStart", { disabled: readOnlyTimers })}
           errors={errors}
+          type="time"
         />
-        <div className="sm:flex sm:gap-2">
-          <Input
-            label="Show start"
-            register={register("showStart", {})}
-            errors={errors}
-            type="time"
-          />
-          <Input
-            label="Interval start"
-            register={register("intervalStart", {})}
-            errors={errors}
-            type="time"
-          />
-          <Input
-            label="Interval end"
-            register={register("intervalEnd", {})}
-            errors={errors}
-            type="time"
-          />
-          <Input
-            label="Show end"
-            register={register("showEnd")}
-            errors={errors}
-            type="time"
-          />
-        </div>
-        <div className="sm:flex sm:gap-2">
-          <Input
-            label="House open"
-            register={register("houseOpen", {})}
-            errors={errors}
-            type="time"
-          />
-          <Input
-            label="Act one FOH clearance"
-            register={register("actOneFOHClearance", {})}
-            errors={errors}
-            type="time"
-          />
-          <Input
-            label="Act two FOH clearance"
-            register={register("actTwoFOHClearance", {})}
-            errors={errors}
-            type="time"
-          />
-        </div>
-        <TextArea
-          register={register("notes")}
-          placeholder="Use markdown for formatting"
+        <Input
+          label="Interval end"
+          register={register("intervalEnd", { disabled: readOnlyTimers })}
           errors={errors}
-          className="h-80"
+          type="time"
         />
-        <div className="flex mt-4 gap-2">
-          <button
-            type="submit"
-            className={cc("btn", {
-              ["btn-disabled"]: mutation.isLoading || isWaiting,
-            })}
-          >
-            {(mutation.isLoading || isWaiting) && <StickyLoadingSpinner />}
-            Save
-          </button>
-          <a
-            className={cc("btn", {
-              ["btn-disabled"]: mutation.isLoading || isWaiting,
-            })}
-            onClick={() => downloadMutation.mutate()}
-            aria-disabled={downloadMutation.isLoading}
-          >
-            {downloadMutation.isLoading ? (
-              <span className="loading loading-spinner"></span>
-            ) : (
-              <DocumentArrowDownIcon className="h-5 w-5" />
-            )}
-            Download
-          </a>
-          <ShowLatexButton id={id} />
-        </div>
-      </form>
-    </div>
+        <Input
+          label="Show end"
+          register={register("showEnd", { disabled: readOnlyTimers })}
+          errors={errors}
+          type="time"
+        />
+      </div>
+      <div className="sm:flex sm:gap-2">
+        <Input
+          label="House open"
+          register={register("houseOpen", { disabled: readOnlyTimers })}
+          errors={errors}
+          type="time"
+        />
+        <Input
+          label="Act one FOH clearance"
+          register={register("actOneFOHClearance", {
+            disabled: readOnlyTimers,
+          })}
+          errors={errors}
+          type="time"
+        />
+        <Input
+          label="Act two FOH clearance"
+          register={register("actTwoFOHClearance", {
+            disabled: readOnlyTimers,
+          })}
+          errors={errors}
+          type="time"
+        />
+      </div>
+      <TextArea
+        register={register("notes")}
+        placeholder="Use markdown for formatting"
+        errors={errors}
+        className="h-80"
+      />
+      <div className="flex mt-4 gap-2">
+        <button
+          type="submit"
+          className={cc("btn", {
+            ["btn-disabled"]: mutation.isLoading || isWaiting,
+          })}
+        >
+          {(mutation.isLoading || isWaiting) && <StickyLoadingSpinner />}
+          Save
+        </button>
+        <a
+          className={cc("btn", {
+            ["btn-disabled"]: mutation.isLoading || isWaiting,
+          })}
+          onClick={() => downloadMutation.mutate()}
+          aria-disabled={downloadMutation.isLoading}
+        >
+          {downloadMutation.isLoading ? (
+            <span className="loading loading-spinner"></span>
+          ) : (
+            <DocumentArrowDownIcon className="h-5 w-5" />
+          )}
+          Download
+        </a>
+        <ShowLatexButton id={id} />
+      </div>
+    </form>
   );
 };
 

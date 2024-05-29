@@ -11,10 +11,11 @@ import (
 )
 
 func mapShowReportToSummaryDTO(sr database.ShowReport) models.ShowReportSummaryDTO {
+	sr.GenerateDetailsFromEvent()
 	return models.ShowReportSummaryDTO{
 		LastUpdated: strfmt.DateTime(sr.UpdatedAt),
 		ID:          *conv.UUIDToStrmFmtUUID(sr.ID),
-		Title:       sr.GetTitle(),
+		Title:       sr.Title,
 	}
 }
 
@@ -41,6 +42,7 @@ func mapShowReportToDatabase(id uuid.UUID, createdByID uuid.UUID, dto models.Upd
 }
 
 func mapShowReportToDTO(sr database.ShowReport) models.ShowReportDTO {
+	sr.GenerateDetailsFromEvent()
 	dto := models.ShowReportDTO{
 		ID: *conv.UUIDToStrmFmtUUID(sr.ID),
 		UpdateShowreportDTO: models.UpdateShowreportDTO{
@@ -52,8 +54,8 @@ func mapShowReportToDTO(sr database.ShowReport) models.ShowReportDTO {
 			Notes:              &sr.Notes,
 			ShowEnd:            mapTimeIfExists(sr.ShowEnd),
 			ShowStart:          mapTimeIfExists(sr.ShowStart),
-			Subtitle:           conv.Pointer(sr.GetSubtitle()),
-			Title:              conv.Pointer(sr.GetTitle()),
+			Subtitle:           conv.Pointer(sr.Subtitle),
+			Title:              conv.Pointer(sr.Title),
 		},
 	}
 	if sr.EventID != nil {
