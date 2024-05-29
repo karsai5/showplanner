@@ -227,6 +227,38 @@ func init() {
       }
     },
     "/events/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get an event",
+        "parameters": [
+          {
+            "type": "number",
+            "description": "Id of event to get",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/Event.yaml#/EventDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      },
       "post": {
         "produces": [
           "application/json"
@@ -278,40 +310,6 @@ func init() {
         "responses": {
           "200": {
             "description": ""
-          },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
-          "404": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "$ref": "#/responses/Error"
-          }
-        }
-      }
-    },
-    "/events/{id}/showreport": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Return show report and info about show report",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the event",
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "./schemas/ShowReport.yaml#/ShowReportForEvent"
-            }
           },
           "401": {
             "$ref": "#/responses/Error"
@@ -1587,6 +1585,47 @@ func init() {
       }
     },
     "/events/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get an event",
+        "parameters": [
+          {
+            "type": "number",
+            "description": "Id of event to get",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/eventDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
       "post": {
         "produces": [
           "application/json"
@@ -1644,49 +1683,6 @@ func init() {
         "responses": {
           "200": {
             "description": ""
-          },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "404": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/events/{id}/showreport": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Return show report and info about show report",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the event",
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/showReportForEvent"
-            }
           },
           "401": {
             "description": "Error",
@@ -3230,6 +3226,16 @@ func init() {
         "showId": {
           "type": "integer"
         },
+        "showReport": {
+          "type": "string",
+          "format": "uuid",
+          "x-nullable": true
+        },
+        "showTimer": {
+          "type": "string",
+          "format": "uuid",
+          "x-nullable": true
+        },
         "start": {
           "type": "string",
           "format": "date-time"
@@ -3584,19 +3590,6 @@ func init() {
           }
         }
       ]
-    },
-    "showReportForEvent": {
-      "properties": {
-        "showReport": {
-          "$ref": "#/definitions/showReportDTO"
-        },
-        "subtitle": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
-        }
-      }
     },
     "showReportSummaryDTO": {
       "properties": {

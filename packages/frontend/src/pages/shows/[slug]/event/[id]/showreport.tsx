@@ -1,5 +1,4 @@
 import { serverSideApi } from "core/api";
-import { ShowReportDTO } from "core/api/generated";
 import { getDefaultValuesForShowReport } from "domains/showreports/getDefaultValuesForShowReport";
 import {
   ShowReportForm,
@@ -8,6 +7,7 @@ import {
 import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { ReactElement } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const EventShowReport = ({
   initialValues,
@@ -20,28 +20,42 @@ export const getServerSideProps = (async (context) => {
   const id = context.query.id;
   const ssrApi = serverSideApi(context);
 
-  if (typeof id !== "string") {
+  if (typeof id !== "string" || !/^\d+$/.test(id)) {
     throw new Error("Incorrect ID format");
   }
 
-  const result = await ssrApi.eventsIdShowreportGet({
+  const event = await ssrApi.eventsIdGet({
     id: Number(id),
   });
 
-  const initialValues = getDefaultValuesForShowReport(
-    result.showReport as ShowReportDTO
-  );
+  if (!event.showReport) {
+    const newShowReport = await ssrApi.showreportsIdPost({
+      id: uuidv4().toString(),
+      report: {
+        eventId: Number(id),
+      },
+    });
 
-  return {
-    props: {
-      initialValues,
-      id: result.showReport?.id,
-    },
-  };
+    return {
+      props: {
+        initialValues: getDefaultValuesForShowReport(newShowReport),
+        id: newShowReport.id as string,
+      },
+    };
+  } else {
+    const showReport = await ssrApi.showreportsIdGet({
+      id: event.showReport,
+    });
+    return {
+      props: {
+        initialValues: getDefaultValuesForShowReport(showReport),
+        id: showReport.id as string,
+      },
+    };
+  }
 }) satisfies GetServerSideProps<{
   initialValues?: ShowReportInputs;
-  overrides?: ShowReportInputs;
-  id?: string;
+  id: string;
 }>;
 
 EventShowReport.getLayout = (page: ReactElement) => (

@@ -52,15 +52,6 @@ ShowReportSummaryDTO:
       type: string
       format: date-time
 
-ShowReportForEvent:
-  properties:
-    showReport:
-      $ref: './ShowReport.yaml#/ShowReportDTO'
-    title:
-      type: string
-    subtitle:
-      type: string
-
 ShowReportDTO:
   allOf:
     - $ref: './ShowReport.yaml#/UpdateShowreportDTO'

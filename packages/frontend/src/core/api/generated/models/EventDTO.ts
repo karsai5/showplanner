@@ -73,6 +73,18 @@ export interface EventDTO {
    * @memberof EventDTO
    */
   end?: Date | null;
+  /**
+   *
+   * @type {string}
+   * @memberof EventDTO
+   */
+  showReport?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof EventDTO
+   */
+  showTimer?: string | null;
 }
 
 /**
@@ -115,6 +127,8 @@ export function EventDTOFromJSONTyped(
       : json["end"] === null
       ? null
       : new Date(json["end"]),
+    showReport: !exists(json, "showReport") ? undefined : json["showReport"],
+    showTimer: !exists(json, "showTimer") ? undefined : json["showTimer"],
   };
 }
 
@@ -145,5 +159,7 @@ export function EventDTOToJSON(value?: EventDTO | null): any {
         : value.end === null
         ? null
         : value.end.toISOString(),
+    showReport: value.showReport,
+    showTimer: value.showTimer,
   };
 }

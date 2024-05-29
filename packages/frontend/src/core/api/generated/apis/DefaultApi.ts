@@ -34,7 +34,6 @@ import type {
   ScheduleEventDTO,
   ShowDTO,
   ShowReportDTO,
-  ShowReportForEvent,
   ShowReportSummaryDTO,
   ShowSummaryDTO,
   ShowTimerDTO,
@@ -85,8 +84,6 @@ import {
   ShowDTOToJSON,
   ShowReportDTOFromJSON,
   ShowReportDTOToJSON,
-  ShowReportForEventFromJSON,
-  ShowReportForEventToJSON,
   ShowReportSummaryDTOFromJSON,
   ShowReportSummaryDTOToJSON,
   ShowSummaryDTOFromJSON,
@@ -130,13 +127,13 @@ export interface EventsIdDeleteRequest {
   id: number;
 }
 
+export interface EventsIdGetRequest {
+  id: number;
+}
+
 export interface EventsIdPostRequest {
   id: number;
   event?: CreateEventDTO;
-}
-
-export interface EventsIdShowreportGetRequest {
-  id: number;
 }
 
 export interface EventsPostRequest {
@@ -530,6 +527,56 @@ export class DefaultApi extends runtime.BaseAPI {
   }
 
   /**
+   * Get an event
+   */
+  async eventsIdGetRaw(
+    requestParameters: EventsIdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<EventDTO>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling eventsIdGet."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/events/{id}`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      EventDTOFromJSON(jsonValue)
+    );
+  }
+
+  /**
+   * Get an event
+   */
+  async eventsIdGet(
+    requestParameters: EventsIdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<EventDTO> {
+    const response = await this.eventsIdGetRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
+  /**
    * Update event
    */
   async eventsIdPostRaw(
@@ -574,56 +621,6 @@ export class DefaultApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<void> {
     await this.eventsIdPostRaw(requestParameters, initOverrides);
-  }
-
-  /**
-   * Return show report and info about show report
-   */
-  async eventsIdShowreportGetRaw(
-    requestParameters: EventsIdShowreportGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<ShowReportForEvent>> {
-    if (requestParameters.id === null || requestParameters.id === undefined) {
-      throw new runtime.RequiredError(
-        "id",
-        "Required parameter requestParameters.id was null or undefined when calling eventsIdShowreportGet."
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/events/{id}/showreport`.replace(
-          `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id))
-        ),
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ShowReportForEventFromJSON(jsonValue)
-    );
-  }
-
-  /**
-   * Return show report and info about show report
-   */
-  async eventsIdShowreportGet(
-    requestParameters: EventsIdShowreportGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<ShowReportForEvent> {
-    const response = await this.eventsIdShowreportGetRaw(
-      requestParameters,
-      initOverrides
-    );
-    return await response.value();
   }
 
   /**

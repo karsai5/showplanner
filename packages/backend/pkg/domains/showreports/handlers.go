@@ -4,12 +4,10 @@ import (
 	"errors"
 
 	"github.com/go-openapi/runtime/middleware"
-	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
-	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
 )
@@ -20,7 +18,6 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 	api.GetShowreportsIDTexHandler = handleGetShowReportTEX
 	api.GetShowreportsIDHandler = handleGetShowReport
 	api.GetShowreportsHandler = handleGetShowReports
-	api.GetEventsIDShowreportHandler = handleGetEventsShowReport
 }
 
 var handlePostShowreports = operations.PostShowreportsIDHandlerFunc(func(params operations.PostShowreportsIDParams) middleware.Responder {
@@ -32,8 +29,13 @@ var handlePostShowreports = operations.PostShowreportsIDHandlerFunc(func(params 
 	}
 
 	showReport := mapShowReportToDatabase(*conv.StrfmtUUIDToUUID(&params.ID), userId, *params.Report)
-	showReport, err = database.SaveShowReport(showReport)
 
+	_, err = database.SaveShowReport(showReport)
+	if err != nil {
+		return logError(&err)
+	}
+
+	showReport, err = database.GetShowReport(showReport.ID)
 	if err != nil {
 		return logError(&err)
 	}
@@ -120,44 +122,5 @@ var handleGetShowReportPDF = operations.GetShowreportsIDPdfHandlerFunc(func(para
 
 	return &operations.GetShowreportsIDPdfOK{
 		Payload: readclose,
-	}
-})
-
-var handleGetEventsShowReport = operations.GetEventsIDShowreportHandlerFunc(func(params operations.GetEventsIDShowreportParams) middleware.Responder {
-	logError := logger.CreateLogErrorFunc("Getting show report for event", &operations.GetEventsIDShowreportInternalServerError{})
-
-	e, err := database.GetEvent(uint(params.ID))
-
-	if err != nil {
-		return logError(&err)
-	}
-
-	hasPermission, err := permissions.AddEvents.HasPermission(e.ShowID, params.HTTPRequest)
-
-	if err != nil {
-		return logError(&err)
-	}
-
-	if !hasPermission {
-		return &operations.GetEventsIDShowreportUnauthorized{}
-	}
-
-	sr, err := database.GetShowReportForEvent(e.ID)
-
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			sr.ID = uuid.NewV4()
-			sr.EventID = &e.ID
-		} else {
-			return logError(&err)
-		}
-	}
-
-	return &operations.GetEventsIDShowreportOK{
-		Payload: &models.ShowReportForEvent{
-			ShowReport: conv.Pointer(mapShowReportToDTO(sr)),
-			Title:      sr.GetTitle(),
-			Subtitle:   sr.GetSubtitle(),
-		},
 	}
 })

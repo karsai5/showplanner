@@ -27,6 +27,14 @@ EventDTO:
       type: string
       format: date-time
       x-nullable: true
+    showReport:
+      type: string
+      format: uuid
+      x-nullable: true
+    showTimer:
+      type: string
+      format: uuid
+      x-nullable: true
   required:
     - id
     - start

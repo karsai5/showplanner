@@ -46,6 +46,14 @@ type EventDTO struct {
 	// show Id
 	ShowID int64 `json:"showId,omitempty"`
 
+	// show report
+	// Format: uuid
+	ShowReport *strfmt.UUID `json:"showReport,omitempty"`
+
+	// show timer
+	// Format: uuid
+	ShowTimer *strfmt.UUID `json:"showTimer,omitempty"`
+
 	// start
 	// Required: true
 	// Format: date-time
@@ -65,6 +73,14 @@ func (m *EventDTO) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateID(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateShowReport(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateShowTimer(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -105,6 +121,30 @@ func (m *EventDTO) validateEnd(formats strfmt.Registry) error {
 func (m *EventDTO) validateID(formats strfmt.Registry) error {
 
 	if err := validate.Required("id", "body", m.ID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *EventDTO) validateShowReport(formats strfmt.Registry) error {
+	if swag.IsZero(m.ShowReport) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("showReport", "body", "uuid", m.ShowReport.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *EventDTO) validateShowTimer(formats strfmt.Registry) error {
+	if swag.IsZero(m.ShowTimer) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("showTimer", "body", "uuid", m.ShowTimer.String(), formats); err != nil {
 		return err
 	}
 

@@ -63,7 +63,9 @@ export const Schedule: React.FC<React.ComponentProps<typeof EventTable>> = (
               <td className="border border-slate-200 relative">
                 <Link
                   href={`${path}/event/${e.id}/showreport`}
-                  className="link"
+                  className={cc("link whitespace-nowrap", {
+                    ["text-slate-400"]: !e.showReport,
+                  })}
                 >
                   Show report
                 </Link>
@@ -159,7 +161,7 @@ const OptionalDisplayName: FC<{ person?: PersonSummaryDTO }> = ({ person }) => {
 
 const AdminButtons: FC<{ event: ScheduleEventDTO }> = ({ event }) => {
   return (
-    <div className="flex gap-2">
+    <div className="flex">
       <EditEventModal event={event} />
       <CloneEventModal event={event} />
       <DeleteEventModal event={event} />

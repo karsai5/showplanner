@@ -58,7 +58,7 @@ func NameEventsWithCurtainsUp[E models.EventWithCurtainsUp](events []E) {
 func MapEventToEventDTO(e database.Event) models.EventDTO {
 	start := strfmt.DateTime(e.Start)
 
-	me := models.EventDTO{
+	dto := models.EventDTO{
 		ID:         conv.UintToInt64(e.ID),
 		ShowID:     int64(e.ShowID),
 		Start:      &start,
@@ -70,5 +70,8 @@ func MapEventToEventDTO(e database.Event) models.EventDTO {
 		Address:    e.Address,
 	}
 
-	return me
+	if e.ShowReport != nil {
+		dto.ShowReport = conv.UUIDToStrmFmtUUID(e.ShowReport.ID)
+	}
+	return dto
 }

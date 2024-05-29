@@ -1,12 +1,49 @@
 package events_domain
 
 import (
+	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"
 )
+
+func SetupHandlers(api *operations.GoBackendAPI) {
+	api.PostEventsHandler = CreateEventsHandler
+	api.PostEventsIDHandler = UpdateEventsHandler
+	api.DeleteEventsIDHandler = DeleteEventHandler
+	api.GetEventsIDHandler = GetEventHandler
+}
+
+var GetEventHandler = operations.GetEventsIDHandlerFunc(func(params operations.GetEventsIDParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting event", &operations.GetEventsIDInternalServerError{})
+
+	existingEvent, err := database.GetEvent(uint(params.ID))
+
+	if err != nil {
+		return logError(&err)
+	}
+
+	hasPermission, err := permissions.AddEvents.HasPermission(existingEvent.ShowID, params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+
+	if !hasPermission {
+		return &operations.GetEventsIDUnauthorized{}
+	}
+
+	event, err := database.GetEvent(uint(*&params.ID))
+
+	if err != nil {
+		return logError(&err)
+	}
+	return &operations.GetEventsIDOK{
+		Payload: conv.Pointer(MapEventToEventDTO(event)),
+	}
+})
 
 var CreateEventsHandler = operations.PostEventsHandlerFunc(func(params operations.PostEventsParams) middleware.Responder {
 	hasPermission, err := permissions.AddEvents.HasPermission(uint(*params.Event.ShowID), params.HTTPRequest)
@@ -46,12 +83,10 @@ var UpdateEventsHandler = operations.PostEventsIDHandlerFunc(func(params operati
 	hasPermission, err := permissions.AddEvents.HasPermission(existingEvent.ShowID, params.HTTPRequest)
 
 	if err != nil {
-		println("error", err.Error())
 		return &operations.PostShowsInternalServerError{}
 	}
 
 	if !hasPermission {
-		println("not authorized")
 		return &operations.PostShowsInternalServerError{}
 	}
 
@@ -59,7 +94,6 @@ var UpdateEventsHandler = operations.PostEventsIDHandlerFunc(func(params operati
 	event, err = database.UpdateEvent(existingEvent.ID, event)
 
 	if err != nil {
-		println("Error creating event: " + err.Error())
 		return &operations.PostShowsInternalServerError{}
 	}
 

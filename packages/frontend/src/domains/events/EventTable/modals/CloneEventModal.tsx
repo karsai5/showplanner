@@ -1,5 +1,5 @@
+import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import cc from "classnames";
 import { getApi } from "core/api";
 import { EventDTO } from "core/api/generated";
 import { useModal } from "core/components/Modal/Modal";
@@ -54,16 +54,13 @@ export const CloneEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
         />
       </Modal>
       <button
-        className={cc("link relative", {
-          ["btn-disabled"]: mutation.isLoading,
-        })}
+        className="btn btn-ghost btn-sm"
         onClick={() => mutation.mutate()}
       >
-        <div className={cc({ ["opacity-40"]: mutation.isLoading })}>Clone</div>
-        {mutation.isLoading && (
-          <div className="absolute top-1 bottom-0 right-0 left-0">
-            <span className="loading loading-dots loading-xs"></span>
-          </div>
+        {mutation.isLoading ? (
+          <span className="loading loading-spinner"></span>
+        ) : (
+          <DocumentDuplicateIcon className="h-5 w-5" />
         )}
       </button>
     </>

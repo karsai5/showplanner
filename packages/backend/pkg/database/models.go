@@ -23,6 +23,8 @@ type Event struct {
 	Availabilities []Availability
 	Assignments    []Assignment
 	Shadows        []Shadow
+	ShowReport     *ShowReport
+	ShowTimer      *ShowTimer
 }
 
 func (e *Event) GetCurtainsUp() *strfmt.DateTime {
@@ -44,7 +46,7 @@ func (e *Event) GetCalculatedName() (string, error) {
 	if e.CurtainsUp == nil {
 		return "", nil
 	}
-	events, err := GetEvents(e.ShowID)
+	events, err := GetEventsWithCurtainsUp(e.ShowID)
 	if err != nil {
 		return "", err
 	}

@@ -84,6 +84,67 @@ paths:
           description: OK
           schema:
             $ref: './schemas/Event.yaml#/EventDTO'
+  /events/{id}:
+    get:
+      summary: Get an event
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: Id of event to get
+      produces:
+        - application/json
+      responses:
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/Event.yaml#/EventDTO'
+        500:
+          $ref: '#/responses/Error'
+    post:
+      summary: Update event
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: Id of event update
+        - in: body
+          name: event
+          description: The show to create
+          schema:
+            $ref: './schemas/Event.yaml#/CreateEventDTO'
+      produces:
+        - application/json
+      responses:
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        200:
+    delete:
+      summary: Delete an event
+      parameters:
+        - in: path
+          name: id
+          type: number
+          required: true
+          description: Id of event to delete
+      produces:
+        - application/json
+      responses:
+        500:
+          $ref: '#/responses/Error'
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        200:
   /shadow:
     post:
       summary: Assign a shadow to a role for an event
@@ -212,68 +273,6 @@ paths:
                 items:
                   $ref: './schemas/Event.yaml#/EventPublicDTO'
         500:
-          $ref: '#/responses/Error'
-  /events/{id}:
-    delete:
-      summary: Delete an event
-      parameters:
-        - in: path
-          name: id
-          type: number
-          required: true
-          description: Id of event to delete
-      produces:
-        - application/json
-      responses:
-        500:
-          $ref: '#/responses/Error'
-        401:
-          $ref: '#/responses/Error'
-        404:
-          $ref: '#/responses/Error'
-        200:
-    post:
-      summary: Update event
-      parameters:
-        - in: path
-          name: id
-          type: number
-          required: true
-          description: Id of event update
-        - in: body
-          name: event
-          description: The show to create
-          schema:
-            $ref: './schemas/Event.yaml#/CreateEventDTO'
-      produces:
-        - application/json
-      responses:
-        401:
-          $ref: '#/responses/Error'
-        404:
-          $ref: '#/responses/Error'
-        200:
-  /events/{id}/showreport:
-    get:
-      summary: Return show report and info about show report
-      parameters:
-        - in: path
-          required: true
-          name: id
-          type: integer
-          description: ID of the event
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: './schemas/ShowReport.yaml#/ShowReportForEvent'
-        401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
-        404:
           $ref: '#/responses/Error'
   /shows:
     get:

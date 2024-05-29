@@ -25,6 +25,10 @@ var (
 	SHADOWING = "shadowing"
 )
 
+func SetupHandlers(api *operations.GoBackendAPI) {
+	api.GetScheduleHandler = GetScheduleHandler
+}
+
 var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operations.GetScheduleParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting roster", &operations.GetScheduleInternalServerError{})
 	showId := uint(params.ShowID)

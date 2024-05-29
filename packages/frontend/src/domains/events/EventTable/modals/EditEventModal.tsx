@@ -1,3 +1,4 @@
+import { PencilIcon } from "@heroicons/react/24/outline";
 import { EventDTO } from "core/api/generated";
 import { useModal } from "core/components/Modal/Modal";
 import NewEventForm from "domains/events/NewEventForm/NewEventForm";
@@ -9,8 +10,8 @@ export const EditEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
   }
   return (
     <>
-      <button className="link" onClick={open}>
-        Edit
+      <button className="btn btn-ghost btn-sm" onClick={open}>
+        <PencilIcon className="h-5 w-5" />
       </button>
       <Modal isOpen={isOpen} close={close} title="Add a new show">
         <NewEventForm onSuccess={close} event={event} showId={event.showId} />

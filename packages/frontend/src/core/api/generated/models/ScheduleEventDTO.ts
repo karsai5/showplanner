@@ -88,6 +88,18 @@ export interface ScheduleEventDTO {
   end?: Date | null;
   /**
    *
+   * @type {string}
+   * @memberof ScheduleEventDTO
+   */
+  showReport?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof ScheduleEventDTO
+   */
+  showTimer?: string | null;
+  /**
+   *
    * @type {AvailabilityDTO}
    * @memberof ScheduleEventDTO
    */
@@ -140,6 +152,8 @@ export function ScheduleEventDTOFromJSONTyped(
       : json["end"] === null
       ? null
       : new Date(json["end"]),
+    showReport: !exists(json, "showReport") ? undefined : json["showReport"],
+    showTimer: !exists(json, "showTimer") ? undefined : json["showTimer"],
     availability: !exists(json, "availability")
       ? undefined
       : AvailabilityDTOFromJSON(json["availability"]),
@@ -176,6 +190,8 @@ export function ScheduleEventDTOToJSON(value?: ScheduleEventDTO | null): any {
         : value.end === null
         ? null
         : value.end.toISOString(),
+    showReport: value.showReport,
+    showTimer: value.showTimer,
     availability: AvailabilityDTOToJSON(value.availability),
     roles:
       value.roles === undefined

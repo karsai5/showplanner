@@ -1,3 +1,4 @@
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getApi } from "core/api";
 import { EventDTO } from "core/api/generated";
@@ -49,8 +50,8 @@ export const DeleteEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
           </button>
         </div>
       </Modal>
-      <button className="link relative" onClick={() => open()}>
-        Delete
+      <button className="btn btn-ghost btn-sm" onClick={() => open()}>
+        <TrashIcon className="h-5 w-5" />
       </button>
     </>
   );

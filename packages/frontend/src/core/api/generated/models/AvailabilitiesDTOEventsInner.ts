@@ -82,6 +82,18 @@ export interface AvailabilitiesDTOEventsInner {
   end?: Date | null;
   /**
    *
+   * @type {string}
+   * @memberof AvailabilitiesDTOEventsInner
+   */
+  showReport?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof AvailabilitiesDTOEventsInner
+   */
+  showTimer?: string | null;
+  /**
+   *
    * @type {Array<AvailabilityDTO>}
    * @memberof AvailabilitiesDTOEventsInner
    */
@@ -130,6 +142,8 @@ export function AvailabilitiesDTOEventsInnerFromJSONTyped(
       : json["end"] === null
       ? null
       : new Date(json["end"]),
+    showReport: !exists(json, "showReport") ? undefined : json["showReport"],
+    showTimer: !exists(json, "showTimer") ? undefined : json["showTimer"],
     availabilities: !exists(json, "availabilities")
       ? undefined
       : json["availabilities"] === null
@@ -167,6 +181,8 @@ export function AvailabilitiesDTOEventsInnerToJSON(
         : value.end === null
         ? null
         : value.end.toISOString(),
+    showReport: value.showReport,
+    showTimer: value.showTimer,
     availabilities:
       value.availabilities === undefined
         ? undefined

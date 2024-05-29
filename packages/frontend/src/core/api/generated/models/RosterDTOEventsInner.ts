@@ -93,6 +93,18 @@ export interface RosterDTOEventsInner {
    */
   end?: Date | null;
   /**
+   *
+   * @type {string}
+   * @memberof RosterDTOEventsInner
+   */
+  showReport?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof RosterDTOEventsInner
+   */
+  showTimer?: string | null;
+  /**
    * A map of availabilities to personId
    * @type {{ [key: string]: AvailabilityDTO; }}
    * @memberof RosterDTOEventsInner
@@ -152,6 +164,8 @@ export function RosterDTOEventsInnerFromJSONTyped(
       : json["end"] === null
       ? null
       : new Date(json["end"]),
+    showReport: !exists(json, "showReport") ? undefined : json["showReport"],
+    showTimer: !exists(json, "showTimer") ? undefined : json["showTimer"],
     availabilities: !exists(json, "availabilities")
       ? undefined
       : mapValues(json["availabilities"], AvailabilityDTOFromJSON),
@@ -191,6 +205,8 @@ export function RosterDTOEventsInnerToJSON(
         : value.end === null
         ? null
         : value.end.toISOString(),
+    showReport: value.showReport,
+    showTimer: value.showTimer,
     availabilities:
       value.availabilities === undefined
         ? undefined
