@@ -16,6 +16,8 @@ export type Timers = {
   orchestraEnd: Moment | null;
 };
 
+export type TimersOnChange = Partial<Record<keyof Timers, Date | null>>;
+
 export const TimerLabels = {
   actOneStart: "Act one start",
   expectedCurtainsUp: "Expected curtains up",

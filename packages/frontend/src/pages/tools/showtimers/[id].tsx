@@ -7,7 +7,7 @@ import { H2 } from "core/components/Typography";
 import { showToastError } from "core/utils/errors";
 import { getSerialisedDTO, Serialised } from "core/utils/ssr";
 import { ShowTimer } from "domains/showtimer/ShowTimer";
-import { Timers } from "domains/showtimer/ShowTimer/types";
+import { Timers, TimersOnChange } from "domains/showtimer/ShowTimer/types";
 import moment from "moment";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
@@ -19,7 +19,7 @@ export default function ShowTimerPage({
   const queryClient = useQueryClient();
 
   const initialTimers = getTimersFromSSR(ssrTimers);
-  const mutation = useMutation<unknown, Error, Timers | undefined>({
+  const mutation = useMutation<unknown, Error, TimersOnChange | undefined>({
     mutationFn: (timers) => {
       if (!timers) {
         throw new Error("Missing timers");
@@ -27,14 +27,14 @@ export default function ShowTimerPage({
       return api.showtimersIdPost({
         id,
         timer: {
-          expectedCurtainsUp: timers.expectedCurtainsUp?.toDate(),
-          showStart: timers.actOneStart?.toDate(),
-          intervalStart: timers.intervalStart?.toDate(),
-          intervalEnd: timers.intervalEnd?.toDate(),
-          showEnd: timers.actTwoEnd?.toDate(),
-          houseOpen: timers.houseOpen?.toDate(),
-          actOneFOHClearance: timers.fohClearance?.toDate(),
-          actTwoFOHClearance: timers.intervalFohClearance?.toDate(),
+          expectedCurtainsUp: timers.expectedCurtainsUp,
+          showStart: timers.actOneStart,
+          intervalStart: timers.intervalStart,
+          intervalEnd: timers.intervalEnd,
+          showEnd: timers.actTwoEnd,
+          houseOpen: timers.houseOpen,
+          actOneFOHClearance: timers.fohClearance,
+          actTwoFOHClearance: timers.intervalFohClearance,
         },
       });
     },
@@ -48,7 +48,7 @@ export default function ShowTimerPage({
     },
   });
 
-  const handleOnChange = (timers: Timers): void => {
+  const handleOnChange = (timers: TimersOnChange): void => {
     mutation.mutate(timers);
   };
 

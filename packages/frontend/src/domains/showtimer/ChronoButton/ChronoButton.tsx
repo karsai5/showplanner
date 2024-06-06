@@ -3,7 +3,11 @@ import { ClockIcon, PauseIcon, PlayIcon } from "core/components/Icons";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { useEffect, useState } from "react";
-import { CallableContextResult, useLongPress } from "use-long-press";
+import {
+  LongPressResult,
+  LongPressTouchHandlers,
+  useLongPress,
+} from "use-long-press";
 
 dayjs.extend(duration);
 
@@ -111,7 +115,7 @@ export const ChronoButton: React.FC<{ id?: string; className?: string }> = ({
 };
 
 const RunningTimer: React.FC<{
-  bind: CallableContextResult<object, unknown>;
+  bind: LongPressResult<LongPressTouchHandlers<Element>, unknown>;
   milliseconds: number;
   className?: string;
 }> = ({ bind, milliseconds, className }) => {
@@ -156,7 +160,7 @@ const RunningTimer: React.FC<{
 };
 
 const PausedTimer: React.FC<{
-  bind: CallableContextResult<object, unknown>;
+  bind: LongPressResult<LongPressTouchHandlers<Element>, unknown>;
   milliseconds: number;
   className?: string;
 }> = ({ bind, milliseconds, className }) => {

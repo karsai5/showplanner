@@ -3,6 +3,7 @@ import { ClipboardIcon, EmailIcon } from "core/components/Icons";
 import { useCopyToClipboard } from "core/hooks/useCopyToClipboard";
 import { NextButton } from "domains/showtimer/buttons/NextButton";
 import { ChronoButton } from "domains/showtimer/ChronoButton";
+import { forEach } from "lodash";
 import moment, { Moment } from "moment";
 import React, { createContext, FC, useState } from "react";
 import { toast } from "react-toastify";
@@ -12,7 +13,7 @@ import { CurrentTimeCard } from "./CurrentTimeCard";
 import { EditTimes } from "./EditTimes";
 import { Interval } from "./Interval";
 import { getShowLengths } from "./TimingDetails";
-import { calculateCurrentPhase, Phase, Timers } from "./types";
+import { calculateCurrentPhase, Phase, Timers, TimersOnChange } from "./types";
 
 export const emptyTimers: Timers = {
   expectedCurtainsUp: moment().set({
@@ -39,7 +40,7 @@ export const ConfettiContext = createContext<
 >(() => {});
 
 export const ShowTimer: FC<{
-  onChange?: (timers: Timers) => void;
+  onChange?: (timers: TimersOnChange) => void;
   initialTimers?: Partial<Timers>;
 }> = ({ onChange, initialTimers }) => {
   const [, copy] = useCopyToClipboard();
@@ -61,7 +62,13 @@ export const ShowTimer: FC<{
 
   const setTimers = (updatedTimers: Partial<Timers>) => {
     const newTimers = { ...timers, ...updatedTimers };
-    if (onChange) onChange(newTimers);
+    if (onChange) {
+      const mappedValues: TimersOnChange = {};
+      forEach(newTimers, (value, key) => {
+        mappedValues[key as keyof Timers] = value ? value.toDate() : null;
+      });
+      onChange(mappedValues);
+    }
     unsafeSetTimers(newTimers);
   };
 
