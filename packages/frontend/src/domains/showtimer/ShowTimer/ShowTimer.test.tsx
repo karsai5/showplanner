@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import "jest-canvas-mock";
 
 import { ShowTimer } from "./ShowTimer";
 
@@ -46,7 +47,7 @@ describe("Showtimer", () => {
       );
     });
 
-    it.skip("should save FOH clearance", async () => {
+    it("should save FOH clearance", async () => {
       const now = new Date("2020-01-01:19:30:00");
       jest.useFakeTimers().setSystemTime(now);
 
@@ -54,7 +55,53 @@ describe("Showtimer", () => {
       const { user } = setup({ props: { onChange } });
 
       await user.click(screen.getByText(/Start act one/i));
-      expect(onChange).toBeCalledWith(expect.objectContaining({ actOne: now }));
+      expect(onChange).toBeCalledWith(
+        expect.objectContaining({ actOneStart: now })
+      );
+
+      // Should show next screen
+      screen.getByText(/Act one/i);
+    });
+  });
+
+  describe("Act one", () => {
+    it("Should show act one started time", async () => {
+      const now = new Date("2020-01-01:19:30:00");
+      jest.useFakeTimers().setSystemTime(now);
+
+      const onChange = jest.fn();
+      const { user } = setup({ props: { onChange } });
+
+      await user.click(screen.getByText(/Start act one/i));
+      expect(screen.getByText("Started at 7:30pm")).toBeInTheDocument();
+    });
+
+    it("Should show started time", async () => {
+      const now = new Date("2020-01-01:19:30:00");
+      jest.useFakeTimers().setSystemTime(now);
+
+      const onChange = jest.fn();
+      const { user } = setup({ props: { onChange } });
+
+      await user.click(screen.getByText(/Start act one/i));
+      expect(screen.getByText("7:30pm - ongoing")).toBeInTheDocument();
+    });
+  });
+
+  describe("Interval", () => {
+    it("should be able to go to interval", async () => {
+      const now = new Date("2020-01-01:19:30:00");
+      jest.useFakeTimers().setSystemTime(now);
+
+      const onChange = jest.fn();
+      const { user } = setup({ props: { onChange } });
+
+      await user.click(screen.getByText(/Start act one/i));
+
+      await user.click(screen.getByText(/Start Interval/i));
+      expect(onChange).toBeCalledWith(
+        expect.objectContaining({ intervalStart: now })
+      );
     });
   });
 });

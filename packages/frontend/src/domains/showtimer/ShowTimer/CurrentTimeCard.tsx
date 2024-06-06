@@ -62,7 +62,7 @@ export const CurrentTimeCard: React.FC<Props> = ({ timers, phase }) => {
     <div className="mb-4">
       <BigClock phase={phase} timers={timers} />
       {timers.actOneStart && <div className="divider my-1" />}
-      {showDiff > 0 && (
+      {showDiff >= 0 && (
         <SmallTimeWithLabel
           label="Show length"
           start={timers.actOneStart}
@@ -112,7 +112,9 @@ const BigClock: React.FC<Props> = ({ phase, timers }) => {
     return (
       <BigTimeWithLabel
         label={currentPhaseTimer.label}
-        secondaryLabel={timers[currentPhaseTimer.start]?.format("h:mma")}
+        secondaryLabel={`Started at ${timers[currentPhaseTimer.start]?.format(
+          "h:mma"
+        )}`}
       >
         <TimerDisplay start={timers[currentPhaseTimer.start]} />
       </BigTimeWithLabel>
@@ -152,15 +154,17 @@ const BigTimeWithLabel: React.FC<{
 
 export const SmallTimeWithLabel: React.FC<{
   label: string;
-  secondaryLabel?: string;
-  start?: Moment | null;
+  start: Moment | null;
   end?: Moment | null;
-}> = ({ label, secondaryLabel, start, end }) => {
+}> = ({ label, start, end }) => {
   if (!start) {
     return null;
   }
   const diff = moment(end || moment()).diff(start);
   const length = moment.utc(diff);
+  const secondaryLabel = `${start?.format("h:mma")} - ${
+    end?.format("h:mma") || "ongoing"
+  }`;
   return (
     <div className="flex justify-between">
       <div>
@@ -175,7 +179,7 @@ export const SmallTimeWithLabel: React.FC<{
           ></span>
         </span>
       </div>
-      {secondaryLabel && <div className="text-slate-500">{secondaryLabel}</div>}
+      <div className="text-slate-500">{secondaryLabel}</div>
     </div>
   );
 };
