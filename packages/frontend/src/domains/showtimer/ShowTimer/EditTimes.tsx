@@ -53,7 +53,7 @@ export const EditTimes: React.FC<Props> = ({ timers, setTimers }) => {
   return (
     <>
       <button
-        className="btn btn-outline btn-block btn-sm"
+        className="btn btn-block opacity-50 hover:opacity-100"
         onClick={() => setIsOpen(true)}
       >
         <PencilIcon />
@@ -62,7 +62,7 @@ export const EditTimes: React.FC<Props> = ({ timers, setTimers }) => {
       <Dialog
         open={isOpen}
         onClose={() => setIsOpen(false)}
-        className="modal modal-open"
+        className="modal modal-open z-40"
       >
         <Dialog.Panel className="modal-box">
           <Dialog.Title className="text-2xl font-bold">Edit times</Dialog.Title>

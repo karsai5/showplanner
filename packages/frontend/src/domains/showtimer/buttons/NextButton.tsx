@@ -104,9 +104,6 @@ export const NextButton: React.FC<
             />
           </>
         )}
-        {currentPhase === Phase.postShow && (
-          <ResetButton setTimers={setTimers} className="w-full" />
-        )}
       </div>
     </>
   );

@@ -91,22 +91,24 @@ export const ShowTimer: FC<{
           <ChronoButton className="flex-1" id="two" />
           <ChronoButton className="flex-1" id="three" />
         </div>
-        <div className="flex gap-2 mb-4">
-          <button
-            onClick={sendEmailOfTimes}
-            className="btn btn-outline flex-1 flex flex-nowrap"
-          >
-            <EmailIcon className="mr-2" />
-            Share via email
-          </button>
-          <button
-            onClick={copyTimes}
-            className="btn btn-outline flex-1 flex flex-nowrap"
-          >
-            <ClipboardIcon className="mr-2" />
-            Copy to clipboard
-          </button>
-        </div>
+        {timers.actTwoEnd && (
+          <div className="flex gap-2 mb-4">
+            <button
+              onClick={sendEmailOfTimes}
+              className="btn btn-primary text-white flex-1 flex flex-nowrap"
+            >
+              <EmailIcon className="mr-2" />
+              Share via email
+            </button>
+            <button
+              onClick={copyTimes}
+              className="btn btn-primary text-white flex-1 flex flex-nowrap"
+            >
+              <ClipboardIcon className="mr-2" />
+              Copy to clipboard
+            </button>
+          </div>
+        )}
         <EditTimes timers={timers} setTimers={setTimers} />
       </div>
     </ConfettiContext.Provider>

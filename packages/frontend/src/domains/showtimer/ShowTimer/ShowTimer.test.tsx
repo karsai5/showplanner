@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import "jest-canvas-mock";
 
 import { ShowTimer } from "./ShowTimer";
+import { ConfirmationModalWrapper } from "core/components/Modal/ConfirmationModal";
 
 describe("Showtimer", () => {
   it("Should render the ShowTimer component", () => {
@@ -16,7 +17,11 @@ describe("Showtimer", () => {
     } = { props: {} }
   ) => {
     const user = userEvent.setup({ delay: null });
-    render(<ShowTimer {...options.props} />);
+    render(
+      <ConfirmationModalWrapper>
+        <ShowTimer {...options.props} />
+      </ConfirmationModalWrapper>
+    );
     return { user };
   };
 
@@ -94,5 +99,61 @@ describe("Showtimer", () => {
         expect.objectContaining({ intervalStart: now })
       );
     });
+  });
+
+  it("should save all phase times", async () => {
+    const actOneStart = new Date("2020-01-01:19:30:00");
+    const intervalStart = new Date("2020-01-01:20:00:00");
+    const actTwoStart = new Date("2020-01-01:20:20:00");
+    const showEnd = new Date("2020-01-01:22:00:00");
+    jest.useFakeTimers().setSystemTime(actOneStart);
+
+    const onChange = jest.fn();
+    const { user } = setup({ props: { onChange } });
+
+    await user.click(screen.getByText(/Start act one/i));
+    jest.setSystemTime(intervalStart);
+    await user.click(screen.getByText(/Start Interval/i));
+    jest.setSystemTime(actTwoStart);
+    await user.click(screen.getByText(/Start act two/i));
+    jest.setSystemTime(showEnd);
+    await user.click(screen.getByText(/Curtain down/i));
+
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        actOneStart: actOneStart,
+        intervalStart: intervalStart,
+        intervalEnd: actTwoStart,
+        actTwoEnd: showEnd,
+      })
+    );
+  });
+
+  it("should reset timers", async () => {
+    const now = new Date("2020-01-01:19:30:00");
+    jest.useFakeTimers().setSystemTime(now);
+
+    const onChange = jest.fn();
+    const { user } = setup({ props: { onChange } });
+
+    // get to end of show
+    await user.click(screen.getByText(/Start act one/i));
+    await user.click(screen.getByText(/Start Interval/i));
+    await user.click(screen.getByText(/Start act two/i));
+    await user.click(screen.getByText(/Curtain down/i));
+
+    // reset timers
+    await user.click(screen.getByText(/Edit times/i));
+    await user.click(screen.getByText(/Reset all timers/i));
+    await user.click(screen.getByRole("button", { name: /Yes/i }));
+
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        actOneStart: null,
+        intervalStart: null,
+        intervalEnd: null,
+        actTwoEnd: null,
+      })
+    );
   });
 });
