@@ -1,5 +1,5 @@
 import cc from "classnames";
-import { ConfettiContext } from "domains/showtimer/ShowTimer/ShowTimer";
+import { ConfettiContext } from "domains/showtimer/ShowTimer/confettiContext";
 import {
   ButtonHTMLAttributes,
   DetailedHTMLProps,

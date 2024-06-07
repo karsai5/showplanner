@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import "jest-canvas-mock";
 
-import { ShowTimer } from "./ShowTimer";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ConfirmationModalWrapper } from "core/components/Modal/ConfirmationModal";
+
+import { ShowTimer } from "./ShowTimer";
 
 describe("Showtimer", () => {
   it("Should render the ShowTimer component", () => {

@@ -1,6 +1,6 @@
 import cc from "classnames";
 import { useConfirmationModal } from "core/components/Modal/ConfirmationModal";
-import { emptyTimers } from "domains/showtimer/ShowTimer/ShowTimer";
+import { emptyTimers } from "domains/showtimer/ShowTimer/emptyTimers";
 import { Timers } from "domains/showtimer/ShowTimer/types";
 
 export const ResetButton: React.FC<{

@@ -5,37 +5,17 @@ import { NextButton } from "domains/showtimer/buttons/NextButton";
 import { ChronoButton } from "domains/showtimer/ChronoButton";
 import { forEach } from "lodash";
 import moment, { Moment } from "moment";
-import React, { createContext, FC, useState } from "react";
+import React, { FC, useState } from "react";
 import { toast } from "react-toastify";
 
 import { Beginners } from "./Beginners";
+import { ConfettiContext } from "./confettiContext";
 import { CurrentTimeCard } from "./CurrentTimeCard";
 import { EditTimes } from "./EditTimes";
+import { emptyTimers } from "./emptyTimers";
 import { Interval } from "./Interval";
 import { getShowLengths } from "./TimingDetails";
 import { calculateCurrentPhase, Phase, Timers, TimersOnChange } from "./types";
-
-export const emptyTimers: Timers = {
-  expectedCurtainsUp: moment().set({
-    hour: 19,
-    minute: 30,
-    second: 0,
-    millisecond: 0,
-  }),
-  actOneStart: null,
-  intervalStart: null,
-  intervalEnd: null,
-  actTwoEnd: null,
-
-  houseOpen: null,
-  fohClearance: null,
-
-  intervalFohClearance: null,
-};
-
-export const ConfettiContext = createContext<
-  (options: confetti.Options) => void
->(() => {});
 
 export const ShowTimer: FC<{
   onChange?: (timers: TimersOnChange) => void;
@@ -89,7 +69,6 @@ export const ShowTimer: FC<{
         <div className="flex gap-2 mb-4">
           <ChronoButton className="flex-1" id="one" />
           <ChronoButton className="flex-1" id="two" />
-          <ChronoButton className="flex-1" id="three" />
         </div>
         {timers.actTwoEnd && (
           <div className="flex gap-2 mb-4">

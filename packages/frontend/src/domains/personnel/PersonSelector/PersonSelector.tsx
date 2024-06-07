@@ -3,7 +3,7 @@ import { CheckIcon } from "@heroicons/react/20/solid";
 import cc from "classnames";
 import { PersonSummaryDTO } from "core/api/generated";
 import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
-import React, { FC, useRef } from "react";
+import React, { FC, useCallback, useMemo, useRef } from "react";
 import { useEffect, useState } from "react";
 import { Fragment } from "react";
 
@@ -28,22 +28,25 @@ export const PersonSelector: React.FC<{
   placeholder,
   nameComponent: NameComponent = PersonDisplayName,
 }) => {
-  const unassignedPerson: PersonSummaryDTO = {
-    id: "",
-    firstName: placeholder || "Unassigned",
-    lastName: "",
-  };
+  const unassignedPerson: PersonSummaryDTO = useMemo(
+    () => ({
+      id: "",
+      firstName: placeholder || "Unassigned",
+      lastName: "",
+    }),
+    [placeholder]
+  );
 
-  const getSelectedPerson = (
-    people: Array<PersonSummaryDTO>,
-    selectedPersonId: string | undefined
-  ) => {
-    if (selectedPersonId) {
-      const selectedPerson = people.find((p) => p.id === selectedPersonId);
-      return selectedPerson || unassignedPerson;
-    }
-    return unassignedPerson;
-  };
+  const getSelectedPerson = useCallback(
+    (people: Array<PersonSummaryDTO>, selectedPersonId: string | undefined) => {
+      if (selectedPersonId) {
+        const selectedPerson = people.find((p) => p.id === selectedPersonId);
+        return selectedPerson || unassignedPerson;
+      }
+      return unassignedPerson;
+    },
+    [unassignedPerson]
+  );
 
   const [selected, setSelected] = useState<PersonSummaryDTO | undefined>(
     getSelectedPerson(people, selectedPersonId)
@@ -58,7 +61,7 @@ export const PersonSelector: React.FC<{
 
   useEffect(() => {
     setSelected(getSelectedPerson(people, selectedPersonId));
-  }, [selectedPersonId, people]);
+  }, [selectedPersonId, people, getSelectedPerson]);
 
   const handleChange = (person: PersonSummaryDTO) => {
     onChange(person);

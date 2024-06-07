@@ -1,8 +1,8 @@
+import { GapRow } from "core/components/tables/tables";
 import moment, { Moment } from "moment";
 import { useEffect, useState } from "react";
 
 import { Phase, Timers } from "./types";
-import { GapRow } from "core/components/tables/tables";
 
 type Props = {
   timers: Timers;
@@ -42,7 +42,7 @@ const phaseDescriptions: Array<PhaseDescription> = [
 ];
 
 export const CurrentTimeCard: React.FC<Props> = ({ timers, phase }) => {
-  const [_, setNow] = useState(moment()); // needed to refresh component
+  const [, setNow] = useState(moment()); // Needed to refresh every second
 
   useEffect(() => {
     setNow(moment());

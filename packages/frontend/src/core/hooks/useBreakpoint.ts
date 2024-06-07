@@ -38,7 +38,7 @@ export const useBreakpoint = (size: Size) => {
     return () => {
       window.removeEventListener("resize", handleWindowResize);
     };
-  }, []);
+  }, [pixelSize]);
 
   return isSmaller;
 };
