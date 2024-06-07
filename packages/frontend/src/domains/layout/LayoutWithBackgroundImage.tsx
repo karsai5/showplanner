@@ -25,6 +25,7 @@ export const LayoutWithBackgroundImage: React.FC<{ children: ReactNode }> = ({
           objectFit="cover"
           alt=""
           placeholder="blur"
+          className="-z-20"
         />
         <div className="p-6">{children}</div>
       </div>

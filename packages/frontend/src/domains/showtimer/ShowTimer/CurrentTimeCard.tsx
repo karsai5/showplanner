@@ -64,9 +64,9 @@ export const CurrentTimeCard: React.FC<Props> = ({ timers, phase }) => {
         <table className="table">
           <thead>
             <tr>
-              <th>Phase</th>
+              <th className="pl-0">Phase</th>
               <th>Time</th>
-              <th>Duration</th>
+              <th className="pr-0">Duration</th>
             </tr>
           </thead>
           <tbody>
@@ -117,13 +117,13 @@ const DurationRow: React.FC<{
   }
   return (
     <tr key={label}>
-      <th className="whitespace-nowrap">{label}</th>
+      <th className="whitespace-nowrap pl-0">{label}</th>
       <td>
         <span className="whitespace-nowrap">
           <TimeRange start={start} end={end} />
         </span>
       </td>
-      <td>
+      <td className="pr-0">
         <Duration start={start} end={end} />
       </td>
     </tr>
@@ -139,7 +139,7 @@ const SingleTimeRow: React.FC<{ label: string; time: Moment | null }> = ({
   }
   return (
     <tr key={label}>
-      <td className="whitespace-nowrap">{label}</td>
+      <td className="whitespace-nowrap pl-0">{label}</td>
       <td colSpan={2}>{time.format("h:mma")}</td>
     </tr>
   );
