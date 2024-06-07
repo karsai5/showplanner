@@ -47,7 +47,7 @@ describe("Showtimer", () => {
       );
     });
 
-    it("should save FOH clearance", async () => {
+    it("should save act one start", async () => {
       const now = new Date("2020-01-01:19:30:00");
       jest.useFakeTimers().setSystemTime(now);
 
@@ -58,24 +58,10 @@ describe("Showtimer", () => {
       expect(onChange).toBeCalledWith(
         expect.objectContaining({ actOneStart: now })
       );
-
-      // Should show next screen
-      screen.getByText(/Act one/i);
     });
   });
 
   describe("Act one", () => {
-    it("Should show act one started time", async () => {
-      const now = new Date("2020-01-01:19:30:00");
-      jest.useFakeTimers().setSystemTime(now);
-
-      const onChange = jest.fn();
-      const { user } = setup({ props: { onChange } });
-
-      await user.click(screen.getByText(/Start act one/i));
-      expect(screen.getByText("Started at 7:30pm")).toBeInTheDocument();
-    });
-
     it("Should show started time", async () => {
       const now = new Date("2020-01-01:19:30:00");
       jest.useFakeTimers().setSystemTime(now);
@@ -84,7 +70,12 @@ describe("Showtimer", () => {
       const { user } = setup({ props: { onChange } });
 
       await user.click(screen.getByText(/Start act one/i));
-      expect(screen.getByText("7:30pm - ongoing")).toBeInTheDocument();
+      expect(
+        screen.getByRole("row", { name: /Show length 7:30pm - ongoing/i })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("row", { name: /Act one 7:30pm - ongoing/i })
+      ).toBeInTheDocument();
     });
   });
 

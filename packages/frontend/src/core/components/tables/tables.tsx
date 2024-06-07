@@ -32,8 +32,14 @@ export const Td: React.FC<{
   );
 };
 
-export const GapRow = ({ length }: { length: number }) => (
+export const GapRow = ({
+  length,
+  className,
+}: {
+  length: number;
+  className?: string;
+}) => (
   <tr>
-    <td colSpan={length}></td>
+    <td colSpan={length} className={className}></td>
   </tr>
 );

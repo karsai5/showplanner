@@ -12,8 +12,6 @@ export type Timers = {
   fohClearance: Moment | null;
 
   intervalFohClearance: Moment | null;
-  bowsStart: Moment | null;
-  orchestraEnd: Moment | null;
 };
 
 export type TimersOnChange = Partial<Record<keyof Timers, Date | null>>;
@@ -29,8 +27,6 @@ export const TimerLabels = {
   fohClearance: "FOH clearance",
 
   intervalFohClearance: "Interval FOH clearance",
-  bowsStart: "Bows start",
-  orchestraEnd: "Orchestra end",
 };
 
 export enum Phase {

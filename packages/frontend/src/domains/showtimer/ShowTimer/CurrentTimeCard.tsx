@@ -2,6 +2,7 @@ import moment, { Moment } from "moment";
 import { useEffect, useState } from "react";
 
 import { Phase, Timers } from "./types";
+import { GapRow } from "core/components/tables/tables";
 
 type Props = {
   timers: Timers;
@@ -15,29 +16,33 @@ type PhaseDescription = {
   end: keyof Timers;
 };
 
+const phaseActOne: PhaseDescription = {
+  phase: Phase.actOne,
+  label: "Act one",
+  start: "actOneStart",
+  end: "intervalStart",
+};
+const phaseInterval: PhaseDescription = {
+  phase: Phase.interval,
+  label: "Interval",
+  start: "intervalStart",
+  end: "intervalEnd",
+};
+const phaseActTwo: PhaseDescription = {
+  phase: Phase.actTwo,
+  label: "Act two",
+  start: "intervalEnd",
+  end: "actTwoEnd",
+};
+
 const phaseDescriptions: Array<PhaseDescription> = [
-  {
-    phase: Phase.actOne,
-    label: "Act one",
-    start: "actOneStart",
-    end: "intervalStart",
-  },
-  {
-    phase: Phase.interval,
-    label: "Interval",
-    start: "intervalStart",
-    end: "intervalEnd",
-  },
-  {
-    phase: Phase.actTwo,
-    label: "Act two",
-    start: "intervalEnd",
-    end: "actTwoEnd",
-  },
+  phaseActOne,
+  phaseInterval,
+  phaseActTwo,
 ];
 
 export const CurrentTimeCard: React.FC<Props> = ({ timers, phase }) => {
-  const [now, setNow] = useState(moment());
+  const [_, setNow] = useState(moment()); // needed to refresh component
 
   useEffect(() => {
     setNow(moment());
@@ -52,33 +57,106 @@ export const CurrentTimeCard: React.FC<Props> = ({ timers, phase }) => {
     };
   }, []);
 
-  const showDiff = moment(timers.actTwoEnd || now).diff(timers.actOneStart);
-
-  const finishedPhases = phaseDescriptions.filter(
-    (pd) => timers[pd.start] && timers[pd.end]
-  );
-
   return (
     <div className="mb-4">
       <BigClock phase={phase} timers={timers} />
-      {timers.actOneStart && <div className="divider my-1" />}
-      {showDiff >= 0 && (
-        <SmallTimeWithLabel
-          label="Show length"
-          start={timers.actOneStart}
-          end={timers.actTwoEnd}
-        />
+      {timers.actOneStart && (
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Phase</th>
+              <th>Time</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <DurationRow
+              label={"Show length"}
+              start={timers["actOneStart"]}
+              end={timers["actTwoEnd"]}
+            />
+            <GapRow length={3} className="p-1" />
+            <SingleTimeRow label={"House open"} time={timers["houseOpen"]} />
+            <SingleTimeRow
+              label={"FOH clearance"}
+              time={timers["fohClearance"]}
+            />
+            <DurationRow
+              label={"Act one"}
+              start={timers["actOneStart"]}
+              end={timers["intervalStart"]}
+            />
+            <DurationRow
+              label={"Interval"}
+              start={timers["intervalStart"]}
+              end={timers["intervalEnd"]}
+            />
+            <SingleTimeRow
+              label={"FOH clearance"}
+              time={timers["intervalFohClearance"]}
+            />
+            <DurationRow
+              label={"Act two"}
+              start={timers["intervalEnd"]}
+              end={timers["actTwoEnd"]}
+            />
+          </tbody>
+        </table>
       )}
-      {finishedPhases.length > 0 && <div className="divider my-1" />}
-      {finishedPhases.map((pd) => (
-        <SmallTimeWithLabel
-          key={pd.label}
-          start={timers[pd.start]}
-          end={timers[pd.end]}
-          label={pd.label}
-        />
-      ))}
     </div>
+  );
+};
+
+const DurationRow: React.FC<{
+  label: string;
+  start: Moment | null;
+  end?: Moment | null;
+}> = ({ label, start, end }) => {
+  if (!start) {
+    return null;
+  }
+  return (
+    <tr key={label}>
+      <th className="whitespace-nowrap">{label}</th>
+      <td>
+        <span className="whitespace-nowrap">
+          <TimeRange start={start} end={end} />
+        </span>
+      </td>
+      <td>
+        <Duration start={start} end={end} />
+      </td>
+    </tr>
+  );
+};
+
+const SingleTimeRow: React.FC<{ label: string; time: Moment | null }> = ({
+  label,
+  time,
+}) => {
+  if (!time) {
+    return null;
+  }
+  return (
+    <tr key={label}>
+      <td className="whitespace-nowrap">{label}</td>
+      <td colSpan={2}>{time.format("h:mma")}</td>
+    </tr>
+  );
+};
+
+const TimeRange: React.FC<{ start: Moment | null; end?: Moment | null }> = ({
+  start,
+  end,
+}) => {
+  if (!start) {
+    return null;
+  }
+  return (
+    <>
+      {" "}
+      {start.format("h:mma")} - {end ? end.format("h:mma") : "ongoing"}{" "}
+    </>
   );
 };
 
@@ -110,12 +188,7 @@ const BigClock: React.FC<Props> = ({ phase, timers }) => {
   const currentPhaseTimer = phaseDescriptions.find((pd) => pd.phase === phase);
   if (currentPhaseTimer) {
     return (
-      <BigTimeWithLabel
-        label={currentPhaseTimer.label}
-        secondaryLabel={`Started at ${timers[currentPhaseTimer.start]?.format(
-          "h:mma"
-        )}`}
-      >
+      <BigTimeWithLabel label={currentPhaseTimer.label}>
         <TimerDisplay start={timers[currentPhaseTimer.start]} />
       </BigTimeWithLabel>
     );
@@ -152,34 +225,21 @@ const BigTimeWithLabel: React.FC<{
   );
 };
 
-export const SmallTimeWithLabel: React.FC<{
-  label: string;
+const Duration: React.FC<{
   start: Moment | null;
-  end?: Moment | null;
-}> = ({ label, start, end }) => {
-  if (!start) {
-    return null;
-  }
+  end: Moment | null | undefined;
+}> = ({ start, end }) => {
   const diff = moment(end || moment()).diff(start);
   const length = moment.utc(diff);
-  const secondaryLabel = `${start?.format("h:mma")} - ${
-    end?.format("h:mma") || "ongoing"
-  }`;
   return (
-    <div className="flex justify-between">
-      <div>
-        <div className="font-bold">{label}</div>
-        <span className="countdown">
-          <span
-            style={{ "--value": length.format("HH") } as React.CSSProperties}
-          ></span>
-          :
-          <span
-            style={{ "--value": length.format("mm") } as React.CSSProperties}
-          ></span>
-        </span>
-      </div>
-      <div className="text-slate-500">{secondaryLabel}</div>
-    </div>
+    <span className="countdown">
+      <span
+        style={{ "--value": length.format("HH") } as React.CSSProperties}
+      ></span>
+      :
+      <span
+        style={{ "--value": length.format("mm") } as React.CSSProperties}
+      ></span>
+    </span>
   );
 };

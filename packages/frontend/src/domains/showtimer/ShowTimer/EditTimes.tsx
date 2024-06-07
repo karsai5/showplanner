@@ -103,16 +103,6 @@ export const EditTimes: React.FC<Props> = ({ timers, setTimers }) => {
             setTimers={setTimers}
             timerKey="intervalFohClearance"
           />
-          <ButtonRow
-            timers={timers}
-            setTimers={setTimers}
-            timerKey="bowsStart"
-          />
-          <ButtonRow
-            timers={timers}
-            setTimers={setTimers}
-            timerKey="orchestraEnd"
-          />
           <div className="flex justify-end gap-2 mt-4">
             <ResetButton setTimers={setTimers} />
             <button className="btn" onClick={() => setIsOpen(false)}>

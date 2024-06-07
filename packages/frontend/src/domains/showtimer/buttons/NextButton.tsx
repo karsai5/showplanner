@@ -96,10 +96,6 @@ export const NextButton: React.FC<
         )}
         {currentPhase === Phase.actTwo && (
           <>
-            <div className="flex gap-2 w-full mb-2">
-              <TimeButton timerKey="bowsStart" />
-              <TimeButton timerKey="orchestraEnd" />
-            </div>
             <HoldButton
               label="Curtain down"
               helperText="Hold down button to end show"

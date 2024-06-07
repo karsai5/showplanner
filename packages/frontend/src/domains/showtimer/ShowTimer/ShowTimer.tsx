@@ -31,8 +31,6 @@ export const emptyTimers: Timers = {
   fohClearance: null,
 
   intervalFohClearance: null,
-  bowsStart: null,
-  orchestraEnd: null,
 };
 
 export const ConfettiContext = createContext<
@@ -74,7 +72,7 @@ export const ShowTimer: FC<{
 
   return (
     <ConfettiContext.Provider value={(options) => confetti(options)}>
-      <div className="w-full sm:w-80">
+      <div className="w-full sm:w-96">
         <div className="card card-compact w-full bg-base-100 shadow-md mb-4 p-4">
           <CurrentTimeCard timers={timers} phase={phase} />
           <NextButton
