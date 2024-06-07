@@ -74,14 +74,14 @@ export const ShowTimer: FC<{
           <div className="flex gap-2 mb-4">
             <button
               onClick={sendEmailOfTimes}
-              className="btn btn-primary text-white flex-1 flex flex-nowrap"
+              className="btn btn-primary flex-1 flex flex-nowrap"
             >
               <EmailIcon className="mr-2" />
               Share via email
             </button>
             <button
               onClick={copyTimes}
-              className="btn btn-primary text-white flex-1 flex flex-nowrap"
+              className="btn btn-primary flex-1 flex flex-nowrap"
             >
               <ClipboardIcon className="mr-2" />
               Copy to clipboard

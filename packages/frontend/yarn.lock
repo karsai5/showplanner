@@ -5463,7 +5463,6 @@ __metadata:
     supertokens-web-js: "npm:^0.8.0"
     tailwindcss: "npm:3.4.1"
     typescript: "npm:^5.3.0"
-    use-long-press: "npm:^3.2.0"
     usehooks-ts: "npm:^2.9.1"
     uuid: "npm:^9.0.0"
   languageName: unknown
@@ -22444,15 +22443,6 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 8a0867ffd441f358c66d79567970a745cc78ac2f98840a81c1fa749a525e8716116c645497d886a815e1dcf40ad81a107ebd6a7d15fd9ab5925c44a994a1d89a
-  languageName: node
-  linkType: hard
-
-"use-long-press@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "use-long-press@npm:3.2.0"
-  peerDependencies:
-    react: ">=16.8.0"
-  checksum: 70f0fdbc5aab907258b6af83084fb2e4a35a3851e3c20d238b1d7bacb51ffc189b50f3ef22a7d31aa96b75fb631fbc5edfd163caa3efeaf4518cf4f8e66f4cc4
   languageName: node
   linkType: hard
 

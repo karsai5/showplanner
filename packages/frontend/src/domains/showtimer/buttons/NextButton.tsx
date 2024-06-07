@@ -2,8 +2,6 @@ import cc from "classnames";
 import { HoldButton } from "domains/showtimer/HoldButton/HoldButton";
 import { Phase, TimerLabels, Timers } from "domains/showtimer/ShowTimer/types";
 import moment from "moment";
-import { useState } from "react";
-import { useLongPress } from "use-long-press";
 
 export const NextButton: React.FC<
   React.PropsWithChildren<{
@@ -20,35 +18,15 @@ export const NextButton: React.FC<
   const TimeButton: React.FC<
     React.PropsWithChildren<{ timerKey: keyof Timers; className?: string }>
   > = ({ timerKey, className }) => {
-    const [holding, setHolding] = useState(false);
     const value = timers[timerKey];
-
-    const bind = useLongPress(
-      value
-        ? () => {
-            callback(timerKey)();
-            setHolding(false);
-          }
-        : null,
-      {
-        onCancel: () => setHolding(false),
-        onStart: () => setHolding(true),
-        threshold: 1500,
-      }
-    );
 
     return (
       <button
-        {...bind()}
-        onClick={value ? () => {} : callback(timerKey)}
+        onClick={callback(timerKey)}
         className={cc("btn flex flex-col flex-1", className)}
       >
         {TimerLabels[timerKey]}
-        {value && (
-          <span className="text-xs">
-            {holding ? "Hold" : value.format("hh:mma")}
-          </span>
-        )}
+        {value && <span className="text-xs">{value.format("hh:mma")}</span>}
       </button>
     );
   };

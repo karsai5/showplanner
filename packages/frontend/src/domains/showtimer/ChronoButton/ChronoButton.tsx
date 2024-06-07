@@ -1,13 +1,10 @@
+import { TrashIcon } from "@heroicons/react/24/outline";
 import cc from "classnames";
 import { ClockIcon, PauseIcon, PlayIcon } from "core/components/Icons";
+import { useConfirmationModal } from "core/components/Modal/ConfirmationModal";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { useEffect, useState } from "react";
-import {
-  LongPressResult,
-  LongPressTouchHandlers,
-  useLongPress,
-} from "use-long-press";
 
 dayjs.extend(duration);
 
@@ -34,6 +31,7 @@ export const ChronoButton: React.FC<{ id?: string; className?: string }> = ({
   id: key,
   className,
 }) => {
+  const confirmationModal = useConfirmationModal();
   const [milliseconds, setMilliseconds] = useState(0);
 
   useEffect(() => {
@@ -66,75 +64,54 @@ export const ChronoButton: React.FC<{ id?: string; className?: string }> = ({
   };
 
   const resetTimer = () => {
-    pauseTimer();
-    setMilliseconds(0);
-    if (key) {
-      window.localStorage.removeItem(localStorageKey(key) as string);
-    }
+    confirmationModal(
+      "Reset timer",
+      "Are you sure you want to reset this timer?",
+      () => {
+        pauseTimer();
+        setMilliseconds(0);
+        if (key) {
+          window.localStorage.removeItem(localStorageKey(key) as string);
+        }
+      }
+    );
   };
-
-  const handleClickOnRuningTimer = () => {
-    if (interval) {
-      pauseTimer();
-    } else {
-      startTimer();
-    }
-  };
-
-  const bind = useLongPress(
-    () => {
-      resetTimer();
-    },
-    {
-      onCancel: () => {
-        handleClickOnRuningTimer();
-      },
-      threshold: 1500,
-    }
-  );
 
   if (milliseconds > 0 || interval) {
-    if (interval) {
-      return (
-        <RunningTimer
-          bind={bind}
-          milliseconds={milliseconds}
-          className={className}
-        />
-      );
-    }
     return (
-      <PausedTimer
-        bind={bind}
-        milliseconds={milliseconds}
-        className={className}
-      />
+      <div className="flex gap-1 w-full">
+        {interval ? (
+          <RunningTimer
+            onClick={() => pauseTimer()}
+            milliseconds={milliseconds}
+            className={className}
+          />
+        ) : (
+          <PausedTimer
+            onClick={() => startTimer()}
+            milliseconds={milliseconds}
+            className={className}
+          />
+        )}
+        <button className="btn btn-secondary" onClick={resetTimer}>
+          <TrashIcon className="h-5 w-5" />
+        </button>
+      </div>
     );
   }
   return <DormantTimer onClick={startTimer} className={className} />;
 };
 
 const RunningTimer: React.FC<{
-  bind: LongPressResult<LongPressTouchHandlers<Element>, unknown>;
+  onClick: () => void;
   milliseconds: number;
   className?: string;
-}> = ({ bind, milliseconds, className }) => {
-  const [showTooltip, setShowTooltip] = useState(true);
-  useEffect(() => {
-    setTimeout(() => setShowTooltip(false), 3000);
-  });
+}> = ({ onClick, milliseconds, className }) => {
   return (
-    <div
-      className={cc(
-        { ["tooltip-open"]: showTooltip },
-        "tooltip tooltip-bottom",
-        className
-      )}
-      data-tip="Tap to pause, hold to reset"
-    >
+    <div className={className}>
       <button
         className="btn btn-block flex flex-nowrap btn-primary"
-        {...bind()}
+        onClick={onClick}
       >
         <PlayIcon className="mr-1" />
         <span className="countdown">
@@ -160,26 +137,15 @@ const RunningTimer: React.FC<{
 };
 
 const PausedTimer: React.FC<{
-  bind: LongPressResult<LongPressTouchHandlers<Element>, unknown>;
+  onClick: () => void;
   milliseconds: number;
   className?: string;
-}> = ({ bind, milliseconds, className }) => {
-  const [showTooltip, setShowTooltip] = useState(true);
-  useEffect(() => {
-    setTimeout(() => setShowTooltip(false), 3000);
-  });
+}> = ({ onClick, milliseconds, className }) => {
   return (
-    <div
-      className={cc(
-        { ["tooltip-open"]: showTooltip },
-        "tooltip tooltip-bottom",
-        className
-      )}
-      data-tip="Tap to continue, hold to reset"
-    >
+    <div className={className} data-tip="Tap to continue, hold to reset">
       <button
         className="btn btn-block flex flex-nowrap btn-secondary"
-        {...bind()}
+        onClick={onClick}
       >
         <PauseIcon className="mr-1" />
         <span className="countdown">
