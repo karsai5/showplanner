@@ -11,25 +11,33 @@ import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
 import Head from "next/head";
 import Link from "next/link";
-import { FC, ReactElement, useState } from "react";
+import { FC, ReactElement, useEffect, useState } from "react";
 
 const ShowPage = () => {
   const api = getApi();
   const show = useShowSummary();
+  const [showAllEvents, setShowAllEvents] = useState(false);
   const {
     data: events,
     isLoading,
     isError,
-  } = useQuery(["EventsList", show.id], () =>
-    api.scheduleGet({ showId: show.id })
-  );
-  const [showOldEvents, setShowOldEvents] = useState(false);
+    isSuccess,
+  } = useQuery({
+    queryKey: ["EventsList", show.id],
+    queryFn: () => api.scheduleGet({ showId: show.id }),
+  });
   const startOfToday = dayjs().startOf("day");
-  const filteredEvents =
-    events?.filter((e) => {
-      if (showOldEvents) return true;
-      return dayjs(e.start).isAfter(startOfToday);
-    }) || [];
+  const allEvents = events || [];
+  const futureEvents = allEvents.filter((e) =>
+    dayjs(e.start).isAfter(startOfToday)
+  );
+
+  useEffect(() => {
+    if (isSuccess && futureEvents.length === 0) {
+      setShowAllEvents(true);
+    }
+  }, [futureEvents.length, isSuccess]);
+
   return (
     <>
       <Head>
@@ -46,15 +54,22 @@ const ShowPage = () => {
           </Link>
           <button
             className="btn"
-            onClick={() => setShowOldEvents(!showOldEvents)}
+            onClick={() => setShowAllEvents(!showAllEvents)}
           >
-            {showOldEvents ? "Hide" : "Show"} past events
+            {showAllEvents ? "Hide" : "Show"} past events
           </button>
         </div>
       </div>
       {isError && <ErrorBox>Could not get shows</ErrorBox>}
       {isLoading && <progress className="progress w-56"></progress>}
-      {events && <Schedule events={filteredEvents} />}
+      {events && (
+        <>
+          {futureEvents.length === 0 && allEvents.length > 0 && (
+            <ErrorBox info>Show is over. All events are in the past</ErrorBox>
+          )}
+          <Schedule events={showAllEvents ? allEvents : futureEvents} />
+        </>
+      )}
     </>
   );
 };
