@@ -28,6 +28,11 @@ func mapEventToEventPublicDTO(e database.Event) models.EventPublicDTO {
 		End:        conv.TimeToDateTime(e.End),
 		NameRaw:    e.Name,
 		Name:       e.Name,
+		Options:    &models.EventOptionsDTO{},
+	}
+
+	if e.Options.Divider {
+		me.Options.Divider = conv.Pointer(e.Options.Divider)
 	}
 
 	return me

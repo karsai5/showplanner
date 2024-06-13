@@ -4,7 +4,11 @@ import groupBy from "lodash/groupBy";
 import orderBy from "lodash/orderBy";
 import uniqBy from "lodash/uniqBy";
 
-export const processEvents = <T>(
+export type EventWithStart = {
+  start: Date;
+};
+
+export const processEvents = <T extends EventWithStart>(
   unprocessedEvents?: Array<{ start: Date }>,
   hidePastEvents?: boolean
 ) => {

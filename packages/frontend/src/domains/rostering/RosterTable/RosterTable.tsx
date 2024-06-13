@@ -12,24 +12,20 @@ import {
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { useConfirmationModal } from "core/components/Modal/ConfirmationModal";
 import { useModal } from "core/components/Modal/Modal";
-import { GapRow, Td } from "core/components/tables/tables";
+import { Td } from "core/components/tables/tables";
 import { TimeRangeWithCurtainsUpCell } from "core/components/tables/TimeRangeWithCurtainsUp";
-import {
-  HasPermission,
-  PERMISSION,
-  showPermission,
-  useHasPermission,
-} from "core/permissions";
+import { PERMISSION, showPermission, useHasPermission } from "core/permissions";
 import { showToastError } from "core/utils/errors";
+import {
+  EventRendererType,
+  EventTable,
+} from "domains/events/EventTable/EventTable";
 import { displayDate } from "domains/events/lib/displayDate";
-import { processEvents } from "domains/events/lib/processEvents";
 import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
 import { PersonSelectorModal } from "domains/personnel/PersonSelector/PersonSelectorModal";
-import { AddRoleModal } from "domains/rostering/AddRoleModal/AddRoleModal";
 import { getBgColorForRoster } from "domains/rostering/helpers";
 import { RenameRole } from "domains/rostering/RolesTable";
-import sortBy from "lodash/sortBy";
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 
 import { AssignmentCell, AssignmentDisplay } from "./AssignmentCell";
 
@@ -47,101 +43,76 @@ export const RosterTable: React.FC<{
   if (rosterRequest.isLoading) {
     return <progress className="progress w-56"></progress>;
   }
-  if (rosterRequest.data) {
-    const roster = rosterRequest.data;
-    const { dates, groupedEvents } = processEvents<RosterDTOEventsInner>(
-      roster.events,
-      !showPastEvents
+  if (
+    rosterRequest.data &&
+    rosterRequest.data.events &&
+    rosterRequest.data.roles
+  ) {
+    const filteredEvents = rosterRequest.data.events.filter(
+      (e) => showPastEvents || e.start > new Date()
     );
     return (
-      <table className="table table-sm">
-        <thead>
-          <tr>
-            <th></th>
-            <th></th>
-            {roster.roles?.map((r) => (
-              <RoleNameHeader
-                key={r.id}
-                role={r}
-                showId={showId}
-                roles={roster.roles as Array<RoleDTO>}
-              />
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {dates.map((date, datei) => {
-            const thisGroupEvents = sortBy(
-              groupedEvents[date.date.toString()],
-              "start",
-              "curtainsUp"
-            );
-            return (
-              <Fragment key={date.date.toString()}>
-                {thisGroupEvents.map((e, i) => {
-                  return (
-                    <tr
-                      key={e.id}
-                      className="last:border-b first:border-t border-slate-200"
-                    >
-                      {i === 0 && (
-                        <Td
-                          className="whitespace-nowrap w-20"
-                          rowSpan={thisGroupEvents.length}
-                        >
-                          {displayDate(e.start)}
-                        </Td>
-                      )}
-                      <TimeRangeWithCurtainsUpCell event={e} />
-                      {roster.roles?.map((r) => {
-                        if (r.id === undefined || e.assignments === undefined) {
-                          throw new Error();
-                        }
-                        const a = e.assignments[r.id];
-                        return (
-                          <Cell
-                            key={r.id}
-                            assignment={a}
-                            showId={showId}
-                            event={e}
-                            role={r}
-                          />
-                        );
-                      })}
-                      <HasPermission
-                        showId={showId}
-                        permission={PERMISSION.rostering}
-                      >
-                        {i === 0 && datei === 0 && (
-                          <Td
-                            className="whitespace-nowrap"
-                            rowSpan={
-                              (roster.events?.length || 0) +
-                              Object.keys(groupedEvents).length
-                            }
-                          >
-                            <div className="flex justify-center">
-                              <AddRoleModal
-                                showId={showId}
-                                className="btn-outline text-slate-500"
-                              />
-                            </div>
-                          </Td>
-                        )}
-                      </HasPermission>
-                    </tr>
-                  );
-                })}
-                {date.gapAfter && <GapRow length={4} />}
-              </Fragment>
-            );
-          })}
-        </tbody>
-      </table>
+      <EventTable
+        events={showPastEvents ? rosterRequest.data.events : filteredEvents}
+        headers={<Headers roles={rosterRequest.data.roles} showId={showId} />}
+        eventRenderer={eventRenderer(rosterRequest.data.roles)}
+      />
     );
   }
   return null;
 };
+
+const Headers: React.FC<{ roles: Array<RoleDTO>; showId: number }> = ({
+  roles,
+  showId,
+}) => {
+  return (
+    <>
+      <th></th>
+      <th></th>
+      {roles?.map((r) => (
+        <RoleNameHeader
+          key={r.id}
+          role={r}
+          showId={showId}
+          roles={roles as Array<RoleDTO>}
+        />
+      ))}
+    </>
+  );
+};
+
+const eventRenderer: (
+  roles: RoleDTO[]
+) => EventRendererType<RosterDTOEventsInner> =
+  (roles) =>
+  ({ event: e, groupLength }) => {
+    return (
+      <>
+        {groupLength && (
+          <Td className="whitespace-nowrap" rowSpan={groupLength}>
+            {displayDate(e.start)}
+          </Td>
+        )}
+        <TimeRangeWithCurtainsUpCell event={e} />
+        {roles?.map((r) => {
+          if (r.id === undefined || e.assignments === undefined) {
+            throw new Error();
+          }
+          const a = e.assignments[r.id];
+          return (
+            <Cell
+              key={r.id}
+              assignment={a}
+              showId={e.showId as number}
+              event={e}
+              role={r}
+            />
+          );
+        })}
+      </>
+    );
+  };
 
 const Cell: React.FC<React.ComponentProps<typeof AssignmentCell>> = (props) => {
   const { assignment, event, role } = props;

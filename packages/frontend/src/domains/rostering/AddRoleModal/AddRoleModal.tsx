@@ -54,7 +54,7 @@ export const AddRoleModal: React.FC<{
 
   return (
     <>
-      <button className={cc(className, "btn btn-sm")} onClick={() => open()}>
+      <button className={cc(className, "btn")} onClick={() => open()}>
         Add Role
       </button>
       {isOpen && (

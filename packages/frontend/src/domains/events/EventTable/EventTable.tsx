@@ -4,32 +4,36 @@ import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import { processEvents } from "domains/events/lib/processEvents";
 import sortBy from "lodash/sortBy";
-import { FC, Fragment, useEffect, useRef, useState } from "react";
+import { FC, Fragment, ReactNode, useEffect, useRef, useState } from "react";
 
 dayjs.extend(advancedFormat);
 
-export type EventRendererType = FC<{
-  event: ScheduleEventDTO;
+export type EventRendererType<T> = FC<{
+  event: T;
   groupLength?: number;
 }>;
 
-export type DividerRendererType = FC<{
-  event: ScheduleEventDTO;
+export type DividerRendererType<T> = FC<{
+  event: T;
   groupLength?: number;
 }>;
 
-export const NewEventTable: React.FC<{
-  events: Array<ScheduleEventDTO>;
-  headers: Array<string>;
-  eventRenderer: EventRendererType;
-  dividerRenderer?: DividerRendererType;
-}> = ({
+type NewEventTableProps<T> = {
+  events: Array<T>;
+  headers: ReactNode;
+  eventRenderer: EventRendererType<T>;
+  dividerRenderer?: DividerRendererType<T>;
+};
+
+type MinimalEvent = Pick<ScheduleEventDTO, "id" | "name" | "start" | "options">;
+
+export function EventTable<T extends MinimalEvent>({
   events,
   headers,
   eventRenderer: EventRenderer,
   dividerRenderer: DividerRenderer,
-}) => {
-  const { dates, groupedEvents } = processEvents<ScheduleEventDTO>(events);
+}: NewEventTableProps<T>) {
+  const { dates, groupedEvents } = processEvents<T>(events);
   const [numberOfColumns, setNumberOfColumns] = useState(0);
   const headerRowRef = useRef<HTMLTableRowElement>(null);
 
@@ -43,11 +47,7 @@ export const NewEventTable: React.FC<{
     <div className="w-full">
       <table className="table w-full table-sm">
         <thead>
-          <tr ref={headerRowRef}>
-            {headers.map((header, i) => (
-              <th key={i}>{header}</th>
-            ))}
-          </tr>
+          <tr ref={headerRowRef}>{headers}</tr>
         </thead>
         <tbody>
           {dates.map((date) => {
@@ -63,7 +63,7 @@ export const NewEventTable: React.FC<{
                     return (
                       <GapRow length={numberOfColumns} key={i}>
                         <div className="flex gap-3 items-center -ml-3 -mr-3">
-                          <div className="h-2 bg-slate-400 flex-1"></div>
+                          <div className="h-2 bg-slate-300 flex-1"></div>
                           <div className="text-center">
                             <strong>
                               {DividerRenderer ? (
@@ -73,7 +73,7 @@ export const NewEventTable: React.FC<{
                               )}
                             </strong>
                           </div>
-                          <div className="h-2 bg-slate-400 flex-1"></div>
+                          <div className="h-2 bg-slate-300 flex-1"></div>
                         </div>
                       </GapRow>
                     );
@@ -103,4 +103,4 @@ export const NewEventTable: React.FC<{
       </table>
     </div>
   );
-};
+}

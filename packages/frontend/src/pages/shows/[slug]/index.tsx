@@ -24,14 +24,14 @@ import { showToastError } from "core/utils/errors";
 import dayjs from "dayjs";
 import { EventDividerForm } from "domains/events/EventDividerForm/EventDividerForm";
 import { AvailabilityDropdown } from "domains/events/EventTable/components/AvailabilityDropdown";
-import { CloneEventModal } from "domains/events/EventTable/modals/CloneEventModal";
-import { DeleteEventModal } from "domains/events/EventTable/modals/DeleteEventModal";
-import { EditEventModal } from "domains/events/EventTable/modals/EditEventModal";
 import {
   DividerRendererType,
   EventRendererType,
-  NewEventTable,
-} from "domains/events/EventTable/NewEventTable";
+  EventTable,
+} from "domains/events/EventTable/EventTable";
+import { CloneEventModal } from "domains/events/EventTable/modals/CloneEventModal";
+import { DeleteEventModal } from "domains/events/EventTable/modals/DeleteEventModal";
+import { EditEventModal } from "domains/events/EventTable/modals/EditEventModal";
 import { displayDate } from "domains/events/lib/displayDate";
 import NewEventForm from "domains/events/NewEventForm/NewEventForm";
 import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
@@ -117,19 +117,9 @@ export default function ShowPage() {
 export const Schedule: React.FC<{ events: Array<ScheduleEventDTO> }> = ({
   events,
 }) => {
-  const show = useShowSummary();
-  const canEditEvents = useHasPermission()(
-    showPermission(show.id, PERMISSION.addEvents)
-  );
-
-  const headers = ["Date", "Event", "Availability", "Role", "Location", "Note"];
-  if (canEditEvents) {
-    headers.push("Actions", "Edit");
-  }
-
   return (
-    <NewEventTable
-      headers={headers}
+    <EventTable
+      headers={<Headers />}
       eventRenderer={EventRenderer}
       dividerRenderer={DividerRenderer}
       events={events}
@@ -137,7 +127,33 @@ export const Schedule: React.FC<{ events: Array<ScheduleEventDTO> }> = ({
   );
 };
 
-const EventRenderer: EventRendererType = ({ event: e, groupLength }) => {
+const Headers: React.FC = () => {
+  const show = useShowSummary();
+  const canEditEvents = useHasPermission()(
+    showPermission(show.id, PERMISSION.addEvents)
+  );
+  return (
+    <>
+      <th>Date</th>
+      <th>Event</th>
+      <th>Availability</th>
+      <th>Role</th>
+      <th>Location</th>
+      <th>Note</th>
+      {canEditEvents && (
+        <>
+          <th>Reports </th>
+          <th>Timers</th>
+        </>
+      )}
+    </>
+  );
+};
+
+const EventRenderer: EventRendererType<ScheduleEventDTO> = ({
+  event: e,
+  groupLength,
+}) => {
   const show = useShowSummary();
   const path = usePathname();
   const canEditEvents = useHasPermission()(
@@ -198,7 +214,9 @@ const EventRenderer: EventRendererType = ({ event: e, groupLength }) => {
   );
 };
 
-const DividerRenderer: DividerRendererType = ({ event: e }) => {
+const DividerRenderer: DividerRendererType<ScheduleEventDTO> = ({
+  event: e,
+}) => {
   const queryClient = useQueryClient();
   const mutation = useMutation<unknown, Error>({
     mutationFn: () => api.eventsIdDelete({ id: e.id }),

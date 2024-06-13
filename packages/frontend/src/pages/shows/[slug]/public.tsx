@@ -1,8 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { getApi } from "core/api";
+import { EventPublicDTO } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
+import { Td } from "core/components/tables/tables";
+import { TimeRangeWithCurtainsUpCell } from "core/components/tables/TimeRangeWithCurtainsUp";
 import { H2 } from "core/components/Typography";
-import { EventTable } from "domains/events/EventTable";
+import {
+  EventRendererType,
+  EventTable,
+} from "domains/events/EventTable/EventTable";
+import { displayDate } from "domains/events/lib/displayDate";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -56,9 +63,36 @@ const ShowPage = () => {
             <H2 className="mb-4">{showName} - Public Schedule</H2>
             <p>Join the show for more details</p>
           </div>
-          {events && <EventTable events={events} hideNote hideLocation />}
+          {events && (
+            <EventTable
+              headers={
+                <>
+                  <th>Date</th>
+                  <th>Event</th>
+                </>
+              }
+              eventRenderer={EventRenderer}
+              events={events}
+            />
+          )}
         </div>
       </div>
+    </>
+  );
+};
+
+const EventRenderer: EventRendererType<EventPublicDTO> = ({
+  event: e,
+  groupLength,
+}) => {
+  return (
+    <>
+      {groupLength && (
+        <Td className="whitespace-nowrap" rowSpan={groupLength}>
+          {displayDate(e.start)}
+        </Td>
+      )}
+      <TimeRangeWithCurtainsUpCell event={e} />
     </>
   );
 };
