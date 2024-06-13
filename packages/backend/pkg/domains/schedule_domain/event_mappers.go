@@ -1,11 +1,10 @@
-package events_domain
+package schedule_domain
 
 import (
 	"sort"
 	"strconv"
 	"time"
 
-	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/models"
 
@@ -13,7 +12,7 @@ import (
 )
 
 func mapToDatabaseEvent(dto models.CreateEventDTO) database.Event {
-	return database.Event{
+	event := database.Event{
 		ShowID:     uint(*dto.ShowID),
 		Start:      time.Time(*dto.Start),
 		End:        (*time.Time)(dto.End),
@@ -21,7 +20,16 @@ func mapToDatabaseEvent(dto models.CreateEventDTO) database.Event {
 		Name:       dto.Name,
 		ShortNote:  dto.Shortnote,
 		Address:    dto.Address,
+		Options:    database.EventOptions{},
 	}
+
+	if dto.Options != nil {
+		if dto.Options.Divider != nil {
+			event.Options.Divider = *dto.Options.Divider
+		}
+	}
+
+	return event
 }
 
 func timep(stringTime strfmt.DateTime) *time.Time {
@@ -53,30 +61,4 @@ func NameEventsWithCurtainsUp[E models.EventWithCurtainsUp](events []E) {
 			event.SetName(name)
 		}
 	}
-}
-
-func MapEventToEventDTO(e database.Event) models.EventDTO {
-	start := strfmt.DateTime(e.Start)
-
-	dto := models.EventDTO{
-		ID:         conv.UintToInt64(e.ID),
-		ShowID:     int64(e.ShowID),
-		Start:      &start,
-		CurtainsUp: conv.TimeToDateTime(e.CurtainsUp),
-		End:        conv.TimeToDateTime(e.End),
-		NameRaw:    e.Name,
-		Name:       e.Name,
-		Shortnote:  e.ShortNote,
-		Address:    e.Address,
-	}
-
-	if e.ShowReport != nil {
-		dto.ShowReport = conv.UUIDToStrmFmtUUID(e.ShowReport.ID)
-	}
-
-	if e.ShowTimer != nil {
-		dto.ShowTimer = conv.UUIDToStrmFmtUUID(e.ShowTimer.ID)
-	}
-
-	return dto
 }

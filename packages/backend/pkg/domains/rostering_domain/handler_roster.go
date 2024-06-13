@@ -4,7 +4,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/events_domain"
+	"showplanner.io/pkg/domains/schedule_domain"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
@@ -34,7 +34,7 @@ var handleGetRoster = operations.GetRosterHandlerFunc(func(params operations.Get
 
 	mappedEvents := conv.MapArrayOfPointer(events, mapToEventWithAssignments(roles))
 
-	events_domain.NameEventsWithCurtainsUp(mappedEvents)
+	schedule_domain.NameEventsWithCurtainsUp(mappedEvents)
 
 	return &operations.GetRosterOK{
 		Payload: &models.RosterDTO{

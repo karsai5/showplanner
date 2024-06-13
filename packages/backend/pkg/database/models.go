@@ -8,7 +8,13 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 	"showplanner.io/pkg/conv"
+	"showplanner.io/pkg/models"
 )
+
+type EventOptions struct {
+	Divider            bool
+	RequiredAttendance bool
+}
 
 type Event struct {
 	gorm.Model
@@ -25,6 +31,7 @@ type Event struct {
 	Shadows        []Shadow
 	ShowReport     *ShowReport
 	ShowTimer      *ShowTimer
+	Options        EventOptions `gorm:"embedded;embeddedPrefix:options_"`
 }
 
 func (e *Event) GetCurtainsUp() *strfmt.DateTime {
@@ -56,6 +63,41 @@ func (e *Event) GetCalculatedName() (string, error) {
 		}
 	}
 	return "", nil
+}
+
+func (e *Event) MapToEventDTO() models.EventDTO {
+	start := strfmt.DateTime(e.Start)
+
+	dto := models.EventDTO{
+		ID:        conv.UintToInt64(e.ID),
+		ShowID:    int64(e.ShowID),
+		Start:     &start,
+		NameRaw:   e.Name,
+		Name:      e.Name,
+		Shortnote: e.ShortNote,
+		Address:   e.Address,
+		Options: &models.EventOptionsDTO{
+			Divider: conv.Pointer(e.Options.Divider),
+		},
+	}
+
+	if e.CurtainsUp != nil {
+		dto.CurtainsUp = conv.TimeToDateTime(e.CurtainsUp)
+	}
+
+	if e.End != nil {
+		dto.End = conv.TimeToDateTime(e.End)
+	}
+
+	if e.ShowReport != nil {
+		dto.ShowReport = conv.UUIDToStrmFmtUUID(e.ShowReport.ID)
+	}
+
+	if e.ShowTimer != nil {
+		dto.ShowTimer = conv.UUIDToStrmFmtUUID(e.ShowTimer.ID)
+	}
+
+	return dto
 }
 
 type Show struct {

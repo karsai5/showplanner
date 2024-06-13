@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from "../runtime";
+import type { EventOptionsDTO } from "./EventOptionsDTO";
+import {
+  EventOptionsDTOFromJSON,
+  EventOptionsDTOFromJSONTyped,
+  EventOptionsDTOToJSON,
+} from "./EventOptionsDTO";
+
 /**
  *
  * @export
@@ -61,6 +68,12 @@ export interface CreateEventDTO {
    * @memberof CreateEventDTO
    */
   address?: string | null;
+  /**
+   *
+   * @type {EventOptionsDTO}
+   * @memberof CreateEventDTO
+   */
+  options?: EventOptionsDTO;
 }
 
 /**
@@ -101,6 +114,9 @@ export function CreateEventDTOFromJSONTyped(
     name: !exists(json, "name") ? undefined : json["name"],
     shortnote: !exists(json, "shortnote") ? undefined : json["shortnote"],
     address: !exists(json, "address") ? undefined : json["address"],
+    options: !exists(json, "options")
+      ? undefined
+      : EventOptionsDTOFromJSON(json["options"]),
   };
 }
 
@@ -129,5 +145,6 @@ export function CreateEventDTOToJSON(value?: CreateEventDTO | null): any {
     name: value.name,
     shortnote: value.shortnote,
     address: value.address,
+    options: EventOptionsDTOToJSON(value.options),
   };
 }

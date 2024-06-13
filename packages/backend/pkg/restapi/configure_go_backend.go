@@ -5,7 +5,6 @@ package restapi
 import (
 	"crypto/tls"
 
-	"showplanner.io/pkg/domains/events_domain"
 	"showplanner.io/pkg/domains/media_domain"
 	"showplanner.io/pkg/domains/people_domain"
 	"showplanner.io/pkg/domains/personnel_domain"
@@ -57,7 +56,7 @@ func configureAPI(api *operations.GoBackendAPI) http.Handler {
 	rostering_domain.SetupHandlers(api)
 	personnel_domain.SetupHandlers(api)
 	media_domain.SetupHandlers(api)
-	events_domain.SetupHandlers(api)
+	schedule_domain.SetupHandlers(api)
 	schedule_domain.SetupHandlers(api)
 	showreports.SetupHandlers(api)
 	showtimers.SetupHandlers(api)

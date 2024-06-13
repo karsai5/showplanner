@@ -12,7 +12,6 @@ import (
 	"showplanner.io/pkg/config"
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/events_domain"
 	"showplanner.io/pkg/domains/schedule_domain"
 	"showplanner.io/pkg/models"
 )
@@ -46,7 +45,7 @@ func createEventsForShow(cal *ics.Calendar, show database.Show, userId uuid.UUID
 	}
 
 	eventPointers := conv.MapArrayOfPointer(events, func(e database.Event) database.Event { return e })
-	events_domain.NameEventsWithCurtainsUp(eventPointers)
+	schedule_domain.NameEventsWithCurtainsUp(eventPointers)
 
 	roles, err := database.GetRolesForPerson(show.ID, userId)
 

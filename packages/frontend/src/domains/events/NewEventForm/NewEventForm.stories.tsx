@@ -5,7 +5,7 @@ import { EventDTO, ShowDTO } from "core/api/generated";
 import dayjs from "dayjs";
 
 export default {
-  title: "EventForm",
+  title: "Forms / New Event",
 };
 
 const show: ShowDTO = {

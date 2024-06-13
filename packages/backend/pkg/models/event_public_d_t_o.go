@@ -37,6 +37,9 @@ type EventPublicDTO struct {
 	// name raw
 	NameRaw *string `json:"nameRaw,omitempty"`
 
+	// options
+	Options *EventOptionsDTO `json:"options,omitempty"`
+
 	// show Id
 	ShowID int64 `json:"showId,omitempty"`
 
@@ -59,6 +62,10 @@ func (m *EventPublicDTO) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateID(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateOptions(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -105,6 +112,25 @@ func (m *EventPublicDTO) validateID(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *EventPublicDTO) validateOptions(formats strfmt.Registry) error {
+	if swag.IsZero(m.Options) { // not required
+		return nil
+	}
+
+	if m.Options != nil {
+		if err := m.Options.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("options")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("options")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (m *EventPublicDTO) validateStart(formats strfmt.Registry) error {
 
 	if err := validate.Required("start", "body", m.Start); err != nil {
@@ -118,8 +144,38 @@ func (m *EventPublicDTO) validateStart(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this event public d t o based on context it is used
+// ContextValidate validate this event public d t o based on the context it is used
 func (m *EventPublicDTO) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateOptions(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *EventPublicDTO) contextValidateOptions(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Options != nil {
+
+		if swag.IsZero(m.Options) { // not required
+			return nil
+		}
+
+		if err := m.Options.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("options")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("options")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

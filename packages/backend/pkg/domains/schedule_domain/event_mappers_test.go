@@ -1,7 +1,7 @@
-package events_domain_test
+package schedule_domain_test
 
 import (
-	"showplanner.io/pkg/domains/events_domain"
+	"showplanner.io/pkg/domains/schedule_domain"
 	"showplanner.io/pkg/models"
 	"testing"
 	"time"
@@ -28,7 +28,7 @@ func TestNameEventsWithCurtainsUp(t *testing.T) {
 
 		events := []*models.EventDTO{&event2, &event1}
 
-		events_domain.NameEventsWithCurtainsUp(events)
+		schedule_domain.NameEventsWithCurtainsUp(events)
 
 		got := *event1.Name
 		want := "Show 1"
@@ -52,7 +52,7 @@ func TestNameEventsWithCurtainsUp(t *testing.T) {
 
 		events := []*models.EventDTO{&event2, &event1}
 
-		events_domain.NameEventsWithCurtainsUp(events)
+		schedule_domain.NameEventsWithCurtainsUp(events)
 
 		got := *event1.Name
 		want := event1Name
@@ -73,7 +73,7 @@ func TestNameEventsWithCurtainsUp(t *testing.T) {
 
 		events := []*models.EventDTO{&event2, &event1}
 
-		events_domain.NameEventsWithCurtainsUp(events)
+		schedule_domain.NameEventsWithCurtainsUp(events)
 
 		if event1.Name != nil {
 			t.Errorf("Event name is not nil")

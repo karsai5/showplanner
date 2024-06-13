@@ -7,7 +7,6 @@ import (
 	"github.com/go-openapi/strfmt"
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/events_domain"
 	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/models"
 )
@@ -30,7 +29,7 @@ func mapToEventWithAvailabilities(people []database.Person) func(event database.
 		}
 
 		return models.AvailabilitiesDTOEventsItems0{
-			EventDTO:       events_domain.MapEventToEventDTO(event),
+			EventDTO:       event.MapToEventDTO(),
 			Availabilities: availabilities,
 		}
 	}
@@ -63,7 +62,7 @@ func mapToEventWithAssignments(roles []database.Role) func(event database.Event)
 			assignments[strconv.Itoa(int(role.ID))] = &dto
 		}
 		return models.RosterDTOEventsItems0{
-			EventDTO: events_domain.MapEventToEventDTO(event),
+			EventDTO: event.MapToEventDTO(),
 			Assignments: &models.RosterDTOEventsItems0AO1Assignments{
 				RosterDTOEventsItems0AO1Assignments: assignments,
 			},

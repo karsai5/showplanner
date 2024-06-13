@@ -19,6 +19,12 @@ import {
   AvailabilityDTOFromJSONTyped,
   AvailabilityDTOToJSON,
 } from "./AvailabilityDTO";
+import type { EventOptionsDTO } from "./EventOptionsDTO";
+import {
+  EventOptionsDTOFromJSON,
+  EventOptionsDTOFromJSONTyped,
+  EventOptionsDTOToJSON,
+} from "./EventOptionsDTO";
 
 /**
  *
@@ -94,6 +100,12 @@ export interface AvailabilitiesDTOEventsInner {
   showTimer?: string | null;
   /**
    *
+   * @type {EventOptionsDTO}
+   * @memberof AvailabilitiesDTOEventsInner
+   */
+  options?: EventOptionsDTO;
+  /**
+   *
    * @type {Array<AvailabilityDTO>}
    * @memberof AvailabilitiesDTOEventsInner
    */
@@ -144,6 +156,9 @@ export function AvailabilitiesDTOEventsInnerFromJSONTyped(
       : new Date(json["end"]),
     showReport: !exists(json, "showReport") ? undefined : json["showReport"],
     showTimer: !exists(json, "showTimer") ? undefined : json["showTimer"],
+    options: !exists(json, "options")
+      ? undefined
+      : EventOptionsDTOFromJSON(json["options"]),
     availabilities: !exists(json, "availabilities")
       ? undefined
       : json["availabilities"] === null
@@ -183,6 +198,7 @@ export function AvailabilitiesDTOEventsInnerToJSON(
         : value.end.toISOString(),
     showReport: value.showReport,
     showTimer: value.showTimer,
+    options: EventOptionsDTOToJSON(value.options),
     availabilities:
       value.availabilities === undefined
         ? undefined

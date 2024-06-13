@@ -11,6 +11,7 @@ models/CreateEventDTO.ts
 models/CreateShadowDTO.ts
 models/CreateShowDTO.ts
 models/EventDTO.ts
+models/EventOptionsDTO.ts
 models/EventPublicDTO.ts
 models/HealthCheck.ts
 models/MeDetailsDTO.ts

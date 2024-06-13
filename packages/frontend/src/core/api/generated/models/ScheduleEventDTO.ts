@@ -19,6 +19,12 @@ import {
   AvailabilityDTOFromJSONTyped,
   AvailabilityDTOToJSON,
 } from "./AvailabilityDTO";
+import type { EventOptionsDTO } from "./EventOptionsDTO";
+import {
+  EventOptionsDTOFromJSON,
+  EventOptionsDTOFromJSONTyped,
+  EventOptionsDTOToJSON,
+} from "./EventOptionsDTO";
 import type { ScheduleEventDTOAllOfRoles } from "./ScheduleEventDTOAllOfRoles";
 import {
   ScheduleEventDTOAllOfRolesFromJSON,
@@ -100,6 +106,12 @@ export interface ScheduleEventDTO {
   showTimer?: string | null;
   /**
    *
+   * @type {EventOptionsDTO}
+   * @memberof ScheduleEventDTO
+   */
+  options?: EventOptionsDTO;
+  /**
+   *
    * @type {AvailabilityDTO}
    * @memberof ScheduleEventDTO
    */
@@ -154,6 +166,9 @@ export function ScheduleEventDTOFromJSONTyped(
       : new Date(json["end"]),
     showReport: !exists(json, "showReport") ? undefined : json["showReport"],
     showTimer: !exists(json, "showTimer") ? undefined : json["showTimer"],
+    options: !exists(json, "options")
+      ? undefined
+      : EventOptionsDTOFromJSON(json["options"]),
     availability: !exists(json, "availability")
       ? undefined
       : AvailabilityDTOFromJSON(json["availability"]),
@@ -192,6 +207,7 @@ export function ScheduleEventDTOToJSON(value?: ScheduleEventDTO | null): any {
         : value.end.toISOString(),
     showReport: value.showReport,
     showTimer: value.showTimer,
+    options: EventOptionsDTOToJSON(value.options),
     availability: AvailabilityDTOToJSON(value.availability),
     roles:
       value.roles === undefined

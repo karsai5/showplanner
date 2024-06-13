@@ -21,7 +21,9 @@ export const TimeRangeWithCurtainsUp: React.FC<{
 
   const timeRange = getTimeRangeString(start, end);
   const startTime = dayjs(start).format(timeFormatString);
-  const curtainsUpString = dayjs(curtainsUp).format(timeFormatString);
+  const curtainsUpString = curtainsUp
+    ? dayjs(curtainsUp).format(timeFormatString)
+    : undefined;
   return (
     <div className="flex">
       <div className="leading-4">

@@ -19,6 +19,12 @@ import {
   AvailabilityDTOFromJSONTyped,
   AvailabilityDTOToJSON,
 } from "./AvailabilityDTO";
+import type { EventOptionsDTO } from "./EventOptionsDTO";
+import {
+  EventOptionsDTOFromJSON,
+  EventOptionsDTOFromJSONTyped,
+  EventOptionsDTOToJSON,
+} from "./EventOptionsDTO";
 import type { RosterAssignedDTO } from "./RosterAssignedDTO";
 import {
   RosterAssignedDTOFromJSON,
@@ -105,6 +111,12 @@ export interface RosterDTOEventsInner {
    */
   showTimer?: string | null;
   /**
+   *
+   * @type {EventOptionsDTO}
+   * @memberof RosterDTOEventsInner
+   */
+  options?: EventOptionsDTO;
+  /**
    * A map of availabilities to personId
    * @type {{ [key: string]: AvailabilityDTO; }}
    * @memberof RosterDTOEventsInner
@@ -166,6 +178,9 @@ export function RosterDTOEventsInnerFromJSONTyped(
       : new Date(json["end"]),
     showReport: !exists(json, "showReport") ? undefined : json["showReport"],
     showTimer: !exists(json, "showTimer") ? undefined : json["showTimer"],
+    options: !exists(json, "options")
+      ? undefined
+      : EventOptionsDTOFromJSON(json["options"]),
     availabilities: !exists(json, "availabilities")
       ? undefined
       : mapValues(json["availabilities"], AvailabilityDTOFromJSON),
@@ -207,6 +222,7 @@ export function RosterDTOEventsInnerToJSON(
         : value.end.toISOString(),
     showReport: value.showReport,
     showTimer: value.showTimer,
+    options: EventOptionsDTOToJSON(value.options),
     availabilities:
       value.availabilities === undefined
         ? undefined

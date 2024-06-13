@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from "../runtime";
+import type { EventOptionsDTO } from "./EventOptionsDTO";
+import {
+  EventOptionsDTOFromJSON,
+  EventOptionsDTOFromJSONTyped,
+  EventOptionsDTOToJSON,
+} from "./EventOptionsDTO";
+
 /**
  *
  * @export
@@ -61,6 +68,12 @@ export interface EventPublicDTO {
    * @memberof EventPublicDTO
    */
   end?: Date | null;
+  /**
+   *
+   * @type {EventOptionsDTO}
+   * @memberof EventPublicDTO
+   */
+  options?: EventOptionsDTO;
 }
 
 /**
@@ -101,6 +114,9 @@ export function EventPublicDTOFromJSONTyped(
       : json["end"] === null
       ? null
       : new Date(json["end"]),
+    options: !exists(json, "options")
+      ? undefined
+      : EventOptionsDTOFromJSON(json["options"]),
   };
 }
 
@@ -129,5 +145,6 @@ export function EventPublicDTOToJSON(value?: EventPublicDTO | null): any {
         : value.end === null
         ? null
         : value.end.toISOString(),
+    options: EventOptionsDTOToJSON(value.options),
   };
 }

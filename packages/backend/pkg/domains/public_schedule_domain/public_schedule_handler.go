@@ -2,7 +2,7 @@ package public_schedule_domain
 
 import (
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/events_domain"
+	"showplanner.io/pkg/domains/schedule_domain"
 	"showplanner.io/pkg/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -24,7 +24,7 @@ var GetPublicScheduleHandler = operations.GetPublicScheduleHandlerFunc(func(para
 
 	mappedEvents := mapEventsToPublicEventsDTO(events)
 
-	events_domain.NameEventsWithCurtainsUp(mappedEvents)
+	schedule_domain.NameEventsWithCurtainsUp(mappedEvents)
 
 	return &operations.GetPublicScheduleOK{
 		Payload: &operations.GetPublicScheduleOKBody{

@@ -1,9 +1,9 @@
-import React, { FC } from "react";
-import cc from "classnames";
 import {
   ExclamationCircleIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
+import cc from "classnames";
+import React, { FC } from "react";
 
 interface ErrorBoxProps {
   children: React.ReactNode;

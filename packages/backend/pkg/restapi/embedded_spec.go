@@ -3134,6 +3134,9 @@ func init() {
           "type": "string",
           "x-nullable": true
         },
+        "options": {
+          "$ref": "#/definitions/eventOptionsDTO"
+        },
         "shortnote": {
           "type": "string",
           "x-nullable": true
@@ -3219,6 +3222,9 @@ func init() {
           "type": "string",
           "x-nullable": true
         },
+        "options": {
+          "$ref": "#/definitions/eventOptionsDTO"
+        },
         "shortnote": {
           "type": "string",
           "x-nullable": true
@@ -3239,6 +3245,14 @@ func init() {
         "start": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "eventOptionsDTO": {
+      "properties": {
+        "divider": {
+          "type": "boolean",
+          "x-nullable": true
         }
       }
     },
@@ -3268,6 +3282,9 @@ func init() {
         "nameRaw": {
           "type": "string",
           "x-nullable": true
+        },
+        "options": {
+          "$ref": "#/definitions/eventOptionsDTO"
         },
         "showId": {
           "type": "integer"

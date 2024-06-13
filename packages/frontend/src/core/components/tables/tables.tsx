@@ -35,11 +35,15 @@ export const Td: React.FC<{
 export const GapRow = ({
   length,
   className,
+  children,
 }: {
   length: number;
   className?: string;
+  children?: React.ReactNode;
 }) => (
   <tr>
-    <td colSpan={length} className={className}></td>
+    <td colSpan={length} className={className}>
+      {children}
+    </td>
   </tr>
 );

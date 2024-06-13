@@ -1,4 +1,4 @@
-package events_domain
+package schedule_domain
 
 import (
 	"showplanner.io/pkg/conv"
@@ -10,14 +10,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 )
 
-func SetupHandlers(api *operations.GoBackendAPI) {
-	api.PostEventsHandler = CreateEventsHandler
-	api.PostEventsIDHandler = UpdateEventsHandler
-	api.DeleteEventsIDHandler = DeleteEventHandler
-	api.GetEventsIDHandler = GetEventHandler
-}
-
-var GetEventHandler = operations.GetEventsIDHandlerFunc(func(params operations.GetEventsIDParams) middleware.Responder {
+var GetEventsHandler = operations.GetEventsIDHandlerFunc(func(params operations.GetEventsIDParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting event", &operations.GetEventsIDInternalServerError{})
 
 	existingEvent, err := database.GetEvent(uint(params.ID))
@@ -41,11 +34,11 @@ var GetEventHandler = operations.GetEventsIDHandlerFunc(func(params operations.G
 		return logError(&err)
 	}
 	return &operations.GetEventsIDOK{
-		Payload: conv.Pointer(MapEventToEventDTO(event)),
+		Payload: conv.Pointer(event.MapToEventDTO()),
 	}
 })
 
-var CreateEventsHandler = operations.PostEventsHandlerFunc(func(params operations.PostEventsParams) middleware.Responder {
+var CreateEventHandler = operations.PostEventsHandlerFunc(func(params operations.PostEventsParams) middleware.Responder {
 	hasPermission, err := permissions.AddEvents.HasPermission(uint(*params.Event.ShowID), params.HTTPRequest)
 
 	if err != nil {
@@ -66,14 +59,12 @@ var CreateEventsHandler = operations.PostEventsHandlerFunc(func(params operation
 		return &operations.PostShowsInternalServerError{}
 	}
 
-	mappedEvents := MapEventToEventDTO(event)
-
 	return &operations.PostEventsOK{
-		Payload: &mappedEvents,
+		Payload: conv.Pointer(event.MapToEventDTO()),
 	}
 })
 
-var UpdateEventsHandler = operations.PostEventsIDHandlerFunc(func(params operations.PostEventsIDParams) middleware.Responder {
+var UpdateEventHandler = operations.PostEventsIDHandlerFunc(func(params operations.PostEventsIDParams) middleware.Responder {
 	existingEvent, err := database.GetEvent(uint(params.ID))
 
 	if err != nil {
@@ -97,9 +88,8 @@ var UpdateEventsHandler = operations.PostEventsIDHandlerFunc(func(params operati
 		return &operations.PostShowsInternalServerError{}
 	}
 
-	mappedEvents := MapEventToEventDTO(event)
 	return &operations.PostEventsOK{
-		Payload: &mappedEvents,
+		Payload: conv.Pointer(event.MapToEventDTO()),
 	}
 })
 

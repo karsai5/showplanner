@@ -7,7 +7,6 @@ import (
 	"gorm.io/gorm"
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/events_domain"
 	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
@@ -24,10 +23,6 @@ var (
 	COVERING  = "covering"
 	SHADOWING = "shadowing"
 )
-
-func SetupHandlers(api *operations.GoBackendAPI) {
-	api.GetScheduleHandler = GetScheduleHandler
-}
 
 var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operations.GetScheduleParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting roster", &operations.GetScheduleInternalServerError{})
@@ -60,14 +55,14 @@ var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operation
 	for _, e := range events {
 		scheduledEvents = append(scheduledEvents, conv.Pointer(
 			models.ScheduleEventDTO{
-				EventDTO:     events_domain.MapEventToEventDTO(e),
+				EventDTO:     e.MapToEventDTO(),
 				Roles:        MapRoles(roles, e, userId),
 				Availability: getAvailability(e.Availabilities),
 			},
 		))
 	}
 
-	events_domain.NameEventsWithCurtainsUp(scheduledEvents)
+	NameEventsWithCurtainsUp(scheduledEvents)
 
 	return &operations.GetScheduleOK{
 

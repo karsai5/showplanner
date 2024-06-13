@@ -1,13 +1,12 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getApi } from "core/api";
+import { api } from "core/api";
 import { EventDTO } from "core/api/generated";
 import { useModal } from "core/components/Modal/Modal";
 import { showToastError } from "core/utils/errors";
 import { isNil } from "core/utils/isNil";
 
 export const DeleteEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
-  const api = getApi();
   const queryClient = useQueryClient();
   const { Modal, open, close, isOpen } = useModal();
 
