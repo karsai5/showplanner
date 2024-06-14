@@ -2,7 +2,7 @@ import cc from "classnames";
 import { ShortText } from "core/components/ShortText";
 import { getTimeRangeString } from "core/dates/dateEventHelpers";
 import { timeFormatString } from "core/dates/datesConstants";
-import { useIsSticky } from "core/utils/useIsSticky";
+import { useBreakpoint } from "core/hooks/useBreakpoint";
 import dayjs from "dayjs";
 import { useRef } from "react";
 
@@ -50,7 +50,7 @@ export const TimeRangeWithCurtainsUpCell: React.FC<
   React.ComponentProps<typeof TimeRangeWithCurtainsUp>
 > = (props) => {
   const ref = useRef(null);
-  const isSticky = useIsSticky(ref);
+  const isSmall = useBreakpoint("sm");
   const indicators = [
     {
       content: dayjs(props.event.start).format("ddd D/M"),
@@ -65,9 +65,9 @@ export const TimeRangeWithCurtainsUpCell: React.FC<
       )}
       ref={ref}
     >
-      <div className={cc({ ["border-r"]: isSticky }, "flex p-2")}>
-        {isSticky && <Indicators items={indicators} />}
-        <TimeRangeWithCurtainsUp {...props} compact={isSticky} />
+      <div className={cc({ ["border-r"]: isSmall }, "flex p-2")}>
+        {isSmall && <Indicators items={indicators} />}
+        <TimeRangeWithCurtainsUp {...props} compact={isSmall} />
       </div>
     </td>
   );
