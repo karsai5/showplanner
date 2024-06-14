@@ -56,6 +56,15 @@ export function EventTable<T extends MinimalEvent>({
               "start",
               "curtainsUp"
             );
+            let indexOfFirstEventAfterDivider = 0;
+            thisGroupEvents.forEach((e, i) => {
+              if (e.options?.divider === true) {
+                indexOfFirstEventAfterDivider = i + 1;
+              }
+            });
+            const groupLength = thisGroupEvents.filter(
+              (e) => e.options?.divider !== true
+            ).length;
             return (
               <Fragment key={date.date.toString()}>
                 {thisGroupEvents.map((e, i) => {
@@ -86,7 +95,9 @@ export function EventTable<T extends MinimalEvent>({
                       <EventRenderer
                         event={e}
                         groupLength={
-                          i === 0 ? thisGroupEvents.length : undefined
+                          i === indexOfFirstEventAfterDivider
+                            ? groupLength
+                            : undefined
                         }
                       />
                     </tr>
