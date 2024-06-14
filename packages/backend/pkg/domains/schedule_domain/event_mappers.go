@@ -27,6 +27,9 @@ func mapToDatabaseEvent(dto models.CreateEventDTO) database.Event {
 		if dto.Options.Divider != nil {
 			event.Options.Divider = *dto.Options.Divider
 		}
+		if dto.Options.AttendanceRequired != nil {
+			event.Options.AttendanceRequired = *dto.Options.AttendanceRequired
+		}
 	}
 
 	return event

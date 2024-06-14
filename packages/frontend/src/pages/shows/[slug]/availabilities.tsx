@@ -92,6 +92,7 @@ const EventRenderer: EventRendererType<AvailabilitiesDTOEventsInner> = ({
   event: e,
   groupLength,
 }) => {
+  const attendanceRequired = !!e.options?.attendanceRequired;
   return (
     <>
       {groupLength && (
@@ -111,9 +112,19 @@ const EventRenderer: EventRendererType<AvailabilitiesDTOEventsInner> = ({
         return (
           <Td
             key={i}
-            className={cc(getBgColor(getStringFromBoolean(a.available)))}
+            className={cc(
+              getBgColor(getStringFromBoolean(a.available), {
+                alternateColors: attendanceRequired,
+              })
+            )}
           >
-            {a.available ? "Yes" : "No"}
+            {a.available
+              ? attendanceRequired
+                ? "Attending"
+                : "Yes"
+              : attendanceRequired
+              ? "Not attending"
+              : "No"}
           </Td>
         );
       })}

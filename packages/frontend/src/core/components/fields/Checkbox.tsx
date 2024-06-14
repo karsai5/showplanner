@@ -8,7 +8,7 @@ import {
 
 import { getErrorMessage } from "./helpers";
 
-const Input: FC<{
+export const Checkbox: FC<{
   register: UseFormRegisterReturn;
   label: string;
   errors: FieldErrors;
@@ -40,5 +40,3 @@ const Input: FC<{
     </div>
   );
 };
-
-export default Input;

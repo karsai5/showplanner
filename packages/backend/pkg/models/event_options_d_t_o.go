@@ -17,6 +17,9 @@ import (
 // swagger:model eventOptionsDTO
 type EventOptionsDTO struct {
 
+	// attendance required
+	AttendanceRequired *bool `json:"attendanceRequired,omitempty"`
+
 	// divider
 	Divider *bool `json:"divider,omitempty"`
 }

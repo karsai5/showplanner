@@ -45,6 +45,9 @@ EventOptionsDTO:
     divider:
       type: boolean
       x-nullable: true
+    attendanceRequired:
+      type: boolean
+      x-nullable: true
 CreateEventDTO:
   properties:
     showId:

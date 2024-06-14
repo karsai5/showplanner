@@ -57,10 +57,7 @@ export const EventDividerForm: FC<{
   });
 
   return (
-    <form
-      data-testid="NewEventForm"
-      onSubmit={handleSubmit((data) => mutation.mutate(data))}
-    >
+    <form onSubmit={handleSubmit((data) => mutation.mutate(data))}>
       <Input
         label="Date"
         register={register("date", { required: true })}

@@ -25,6 +25,12 @@ export interface EventOptionsDTO {
    * @memberof EventOptionsDTO
    */
   divider?: boolean | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof EventOptionsDTO
+   */
+  attendanceRequired?: boolean | null;
 }
 
 /**
@@ -49,6 +55,9 @@ export function EventOptionsDTOFromJSONTyped(
   }
   return {
     divider: !exists(json, "divider") ? undefined : json["divider"],
+    attendanceRequired: !exists(json, "attendanceRequired")
+      ? undefined
+      : json["attendanceRequired"],
   };
 }
 
@@ -61,5 +70,6 @@ export function EventOptionsDTOToJSON(value?: EventOptionsDTO | null): any {
   }
   return {
     divider: value.divider,
+    attendanceRequired: value.attendanceRequired,
   };
 }

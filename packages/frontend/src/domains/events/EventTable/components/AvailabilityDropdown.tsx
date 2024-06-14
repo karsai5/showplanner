@@ -19,6 +19,7 @@ export const AvailabilityDropdown: React.FC<{ event: ScheduleEventDTO }> = ({
 }) => {
   const api = getApi();
 
+  const attendanceRequired = !!event.options?.attendanceRequired;
   const [value, setValue] = useState<string>(
     getStringFromBoolean(event.availability?.available)
   );
@@ -49,7 +50,7 @@ export const AvailabilityDropdown: React.FC<{ event: ScheduleEventDTO }> = ({
   };
 
   return (
-    <div>
+    <div className="w-32">
       {mutation.isLoading && (
         <div className="bg-white absolute top-0 bottom-0 left-0 right-0 z-10">
           <div className="flex h-full justify-center items-center">
@@ -59,7 +60,9 @@ export const AvailabilityDropdown: React.FC<{ event: ScheduleEventDTO }> = ({
       )}
       <div
         className={cc(
-          getBgColor(value),
+          getBgColor(value, {
+            alternateColors: attendanceRequired,
+          }),
           "absolute top-0 bottom-0 left-0 right-0"
         )}
       >
@@ -71,8 +74,12 @@ export const AvailabilityDropdown: React.FC<{ event: ScheduleEventDTO }> = ({
           <option value={UNKNOWN} disabled>
             Unknown
           </option>
-          <option value={YES}>Yes</option>
-          <option value={NO}>No</option>
+          <option value={YES}>
+            {attendanceRequired ? "Attending" : "Available"}
+          </option>
+          <option value={NO}>
+            {attendanceRequired ? "Not Attending" : "Unavailble"}
+          </option>
         </select>
       </div>
     </div>

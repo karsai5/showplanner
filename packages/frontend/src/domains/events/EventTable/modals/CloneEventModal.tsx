@@ -5,7 +5,7 @@ import { EventDTO } from "core/api/generated";
 import { useModal } from "core/components/Modal/Modal";
 import { showToastError } from "core/utils/errors";
 import { isNil } from "core/utils/isNil";
-import NewEventForm from "domains/events/NewEventForm/NewEventForm";
+import { EventForm } from "domains/events/EventForm/EventForm";
 import { useState } from "react";
 
 export const CloneEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
@@ -47,11 +47,7 @@ export const CloneEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
   return (
     <>
       <Modal isOpen={isOpen} close={close} title="Edit event">
-        <NewEventForm
-          onSuccess={close}
-          event={newEvent}
-          showId={event.showId}
-        />
+        <EventForm onSuccess={close} event={newEvent} showId={event.showId} />
       </Modal>
       <button
         className="btn btn-ghost btn-sm"

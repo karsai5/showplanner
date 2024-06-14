@@ -3250,6 +3250,10 @@ func init() {
     },
     "eventOptionsDTO": {
       "properties": {
+        "attendanceRequired": {
+          "type": "boolean",
+          "x-nullable": true
+        },
         "divider": {
           "type": "boolean",
           "x-nullable": true

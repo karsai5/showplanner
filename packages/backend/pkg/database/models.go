@@ -13,7 +13,7 @@ import (
 
 type EventOptions struct {
 	Divider            bool
-	RequiredAttendance bool
+	AttendanceRequired bool
 }
 
 type Event struct {
@@ -77,7 +77,8 @@ func (e *Event) MapToEventDTO() models.EventDTO {
 		Shortnote: e.ShortNote,
 		Address:   e.Address,
 		Options: &models.EventOptionsDTO{
-			Divider: conv.Pointer(e.Options.Divider),
+			Divider:            conv.Pointer(e.Options.Divider),
+			AttendanceRequired: conv.Pointer(e.Options.AttendanceRequired),
 		},
 	}
 

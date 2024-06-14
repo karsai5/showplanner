@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
 import { getApi } from "core/api";
-import { EventDTO } from "core/api/generated";
+import { CreateEventDTO, EventDTO } from "core/api/generated";
 import AddressPicker from "core/components/fields/AddressPicker/AddressPicker";
+import { Checkbox } from "core/components/fields/Checkbox";
 import Input from "core/components/fields/TextInput";
 import { getStaticMap } from "core/maps/maps";
 import dayjs, { Dayjs } from "dayjs";
@@ -31,9 +32,10 @@ type Inputs = {
   };
   name: string;
   shortNote: string;
+  attendanceRequired: boolean;
 };
 
-const NewEventForm: FC<{
+export const EventForm: FC<{
   onSuccess?: () => void;
   event?: EventDTO;
   showId: number;
@@ -70,28 +72,12 @@ const NewEventForm: FC<{
     mutationFn: (form) => {
       if (!event) {
         return api.eventsPost({
-          event: {
-            showId: showId,
-            start: getRequiredDateTime(form.date, form.start),
-            end: getDateTime(form.date, form.end),
-            curtainsUp: getDateTime(form.date, form.curtainsUp),
-            address: form.address?.address,
-            shortnote: form.shortNote,
-            name: form.name,
-          },
+          event: mapFormValues(showId, form),
         });
       } else {
         return api.eventsIdPost({
           id: event.id,
-          event: {
-            showId: event.showId || showId,
-            start: getRequiredDateTime(form.date, form.start),
-            end: getDateTime(form.date, form.end),
-            curtainsUp: getDateTime(form.date, form.curtainsUp),
-            address: form.address?.address,
-            shortnote: form.shortNote,
-            name: form.name,
-          },
+          event: mapFormValues(event.showId || showId, form),
         });
       }
     },
@@ -191,6 +177,13 @@ const NewEventForm: FC<{
           </div>
         </a>
       )}
+
+      <Checkbox
+        label="Attendance is required (dropdown becomes attending/not attending instead of available/unavailable)"
+        register={register("attendanceRequired")}
+        errors={errors}
+      />
+
       <button
         type="submit"
         className={cc({ loading: mutation.isLoading }, "btn btn-block")}
@@ -201,7 +194,6 @@ const NewEventForm: FC<{
   );
 };
 
-export default NewEventForm;
 const getDefaultValues = (
   event: EventDTO | undefined
 ): Partial<Inputs> | undefined => {
@@ -221,9 +213,25 @@ const getDefaultValues = (
       lng: null,
       address: event.address || "",
     },
+    attendanceRequired: event.options?.attendanceRequired || false,
   };
 
   return defaultValues;
+};
+
+const mapFormValues = (showId: number, form: Inputs): CreateEventDTO => {
+  return {
+    showId: showId,
+    start: getRequiredDateTime(form.date, form.start),
+    end: getDateTime(form.date, form.end),
+    curtainsUp: getDateTime(form.date, form.curtainsUp),
+    address: form.address?.address,
+    shortnote: form.shortNote,
+    name: form.name,
+    options: {
+      attendanceRequired: form.attendanceRequired,
+    },
+  };
 };
 
 const formatTime = (t: Dayjs) => t.format("HH:mm");

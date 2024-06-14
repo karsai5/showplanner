@@ -2,12 +2,15 @@ export const YES = "Yes";
 export const NO = "No";
 export const UNKNOWN = "Unknown";
 
-export const getBgColor = (value: string) => {
+export const getBgColor = (
+  value: string,
+  options: { alternateColors?: boolean } = {}
+) => {
   switch (value) {
     case YES:
-      return "bg-green-300";
+      return options.alternateColors ? "bg-cyan-400" : "bg-green-300";
     case NO:
-      return "bg-red-300";
+      return options.alternateColors ? "bg-slate-400" : "bg-red-300";
     case UNKNOWN:
       return "bg-amber-300";
     default:

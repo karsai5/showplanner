@@ -23,6 +23,7 @@ import {
 import { showToastError } from "core/utils/errors";
 import dayjs from "dayjs";
 import { EventDividerForm } from "domains/events/EventDividerForm/EventDividerForm";
+import { EventForm } from "domains/events/EventForm/EventForm";
 import { AvailabilityDropdown } from "domains/events/EventTable/components/AvailabilityDropdown";
 import {
   DividerRendererType,
@@ -33,7 +34,6 @@ import { CloneEventModal } from "domains/events/EventTable/modals/CloneEventModa
 import { DeleteEventModal } from "domains/events/EventTable/modals/DeleteEventModal";
 import { EditEventModal } from "domains/events/EventTable/modals/EditEventModal";
 import { displayDate } from "domains/events/lib/displayDate";
-import NewEventForm from "domains/events/NewEventForm/NewEventForm";
 import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
 import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
 import { useShowSummary } from "domains/shows/lib/summaryContext";
@@ -136,7 +136,7 @@ const Headers: React.FC = () => {
     <>
       <th>Date</th>
       <th>Event</th>
-      <th>Availability</th>
+      <th>Availability/Attendance</th>
       <th>Role</th>
       <th>Location</th>
       <th>Note</th>
@@ -171,7 +171,10 @@ const EventRenderer: EventRendererType<ScheduleEventDTO> = ({
         <AvailabilityDropdown event={e} />
       </td>
       <td className="border-l border-slate-200 relative">
-        <RolesDescription roles={e.roles} isShow={!!e.curtainsUp} />
+        <RolesDescription
+          roles={e.roles}
+          isShow={!!e.curtainsUp && !e.options?.attendanceRequired}
+        />
       </td>
 
       <Td>
@@ -263,7 +266,7 @@ const AddEventButton: FC<{ showId: number }> = ({ showId }) => {
         Add event
       </button>
       <Modal isOpen={isOpen} close={close} title="Add a new show">
-        <NewEventForm onSuccess={close} showId={showId} />
+        <EventForm onSuccess={close} showId={showId} />
       </Modal>
     </>
   );
@@ -295,15 +298,12 @@ const RolesDescription: React.FC<{
   roles?: Array<ScheduleEventDTOAllOfRoles>;
   isShow?: boolean;
 }> = ({ roles, isShow }) => {
-  if (!roles || roles.length === 0) {
-    if (isShow) {
-      return <span className="italic text-slate-400">Not required</span>;
-    }
-    return null;
-  }
   return (
-    <div className="min-w-20">
-      {roles.map((r) => {
+    <div className="min-w-28">
+      {(!roles || roles.length === 0) && isShow && (
+        <span className="italic text-slate-400">Not required</span>
+      )}
+      {roles?.map((r) => {
         return (
           <div
             key={`${r.id}-${r.type}`}
