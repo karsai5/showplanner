@@ -27,9 +27,9 @@ export const enum PERMISSION {
   addEvents = "add-events",
   viewEvents = "view-events",
   personnel = "personnel",
-  rostering = "rostering",
+  personnelEdit = "add-personnel",
   personnelPrivateDetails = "personnel-private-details",
-
+  rostering = "rostering",
   addShow = "add-show",
 }
 

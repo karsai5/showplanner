@@ -554,6 +554,37 @@ func init() {
         }
       }
     },
+    "/personnel/assigned/googleContactsCSV": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns people for a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get people for",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/public/calendar/{id}": {
       "get": {
         "description": "Healthcheck endpoint",
@@ -1949,6 +1980,43 @@ func init() {
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/arrayOfPersonSummaryDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/personnel/assigned/googleContactsCSV": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns people for a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get people for",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
             }
           },
           "401": {

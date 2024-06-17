@@ -1,6 +1,9 @@
 watch:
 	nodemon -e go --signal SIGTERM --exec 'make build-and-serve || exit 1'
 
+watch-test:
+	nodemon -e go --signal SIGTERM --exec 'make test || exit 1'
+
 watch-swagger:
 	nodemon -e yaml --exec 'make' generate
 
@@ -26,7 +29,7 @@ serve-in-container:
 	./go-backend-server --host '' --port 8080
 
 test:
-	go test ./...
+	godotenv go test ./...
 
 lint:
 	golangci-lint run

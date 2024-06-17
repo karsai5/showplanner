@@ -166,6 +166,10 @@ export interface PersonnelAssignedGetRequest {
   showId: number;
 }
 
+export interface PersonnelAssignedGoogleContactsCSVGetRequest {
+  showId: number;
+}
+
 export interface PublicCalendarIdGetRequest {
   id: string;
 }
@@ -1021,6 +1025,62 @@ export class DefaultApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ArrayOfPersonSummaryDTO> {
     const response = await this.personnelAssignedGetRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
+  /**
+   * Returns people for a show
+   */
+  async personnelAssignedGoogleContactsCSVGetRaw(
+    requestParameters: PersonnelAssignedGoogleContactsCSVGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<string>> {
+    if (
+      requestParameters.showId === null ||
+      requestParameters.showId === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "showId",
+        "Required parameter requestParameters.showId was null or undefined when calling personnelAssignedGoogleContactsCSVGet."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters.showId !== undefined) {
+      queryParameters["showId"] = requestParameters.showId;
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/personnel/assigned/googleContactsCSV`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    if (this.isJsonMime(response.headers.get("content-type"))) {
+      return new runtime.JSONApiResponse<string>(response);
+    } else {
+      return new runtime.TextApiResponse(response) as any;
+    }
+  }
+
+  /**
+   * Returns people for a show
+   */
+  async personnelAssignedGoogleContactsCSVGet(
+    requestParameters: PersonnelAssignedGoogleContactsCSVGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<string> {
+    const response = await this.personnelAssignedGoogleContactsCSVGetRaw(
       requestParameters,
       initOverrides
     );

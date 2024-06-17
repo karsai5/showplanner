@@ -78,6 +78,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetPersonnelAssignedHandler: GetPersonnelAssignedHandlerFunc(func(params GetPersonnelAssignedParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPersonnelAssigned has not yet been implemented")
 		}),
+		GetPersonnelAssignedGoogleContactsCSVHandler: GetPersonnelAssignedGoogleContactsCSVHandlerFunc(func(params GetPersonnelAssignedGoogleContactsCSVParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetPersonnelAssignedGoogleContactsCSV has not yet been implemented")
+		}),
 		GetPublicCalendarIDHandler: GetPublicCalendarIDHandlerFunc(func(params GetPublicCalendarIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPublicCalendarID has not yet been implemented")
 		}),
@@ -230,6 +233,8 @@ type GoBackendAPI struct {
 	GetPersonnelAssignableHandler GetPersonnelAssignableHandler
 	// GetPersonnelAssignedHandler sets the operation handler for the get personnel assigned operation
 	GetPersonnelAssignedHandler GetPersonnelAssignedHandler
+	// GetPersonnelAssignedGoogleContactsCSVHandler sets the operation handler for the get personnel assigned google contacts c s v operation
+	GetPersonnelAssignedGoogleContactsCSVHandler GetPersonnelAssignedGoogleContactsCSVHandler
 	// GetPublicCalendarIDHandler sets the operation handler for the get public calendar ID operation
 	GetPublicCalendarIDHandler GetPublicCalendarIDHandler
 	// GetPublicHealthHandler sets the operation handler for the get public health operation
@@ -403,6 +408,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.GetPersonnelAssignedHandler == nil {
 		unregistered = append(unregistered, "GetPersonnelAssignedHandler")
+	}
+	if o.GetPersonnelAssignedGoogleContactsCSVHandler == nil {
+		unregistered = append(unregistered, "GetPersonnelAssignedGoogleContactsCSVHandler")
 	}
 	if o.GetPublicCalendarIDHandler == nil {
 		unregistered = append(unregistered, "GetPublicCalendarIDHandler")
@@ -625,6 +633,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/personnel/assigned"] = NewGetPersonnelAssigned(o.context, o.GetPersonnelAssignedHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/personnel/assigned/googleContactsCSV"] = NewGetPersonnelAssignedGoogleContactsCSV(o.context, o.GetPersonnelAssignedGoogleContactsCSVHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

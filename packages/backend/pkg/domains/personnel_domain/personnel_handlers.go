@@ -16,6 +16,7 @@ import (
 
 func SetupHandlers(api *operations.GoBackendAPI) {
 	api.GetPersonnelAssignedHandler = handleAssignedPersonnel
+	api.GetPersonnelAssignedGoogleContactsCSVHandler = handleAssignablePersonnelGoogle
 	api.GetPersonnelAssignableHandler = handleAssignablePersonnel
 	api.PostPersonnelAssignHandler = handleAddPersonToShow
 	api.GetPersonnelHandler = handleGetPersonnel
@@ -46,20 +47,57 @@ var handleAddPersonToShow = operations.PostPersonnelAssignHandlerFunc(func(param
 	return &operations.PostPersonnelAssignOK{}
 })
 
-var handleAssignedPersonnel = operations.GetPersonnelAssignedHandlerFunc(func(params operations.GetPersonnelAssignedParams) middleware.Responder {
-	hasPerm, err := permissions.ViewPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
+var handleAssignablePersonnelGoogle = operations.GetPersonnelAssignedGoogleContactsCSVHandlerFunc(func(params operations.GetPersonnelAssignedGoogleContactsCSVParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting people assigned to show as google csv", &operations.GetPersonnelAssignedGoogleContactsCSVInternalServerError{})
+
+	hasPermViewPersonnel, err := permissions.ViewPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
 	if err != nil {
-		logger.Error("Getting availabilites", err)
-		return &operations.GetAvailabilitiesInternalServerError{}
+		return logError(&err)
 	}
-	if !hasPerm {
-		return &operations.GetAvailabilitiesUnauthorized{}
+	hasPermViewPrivateInfo, err := permissions.ViewPrivatePersonnelDetails.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+
+	if !hasPermViewPersonnel || !hasPermViewPrivateInfo {
+		return &operations.GetPersonnelAssignedUnauthorized{}
 	}
 
 	people, err := database.GetPeopleAssignedToShow(uint(params.ShowID))
 	if err != nil {
-		logger.Error("Getting availabilites", err)
-		return &operations.GetAvailabilitiesInternalServerError{}
+		return logError(&err)
+	}
+
+	show, err := database.GetShowById(params.ShowID)
+	if err != nil {
+		return logError(&err)
+	}
+
+	csvString, err := getGoogleCSV(people, show.Name)
+	if err != nil {
+		return logError(&err)
+	}
+
+	return &operations.GetPersonnelAssignedGoogleContactsCSVOK{
+		Payload: csvString,
+	}
+})
+
+var handleAssignedPersonnel = operations.GetPersonnelAssignedHandlerFunc(func(params operations.GetPersonnelAssignedParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting assigned people", &operations.GetPersonnelAssignedInternalServerError{})
+
+	hasPerm, err := permissions.ViewPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+	if !hasPerm {
+		return &operations.GetPersonnelAssignedUnauthorized{}
+	}
+
+	people, err := database.GetPeopleAssignedToShow(uint(params.ShowID))
+
+	if err != nil {
+		return logError(&err)
 	}
 
 	sort.Slice(people, func(i, j int) bool {
@@ -70,9 +108,9 @@ var handleAssignedPersonnel = operations.GetPersonnelAssignedHandlerFunc(func(pa
 
 	hasPerm, err = permissions.ViewPrivatePersonnelDetails.HasPermission(uint(params.ShowID), params.HTTPRequest)
 	if err != nil {
-		logger.Error("Getting availabilites", err)
-		return &operations.GetAvailabilitiesInternalServerError{}
+		return logError(&err)
 	}
+
 	personMapper := MapToPersonSummaryDTO
 	if hasPerm {
 		personMapper = MapToPersonSummaryDTOWithPrivateInfo

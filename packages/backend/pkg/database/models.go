@@ -165,6 +165,17 @@ type Person struct {
 	Shows []Show `gorm:"many2many:show_people;"`
 }
 
+func (p *Person) GetFirstName() string {
+	if p.PreferredName != nil && *p.PreferredName != "" {
+		return *p.PreferredName
+	}
+	return p.FirstName
+}
+
+func (p *Person) GetFullName() string {
+	return fmt.Sprintf("%s %s", p.GetFirstName(), p.LastName)
+}
+
 type ShowTimer struct {
 	ID        uuid.UUID `gorm:"type:uuid;primary_key;"`
 	CreatedAt time.Time
