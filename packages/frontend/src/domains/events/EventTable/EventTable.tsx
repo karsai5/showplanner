@@ -71,18 +71,20 @@ export function EventTable<T extends MinimalEvent>({
                   if (e.options?.divider === true) {
                     return (
                       <GapRow length={numberOfColumns} key={i}>
-                        <div className="flex gap-3 items-center -ml-3 -mr-3">
-                          <div className="h-2 bg-slate-300 flex-1"></div>
-                          <div className="text-center">
-                            <strong>
+                        <div className="-ml-3 -mr-3 relative">
+                          <div className="h-2 bg-slate-300 absolute top-1.5 left-0 right-0"></div>
+                          <div
+                            className="sticky w-40 flex justify-center"
+                            style={{ left: "40vw" }}
+                          >
+                            <div className="font-bold bg-white w-auto inline-block px-2">
                               {DividerRenderer ? (
                                 <DividerRenderer event={e} />
                               ) : (
                                 e.name
                               )}
-                            </strong>
+                            </div>
                           </div>
-                          <div className="h-2 bg-slate-300 flex-1"></div>
                         </div>
                       </GapRow>
                     );
