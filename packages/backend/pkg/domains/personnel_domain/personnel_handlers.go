@@ -23,7 +23,7 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 }
 
 var handleAddPersonToShow = operations.PostPersonnelAssignHandlerFunc(func(params operations.PostPersonnelAssignParams) middleware.Responder {
-	hasPerm, err := permissions.EditPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	hasPerm, err := permissions.AddPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
 	if err != nil {
 		logger.Error("Adding person to show", err)
 		return &operations.PostPersonnelAssignInternalServerError{}

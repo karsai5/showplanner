@@ -4,7 +4,7 @@ var ViewEvents = ShowPermission{perm: "view-events"}
 var Rostering = ShowPermission{perm: "rostering"}
 var AddEvents = ShowPermission{perm: "add-events"}
 var ViewPersonnel = ShowPermission{perm: "personnel"}
-var EditPersonnel = ShowPermission{perm: "add-personnel"}
+var AddPersonnel = ShowPermission{perm: "add-personnel"}
 var ViewPrivatePersonnelDetails = ShowPermission{perm: "personnel-private-details"}
 
 var AddShow = Permission{perm: "add-show"}
@@ -24,7 +24,7 @@ var ShowRosterer = ShowRole{
 var ShowManager = ShowRole{
 	Name:        "Manager",
 	key:         "manager",
-	Permissions: []ShowPermission{ViewEvents, AddEvents, ViewPersonnel, Rostering, EditPersonnel, ViewPrivatePersonnelDetails},
+	Permissions: []ShowPermission{ViewEvents, AddEvents, ViewPersonnel, Rostering, AddPersonnel, ViewPrivatePersonnelDetails},
 }
 
 var ShowMember = ShowRole{

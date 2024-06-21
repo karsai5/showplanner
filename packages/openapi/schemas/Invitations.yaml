@@ -1,0 +1,11 @@
+InvitationDTO:
+  type: object
+  properties:
+    id:
+      type: integer
+    person:
+      x-nullable: true
+      $ref: './People.yaml#/PersonSummaryDTO'
+    dateCreated:
+      type: string
+      format: date-time

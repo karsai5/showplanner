@@ -66,6 +66,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetEventsIDHandler: GetEventsIDHandlerFunc(func(params GetEventsIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetEventsID has not yet been implemented")
 		}),
+		GetInvitationsHandler: GetInvitationsHandlerFunc(func(params GetInvitationsParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetInvitations has not yet been implemented")
+		}),
 		GetMeHandler: GetMeHandlerFunc(func(params GetMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetMe has not yet been implemented")
 		}),
@@ -137,6 +140,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		}),
 		PostImpersonateHandler: PostImpersonateHandlerFunc(func(params PostImpersonateParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostImpersonate has not yet been implemented")
+		}),
+		PostInvitationsHandler: PostInvitationsHandlerFunc(func(params PostInvitationsParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostInvitations has not yet been implemented")
 		}),
 		PostMeHandler: PostMeHandlerFunc(func(params PostMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostMe has not yet been implemented")
@@ -225,6 +231,8 @@ type GoBackendAPI struct {
 	GetAvailabilitiesHandler GetAvailabilitiesHandler
 	// GetEventsIDHandler sets the operation handler for the get events ID operation
 	GetEventsIDHandler GetEventsIDHandler
+	// GetInvitationsHandler sets the operation handler for the get invitations operation
+	GetInvitationsHandler GetInvitationsHandler
 	// GetMeHandler sets the operation handler for the get me operation
 	GetMeHandler GetMeHandler
 	// GetPersonnelHandler sets the operation handler for the get personnel operation
@@ -273,6 +281,8 @@ type GoBackendAPI struct {
 	PostEventsIDHandler PostEventsIDHandler
 	// PostImpersonateHandler sets the operation handler for the post impersonate operation
 	PostImpersonateHandler PostImpersonateHandler
+	// PostInvitationsHandler sets the operation handler for the post invitations operation
+	PostInvitationsHandler PostInvitationsHandler
 	// PostMeHandler sets the operation handler for the post me operation
 	PostMeHandler PostMeHandler
 	// PostMediaUploadHandler sets the operation handler for the post media upload operation
@@ -397,6 +407,9 @@ func (o *GoBackendAPI) Validate() error {
 	if o.GetEventsIDHandler == nil {
 		unregistered = append(unregistered, "GetEventsIDHandler")
 	}
+	if o.GetInvitationsHandler == nil {
+		unregistered = append(unregistered, "GetInvitationsHandler")
+	}
 	if o.GetMeHandler == nil {
 		unregistered = append(unregistered, "GetMeHandler")
 	}
@@ -468,6 +481,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.PostImpersonateHandler == nil {
 		unregistered = append(unregistered, "PostImpersonateHandler")
+	}
+	if o.PostInvitationsHandler == nil {
+		unregistered = append(unregistered, "PostInvitationsHandler")
 	}
 	if o.PostMeHandler == nil {
 		unregistered = append(unregistered, "PostMeHandler")
@@ -620,6 +636,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
+	o.handlers["GET"]["/invitations"] = NewGetInvitations(o.context, o.GetInvitationsHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
 	o.handlers["GET"]["/me"] = NewGetMe(o.context, o.GetMeHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -713,6 +733,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/impersonate"] = NewPostImpersonate(o.context, o.PostImpersonateHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/invitations"] = NewPostInvitations(o.context, o.PostInvitationsHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

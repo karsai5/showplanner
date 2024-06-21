@@ -350,6 +350,70 @@ func init() {
         }
       }
     },
+    "/invitations/": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get invitations for a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get invitations for",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      },
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Invites a person to a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to invite a person to",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Id of the person to invite",
+            "name": "personId",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/responses/Error"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/me": {
       "get": {
         "produces": [
@@ -1762,6 +1826,85 @@ func init() {
           },
           "500": {
             "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/invitations/": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get invitations for a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get invitations for",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Invites a person to a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to invite a person to",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "Id of the person to invite",
+            "name": "personId",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }

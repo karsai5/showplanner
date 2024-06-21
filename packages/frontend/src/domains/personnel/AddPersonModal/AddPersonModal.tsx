@@ -21,7 +21,7 @@ export const AddPersonModal: React.FC<{
       if (!personId) {
         throw new Error("Person id missing");
       }
-      return api.personnelAssignPost({ showId: showId, personId: personId });
+      return api.invitationsPost({ showId: 10043, personId });
     },
     onError: (e) => {
       showToastError("Something went wrong adding person to show.", e);

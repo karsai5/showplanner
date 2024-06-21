@@ -248,3 +248,17 @@ type Media struct {
 func (e *Media) GetUrl() string {
 	return ""
 }
+
+// An invitation to a person to join a show.
+// If the person already exists in the system, the PersonID will be set.
+// If the person does not exist, the email will be set.
+type Invitation struct {
+	gorm.Model
+
+	ShowID uint
+	Show   Show
+
+	PersonID *uuid.UUID
+	Person   *Person
+	Email    *string
+}
