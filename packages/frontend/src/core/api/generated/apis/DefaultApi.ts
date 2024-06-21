@@ -24,6 +24,7 @@ import type {
   CreateShowDTO,
   EventDTO,
   HealthCheck,
+  InvitationDTO,
   MeDetailsDTO,
   MediaDTO,
   PersonUpdateDTO,
@@ -64,6 +65,8 @@ import {
   EventDTOToJSON,
   HealthCheckFromJSON,
   HealthCheckToJSON,
+  InvitationDTOFromJSON,
+  InvitationDTOToJSON,
   MeDetailsDTOFromJSON,
   MeDetailsDTOToJSON,
   MediaDTOFromJSON,
@@ -728,7 +731,7 @@ export class DefaultApi extends runtime.BaseAPI {
   async invitationsGetRaw(
     requestParameters: InvitationsGetRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<void>> {
+  ): Promise<runtime.ApiResponse<Array<InvitationDTO>>> {
     if (
       requestParameters.showId === null ||
       requestParameters.showId === undefined
@@ -757,7 +760,9 @@ export class DefaultApi extends runtime.BaseAPI {
       initOverrides
     );
 
-    return new runtime.VoidApiResponse(response);
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      jsonValue.map(InvitationDTOFromJSON)
+    );
   }
 
   /**
@@ -766,8 +771,12 @@ export class DefaultApi extends runtime.BaseAPI {
   async invitationsGet(
     requestParameters: InvitationsGetRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<void> {
-    await this.invitationsGetRaw(requestParameters, initOverrides);
+  ): Promise<Array<InvitationDTO>> {
+    const response = await this.invitationsGetRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
   }
 
   /**

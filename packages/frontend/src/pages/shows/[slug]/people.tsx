@@ -6,6 +6,7 @@ import { HasPermission, PERMISSION, showPermission } from "core/permissions";
 import { Toggle } from "core/toggles/toggles";
 import { showToastError } from "core/utils/errors";
 import { AddPersonModal } from "domains/personnel/AddPersonModal/AddPersonModal";
+import { Invitations } from "domains/personnel/Invitations/Invitations";
 import { PeopleTable } from "domains/personnel/PeopleTable/PeopleTable";
 import { AddRoleModal } from "domains/rostering/AddRoleModal/AddRoleModal";
 import { RolesTable } from "domains/rostering/RolesTable";
@@ -57,7 +58,12 @@ const ShowPage = () => {
             <RolesTable />
           </div>
         </Toggle>
-        <PeopleTable showId={show.id} />
+        <div>
+          <PeopleTable showId={show.id} />
+          <HasPermission permission={PERMISSION.personnelEdit} showId={show.id}>
+            <Invitations showId={show.id} />
+          </HasPermission>
+        </div>
       </div>
     </SessionAuth>
   );

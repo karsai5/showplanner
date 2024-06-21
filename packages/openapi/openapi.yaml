@@ -837,6 +837,10 @@ paths:
       responses:
         200:
           description: OK
+          schema:
+            type: array
+            items:
+              $ref: './schemas/Invitations.yaml#/InvitationDTO'
         401:
           $ref: '#/responses/Error'
         500:

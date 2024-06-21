@@ -22,6 +22,11 @@ GetInvitationsOK OK
 swagger:response getInvitationsOK
 */
 type GetInvitationsOK struct {
+
+	/*
+	  In: Body
+	*/
+	Payload []*models.InvitationDTO `json:"body,omitempty"`
 }
 
 // NewGetInvitationsOK creates GetInvitationsOK with default headers values
@@ -30,12 +35,30 @@ func NewGetInvitationsOK() *GetInvitationsOK {
 	return &GetInvitationsOK{}
 }
 
+// WithPayload adds the payload to the get invitations o k response
+func (o *GetInvitationsOK) WithPayload(payload []*models.InvitationDTO) *GetInvitationsOK {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get invitations o k response
+func (o *GetInvitationsOK) SetPayload(payload []*models.InvitationDTO) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *GetInvitationsOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(200)
+	payload := o.Payload
+	if payload == nil {
+		// return empty array
+		payload = make([]*models.InvitationDTO, 0, 50)
+	}
+
+	if err := producer.Produce(rw, payload); err != nil {
+		panic(err) // let the recovery middleware deal with this
+	}
 }
 
 // GetInvitationsUnauthorizedCode is the HTTP code returned for type GetInvitationsUnauthorized

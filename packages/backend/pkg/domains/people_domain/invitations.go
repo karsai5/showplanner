@@ -23,3 +23,12 @@ func addInvitationToDatabase(showId uint, userId uuid.UUID) (database.Invitation
 
 	return invitation, res.Error
 }
+
+func getInvitations(showId uint) ([]database.Invitation, error) {
+	db := database.GetDatabase()
+
+	var invitations []database.Invitation
+	res := db.Preload("Person").Where("show_id = ?", showId).Find(&invitations)
+
+	return invitations, res.Error
+}

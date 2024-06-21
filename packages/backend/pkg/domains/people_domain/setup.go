@@ -9,4 +9,5 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 	api.PostImpersonateHandler = postImpersonateHandler
 
 	api.PostInvitationsHandler = postInvitationsHandler
+	api.GetInvitationsHandler = getInvitationsHandler
 }

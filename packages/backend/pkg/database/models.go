@@ -115,16 +115,16 @@ type Show struct {
 
 type Availability struct {
 	gorm.Model
-	PersonID  uuid.UUID `gorm:"uniqueIndex:unique_a`
-	EventID   uint      `gorm:"uniqueIndex:unique_a`
+	PersonID  uuid.UUID `gorm:"uniqueIndex:unique_a"`
+	EventID   uint      `gorm:"uniqueIndex:unique_a"`
 	Available bool
 }
 
 type Assignment struct {
 	gorm.Model
 	PersonID uuid.UUID
-	EventID  uint `gorm:"uniqueIndex:unique_assignment`
-	RoleID   uint `gorm:"uniqueIndex:unique_assignment`
+	EventID  uint `gorm:"uniqueIndex:unique_assignment"`
+	RoleID   uint `gorm:"uniqueIndex:unique_assignment"`
 	Event    Event
 	Person   Person
 	Role     Role
@@ -132,9 +132,9 @@ type Assignment struct {
 
 type Shadow struct {
 	gorm.Model
-	PersonID uuid.UUID `gorm:"uniqueIndex:unique_shadow`
-	EventID  uint      `gorm:"uniqueIndex:unique_shadow`
-	RoleID   uint      `gorm:"uniqueIndex:unique_shadow`
+	PersonID uuid.UUID `gorm:"uniqueIndex:unique_shadow"`
+	EventID  uint      `gorm:"uniqueIndex:unique_shadow"`
+	RoleID   uint      `gorm:"uniqueIndex:unique_shadow"`
 	Event    Event
 	Person   Person
 	Role     Role
@@ -176,6 +176,19 @@ func (p *Person) GetFullName() string {
 	return fmt.Sprintf("%s %s", p.GetFirstName(), p.LastName)
 }
 
+func (p *Person) MapToPersonSummaryDTO() models.PersonSummaryDTO {
+	dto := models.PersonSummaryDTO{
+		FirstName: &p.FirstName,
+		ID:        conv.UUIDToStrmFmtUUID(p.ID),
+		LastName:  &p.LastName,
+		Private:   nil,
+	}
+	if p.PreferredName != nil {
+		dto.PreferredName = *p.PreferredName
+	}
+	return dto
+}
+
 type ShowTimer struct {
 	ID        uuid.UUID `gorm:"type:uuid;primary_key;"`
 	CreatedAt time.Time
@@ -203,7 +216,7 @@ type ShowTimer struct {
 }
 
 type ShowReport struct {
-	ID        uuid.UUID `gorm:"type:uuid;primary_key;"`
+	ID        uuid.UUID `gorm:"type:uuid;primary_key"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt *time.Time `gorm:"index"`
@@ -255,10 +268,22 @@ func (e *Media) GetUrl() string {
 type Invitation struct {
 	gorm.Model
 
-	ShowID uint
+	ShowID uint `gorm:"uniqueIndex:unique_invitation_to_person;uniqueIndex:unique_invitation_to_email"`
 	Show   Show
 
-	PersonID *uuid.UUID
+	PersonID *uuid.UUID `gorm:"uniqueIndex:unique_invitation_to_person"`
 	Person   *Person
-	Email    *string
+	Email    *string `gorm:"uniqueIndex:unique_invitation_to_email"`
+}
+
+func (i *Invitation) MapToInvitationDTO() models.InvitationDTO {
+	dto := models.InvitationDTO{
+		ID: int64(i.ID),
+	}
+
+	if i.PersonID != nil {
+		dto.Person = conv.Pointer(i.Person.MapToPersonSummaryDTO())
+	}
+
+	return dto
 }

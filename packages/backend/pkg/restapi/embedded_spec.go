@@ -367,7 +367,13 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "./schemas/Invitations.yaml#/InvitationDTO"
+              }
+            }
           },
           "401": {
             "$ref": "#/responses/Error"
@@ -1847,7 +1853,13 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/invitationDTO"
+              }
+            }
           },
           "401": {
             "description": "Error",
@@ -3507,6 +3519,21 @@ func init() {
         "start": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "invitationDTO": {
+      "type": "object",
+      "properties": {
+        "dateCreated": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "person": {
+          "$ref": "#/definitions/personSummaryDTO"
         }
       }
     },

@@ -21,7 +21,7 @@ export const AddPersonModal: React.FC<{
       if (!personId) {
         throw new Error("Person id missing");
       }
-      return api.invitationsPost({ showId: 10043, personId });
+      return api.invitationsPost({ showId, personId });
     },
     onError: (e) => {
       showToastError("Something went wrong adding person to show.", e);
@@ -32,6 +32,7 @@ export const AddPersonModal: React.FC<{
         queryKey: ["unassigned-people", showId],
       });
       queryClient.invalidateQueries({ queryKey: ["assigned-people", showId] });
+      queryClient.invalidateQueries({ queryKey: ["invitations", showId] });
     },
   });
 
