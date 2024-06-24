@@ -11,6 +11,7 @@ import {
 } from "core/api/generated";
 import Address from "core/components/Address/Address";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
+import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { useModal } from "core/components/Modal/Modal";
 import { Td } from "core/components/tables/tables";
 import { TimeRangeWithCurtainsUpCell } from "core/components/tables/TimeRangeWithCurtainsUp";
@@ -102,7 +103,7 @@ export default function ShowPage(
         </div>
       </div>
       {isError && <ErrorBox>Could not get shows</ErrorBox>}
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <LoadingBox />}
       {events && (
         <>
           {futureEvents.length === 0 && allEvents.length > 0 && (

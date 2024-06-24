@@ -1,9 +1,11 @@
 import * as cookie from "cookie";
+import { AccessDenied } from "core/components/AccessDenied/AccessDenied";
 import { getRequiredEnvVariable } from "core/utils/envVariables";
 import JsonWebToken, { JwtHeader, SigningKeyCallback } from "jsonwebtoken";
 import jwksClient from "jwks-rsa";
 import { GetServerSidePropsContext } from "next/types";
 import { ReactNode } from "react";
+import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import Session from "supertokens-auth-react/recipe/session";
 import {
   PermissionClaim,
@@ -130,4 +132,21 @@ export const HasPermission: React.FC<{
     return null;
   }
   return <>{children}</>;
+};
+
+export const PermissionRequired: React.FC<{
+  children: ReactNode;
+  permission: string;
+}> = ({ children, permission }) => {
+  return (
+    <SessionAuth
+      accessDeniedScreen={AccessDenied}
+      overrideGlobalClaimValidators={(globalValidators) => [
+        ...globalValidators,
+        PermissionClaim.validators.includes(permission),
+      ]}
+    >
+      {children}
+    </SessionAuth>
+  );
 };
