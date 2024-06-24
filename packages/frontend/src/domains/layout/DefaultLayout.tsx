@@ -18,6 +18,10 @@ export const DefaultLayout: React.FC<{ children: ReactNode }> = ({
     return <ShowLayout>{children}</ShowLayout>;
   }
 
+  return <BaseLayout>{children}</BaseLayout>;
+};
+
+export const BaseLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <div className="flex flex-col h-screen">
       <Nav />
