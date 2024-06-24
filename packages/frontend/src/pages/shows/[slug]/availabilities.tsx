@@ -28,6 +28,27 @@ import Head from "next/head";
 import React from "react";
 import superjson from "superjson";
 
+export const getServerSideProps = (async (context) => {
+  const slug = context.query.slug;
+  const ssrApi = serverSideApi(context);
+
+  if (typeof slug !== "string") {
+    throw new Error("Incorrect slug format");
+  }
+
+  try {
+    const show = await ssrApi.showsShowSlugSummaryGet({
+      showSlug: slug,
+    });
+    const data = await ssrApi.availabilitiesGet({ showId: show.id });
+    return {
+      props: { show, dataJSON: superjson.stringify(data) },
+    };
+  } catch (err) {
+    return getSSRErrorReturn(err);
+  }
+}) satisfies GetServerSideProps<{ show: ShowDTO; dataJSON: string }>;
+
 export default function AvailabilitiesPage(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
@@ -49,27 +70,6 @@ export default function AvailabilitiesPage(
     </PermissionRequired>
   );
 }
-
-export const getServerSideProps = (async (context) => {
-  const slug = context.query.slug;
-  const ssrApi = serverSideApi(context);
-
-  if (typeof slug !== "string") {
-    throw new Error("Incorrect slug format");
-  }
-
-  try {
-    const show = await ssrApi.showsShowSlugSummaryGet({
-      showSlug: slug,
-    });
-    const data = await ssrApi.availabilitiesGet({ showId: show.id });
-    return {
-      props: { show, dataJSON: superjson.stringify(data) },
-    };
-  } catch (err) {
-    return getSSRErrorReturn(err);
-  }
-}) satisfies GetServerSideProps<{ show: ShowDTO; dataJSON: string }>;
 
 const AvailabilitiesTable: React.FC<{
   showId: number;
