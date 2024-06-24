@@ -15,16 +15,10 @@ import { AddPersonModal } from "domains/personnel/AddPersonModal/AddPersonModal"
 import { PeopleTable } from "domains/personnel/PeopleTable/PeopleTable";
 import { AddRoleModal } from "domains/rostering/AddRoleModal/AddRoleModal";
 import { RolesTable } from "domains/rostering/RolesTable";
-import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
-import { ReactElement } from "react";
 import sanitize from "sanitize-filename";
 import superjson from "superjson";
-
-PeoplePage.getLayout = (page: ReactElement) => (
-  <LayoutWithShowSidebar>{page}</LayoutWithShowSidebar>
-);
 
 export const getServerSideProps = (async (context) => {
   const slug = context.query.slug;
@@ -80,7 +74,7 @@ export default function PeoplePage(
               <H3>Roles</H3>
               <AddRoleModal showId={show.id} />
             </div>
-            <RolesTable />
+            <RolesTable showId={show.id} />
           </div>
         </Toggle>
         <PeopleTable

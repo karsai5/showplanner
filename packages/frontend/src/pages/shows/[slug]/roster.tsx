@@ -1,14 +1,40 @@
+import { serverSideApi } from "core/api";
+import { RosterDTO, ShowDTO } from "core/api/generated";
 import { H2 } from "core/components/Typography";
 import { HasPermission, PERMISSION } from "core/permissions";
+import { getSSRErrorReturn } from "core/utils/ssr";
 import { AddRoleModal } from "domains/rostering/AddRoleModal/AddRoleModal";
 import { RosterTable } from "domains/rostering/RosterTable/RosterTable";
-import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
-import { useShowSummary } from "domains/shows/lib/summaryContext";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
-import React, { ReactElement, useState } from "react";
+import React, { useState } from "react";
+import superjson from "superjson";
 
-const ShowPage = () => {
-  const show = useShowSummary();
+export const getServerSideProps = (async (context) => {
+  const slug = context.query.slug;
+  const ssrApi = serverSideApi(context);
+
+  if (typeof slug !== "string") {
+    throw new Error("Incorrect slug format");
+  }
+
+  try {
+    const show = await ssrApi.showsShowSlugSummaryGet({
+      showSlug: slug,
+    });
+    const data = await ssrApi.rosterGet({ showId: show.id });
+    return {
+      props: { show, rosterJSON: superjson.stringify(data) },
+    };
+  } catch (err) {
+    return getSSRErrorReturn(err);
+  }
+}) satisfies GetServerSideProps<{ show: ShowDTO; rosterJSON: string }>;
+
+const ShowPage = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
+  const { show } = props;
   const [showOldEvents, setShowOldEvents] = useState(false);
   return (
     <>
@@ -30,13 +56,13 @@ const ShowPage = () => {
           </button>
         </div>
       </div>
-      <RosterTable showId={show.id} showPastEvents={showOldEvents} />
+      <RosterTable
+        showId={show.id}
+        showPastEvents={showOldEvents}
+        initialData={superjson.parse<RosterDTO>(props.rosterJSON)}
+      />
     </>
   );
 };
-
-ShowPage.getLayout = (page: ReactElement) => (
-  <LayoutWithShowSidebar>{page}</LayoutWithShowSidebar>
-);
 
 export default ShowPage;
