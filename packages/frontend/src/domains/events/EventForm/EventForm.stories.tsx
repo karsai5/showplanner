@@ -1,6 +1,5 @@
 /* eslint-disable */
-import { ShowSummaryContext } from "domains/shows/lib/summaryContext";
-import { EventDTO, ShowDTO } from "core/api/generated";
+import { EventDTO } from "core/api/generated";
 import dayjs from "dayjs";
 import { EventForm } from "./EventForm";
 
@@ -8,18 +7,7 @@ export default {
   title: "Forms / New Event",
 };
 
-const show: ShowDTO = {
-  id: 1,
-  name: "",
-  company: "",
-  slug: "",
-};
-
-export const New = () => (
-  <ShowSummaryContext.Provider value={show}>
-    <EventForm onSuccess={() => {}} showId={0} />
-  </ShowSummaryContext.Provider>
-);
+export const New = () => <EventForm onSuccess={() => {}} showId={0} />;
 
 const event: EventDTO = {
   id: 0,
@@ -33,7 +21,5 @@ const event: EventDTO = {
 };
 
 export const Edit = () => (
-  <ShowSummaryContext.Provider value={show}>
-    <EventForm onSuccess={() => {}} event={event} showId={0} />
-  </ShowSummaryContext.Provider>
+  <EventForm onSuccess={() => {}} event={event} showId={0} />
 );
