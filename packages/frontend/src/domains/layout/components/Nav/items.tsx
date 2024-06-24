@@ -7,6 +7,8 @@ import {
   ShieldCheckIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "core/api";
 import { UserIcon } from "core/components/Icons";
 import {
   PERMISSION,
@@ -16,7 +18,6 @@ import {
   useIsLoggedIn,
 } from "core/permissions";
 import { useShowSlugFromUrl } from "domains/shows/lib/helpers";
-import { useShowSummary } from "domains/shows/lib/summaryContext";
 import { signOut } from "supertokens-auth-react/recipe/thirdpartyemailpassword";
 
 export type NavItem = {
@@ -90,7 +91,9 @@ export const useMainNavItems = (): NavItem[] => {
 
 export const useNavItemsForShow = (): NavItem[] => {
   const slug = useShowSlugFromUrl();
-  const show = useShowSummary();
+  const { data: show } = useQuery(["Show", slug], () =>
+    api.showsShowSlugSummaryGet({ showSlug: slug as string })
+  );
 
   const hasPermission = useHasPermission();
 
@@ -102,7 +105,7 @@ export const useNavItemsForShow = (): NavItem[] => {
     },
   ];
 
-  if (hasPermission(showPermission(show.id, PERMISSION.rostering))) {
+  if (show && hasPermission(showPermission(show.id, PERMISSION.rostering))) {
     navItems.push({
       title: "Availabilities",
       href: `/shows/${slug}/availabilities`,
@@ -110,7 +113,7 @@ export const useNavItemsForShow = (): NavItem[] => {
     });
   }
 
-  if (hasPermission(showPermission(show.id, PERMISSION.personnel))) {
+  if (show && hasPermission(showPermission(show.id, PERMISSION.personnel))) {
     navItems.push({
       title: "People",
       href: `/shows/${slug}/people`,

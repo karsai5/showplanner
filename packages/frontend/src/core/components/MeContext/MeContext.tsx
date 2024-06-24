@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getApi } from "core/api";
 import { MeDetailsDTO, ResponseError } from "core/api/generated";
-import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import NewPersonForm from "domains/personnel/NewPersonForm/NewPersonForm";
 import WelcomeModal from "domains/personnel/WelcomeModal/WelcomeModal";
 import { createContext, useEffect } from "react";
@@ -16,7 +15,7 @@ export const MeContextWrapper: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const session = Session.useSessionContext();
 
-  const { data, refetch, error, fetchStatus } = useQuery({
+  const { data, refetch, error } = useQuery({
     queryKey: ["me"],
     queryFn: () => api.meGet(),
     staleTime: 1000 * 60 * 30,
@@ -29,10 +28,6 @@ export const MeContextWrapper: React.FC<{ children: React.ReactNode }> = ({
       refetch();
     }
   }, [session, refetch]);
-
-  if (fetchStatus === "fetching" || session.loading) {
-    return <LoadingBox />;
-  }
 
   if ((error as ResponseError)?.response?.status == 404) {
     return (
