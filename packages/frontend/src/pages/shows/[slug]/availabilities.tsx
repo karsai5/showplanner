@@ -1,15 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import cc from "classnames";
-import { api, serverSideApi } from "core/api";
+import { serverSideApi } from "core/api";
 import {
-  AvailabilitiesDTOEventsInner,
+  AvailabilitiesDTO,
   AvailabilityDTO,
-  PersonSummaryDTO,
   ShowDTO,
 } from "core/api/generated";
-import ErrorBox from "core/components/ErrorBox/ErrorBox";
-import { Td } from "core/components/tables/tables";
-import { TimeRangeWithCurtainsUpCell } from "core/components/tables/TimeRangeWithCurtainsUp";
 import { H2 } from "core/components/Typography";
 import {
   PERMISSION,
@@ -17,12 +11,7 @@ import {
   showPermission,
 } from "core/permissions";
 import { getSSRErrorReturn } from "core/utils/ssr";
-import {
-  EventRendererType,
-  EventTable,
-} from "domains/events/EventTable/EventTable";
-import { displayDate } from "domains/events/lib/displayDate";
-import { getBgColor, getStringFromBoolean } from "domains/rostering/helpers";
+import { AvailabilitiesTable } from "domains/rostering/AvailabilitiesTable/AvailabilitiesTable";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import React from "react";
@@ -65,93 +54,8 @@ export default function AvailabilitiesPage(
       </div>
       <AvailabilitiesTable
         showId={show.id}
-        initalData={superjson.parse<AvailabilityDTO>(props.dataJSON)}
+        initialData={superjson.parse<AvailabilitiesDTO>(props.dataJSON)}
       />
     </PermissionRequired>
   );
 }
-
-const AvailabilitiesTable: React.FC<{
-  showId: number;
-  initalData: AvailabilityDTO;
-}> = ({ showId, initalData }) => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["Show", "Availabilities"],
-    queryFn: () => api.availabilitiesGet({ showId }),
-    initialData: initalData,
-  });
-  if (isError) {
-    return <ErrorBox>Could not get shows</ErrorBox>;
-  }
-  if (isLoading) {
-    return <progress className="progress w-56"></progress>;
-  }
-  if (data.events && data.people) {
-    return (
-      <EventTable
-        events={data.events}
-        headers={<Headers people={data.people} />}
-        eventRenderer={EventRenderer}
-      />
-    );
-  }
-  return null;
-};
-
-const Headers: React.FC<{ people: Array<PersonSummaryDTO> }> = ({ people }) => {
-  return (
-    <>
-      <th></th>
-      <th></th>
-      {people.map((p) => (
-        <th key={p.id} className="sticky top-0 bg-white z-40">
-          {p.firstName} {p.lastName}
-        </th>
-      ))}
-    </>
-  );
-};
-
-const EventRenderer: EventRendererType<AvailabilitiesDTOEventsInner> = ({
-  event: e,
-  groupLength,
-}) => {
-  const attendanceRequired = !!e.options?.attendanceRequired;
-  return (
-    <>
-      {groupLength && (
-        <Td className="whitespace-nowrap" rowSpan={groupLength}>
-          {displayDate(e.start)}
-        </Td>
-      )}
-      <TimeRangeWithCurtainsUpCell event={e} />
-      {e.availabilities?.map((a, i) => {
-        if (a === null) {
-          return (
-            <Td key={i} className="italic text-slate-400">
-              Unknown
-            </Td>
-          );
-        }
-        return (
-          <Td
-            key={i}
-            className={cc(
-              getBgColor(getStringFromBoolean(a.available), {
-                alternateColors: attendanceRequired,
-              })
-            )}
-          >
-            {a.available
-              ? attendanceRequired
-                ? "Attending"
-                : "Yes"
-              : attendanceRequired
-              ? "Not attending"
-              : "No"}
-          </Td>
-        );
-      })}
-    </>
-  );
-};
