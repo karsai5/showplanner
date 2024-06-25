@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import cc from "classnames";
-import { api } from "core/api";
+import { api_deprecated } from "core/api";
 import { PersonSummaryDTO, RosterDTOEventsInner } from "core/api/generated";
 import { showToastError } from "core/utils/errors";
 import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
@@ -27,7 +27,7 @@ export const ShadowSelector: FC<{
         return new Promise((res) => res(undefined));
       }
 
-      return api.shadowPost({
+      return api_deprecated.shadowPost({
         shadow: {
           eventId: props.event.id,
           roleId: props.roleId,
@@ -44,7 +44,7 @@ export const ShadowSelector: FC<{
   });
 
   const deleteShadow = useMutation<unknown, Error, number>({
-    mutationFn: (shadowId) => api.shadowIdDelete({ id: shadowId }),
+    mutationFn: (shadowId) => api_deprecated.shadowIdDelete({ id: shadowId }),
     onError: (e) => {
       showToastError("Something went wrong removing shadow.", e);
     },

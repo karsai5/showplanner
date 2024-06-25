@@ -1,7 +1,7 @@
 import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
 import { useMutation } from "@tanstack/react-query";
 import cc from "classnames";
-import { api } from "core/api";
+import { api_deprecated } from "core/api";
 import { UpdateShowreportDTO } from "core/api/generated";
 import TextArea from "core/components/fields/TextArea";
 import Input from "core/components/fields/TextInput";
@@ -67,7 +67,7 @@ export const ShowReportForm: React.FC<{
         eventId: initialValues?.eventId,
       };
 
-      return api.showreportsIdPost({
+      return api_deprecated.showreportsIdPost({
         id: id,
         report: report,
       });

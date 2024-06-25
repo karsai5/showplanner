@@ -3,7 +3,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
-import { api } from "core/api";
+import { api_deprecated } from "core/api";
 import {
   PersonSummaryDTO,
   RoleDTO,
@@ -38,7 +38,7 @@ export const RosterTable: React.FC<{
   const rosterRequest = useQuery({
     initialData: initialData,
     queryKey: ["roster", showId],
-    queryFn: () => api.rosterGet({ showId: showId }),
+    queryFn: () => api_deprecated.rosterGet({ showId: showId }),
   });
 
   if (rosterRequest.isError) {
@@ -191,7 +191,7 @@ const EditableRoleNameHeader: React.FC<{
 
   const deleteRole = useMutation<unknown, Error>({
     mutationFn: () => {
-      return api.rolesIdDelete({
+      return api_deprecated.rolesIdDelete({
         id: role.id as number,
       });
     },
@@ -205,7 +205,7 @@ const EditableRoleNameHeader: React.FC<{
 
   const unassignRole = useMutation<unknown, Error>({
     mutationFn: () => {
-      return api.rolesIdPut({
+      return api_deprecated.rolesIdPut({
         id: role.id as number,
         roleDetails: {
           name: role.name,
@@ -307,7 +307,7 @@ const AssignRole: React.FC<{
   roles: RoleDTO[];
 }> = ({ role, showId, onClose, roles }) => {
   const { data, isLoading } = useQuery(["assigned-people", showId], () =>
-    api.personnelAssignedGet({ showId: showId })
+    api_deprecated.personnelAssignedGet({ showId: showId })
   );
   const queryClient = useQueryClient();
 
@@ -316,7 +316,7 @@ const AssignRole: React.FC<{
       if (personId === "") {
         personId = null;
       }
-      return api.rolesIdPut({
+      return api_deprecated.rolesIdPut({
         id: role.id as number,
         roleDetails: {
           name: role.name,

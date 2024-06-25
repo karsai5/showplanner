@@ -6,7 +6,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import cc from "classnames";
-import { api } from "core/api";
+import { api_deprecated } from "core/api";
 import {
   PersonSummaryDTO,
   RoleDTO,
@@ -37,25 +37,27 @@ export const AssignmentCell: React.FC<{
   role: RoleDTO;
 }> = ({ assignment, showId, event, role }) => {
   const assignedPeopleRequest = useQuery(["assigned-people", showId], () =>
-    api.personnelAssignedGet({ showId: showId })
+    api_deprecated.personnelAssignedGet({ showId: showId })
   );
 
   const queryClient = useQueryClient();
   const changeAssignmentMutation = useMutation<unknown, Error, string>({
     mutationFn: (personId) => {
       if (personId === "" && assignment.assignmentId) {
-        return api.assignmentIdDelete({ id: assignment.assignmentId });
+        return api_deprecated.assignmentIdDelete({
+          id: assignment.assignmentId,
+        });
       }
       if (personId !== "") {
         if (assignment.assignmentId) {
-          return api.assignmentIdPut({
+          return api_deprecated.assignmentIdPut({
             id: assignment.assignmentId,
             assignment: {
               personId: personId,
             },
           });
         }
-        return api.assignmentPost({
+        return api_deprecated.assignmentPost({
           assignment: {
             eventId: event.id,
             personId: personId,
@@ -193,18 +195,20 @@ export const AssignmentModal: React.FC<{
   const changeAssignmentMutation = useMutation<unknown, Error, string>({
     mutationFn: (personId) => {
       if (personId === "" && assignment.assignmentId) {
-        return api.assignmentIdDelete({ id: assignment.assignmentId });
+        return api_deprecated.assignmentIdDelete({
+          id: assignment.assignmentId,
+        });
       }
       if (personId !== "") {
         if (assignment.assignmentId) {
-          return api.assignmentIdPut({
+          return api_deprecated.assignmentIdPut({
             id: assignment.assignmentId,
             assignment: {
               personId: personId,
             },
           });
         }
-        return api.assignmentPost({
+        return api_deprecated.assignmentPost({
           assignment: {
             eventId: event.id,
             personId: personId,

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	"showplanner.io/pkg/domains/people_domain"
+	"showplanner.io/pkg/domains/people_domain_old"
 	"strconv"
 	"strings"
 
@@ -97,7 +97,7 @@ func AddToShow() *cli.Command {
 			if err != nil {
 				return err
 			}
-			return people_domain.AddToShow(showId, userId)
+			return people_domain_old.AddToShow(showId, userId)
 		},
 	}
 }
@@ -118,7 +118,7 @@ func RemoveFromShow() *cli.Command {
 			person, err := selectPersonForShow(show.ID)
 
 			permissions.InitSupertokens()
-			return people_domain.RemoveFromShow(show.ID, person.ID)
+			return people_domain_old.RemoveFromShow(show.ID, person.ID)
 		},
 	}
 }

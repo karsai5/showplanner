@@ -1,7 +1,7 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
-import { api, getApi, serverSideApi } from "core/api";
+import { api_deprecated, getApi, serverSideApi } from "core/api";
 import {
   PersonSummaryDTO,
   ScheduleEventDTO,
@@ -239,7 +239,7 @@ const DividerRenderer: DividerRendererType<ScheduleEventDTO> = ({
 }) => {
   const queryClient = useQueryClient();
   const mutation = useMutation<unknown, Error>({
-    mutationFn: () => api.eventsIdDelete({ id: e.id }),
+    mutationFn: () => api_deprecated.eventsIdDelete({ id: e.id }),
     onError: (e) => {
       showToastError("Could not delete dividier", e);
     },

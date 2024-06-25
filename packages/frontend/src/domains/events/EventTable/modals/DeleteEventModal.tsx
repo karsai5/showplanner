@@ -1,6 +1,6 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "core/api";
+import { api_deprecated } from "core/api";
 import { EventDTO } from "core/api/generated";
 import { useModal } from "core/components/Modal/Modal";
 import { showToastError } from "core/utils/errors";
@@ -15,7 +15,7 @@ export const DeleteEventModal: React.FC<{ event: EventDTO }> = ({ event }) => {
       if (isNil(event.showId)) {
         throw new Error("Show id is missing");
       }
-      return api.eventsIdDelete({ id: event.id });
+      return api_deprecated.eventsIdDelete({ id: event.id });
     },
     onError: (e) => {
       showToastError("Could not delete event", e);

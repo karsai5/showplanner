@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
-import { api } from "core/api";
+import { api_deprecated } from "core/api";
 import Input from "core/components/fields/TextInput";
 import { useModal } from "core/components/Modal/Modal";
 import { showToastError } from "core/utils/errors";
@@ -28,7 +28,7 @@ export const AddRoleModal: React.FC<{
   const queryClient = useQueryClient();
   const mutation = useMutation<unknown, Error, Inputs>({
     mutationFn: (inputs) => {
-      return api.rolesPost({
+      return api_deprecated.rolesPost({
         roleDetails: {
           name: inputs.name,
           showId: showId,

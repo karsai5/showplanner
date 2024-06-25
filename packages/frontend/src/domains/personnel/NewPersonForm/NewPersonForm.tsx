@@ -46,7 +46,7 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
       if (finalPronoun === "Other") {
         finalPronoun = formData.manualPronoun;
       }
-      return api.mePost({
+      return api.personnel.mePost({
         personalDetails: {
           pronoun: finalPronoun,
           firstName: formData.firstname,

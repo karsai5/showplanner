@@ -1,7 +1,7 @@
 package shows_domain
 
 import (
-	"showplanner.io/pkg/domains/people_domain"
+	"showplanner.io/pkg/domains/people_domain_old"
 	"strconv"
 	"strings"
 
@@ -117,7 +117,7 @@ var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostS
 		role.Initialise(showIdString)
 	}
 
-	err = people_domain.AddToShow(int64(show.ID), userId)
+	err = people_domain_old.AddToShow(int64(show.ID), userId)
 	if err != nil {
 		logger.Error("Could not add person to show", err)
 		return &operations.PostShowsInternalServerError{}

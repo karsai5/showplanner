@@ -8,7 +8,7 @@ import {
   UsersIcon,
 } from "@heroicons/react/24/outline";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "core/api";
+import { api_deprecated } from "core/api";
 import { UserIcon } from "core/components/Icons";
 import {
   PERMISSION,
@@ -45,7 +45,7 @@ export const useMainNavItems = (): NavItem[] => {
       icon: <ShieldCheckIcon className="h-6 w-6" />,
       children: [
         {
-          title: "Users",
+          title: "All people",
           href: "/admin/people",
           icon: <UsersIcon className="h-6 w-6" />,
         },
@@ -92,7 +92,7 @@ export const useMainNavItems = (): NavItem[] => {
 export const useNavItemsForShow = (): NavItem[] => {
   const slug = useShowSlugFromUrl();
   const { data: show } = useQuery(["Show", slug], () =>
-    api.showsShowSlugSummaryGet({ showSlug: slug as string })
+    api_deprecated.showsShowSlugSummaryGet({ showSlug: slug as string })
   );
 
   const hasPermission = useHasPermission();

@@ -1,12 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getApi } from "core/api";
+import { api } from "core/api";
 import { MeDetailsDTO, ResponseError } from "core/api/generated";
 import NewPersonForm from "domains/personnel/NewPersonForm/NewPersonForm";
 import WelcomeModal from "domains/personnel/WelcomeModal/WelcomeModal";
 import { createContext, useEffect } from "react";
 import Session from "supertokens-auth-react/recipe/session";
-
-const api = getApi();
 
 export const MeContext = createContext<null | MeDetailsDTO>(null);
 
@@ -17,7 +15,7 @@ export const MeContextWrapper: React.FC<{ children: React.ReactNode }> = ({
 
   const { data, refetch, error } = useQuery({
     queryKey: ["me"],
-    queryFn: () => api.meGet(),
+    queryFn: () => api.personnel.meGet(),
     staleTime: 1000 * 60 * 30,
     enabled: false,
     retry: false,

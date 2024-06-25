@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import cc from "classnames";
-import { api } from "core/api";
+import { api_deprecated } from "core/api";
 import {
   AvailabilitiesDTO,
   AvailabilitiesDTOEventsInner,
@@ -23,7 +23,7 @@ export const AvailabilitiesTable: React.FC<{
 }> = ({ showId, initialData }) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["Show", showId],
-    queryFn: () => api.availabilitiesGet({ showId }),
+    queryFn: () => api_deprecated.availabilitiesGet({ showId }),
     initialData,
   });
   if (isError) {

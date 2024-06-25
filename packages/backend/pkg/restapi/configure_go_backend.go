@@ -4,9 +4,10 @@ package restapi
 
 import (
 	"crypto/tls"
+	"showplanner.io/pkg/personnel"
 
 	"showplanner.io/pkg/domains/media_domain"
-	"showplanner.io/pkg/domains/people_domain"
+	"showplanner.io/pkg/domains/people_domain_old"
 	"showplanner.io/pkg/domains/rostering_domain"
 	"showplanner.io/pkg/domains/schedule_domain"
 	"showplanner.io/pkg/domains/showreports"
@@ -33,6 +34,8 @@ func configureFlags(api *operations.GoBackendAPI) {
 func configureAPI(api *operations.GoBackendAPI) http.Handler {
 	initSentry()
 
+	api.UseSwaggerUI()
+
 	go userlifecycle_mailbox.Setup()
 	go availabilities_mailbox.Setup()
 
@@ -51,14 +54,16 @@ func configureAPI(api *operations.GoBackendAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	getHandlers(api)
-	people_domain.SetupHandlers(api)
+	people_domain_old.SetupHandlers(api)
 	rostering_domain.SetupHandlers(api)
-	people_domain.SetupHandlers(api)
+	people_domain_old.SetupHandlers(api)
 	media_domain.SetupHandlers(api)
 	schedule_domain.SetupHandlers(api)
 	schedule_domain.SetupHandlers(api)
 	showreports.SetupHandlers(api)
 	showtimers.SetupHandlers(api)
+
+	personnel.SetupHandlers(api)
 
 	api.PreServerShutdown = func() {}
 

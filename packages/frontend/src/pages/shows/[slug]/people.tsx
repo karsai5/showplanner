@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { api, serverSideApi } from "core/api";
+import { api_deprecated, serverSideApi } from "core/api";
 import { ArrayOfPersonSummaryDTO, ShowDTO } from "core/api/generated";
 import { H2, H3 } from "core/components/Typography";
 import {
@@ -106,7 +106,9 @@ const DownloadGoogleCSVButton: React.FC<{ showId: number }> = ({ showId }) => {
 const useDownloadCSV = (id: number, filename: string, type: string) => {
   return useMutation<string>({
     mutationFn: () => {
-      return api.personnelAssignedGoogleContactsCSVGet({ showId: id });
+      return api_deprecated.personnelAssignedGoogleContactsCSVGet({
+        showId: id,
+      });
     },
     onError: () => {
       showToastError("Something went wrong downloading file");

@@ -8,6 +8,7 @@ watch-swagger:
 	nodemon -e yaml --exec 'make' generate
 
 generate:
+	# rm -rf pkg/models pkg/restapi/operations
 	swagger generate server -f ../openapi/openapi.yaml -A go-backend -P models.Principal --model-package="pkg/models" --server-package="pkg/restapi"
 
 build: build-cli build-server

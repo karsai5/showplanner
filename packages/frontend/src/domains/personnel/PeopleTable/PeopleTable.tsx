@@ -5,7 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { api } from "core/api";
+import { api_deprecated } from "core/api";
 import { ArrayOfPersonSummaryDTO, PersonSummaryDTO } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
@@ -20,7 +20,7 @@ export const PeopleTable: React.FC<{
   const hasPermission = useHasPermission();
   const { data, isLoading, isError } = useQuery({
     queryKey: ["assigned-people", showId],
-    queryFn: () => api.personnelAssignedGet({ showId }),
+    queryFn: () => api_deprecated.personnelAssignedGet({ showId }),
     initialData: initialData,
   });
   if (isLoading) {

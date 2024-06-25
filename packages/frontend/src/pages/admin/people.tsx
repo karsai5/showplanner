@@ -9,11 +9,15 @@ import { UserRoleClaim } from "supertokens-web-js/recipe/userroles";
 
 const Impersonate: React.FC = () => {
   const router = useRouter();
-  const { data } = useQuery(["users"], () => api.personnelGet());
-  const handleImpersonate = (userId: string) => {
-    api.impersonatePost({ userId }).then(() => {
-      router.push("/");
-    });
+  const { data } = useQuery(["people"], () =>
+    api.personnel.personnelPeopleGet()
+  );
+  const handleImpersonate = (personId: string) => {
+    api.personnel
+      .personnelPeoplePersonIdImpersonatePost({ personId })
+      .then(() => {
+        router.push("/");
+      });
   };
   return (
     <>

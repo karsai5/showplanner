@@ -19,6 +19,8 @@ import (
 	"github.com/go-openapi/spec"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+
+	"showplanner.io/pkg/restapi/operations/personnel"
 )
 
 // NewGoBackendAPI creates a new GoBackend instance
@@ -69,11 +71,8 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetInvitationsHandler: GetInvitationsHandlerFunc(func(params GetInvitationsParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetInvitations has not yet been implemented")
 		}),
-		GetMeHandler: GetMeHandlerFunc(func(params GetMeParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetMe has not yet been implemented")
-		}),
-		GetPersonnelHandler: GetPersonnelHandlerFunc(func(params GetPersonnelParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetPersonnel has not yet been implemented")
+		PersonnelGetMeHandler: personnel.GetMeHandlerFunc(func(params personnel.GetMeParams) middleware.Responder {
+			return middleware.NotImplemented("operation personnel.GetMe has not yet been implemented")
 		}),
 		GetPersonnelAssignableHandler: GetPersonnelAssignableHandlerFunc(func(params GetPersonnelAssignableParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPersonnelAssignable has not yet been implemented")
@@ -83,6 +82,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		}),
 		GetPersonnelAssignedGoogleContactsCSVHandler: GetPersonnelAssignedGoogleContactsCSVHandlerFunc(func(params GetPersonnelAssignedGoogleContactsCSVParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPersonnelAssignedGoogleContactsCSV has not yet been implemented")
+		}),
+		PersonnelGetPersonnelPeopleHandler: personnel.GetPersonnelPeopleHandlerFunc(func(params personnel.GetPersonnelPeopleParams) middleware.Responder {
+			return middleware.NotImplemented("operation personnel.GetPersonnelPeople has not yet been implemented")
 		}),
 		GetPublicCalendarIDHandler: GetPublicCalendarIDHandlerFunc(func(params GetPublicCalendarIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPublicCalendarID has not yet been implemented")
@@ -138,20 +140,20 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		PostEventsIDHandler: PostEventsIDHandlerFunc(func(params PostEventsIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostEventsID has not yet been implemented")
 		}),
-		PostImpersonateHandler: PostImpersonateHandlerFunc(func(params PostImpersonateParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostImpersonate has not yet been implemented")
-		}),
 		PostInvitationsHandler: PostInvitationsHandlerFunc(func(params PostInvitationsParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostInvitations has not yet been implemented")
 		}),
-		PostMeHandler: PostMeHandlerFunc(func(params PostMeParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostMe has not yet been implemented")
+		PersonnelPostMeHandler: personnel.PostMeHandlerFunc(func(params personnel.PostMeParams) middleware.Responder {
+			return middleware.NotImplemented("operation personnel.PostMe has not yet been implemented")
 		}),
 		PostMediaUploadHandler: PostMediaUploadHandlerFunc(func(params PostMediaUploadParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostMediaUpload has not yet been implemented")
 		}),
 		PostPersonnelAssignHandler: PostPersonnelAssignHandlerFunc(func(params PostPersonnelAssignParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostPersonnelAssign has not yet been implemented")
+		}),
+		PersonnelPostPersonnelPeoplePersonIDImpersonateHandler: personnel.PostPersonnelPeoplePersonIDImpersonateHandlerFunc(func(params personnel.PostPersonnelPeoplePersonIDImpersonateParams) middleware.Responder {
+			return middleware.NotImplemented("operation personnel.PostPersonnelPeoplePersonIDImpersonate has not yet been implemented")
 		}),
 		PostRolesHandler: PostRolesHandlerFunc(func(params PostRolesParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostRoles has not yet been implemented")
@@ -233,16 +235,16 @@ type GoBackendAPI struct {
 	GetEventsIDHandler GetEventsIDHandler
 	// GetInvitationsHandler sets the operation handler for the get invitations operation
 	GetInvitationsHandler GetInvitationsHandler
-	// GetMeHandler sets the operation handler for the get me operation
-	GetMeHandler GetMeHandler
-	// GetPersonnelHandler sets the operation handler for the get personnel operation
-	GetPersonnelHandler GetPersonnelHandler
+	// PersonnelGetMeHandler sets the operation handler for the get me operation
+	PersonnelGetMeHandler personnel.GetMeHandler
 	// GetPersonnelAssignableHandler sets the operation handler for the get personnel assignable operation
 	GetPersonnelAssignableHandler GetPersonnelAssignableHandler
 	// GetPersonnelAssignedHandler sets the operation handler for the get personnel assigned operation
 	GetPersonnelAssignedHandler GetPersonnelAssignedHandler
 	// GetPersonnelAssignedGoogleContactsCSVHandler sets the operation handler for the get personnel assigned google contacts c s v operation
 	GetPersonnelAssignedGoogleContactsCSVHandler GetPersonnelAssignedGoogleContactsCSVHandler
+	// PersonnelGetPersonnelPeopleHandler sets the operation handler for the get personnel people operation
+	PersonnelGetPersonnelPeopleHandler personnel.GetPersonnelPeopleHandler
 	// GetPublicCalendarIDHandler sets the operation handler for the get public calendar ID operation
 	GetPublicCalendarIDHandler GetPublicCalendarIDHandler
 	// GetPublicHealthHandler sets the operation handler for the get public health operation
@@ -279,16 +281,16 @@ type GoBackendAPI struct {
 	PostEventsHandler PostEventsHandler
 	// PostEventsIDHandler sets the operation handler for the post events ID operation
 	PostEventsIDHandler PostEventsIDHandler
-	// PostImpersonateHandler sets the operation handler for the post impersonate operation
-	PostImpersonateHandler PostImpersonateHandler
 	// PostInvitationsHandler sets the operation handler for the post invitations operation
 	PostInvitationsHandler PostInvitationsHandler
-	// PostMeHandler sets the operation handler for the post me operation
-	PostMeHandler PostMeHandler
+	// PersonnelPostMeHandler sets the operation handler for the post me operation
+	PersonnelPostMeHandler personnel.PostMeHandler
 	// PostMediaUploadHandler sets the operation handler for the post media upload operation
 	PostMediaUploadHandler PostMediaUploadHandler
 	// PostPersonnelAssignHandler sets the operation handler for the post personnel assign operation
 	PostPersonnelAssignHandler PostPersonnelAssignHandler
+	// PersonnelPostPersonnelPeoplePersonIDImpersonateHandler sets the operation handler for the post personnel people person ID impersonate operation
+	PersonnelPostPersonnelPeoplePersonIDImpersonateHandler personnel.PostPersonnelPeoplePersonIDImpersonateHandler
 	// PostRolesHandler sets the operation handler for the post roles operation
 	PostRolesHandler PostRolesHandler
 	// PostShadowHandler sets the operation handler for the post shadow operation
@@ -410,11 +412,8 @@ func (o *GoBackendAPI) Validate() error {
 	if o.GetInvitationsHandler == nil {
 		unregistered = append(unregistered, "GetInvitationsHandler")
 	}
-	if o.GetMeHandler == nil {
-		unregistered = append(unregistered, "GetMeHandler")
-	}
-	if o.GetPersonnelHandler == nil {
-		unregistered = append(unregistered, "GetPersonnelHandler")
+	if o.PersonnelGetMeHandler == nil {
+		unregistered = append(unregistered, "personnel.GetMeHandler")
 	}
 	if o.GetPersonnelAssignableHandler == nil {
 		unregistered = append(unregistered, "GetPersonnelAssignableHandler")
@@ -424,6 +423,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.GetPersonnelAssignedGoogleContactsCSVHandler == nil {
 		unregistered = append(unregistered, "GetPersonnelAssignedGoogleContactsCSVHandler")
+	}
+	if o.PersonnelGetPersonnelPeopleHandler == nil {
+		unregistered = append(unregistered, "personnel.GetPersonnelPeopleHandler")
 	}
 	if o.GetPublicCalendarIDHandler == nil {
 		unregistered = append(unregistered, "GetPublicCalendarIDHandler")
@@ -479,20 +481,20 @@ func (o *GoBackendAPI) Validate() error {
 	if o.PostEventsIDHandler == nil {
 		unregistered = append(unregistered, "PostEventsIDHandler")
 	}
-	if o.PostImpersonateHandler == nil {
-		unregistered = append(unregistered, "PostImpersonateHandler")
-	}
 	if o.PostInvitationsHandler == nil {
 		unregistered = append(unregistered, "PostInvitationsHandler")
 	}
-	if o.PostMeHandler == nil {
-		unregistered = append(unregistered, "PostMeHandler")
+	if o.PersonnelPostMeHandler == nil {
+		unregistered = append(unregistered, "personnel.PostMeHandler")
 	}
 	if o.PostMediaUploadHandler == nil {
 		unregistered = append(unregistered, "PostMediaUploadHandler")
 	}
 	if o.PostPersonnelAssignHandler == nil {
 		unregistered = append(unregistered, "PostPersonnelAssignHandler")
+	}
+	if o.PersonnelPostPersonnelPeoplePersonIDImpersonateHandler == nil {
+		unregistered = append(unregistered, "personnel.PostPersonnelPeoplePersonIDImpersonateHandler")
 	}
 	if o.PostRolesHandler == nil {
 		unregistered = append(unregistered, "PostRolesHandler")
@@ -640,11 +642,7 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/me"] = NewGetMe(o.context, o.GetMeHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/personnel"] = NewGetPersonnel(o.context, o.GetPersonnelHandler)
+	o.handlers["GET"]["/me"] = personnel.NewGetMe(o.context, o.PersonnelGetMeHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
@@ -657,6 +655,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/personnel/assigned/googleContactsCSV"] = NewGetPersonnelAssignedGoogleContactsCSV(o.context, o.GetPersonnelAssignedGoogleContactsCSVHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/personnel/people"] = personnel.NewGetPersonnelPeople(o.context, o.PersonnelGetPersonnelPeopleHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
@@ -732,15 +734,11 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/impersonate"] = NewPostImpersonate(o.context, o.PostImpersonateHandler)
-	if o.handlers["POST"] == nil {
-		o.handlers["POST"] = make(map[string]http.Handler)
-	}
 	o.handlers["POST"]["/invitations"] = NewPostInvitations(o.context, o.PostInvitationsHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/me"] = NewPostMe(o.context, o.PostMeHandler)
+	o.handlers["POST"]["/me"] = personnel.NewPostMe(o.context, o.PersonnelPostMeHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
@@ -749,6 +747,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/personnel/assign"] = NewPostPersonnelAssign(o.context, o.PostPersonnelAssignHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/personnel/people/{personId}/impersonate"] = personnel.NewPostPersonnelPeoplePersonIDImpersonate(o.context, o.PersonnelPostPersonnelPeoplePersonIDImpersonateHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

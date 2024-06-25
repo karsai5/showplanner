@@ -3,7 +3,7 @@ package rostering_domain
 import (
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/people_domain"
+	"showplanner.io/pkg/domains/people_domain_old"
 	"showplanner.io/pkg/domains/schedule_domain"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
@@ -36,7 +36,7 @@ var handleGetAvailabilities = operations.GetAvailabilitiesHandlerFunc(func(param
 		return logError(&err)
 	}
 
-	mappedPeople := conv.MapArrayOfPointer(people, people_domain.MapToPersonSummaryDTO)
+	mappedPeople := conv.MapArrayOfPointer(people, people_domain_old.MapToPersonSummaryDTO)
 	mappedEvents := conv.MapArrayOfPointer(events, mapToEventWithAvailabilities(people))
 
 	schedule_domain.NameEventsWithCurtainsUp(mappedEvents)

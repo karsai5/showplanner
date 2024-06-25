@@ -323,33 +323,6 @@ func init() {
         }
       }
     },
-    "/impersonate": {
-      "post": {
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "type": "string",
-            "description": "ID of the user to impersonate",
-            "name": "userId",
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
     "/invitations/": {
       "get": {
         "produces": [
@@ -425,9 +398,13 @@ func init() {
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "personnel"
+        ],
+        "summary": "Details about logged in user",
         "responses": {
           "200": {
-            "description": "Details about logged in user",
+            "description": "OK",
             "schema": {
               "$ref": "./schemas/People.yaml#/MeDetailsDTO"
             }
@@ -444,9 +421,12 @@ func init() {
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "personnel"
+        ],
+        "summary": "Update personal details",
         "parameters": [
           {
-            "description": "The availability to create or update",
             "name": "personalDetails",
             "in": "body",
             "schema": {
@@ -500,28 +480,6 @@ func init() {
           },
           "500": {
             "description": ""
-          }
-        }
-      }
-    },
-    "/personnel": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns all people",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "./schemas/People.yaml#/ArrayOfPersonSummaryDTO"
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "$ref": "#/responses/Error"
           }
         }
       }
@@ -651,6 +609,62 @@ func init() {
           },
           "500": {
             "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/personnel/people": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "personnel"
+        ],
+        "summary": "Returns all people",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/People.yaml#/ArrayOfPersonSummaryDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/personnel/people/{personId}/impersonate": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "personnel"
+        ],
+        "summary": "Impersonate a person, useful for testing and reproducing bugs",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "ID of the person to impersonate",
+            "name": "personId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -1806,36 +1820,6 @@ func init() {
         }
       }
     },
-    "/impersonate": {
-      "post": {
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "type": "string",
-            "description": "ID of the user to impersonate",
-            "name": "userId",
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
     "/invitations/": {
       "get": {
         "produces": [
@@ -1926,9 +1910,13 @@ func init() {
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "personnel"
+        ],
+        "summary": "Details about logged in user",
         "responses": {
           "200": {
-            "description": "Details about logged in user",
+            "description": "OK",
             "schema": {
               "$ref": "#/definitions/meDetailsDTO"
             }
@@ -1945,9 +1933,12 @@ func init() {
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "personnel"
+        ],
+        "summary": "Update personal details",
         "parameters": [
           {
-            "description": "The availability to create or update",
             "name": "personalDetails",
             "in": "body",
             "schema": {
@@ -2004,34 +1995,6 @@ func init() {
           },
           "500": {
             "description": ""
-          }
-        }
-      }
-    },
-    "/personnel": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns all people",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/arrayOfPersonSummaryDTO"
-            }
-          },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
           }
         }
       }
@@ -2185,6 +2148,71 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Error"
             }
+          }
+        }
+      }
+    },
+    "/personnel/people": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "personnel"
+        ],
+        "summary": "Returns all people",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/arrayOfPersonSummaryDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/personnel/people/{personId}/impersonate": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "personnel"
+        ],
+        "summary": "Impersonate a person, useful for testing and reproducing bugs",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "ID of the person to impersonate",
+            "name": "personId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }

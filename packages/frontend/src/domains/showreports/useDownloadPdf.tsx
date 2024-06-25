@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
-import { api } from "core/api";
+import { api_deprecated } from "core/api";
 import { showToastError } from "core/utils/errors";
 import sanitize from "sanitize-filename";
 
 export const useDownloadPdf = (id: string, title: string) => {
   return useMutation<Blob>({
     mutationFn: () => {
-      return api.showreportsIdPdfGet({ id });
+      return api_deprecated.showreportsIdPdfGet({ id });
     },
     onError: () => {
       showToastError("Something went wrong creating a pdf of this report");

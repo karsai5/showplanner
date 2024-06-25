@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api, serverSideApi } from "core/api";
+import { api_deprecated, serverSideApi } from "core/api";
 import { ShowTimerDTO } from "core/api/generated";
 import { ClockIcon } from "core/components/Icons";
 import { StickyLoadingSpinner } from "core/components/LoadingBox/PersistantLoadingSpinner";
@@ -28,7 +28,7 @@ export default function ShowTimerPage({
       if (!timers) {
         throw new Error("Missing timers");
       }
-      return api.showtimersIdPost({
+      return api_deprecated.showtimersIdPost({
         id,
         timer: {
           expectedCurtainsUp: timers.expectedCurtainsUp,

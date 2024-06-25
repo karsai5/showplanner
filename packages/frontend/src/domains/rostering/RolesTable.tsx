@@ -1,6 +1,6 @@
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { api } from "core/api";
+import { api_deprecated } from "core/api";
 import { PersonSummaryDTO, RoleDTO } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import Input from "core/components/fields/TextInput";
@@ -19,14 +19,16 @@ export const RolesTable: React.FC<{
     isError,
     isLoading,
     data: roles,
-  } = useQuery(["show-roles", showId], () => api.rolesGet({ showId: showId }));
+  } = useQuery(["show-roles", showId], () =>
+    api_deprecated.rolesGet({ showId: showId })
+  );
 
   const {
     data: assignedPersonnel,
     isLoading: isLoadingPeople,
     isError: isErrorPeople,
   } = useQuery(["assigned-people", showId], () =>
-    api.personnelAssignedGet({ showId: showId })
+    api_deprecated.personnelAssignedGet({ showId: showId })
   );
 
   return (
@@ -66,7 +68,7 @@ export const RoleItem: React.FC<{
 
   const deleteRole = useMutation<unknown, Error>({
     mutationFn: () => {
-      return api.rolesIdDelete({
+      return api_deprecated.rolesIdDelete({
         id: role.id as number,
       });
     },
@@ -91,7 +93,7 @@ export const RoleItem: React.FC<{
       if (personId === "") {
         personId = null;
       }
-      return api.rolesIdPut({
+      return api_deprecated.rolesIdPut({
         id: role.id as number,
         roleDetails: {
           name: role.name,
@@ -156,7 +158,7 @@ export const RenameRole: React.FC<{
   const queryClient = useQueryClient();
   const mutation = useMutation<unknown, Error, Inputs>({
     mutationFn: (inputs) => {
-      return api.rolesIdPut({
+      return api_deprecated.rolesIdPut({
         id: role.id as number,
         roleDetails: {
           name: inputs.name,

@@ -1,4 +1,4 @@
-import { api } from "core/api";
+import { api_deprecated } from "core/api";
 import { MediaDTO } from "core/api/generated";
 import { ChangeEvent, useState } from "react";
 import { toast } from "react-toastify";
@@ -28,7 +28,7 @@ const FileInput: React.FC<{
     }
 
     try {
-      const result = await api.mediaUploadPost({
+      const result = await api_deprecated.mediaUploadPost({
         file: file,
         key: `${path}/${finalName}`,
       });
