@@ -74,8 +74,14 @@ func initDB() *gorm.DB {
 		&ShowTimer{},
 		&Invitation{},
 	)
+
 	if err != nil {
 		panic("Failed to run migrations")
+	}
+
+	err = setupIndexes(db)
+	if err != nil {
+		panic("Failed to setup indexes")
 	}
 
 	return db

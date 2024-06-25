@@ -115,16 +115,16 @@ type Show struct {
 
 type Availability struct {
 	gorm.Model
-	PersonID  uuid.UUID `gorm:"uniqueIndex:unique_a"`
-	EventID   uint      `gorm:"uniqueIndex:unique_a"`
+	PersonID  uuid.UUID
+	EventID   uint
 	Available bool
 }
 
 type Assignment struct {
 	gorm.Model
 	PersonID uuid.UUID
-	EventID  uint `gorm:"uniqueIndex:unique_assignment"`
-	RoleID   uint `gorm:"uniqueIndex:unique_assignment"`
+	EventID  uint
+	RoleID   uint 
 	Event    Event
 	Person   Person
 	Role     Role
@@ -132,9 +132,9 @@ type Assignment struct {
 
 type Shadow struct {
 	gorm.Model
-	PersonID uuid.UUID `gorm:"uniqueIndex:unique_shadow"`
-	EventID  uint      `gorm:"uniqueIndex:unique_shadow"`
-	RoleID   uint      `gorm:"uniqueIndex:unique_shadow"`
+	PersonID uuid.UUID
+	EventID  uint
+	RoleID   uint
 	Event    Event
 	Person   Person
 	Role     Role
@@ -268,12 +268,12 @@ func (e *Media) GetUrl() string {
 type Invitation struct {
 	gorm.Model
 
-	ShowID uint `gorm:"uniqueIndex:unique_invitation_to_person;uniqueIndex:unique_invitation_to_email"`
+	ShowID uint
 	Show   Show
 
-	PersonID *uuid.UUID `gorm:"uniqueIndex:unique_invitation_to_person"`
+	PersonID *uuid.UUID
 	Person   *Person
-	Email    *string `gorm:"uniqueIndex:unique_invitation_to_email"`
+	Email    *string
 }
 
 func (i *Invitation) MapToInvitationDTO() dto2.InvitationDTO {
