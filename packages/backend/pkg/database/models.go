@@ -123,8 +123,8 @@ type Availability struct {
 type Assignment struct {
 	gorm.Model
 	PersonID uuid.UUID
-	EventID  uint `TODO: gorm:"uniqueIndex:unique_assignment"`
-	RoleID   uint `TODO: gorm:"uniqueIndex:unique_assignment,comment: hello \\,where:deleted_at IS NULL"`
+	EventID  uint `gorm:"uniqueIndex:unique_assignment"`
+	RoleID   uint `gorm:"uniqueIndex:unique_assignment"`
 	Event    Event
 	Person   Person
 	Role     Role
