@@ -1,5 +1,10 @@
+import {
+  ArrowTopRightOnSquareIcon,
+  BugAntIcon,
+  CakeIcon,
+} from "@heroicons/react/24/outline";
+import { getFeedback } from "@sentry/browser";
 import { OutboundLink } from "core/components/links";
-import Image from "next/image";
 
 const donateLink = "https://ko-fi.com/linuskarsai";
 
@@ -10,20 +15,9 @@ export const Footer = () => {
         <p>
           <span className="font-medium">Made by Linus Karsai</span>
           <br />
-          Built in my spare time, mind the bugs! <br />
-          If you do find a{" "}
-          <OutboundLink href="https://forum.showplanner.io/c/bugs/5">
-            bug
-          </OutboundLink>{" "}
-          or have an{" "}
-          <OutboundLink href="https://forum.showplanner.io/c/feature-ideas/6">
-            idea
-          </OutboundLink>{" "}
-          a feature, make a post about it on the{" "}
-          <OutboundLink href="https://forum.showplanner.io/">
-            forum
-          </OutboundLink>
+          Built in my spare time, mind the bugs!
         </p>
+        <FeedbackButton />
       </div>
       <div>
         <div>
@@ -36,16 +30,42 @@ export const Footer = () => {
           </p>
         </div>
       </div>
-      <div>
-        <a href={donateLink} target="_blank" rel="noreferrer">
-          <Image
-            src="https://storage.ko-fi.com/cdn/kofi2.png?v=3"
-            alt="Buy Me a Coffee at ko-fi.com"
-            height="36"
-            width="141"
-          />
-        </a>
-      </div>
+      <div></div>
     </footer>
+  );
+};
+
+const FeedbackButton: React.FC = () => {
+  const feedback = getFeedback();
+  if (!feedback) {
+    return null;
+  }
+  return (
+    <button
+      className="btn bg-slate-300 cursor-pointer"
+      onClick={async () => {
+        const form = await feedback.createForm();
+        form.appendToDom();
+        form.open();
+      }}
+    >
+      <BugAntIcon className="w-6 h-6 " />
+      Report a bug
+    </button>
+  );
+};
+
+export const DonateButton: React.FC = () => {
+  return (
+    <a
+      className="btn bg-slate-300"
+      href={donateLink}
+      target="_blank"
+      rel="noreferrer"
+    >
+      <CakeIcon className="w-6 h-6" />
+      Buy me a coffee
+      <ArrowTopRightOnSquareIcon className="w-3 h-3" />
+    </a>
   );
 };
