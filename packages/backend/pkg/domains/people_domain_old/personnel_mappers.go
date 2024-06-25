@@ -3,11 +3,11 @@ package people_domain_old
 import (
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
-func MapToPersonSummaryDTO(person database.Person) models.PersonSummaryDTO {
-	dto := models.PersonSummaryDTO{
+func MapToPersonSummaryDTO(person database.Person) dtos.PersonSummaryDTO {
+	dto := dtos.PersonSummaryDTO{
 		FirstName: &person.FirstName,
 		ID:        conv.UUIDToStrmFmtUUID(person.ID),
 		LastName:  &person.LastName,
@@ -19,21 +19,21 @@ func MapToPersonSummaryDTO(person database.Person) models.PersonSummaryDTO {
 	return dto
 }
 
-func MapToPersonSummaryDTOWithEmail(p database.Person) models.PersonSummaryDTO {
+func MapToPersonSummaryDTOWithEmail(p database.Person) dtos.PersonSummaryDTO {
 	dto := MapToPersonSummaryDTO(p)
-	dto.Private = &models.PersonSummaryDTOPrivate{
+	dto.Private = &dtos.PersonSummaryDTOPrivate{
 		Email: p.Email,
 	}
 	return dto
 }
 
-func MapToPersonSummaryDTOWithPrivateInfo(p database.Person) models.PersonSummaryDTO {
+func MapToPersonSummaryDTOWithPrivateInfo(p database.Person) dtos.PersonSummaryDTO {
 	dto := MapToPersonSummaryDTO(p)
-	dto.Private = &models.PersonSummaryDTOPrivate{
+	dto.Private = &dtos.PersonSummaryDTOPrivate{
 		Allergies: p.Allergies,
 		Dob:       p.DOB,
 		Email:     p.Email,
-		EmergencyContact: &models.PersonSummaryDTOPrivateEmergencyContact{
+		EmergencyContact: &dtos.PersonSummaryDTOPrivateEmergencyContact{
 			Name:         p.EmergencyName,
 			Phone:        p.EmergencyPhone,
 			Relationship: p.EmergencyRelationship,

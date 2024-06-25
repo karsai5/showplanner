@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // PutRolesIDOKCode is the HTTP code returned for type PutRolesIDOK
@@ -26,7 +26,7 @@ type PutRolesIDOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.RoleDTO `json:"body,omitempty"`
+	Payload *dtos.RoleDTO `json:"body,omitempty"`
 }
 
 // NewPutRolesIDOK creates PutRolesIDOK with default headers values
@@ -36,13 +36,13 @@ func NewPutRolesIDOK() *PutRolesIDOK {
 }
 
 // WithPayload adds the payload to the put roles Id o k response
-func (o *PutRolesIDOK) WithPayload(payload *models.RoleDTO) *PutRolesIDOK {
+func (o *PutRolesIDOK) WithPayload(payload *dtos.RoleDTO) *PutRolesIDOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the put roles Id o k response
-func (o *PutRolesIDOK) SetPayload(payload *models.RoleDTO) {
+func (o *PutRolesIDOK) SetPayload(payload *dtos.RoleDTO) {
 	o.Payload = payload
 }
 
@@ -71,7 +71,7 @@ type PutRolesIDUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPutRolesIDUnauthorized creates PutRolesIDUnauthorized with default headers values
@@ -81,13 +81,13 @@ func NewPutRolesIDUnauthorized() *PutRolesIDUnauthorized {
 }
 
 // WithPayload adds the payload to the put roles Id unauthorized response
-func (o *PutRolesIDUnauthorized) WithPayload(payload *models.Error) *PutRolesIDUnauthorized {
+func (o *PutRolesIDUnauthorized) WithPayload(payload *dtos.Error) *PutRolesIDUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the put roles Id unauthorized response
-func (o *PutRolesIDUnauthorized) SetPayload(payload *models.Error) {
+func (o *PutRolesIDUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -116,7 +116,7 @@ type PutRolesIDInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPutRolesIDInternalServerError creates PutRolesIDInternalServerError with default headers values
@@ -126,13 +126,13 @@ func NewPutRolesIDInternalServerError() *PutRolesIDInternalServerError {
 }
 
 // WithPayload adds the payload to the put roles Id internal server error response
-func (o *PutRolesIDInternalServerError) WithPayload(payload *models.Error) *PutRolesIDInternalServerError {
+func (o *PutRolesIDInternalServerError) WithPayload(payload *dtos.Error) *PutRolesIDInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the put roles Id internal server error response
-func (o *PutRolesIDInternalServerError) SetPayload(payload *models.Error) {
+func (o *PutRolesIDInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

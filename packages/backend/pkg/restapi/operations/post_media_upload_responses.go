@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // PostMediaUploadOKCode is the HTTP code returned for type PostMediaUploadOK
@@ -26,7 +26,7 @@ type PostMediaUploadOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.MediaDTO `json:"body,omitempty"`
+	Payload *dtos.MediaDTO `json:"body,omitempty"`
 }
 
 // NewPostMediaUploadOK creates PostMediaUploadOK with default headers values
@@ -36,13 +36,13 @@ func NewPostMediaUploadOK() *PostMediaUploadOK {
 }
 
 // WithPayload adds the payload to the post media upload o k response
-func (o *PostMediaUploadOK) WithPayload(payload *models.MediaDTO) *PostMediaUploadOK {
+func (o *PostMediaUploadOK) WithPayload(payload *dtos.MediaDTO) *PostMediaUploadOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post media upload o k response
-func (o *PostMediaUploadOK) SetPayload(payload *models.MediaDTO) {
+func (o *PostMediaUploadOK) SetPayload(payload *dtos.MediaDTO) {
 	o.Payload = payload
 }
 

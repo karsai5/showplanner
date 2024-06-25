@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // DeleteShadowIDOKCode is the HTTP code returned for type DeleteShadowIDOK
@@ -51,7 +51,7 @@ type DeleteShadowIDUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewDeleteShadowIDUnauthorized creates DeleteShadowIDUnauthorized with default headers values
@@ -61,13 +61,13 @@ func NewDeleteShadowIDUnauthorized() *DeleteShadowIDUnauthorized {
 }
 
 // WithPayload adds the payload to the delete shadow Id unauthorized response
-func (o *DeleteShadowIDUnauthorized) WithPayload(payload *models.Error) *DeleteShadowIDUnauthorized {
+func (o *DeleteShadowIDUnauthorized) WithPayload(payload *dtos.Error) *DeleteShadowIDUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete shadow Id unauthorized response
-func (o *DeleteShadowIDUnauthorized) SetPayload(payload *models.Error) {
+func (o *DeleteShadowIDUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -96,7 +96,7 @@ type DeleteShadowIDNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewDeleteShadowIDNotFound creates DeleteShadowIDNotFound with default headers values
@@ -106,13 +106,13 @@ func NewDeleteShadowIDNotFound() *DeleteShadowIDNotFound {
 }
 
 // WithPayload adds the payload to the delete shadow Id not found response
-func (o *DeleteShadowIDNotFound) WithPayload(payload *models.Error) *DeleteShadowIDNotFound {
+func (o *DeleteShadowIDNotFound) WithPayload(payload *dtos.Error) *DeleteShadowIDNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete shadow Id not found response
-func (o *DeleteShadowIDNotFound) SetPayload(payload *models.Error) {
+func (o *DeleteShadowIDNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -141,7 +141,7 @@ type DeleteShadowIDInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewDeleteShadowIDInternalServerError creates DeleteShadowIDInternalServerError with default headers values
@@ -151,13 +151,13 @@ func NewDeleteShadowIDInternalServerError() *DeleteShadowIDInternalServerError {
 }
 
 // WithPayload adds the payload to the delete shadow Id internal server error response
-func (o *DeleteShadowIDInternalServerError) WithPayload(payload *models.Error) *DeleteShadowIDInternalServerError {
+func (o *DeleteShadowIDInternalServerError) WithPayload(payload *dtos.Error) *DeleteShadowIDInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete shadow Id internal server error response
-func (o *DeleteShadowIDInternalServerError) SetPayload(payload *models.Error) {
+func (o *DeleteShadowIDInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

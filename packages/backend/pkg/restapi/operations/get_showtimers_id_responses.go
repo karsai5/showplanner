@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetShowtimersIDOKCode is the HTTP code returned for type GetShowtimersIDOK
@@ -26,7 +26,7 @@ type GetShowtimersIDOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.ShowTimerDTO `json:"body,omitempty"`
+	Payload *dtos.ShowTimerDTO `json:"body,omitempty"`
 }
 
 // NewGetShowtimersIDOK creates GetShowtimersIDOK with default headers values
@@ -36,13 +36,13 @@ func NewGetShowtimersIDOK() *GetShowtimersIDOK {
 }
 
 // WithPayload adds the payload to the get showtimers Id o k response
-func (o *GetShowtimersIDOK) WithPayload(payload *models.ShowTimerDTO) *GetShowtimersIDOK {
+func (o *GetShowtimersIDOK) WithPayload(payload *dtos.ShowTimerDTO) *GetShowtimersIDOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showtimers Id o k response
-func (o *GetShowtimersIDOK) SetPayload(payload *models.ShowTimerDTO) {
+func (o *GetShowtimersIDOK) SetPayload(payload *dtos.ShowTimerDTO) {
 	o.Payload = payload
 }
 
@@ -71,7 +71,7 @@ type GetShowtimersIDUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowtimersIDUnauthorized creates GetShowtimersIDUnauthorized with default headers values
@@ -81,13 +81,13 @@ func NewGetShowtimersIDUnauthorized() *GetShowtimersIDUnauthorized {
 }
 
 // WithPayload adds the payload to the get showtimers Id unauthorized response
-func (o *GetShowtimersIDUnauthorized) WithPayload(payload *models.Error) *GetShowtimersIDUnauthorized {
+func (o *GetShowtimersIDUnauthorized) WithPayload(payload *dtos.Error) *GetShowtimersIDUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showtimers Id unauthorized response
-func (o *GetShowtimersIDUnauthorized) SetPayload(payload *models.Error) {
+func (o *GetShowtimersIDUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -116,7 +116,7 @@ type GetShowtimersIDNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowtimersIDNotFound creates GetShowtimersIDNotFound with default headers values
@@ -126,13 +126,13 @@ func NewGetShowtimersIDNotFound() *GetShowtimersIDNotFound {
 }
 
 // WithPayload adds the payload to the get showtimers Id not found response
-func (o *GetShowtimersIDNotFound) WithPayload(payload *models.Error) *GetShowtimersIDNotFound {
+func (o *GetShowtimersIDNotFound) WithPayload(payload *dtos.Error) *GetShowtimersIDNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showtimers Id not found response
-func (o *GetShowtimersIDNotFound) SetPayload(payload *models.Error) {
+func (o *GetShowtimersIDNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -161,7 +161,7 @@ type GetShowtimersIDInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowtimersIDInternalServerError creates GetShowtimersIDInternalServerError with default headers values
@@ -171,13 +171,13 @@ func NewGetShowtimersIDInternalServerError() *GetShowtimersIDInternalServerError
 }
 
 // WithPayload adds the payload to the get showtimers Id internal server error response
-func (o *GetShowtimersIDInternalServerError) WithPayload(payload *models.Error) *GetShowtimersIDInternalServerError {
+func (o *GetShowtimersIDInternalServerError) WithPayload(payload *dtos.Error) *GetShowtimersIDInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showtimers Id internal server error response
-func (o *GetShowtimersIDInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetShowtimersIDInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

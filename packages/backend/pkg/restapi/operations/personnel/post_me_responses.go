@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // PostMeOKCode is the HTTP code returned for type PostMeOK
@@ -51,7 +51,7 @@ type PostMeUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostMeUnauthorized creates PostMeUnauthorized with default headers values
@@ -61,13 +61,13 @@ func NewPostMeUnauthorized() *PostMeUnauthorized {
 }
 
 // WithPayload adds the payload to the post me unauthorized response
-func (o *PostMeUnauthorized) WithPayload(payload *models.Error) *PostMeUnauthorized {
+func (o *PostMeUnauthorized) WithPayload(payload *dtos.Error) *PostMeUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post me unauthorized response
-func (o *PostMeUnauthorized) SetPayload(payload *models.Error) {
+func (o *PostMeUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

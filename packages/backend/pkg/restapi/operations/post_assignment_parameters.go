@@ -13,7 +13,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // NewPostAssignmentParams creates a new PostAssignmentParams object
@@ -36,7 +36,7 @@ type PostAssignmentParams struct {
 	/*The details of the assignment
 	  In: body
 	*/
-	Assignment *models.CreateAssignedDTO
+	Assignment *dtos.CreateAssignedDTO
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -50,7 +50,7 @@ func (o *PostAssignmentParams) BindRequest(r *http.Request, route *middleware.Ma
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.CreateAssignedDTO
+		var body dtos.CreateAssignedDTO
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			res = append(res, errors.NewParseError("assignment", "body", "", err))
 		} else {

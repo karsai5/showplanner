@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // PostAvailabilitiesOKCode is the HTTP code returned for type PostAvailabilitiesOK
@@ -26,7 +26,7 @@ type PostAvailabilitiesOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.AvailabilityDTO `json:"body,omitempty"`
+	Payload *dtos.AvailabilityDTO `json:"body,omitempty"`
 }
 
 // NewPostAvailabilitiesOK creates PostAvailabilitiesOK with default headers values
@@ -36,13 +36,13 @@ func NewPostAvailabilitiesOK() *PostAvailabilitiesOK {
 }
 
 // WithPayload adds the payload to the post availabilities o k response
-func (o *PostAvailabilitiesOK) WithPayload(payload *models.AvailabilityDTO) *PostAvailabilitiesOK {
+func (o *PostAvailabilitiesOK) WithPayload(payload *dtos.AvailabilityDTO) *PostAvailabilitiesOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post availabilities o k response
-func (o *PostAvailabilitiesOK) SetPayload(payload *models.AvailabilityDTO) {
+func (o *PostAvailabilitiesOK) SetPayload(payload *dtos.AvailabilityDTO) {
 	o.Payload = payload
 }
 
@@ -71,7 +71,7 @@ type PostAvailabilitiesUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostAvailabilitiesUnauthorized creates PostAvailabilitiesUnauthorized with default headers values
@@ -81,13 +81,13 @@ func NewPostAvailabilitiesUnauthorized() *PostAvailabilitiesUnauthorized {
 }
 
 // WithPayload adds the payload to the post availabilities unauthorized response
-func (o *PostAvailabilitiesUnauthorized) WithPayload(payload *models.Error) *PostAvailabilitiesUnauthorized {
+func (o *PostAvailabilitiesUnauthorized) WithPayload(payload *dtos.Error) *PostAvailabilitiesUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post availabilities unauthorized response
-func (o *PostAvailabilitiesUnauthorized) SetPayload(payload *models.Error) {
+func (o *PostAvailabilitiesUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

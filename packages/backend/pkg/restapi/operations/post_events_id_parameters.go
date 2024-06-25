@@ -15,7 +15,7 @@ import (
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // NewPostEventsIDParams creates a new PostEventsIDParams object
@@ -38,7 +38,7 @@ type PostEventsIDParams struct {
 	/*The show to create
 	  In: body
 	*/
-	Event *models.CreateEventDTO
+	Event *dtos.CreateEventDTO
 	/*Id of event update
 	  Required: true
 	  In: path
@@ -57,7 +57,7 @@ func (o *PostEventsIDParams) BindRequest(r *http.Request, route *middleware.Matc
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.CreateEventDTO
+		var body dtos.CreateEventDTO
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			res = append(res, errors.NewParseError("event", "body", "", err))
 		} else {

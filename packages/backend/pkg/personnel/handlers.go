@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"showplanner.io/pkg/restapi/dtos"
+	dto2 "showplanner.io/pkg/restapi/dtos"
+
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	uuid "github.com/satori/go.uuid"
@@ -13,7 +16,6 @@ import (
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
-	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/postoffice"
 	"showplanner.io/pkg/postoffice/letters"
@@ -47,10 +49,10 @@ var handleGetAllPeople = personnel.GetPersonnelPeopleHandlerFunc(func(params per
 		return logError(&err)
 	}
 	return &personnel.GetPersonnelPeopleOK{
-		Payload: &models.ArrayOfPersonSummaryDTO{
-			People: conv.MapArrayOfPointer(people, func(p database.Person) models.PersonSummaryDTO {
+		Payload: &dto2.ArrayOfPersonSummaryDTO{
+			People: conv.MapArrayOfPointer(people, func(p database.Person) dto2.PersonSummaryDTO {
 				dto := p.MapToPersonSummaryDTO()
-				dto.Private = &models.PersonSummaryDTOPrivate{
+				dto.Private = &dtos.PersonSummaryDTOPrivate{
 					Email: p.Email,
 				}
 				return dto
@@ -162,7 +164,7 @@ var getMeHandler = personnel.GetMeHandlerFunc(func(params personnel.GetMeParams)
 	}
 
 	return &personnel.GetMeOK{
-		Payload: &models.MeDetailsDTO{
+		Payload: &dto2.MeDetailsDTO{
 			FirstName: person.FirstName,
 			Email:     person.Email,
 		},

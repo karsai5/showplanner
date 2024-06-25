@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetPublicHealthOKCode is the HTTP code returned for type GetPublicHealthOK
@@ -26,7 +26,7 @@ type GetPublicHealthOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.HealthCheck `json:"body,omitempty"`
+	Payload *dtos.HealthCheck `json:"body,omitempty"`
 }
 
 // NewGetPublicHealthOK creates GetPublicHealthOK with default headers values
@@ -36,13 +36,13 @@ func NewGetPublicHealthOK() *GetPublicHealthOK {
 }
 
 // WithPayload adds the payload to the get public health o k response
-func (o *GetPublicHealthOK) WithPayload(payload *models.HealthCheck) *GetPublicHealthOK {
+func (o *GetPublicHealthOK) WithPayload(payload *dtos.HealthCheck) *GetPublicHealthOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get public health o k response
-func (o *GetPublicHealthOK) SetPayload(payload *models.HealthCheck) {
+func (o *GetPublicHealthOK) SetPayload(payload *dtos.HealthCheck) {
 	o.Payload = payload
 }
 

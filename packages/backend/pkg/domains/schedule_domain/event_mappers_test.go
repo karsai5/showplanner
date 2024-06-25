@@ -2,21 +2,21 @@ package schedule_domain_test
 
 import (
 	"showplanner.io/pkg/domains/schedule_domain"
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 	"testing"
 	"time"
 
 	"github.com/go-openapi/strfmt"
 )
 
-func createEvent(s string) models.EventDTO {
+func createEvent(s string) dtos.EventDTO {
 	t, err := time.Parse(time.RFC3339, s)
 	if err != nil {
 		panic("Could not parse time")
 	}
 
 	dateTime := strfmt.DateTime(t)
-	return models.EventDTO{
+	return dtos.EventDTO{
 		CurtainsUp: &dateTime,
 	}
 }
@@ -26,7 +26,7 @@ func TestNameEventsWithCurtainsUp(t *testing.T) {
 		event1 := createEvent("2024-01-16T15:30:00Z")
 		event2 := createEvent("2024-01-16T17:00:00Z")
 
-		events := []*models.EventDTO{&event2, &event1}
+		events := []*dtos.EventDTO{&event2, &event1}
 
 		schedule_domain.NameEventsWithCurtainsUp(events)
 
@@ -50,7 +50,7 @@ func TestNameEventsWithCurtainsUp(t *testing.T) {
 
 		event2 := createEvent("2024-01-16T17:00:00Z")
 
-		events := []*models.EventDTO{&event2, &event1}
+		events := []*dtos.EventDTO{&event2, &event1}
 
 		schedule_domain.NameEventsWithCurtainsUp(events)
 
@@ -68,10 +68,10 @@ func TestNameEventsWithCurtainsUp(t *testing.T) {
 	})
 
 	t.Run("do not name events if they do not have curtains up", func(t *testing.T) {
-		event1 := models.EventDTO{}
-		event2 := models.EventDTO{}
+		event1 := dtos.EventDTO{}
+		event2 := dtos.EventDTO{}
 
-		events := []*models.EventDTO{&event2, &event1}
+		events := []*dtos.EventDTO{&event2, &event1}
 
 		schedule_domain.NameEventsWithCurtainsUp(events)
 

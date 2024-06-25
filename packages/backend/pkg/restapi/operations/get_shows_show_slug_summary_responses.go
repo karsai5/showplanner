@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetShowsShowSlugSummaryOKCode is the HTTP code returned for type GetShowsShowSlugSummaryOK
@@ -26,7 +26,7 @@ type GetShowsShowSlugSummaryOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.ShowSummaryDTO `json:"body,omitempty"`
+	Payload *dtos.ShowSummaryDTO `json:"body,omitempty"`
 }
 
 // NewGetShowsShowSlugSummaryOK creates GetShowsShowSlugSummaryOK with default headers values
@@ -36,13 +36,13 @@ func NewGetShowsShowSlugSummaryOK() *GetShowsShowSlugSummaryOK {
 }
 
 // WithPayload adds the payload to the get shows show slug summary o k response
-func (o *GetShowsShowSlugSummaryOK) WithPayload(payload *models.ShowSummaryDTO) *GetShowsShowSlugSummaryOK {
+func (o *GetShowsShowSlugSummaryOK) WithPayload(payload *dtos.ShowSummaryDTO) *GetShowsShowSlugSummaryOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get shows show slug summary o k response
-func (o *GetShowsShowSlugSummaryOK) SetPayload(payload *models.ShowSummaryDTO) {
+func (o *GetShowsShowSlugSummaryOK) SetPayload(payload *dtos.ShowSummaryDTO) {
 	o.Payload = payload
 }
 
@@ -71,7 +71,7 @@ type GetShowsShowSlugSummaryUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowsShowSlugSummaryUnauthorized creates GetShowsShowSlugSummaryUnauthorized with default headers values
@@ -81,13 +81,13 @@ func NewGetShowsShowSlugSummaryUnauthorized() *GetShowsShowSlugSummaryUnauthoriz
 }
 
 // WithPayload adds the payload to the get shows show slug summary unauthorized response
-func (o *GetShowsShowSlugSummaryUnauthorized) WithPayload(payload *models.Error) *GetShowsShowSlugSummaryUnauthorized {
+func (o *GetShowsShowSlugSummaryUnauthorized) WithPayload(payload *dtos.Error) *GetShowsShowSlugSummaryUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get shows show slug summary unauthorized response
-func (o *GetShowsShowSlugSummaryUnauthorized) SetPayload(payload *models.Error) {
+func (o *GetShowsShowSlugSummaryUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -116,7 +116,7 @@ type GetShowsShowSlugSummaryNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowsShowSlugSummaryNotFound creates GetShowsShowSlugSummaryNotFound with default headers values
@@ -126,13 +126,13 @@ func NewGetShowsShowSlugSummaryNotFound() *GetShowsShowSlugSummaryNotFound {
 }
 
 // WithPayload adds the payload to the get shows show slug summary not found response
-func (o *GetShowsShowSlugSummaryNotFound) WithPayload(payload *models.Error) *GetShowsShowSlugSummaryNotFound {
+func (o *GetShowsShowSlugSummaryNotFound) WithPayload(payload *dtos.Error) *GetShowsShowSlugSummaryNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get shows show slug summary not found response
-func (o *GetShowsShowSlugSummaryNotFound) SetPayload(payload *models.Error) {
+func (o *GetShowsShowSlugSummaryNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -161,7 +161,7 @@ type GetShowsShowSlugSummaryInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowsShowSlugSummaryInternalServerError creates GetShowsShowSlugSummaryInternalServerError with default headers values
@@ -171,13 +171,13 @@ func NewGetShowsShowSlugSummaryInternalServerError() *GetShowsShowSlugSummaryInt
 }
 
 // WithPayload adds the payload to the get shows show slug summary internal server error response
-func (o *GetShowsShowSlugSummaryInternalServerError) WithPayload(payload *models.Error) *GetShowsShowSlugSummaryInternalServerError {
+func (o *GetShowsShowSlugSummaryInternalServerError) WithPayload(payload *dtos.Error) *GetShowsShowSlugSummaryInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get shows show slug summary internal server error response
-func (o *GetShowsShowSlugSummaryInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetShowsShowSlugSummaryInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

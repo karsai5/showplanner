@@ -2,6 +2,7 @@ package shows_domain
 
 import (
 	"showplanner.io/pkg/domains/people_domain_old"
+	"showplanner.io/pkg/restapi/dtos"
 	"strconv"
 	"strings"
 
@@ -9,7 +10,6 @@ import (
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/media_domain"
 	"showplanner.io/pkg/logger"
-	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
 
@@ -105,7 +105,7 @@ var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostS
 			message = "Slug must be unique"
 		}
 		return &operations.PostShowsBadRequest{
-			Payload: &models.Error{
+			Payload: &dtos.Error{
 				Code:    &code,
 				Message: &message,
 			},

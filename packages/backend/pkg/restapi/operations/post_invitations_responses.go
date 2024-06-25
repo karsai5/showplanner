@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // PostInvitationsOKCode is the HTTP code returned for type PostInvitationsOK
@@ -51,7 +51,7 @@ type PostInvitationsBadRequest struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostInvitationsBadRequest creates PostInvitationsBadRequest with default headers values
@@ -61,13 +61,13 @@ func NewPostInvitationsBadRequest() *PostInvitationsBadRequest {
 }
 
 // WithPayload adds the payload to the post invitations bad request response
-func (o *PostInvitationsBadRequest) WithPayload(payload *models.Error) *PostInvitationsBadRequest {
+func (o *PostInvitationsBadRequest) WithPayload(payload *dtos.Error) *PostInvitationsBadRequest {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post invitations bad request response
-func (o *PostInvitationsBadRequest) SetPayload(payload *models.Error) {
+func (o *PostInvitationsBadRequest) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -96,7 +96,7 @@ type PostInvitationsUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostInvitationsUnauthorized creates PostInvitationsUnauthorized with default headers values
@@ -106,13 +106,13 @@ func NewPostInvitationsUnauthorized() *PostInvitationsUnauthorized {
 }
 
 // WithPayload adds the payload to the post invitations unauthorized response
-func (o *PostInvitationsUnauthorized) WithPayload(payload *models.Error) *PostInvitationsUnauthorized {
+func (o *PostInvitationsUnauthorized) WithPayload(payload *dtos.Error) *PostInvitationsUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post invitations unauthorized response
-func (o *PostInvitationsUnauthorized) SetPayload(payload *models.Error) {
+func (o *PostInvitationsUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -141,7 +141,7 @@ type PostInvitationsInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostInvitationsInternalServerError creates PostInvitationsInternalServerError with default headers values
@@ -151,13 +151,13 @@ func NewPostInvitationsInternalServerError() *PostInvitationsInternalServerError
 }
 
 // WithPayload adds the payload to the post invitations internal server error response
-func (o *PostInvitationsInternalServerError) WithPayload(payload *models.Error) *PostInvitationsInternalServerError {
+func (o *PostInvitationsInternalServerError) WithPayload(payload *dtos.Error) *PostInvitationsInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post invitations internal server error response
-func (o *PostInvitationsInternalServerError) SetPayload(payload *models.Error) {
+func (o *PostInvitationsInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

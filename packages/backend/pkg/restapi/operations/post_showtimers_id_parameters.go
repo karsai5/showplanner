@@ -14,7 +14,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/validate"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // NewPostShowtimersIDParams creates a new PostShowtimersIDParams object
@@ -42,7 +42,7 @@ type PostShowtimersIDParams struct {
 	/*Show report
 	  In: body
 	*/
-	Timer *models.UpdateShowTimerDTO
+	Timer *dtos.UpdateShowTimerDTO
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -61,7 +61,7 @@ func (o *PostShowtimersIDParams) BindRequest(r *http.Request, route *middleware.
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.UpdateShowTimerDTO
+		var body dtos.UpdateShowTimerDTO
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			res = append(res, errors.NewParseError("timer", "body", "", err))
 		} else {

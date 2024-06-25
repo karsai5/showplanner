@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetPublicScheduleOKCode is the HTTP code returned for type GetPublicScheduleOK
@@ -71,7 +71,7 @@ type GetPublicScheduleInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetPublicScheduleInternalServerError creates GetPublicScheduleInternalServerError with default headers values
@@ -81,13 +81,13 @@ func NewGetPublicScheduleInternalServerError() *GetPublicScheduleInternalServerE
 }
 
 // WithPayload adds the payload to the get public schedule internal server error response
-func (o *GetPublicScheduleInternalServerError) WithPayload(payload *models.Error) *GetPublicScheduleInternalServerError {
+func (o *GetPublicScheduleInternalServerError) WithPayload(payload *dtos.Error) *GetPublicScheduleInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get public schedule internal server error response
-func (o *GetPublicScheduleInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetPublicScheduleInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

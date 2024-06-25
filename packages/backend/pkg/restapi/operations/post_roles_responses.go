@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // PostRolesOKCode is the HTTP code returned for type PostRolesOK
@@ -26,7 +26,7 @@ type PostRolesOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.RoleDTO `json:"body,omitempty"`
+	Payload *dtos.RoleDTO `json:"body,omitempty"`
 }
 
 // NewPostRolesOK creates PostRolesOK with default headers values
@@ -36,13 +36,13 @@ func NewPostRolesOK() *PostRolesOK {
 }
 
 // WithPayload adds the payload to the post roles o k response
-func (o *PostRolesOK) WithPayload(payload *models.RoleDTO) *PostRolesOK {
+func (o *PostRolesOK) WithPayload(payload *dtos.RoleDTO) *PostRolesOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post roles o k response
-func (o *PostRolesOK) SetPayload(payload *models.RoleDTO) {
+func (o *PostRolesOK) SetPayload(payload *dtos.RoleDTO) {
 	o.Payload = payload
 }
 
@@ -71,7 +71,7 @@ type PostRolesUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostRolesUnauthorized creates PostRolesUnauthorized with default headers values
@@ -81,13 +81,13 @@ func NewPostRolesUnauthorized() *PostRolesUnauthorized {
 }
 
 // WithPayload adds the payload to the post roles unauthorized response
-func (o *PostRolesUnauthorized) WithPayload(payload *models.Error) *PostRolesUnauthorized {
+func (o *PostRolesUnauthorized) WithPayload(payload *dtos.Error) *PostRolesUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post roles unauthorized response
-func (o *PostRolesUnauthorized) SetPayload(payload *models.Error) {
+func (o *PostRolesUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -116,7 +116,7 @@ type PostRolesInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostRolesInternalServerError creates PostRolesInternalServerError with default headers values
@@ -126,13 +126,13 @@ func NewPostRolesInternalServerError() *PostRolesInternalServerError {
 }
 
 // WithPayload adds the payload to the post roles internal server error response
-func (o *PostRolesInternalServerError) WithPayload(payload *models.Error) *PostRolesInternalServerError {
+func (o *PostRolesInternalServerError) WithPayload(payload *dtos.Error) *PostRolesInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post roles internal server error response
-func (o *PostRolesInternalServerError) SetPayload(payload *models.Error) {
+func (o *PostRolesInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetPersonnelPeopleOKCode is the HTTP code returned for type GetPersonnelPeopleOK
@@ -26,7 +26,7 @@ type GetPersonnelPeopleOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.ArrayOfPersonSummaryDTO `json:"body,omitempty"`
+	Payload *dtos.ArrayOfPersonSummaryDTO `json:"body,omitempty"`
 }
 
 // NewGetPersonnelPeopleOK creates GetPersonnelPeopleOK with default headers values
@@ -36,13 +36,13 @@ func NewGetPersonnelPeopleOK() *GetPersonnelPeopleOK {
 }
 
 // WithPayload adds the payload to the get personnel people o k response
-func (o *GetPersonnelPeopleOK) WithPayload(payload *models.ArrayOfPersonSummaryDTO) *GetPersonnelPeopleOK {
+func (o *GetPersonnelPeopleOK) WithPayload(payload *dtos.ArrayOfPersonSummaryDTO) *GetPersonnelPeopleOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get personnel people o k response
-func (o *GetPersonnelPeopleOK) SetPayload(payload *models.ArrayOfPersonSummaryDTO) {
+func (o *GetPersonnelPeopleOK) SetPayload(payload *dtos.ArrayOfPersonSummaryDTO) {
 	o.Payload = payload
 }
 
@@ -71,7 +71,7 @@ type GetPersonnelPeopleUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetPersonnelPeopleUnauthorized creates GetPersonnelPeopleUnauthorized with default headers values
@@ -81,13 +81,13 @@ func NewGetPersonnelPeopleUnauthorized() *GetPersonnelPeopleUnauthorized {
 }
 
 // WithPayload adds the payload to the get personnel people unauthorized response
-func (o *GetPersonnelPeopleUnauthorized) WithPayload(payload *models.Error) *GetPersonnelPeopleUnauthorized {
+func (o *GetPersonnelPeopleUnauthorized) WithPayload(payload *dtos.Error) *GetPersonnelPeopleUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get personnel people unauthorized response
-func (o *GetPersonnelPeopleUnauthorized) SetPayload(payload *models.Error) {
+func (o *GetPersonnelPeopleUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -116,7 +116,7 @@ type GetPersonnelPeopleInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetPersonnelPeopleInternalServerError creates GetPersonnelPeopleInternalServerError with default headers values
@@ -126,13 +126,13 @@ func NewGetPersonnelPeopleInternalServerError() *GetPersonnelPeopleInternalServe
 }
 
 // WithPayload adds the payload to the get personnel people internal server error response
-func (o *GetPersonnelPeopleInternalServerError) WithPayload(payload *models.Error) *GetPersonnelPeopleInternalServerError {
+func (o *GetPersonnelPeopleInternalServerError) WithPayload(payload *dtos.Error) *GetPersonnelPeopleInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get personnel people internal server error response
-func (o *GetPersonnelPeopleInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetPersonnelPeopleInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

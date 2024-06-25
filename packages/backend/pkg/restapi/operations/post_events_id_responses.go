@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // PostEventsIDOKCode is the HTTP code returned for type PostEventsIDOK
@@ -51,7 +51,7 @@ type PostEventsIDUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostEventsIDUnauthorized creates PostEventsIDUnauthorized with default headers values
@@ -61,13 +61,13 @@ func NewPostEventsIDUnauthorized() *PostEventsIDUnauthorized {
 }
 
 // WithPayload adds the payload to the post events Id unauthorized response
-func (o *PostEventsIDUnauthorized) WithPayload(payload *models.Error) *PostEventsIDUnauthorized {
+func (o *PostEventsIDUnauthorized) WithPayload(payload *dtos.Error) *PostEventsIDUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post events Id unauthorized response
-func (o *PostEventsIDUnauthorized) SetPayload(payload *models.Error) {
+func (o *PostEventsIDUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -96,7 +96,7 @@ type PostEventsIDNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostEventsIDNotFound creates PostEventsIDNotFound with default headers values
@@ -106,13 +106,13 @@ func NewPostEventsIDNotFound() *PostEventsIDNotFound {
 }
 
 // WithPayload adds the payload to the post events Id not found response
-func (o *PostEventsIDNotFound) WithPayload(payload *models.Error) *PostEventsIDNotFound {
+func (o *PostEventsIDNotFound) WithPayload(payload *dtos.Error) *PostEventsIDNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post events Id not found response
-func (o *PostEventsIDNotFound) SetPayload(payload *models.Error) {
+func (o *PostEventsIDNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // PostAssignmentOKCode is the HTTP code returned for type PostAssignmentOK
@@ -26,7 +26,7 @@ type PostAssignmentOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.AssignedDTO `json:"body,omitempty"`
+	Payload *dtos.AssignedDTO `json:"body,omitempty"`
 }
 
 // NewPostAssignmentOK creates PostAssignmentOK with default headers values
@@ -36,13 +36,13 @@ func NewPostAssignmentOK() *PostAssignmentOK {
 }
 
 // WithPayload adds the payload to the post assignment o k response
-func (o *PostAssignmentOK) WithPayload(payload *models.AssignedDTO) *PostAssignmentOK {
+func (o *PostAssignmentOK) WithPayload(payload *dtos.AssignedDTO) *PostAssignmentOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post assignment o k response
-func (o *PostAssignmentOK) SetPayload(payload *models.AssignedDTO) {
+func (o *PostAssignmentOK) SetPayload(payload *dtos.AssignedDTO) {
 	o.Payload = payload
 }
 
@@ -71,7 +71,7 @@ type PostAssignmentUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostAssignmentUnauthorized creates PostAssignmentUnauthorized with default headers values
@@ -81,13 +81,13 @@ func NewPostAssignmentUnauthorized() *PostAssignmentUnauthorized {
 }
 
 // WithPayload adds the payload to the post assignment unauthorized response
-func (o *PostAssignmentUnauthorized) WithPayload(payload *models.Error) *PostAssignmentUnauthorized {
+func (o *PostAssignmentUnauthorized) WithPayload(payload *dtos.Error) *PostAssignmentUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post assignment unauthorized response
-func (o *PostAssignmentUnauthorized) SetPayload(payload *models.Error) {
+func (o *PostAssignmentUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -116,7 +116,7 @@ type PostAssignmentNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostAssignmentNotFound creates PostAssignmentNotFound with default headers values
@@ -126,13 +126,13 @@ func NewPostAssignmentNotFound() *PostAssignmentNotFound {
 }
 
 // WithPayload adds the payload to the post assignment not found response
-func (o *PostAssignmentNotFound) WithPayload(payload *models.Error) *PostAssignmentNotFound {
+func (o *PostAssignmentNotFound) WithPayload(payload *dtos.Error) *PostAssignmentNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post assignment not found response
-func (o *PostAssignmentNotFound) SetPayload(payload *models.Error) {
+func (o *PostAssignmentNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -161,7 +161,7 @@ type PostAssignmentInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostAssignmentInternalServerError creates PostAssignmentInternalServerError with default headers values
@@ -171,13 +171,13 @@ func NewPostAssignmentInternalServerError() *PostAssignmentInternalServerError {
 }
 
 // WithPayload adds the payload to the post assignment internal server error response
-func (o *PostAssignmentInternalServerError) WithPayload(payload *models.Error) *PostAssignmentInternalServerError {
+func (o *PostAssignmentInternalServerError) WithPayload(payload *dtos.Error) *PostAssignmentInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post assignment internal server error response
-func (o *PostAssignmentInternalServerError) SetPayload(payload *models.Error) {
+func (o *PostAssignmentInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

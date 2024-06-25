@@ -6,11 +6,11 @@ import (
 	"showplanner.io/pkg/domains/people_domain_old"
 	"showplanner.io/pkg/domains/schedule_domain"
 	"showplanner.io/pkg/logger"
-	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/postoffice"
 	"showplanner.io/pkg/postoffice/letters"
 	"showplanner.io/pkg/postoffice/topics"
+	dto2 "showplanner.io/pkg/restapi/dtos"
 	"showplanner.io/pkg/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -41,7 +41,7 @@ var handleGetAvailabilities = operations.GetAvailabilitiesHandlerFunc(func(param
 
 	schedule_domain.NameEventsWithCurtainsUp(mappedEvents)
 
-	dto := models.AvailabilitiesDTO{
+	dto := dto2.AvailabilitiesDTO{
 		People: mappedPeople,
 		Events: mappedEvents,
 	}
@@ -60,7 +60,7 @@ var handleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(par
 
 	if params.Availability.PersonID.String() != userId.String() {
 		return &operations.PostAvailabilitiesUnauthorized{
-			Payload: &models.Error{
+			Payload: &dto2.Error{
 				Message: conv.Pointer("Cannot update an availability for another user"),
 			},
 		}
@@ -74,7 +74,7 @@ var handleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(par
 
 	if hasPerm, _ := permissions.ViewEvents.HasPermission(event.ShowID, params.HTTPRequest); !hasPerm {
 		return &operations.PostAvailabilitiesUnauthorized{
-			Payload: &models.Error{
+			Payload: &dto2.Error{
 				Message: conv.Pointer("Cannot update an availability for a show you are not assigned to"),
 			},
 		}

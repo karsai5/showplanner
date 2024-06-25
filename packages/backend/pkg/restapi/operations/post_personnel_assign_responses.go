@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // PostPersonnelAssignOKCode is the HTTP code returned for type PostPersonnelAssignOK
@@ -51,7 +51,7 @@ type PostPersonnelAssignUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostPersonnelAssignUnauthorized creates PostPersonnelAssignUnauthorized with default headers values
@@ -61,13 +61,13 @@ func NewPostPersonnelAssignUnauthorized() *PostPersonnelAssignUnauthorized {
 }
 
 // WithPayload adds the payload to the post personnel assign unauthorized response
-func (o *PostPersonnelAssignUnauthorized) WithPayload(payload *models.Error) *PostPersonnelAssignUnauthorized {
+func (o *PostPersonnelAssignUnauthorized) WithPayload(payload *dtos.Error) *PostPersonnelAssignUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post personnel assign unauthorized response
-func (o *PostPersonnelAssignUnauthorized) SetPayload(payload *models.Error) {
+func (o *PostPersonnelAssignUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -96,7 +96,7 @@ type PostPersonnelAssignInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostPersonnelAssignInternalServerError creates PostPersonnelAssignInternalServerError with default headers values
@@ -106,13 +106,13 @@ func NewPostPersonnelAssignInternalServerError() *PostPersonnelAssignInternalSer
 }
 
 // WithPayload adds the payload to the post personnel assign internal server error response
-func (o *PostPersonnelAssignInternalServerError) WithPayload(payload *models.Error) *PostPersonnelAssignInternalServerError {
+func (o *PostPersonnelAssignInternalServerError) WithPayload(payload *dtos.Error) *PostPersonnelAssignInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post personnel assign internal server error response
-func (o *PostPersonnelAssignInternalServerError) SetPayload(payload *models.Error) {
+func (o *PostPersonnelAssignInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetScheduleOKCode is the HTTP code returned for type GetScheduleOK
@@ -26,7 +26,7 @@ type GetScheduleOK struct {
 	/*
 	  In: Body
 	*/
-	Payload []*models.ScheduleEventDTO `json:"body,omitempty"`
+	Payload []*dtos.ScheduleEventDTO `json:"body,omitempty"`
 }
 
 // NewGetScheduleOK creates GetScheduleOK with default headers values
@@ -36,13 +36,13 @@ func NewGetScheduleOK() *GetScheduleOK {
 }
 
 // WithPayload adds the payload to the get schedule o k response
-func (o *GetScheduleOK) WithPayload(payload []*models.ScheduleEventDTO) *GetScheduleOK {
+func (o *GetScheduleOK) WithPayload(payload []*dtos.ScheduleEventDTO) *GetScheduleOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get schedule o k response
-func (o *GetScheduleOK) SetPayload(payload []*models.ScheduleEventDTO) {
+func (o *GetScheduleOK) SetPayload(payload []*dtos.ScheduleEventDTO) {
 	o.Payload = payload
 }
 
@@ -53,7 +53,7 @@ func (o *GetScheduleOK) WriteResponse(rw http.ResponseWriter, producer runtime.P
 	payload := o.Payload
 	if payload == nil {
 		// return empty array
-		payload = make([]*models.ScheduleEventDTO, 0, 50)
+		payload = make([]*dtos.ScheduleEventDTO, 0, 50)
 	}
 
 	if err := producer.Produce(rw, payload); err != nil {
@@ -74,7 +74,7 @@ type GetScheduleUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetScheduleUnauthorized creates GetScheduleUnauthorized with default headers values
@@ -84,13 +84,13 @@ func NewGetScheduleUnauthorized() *GetScheduleUnauthorized {
 }
 
 // WithPayload adds the payload to the get schedule unauthorized response
-func (o *GetScheduleUnauthorized) WithPayload(payload *models.Error) *GetScheduleUnauthorized {
+func (o *GetScheduleUnauthorized) WithPayload(payload *dtos.Error) *GetScheduleUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get schedule unauthorized response
-func (o *GetScheduleUnauthorized) SetPayload(payload *models.Error) {
+func (o *GetScheduleUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -119,7 +119,7 @@ type GetScheduleInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetScheduleInternalServerError creates GetScheduleInternalServerError with default headers values
@@ -129,13 +129,13 @@ func NewGetScheduleInternalServerError() *GetScheduleInternalServerError {
 }
 
 // WithPayload adds the payload to the get schedule internal server error response
-func (o *GetScheduleInternalServerError) WithPayload(payload *models.Error) *GetScheduleInternalServerError {
+func (o *GetScheduleInternalServerError) WithPayload(payload *dtos.Error) *GetScheduleInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get schedule internal server error response
-func (o *GetScheduleInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetScheduleInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

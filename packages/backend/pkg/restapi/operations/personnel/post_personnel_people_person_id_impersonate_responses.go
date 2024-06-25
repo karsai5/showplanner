@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // PostPersonnelPeoplePersonIDImpersonateOKCode is the HTTP code returned for type PostPersonnelPeoplePersonIDImpersonateOK
@@ -51,7 +51,7 @@ type PostPersonnelPeoplePersonIDImpersonateUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostPersonnelPeoplePersonIDImpersonateUnauthorized creates PostPersonnelPeoplePersonIDImpersonateUnauthorized with default headers values
@@ -61,13 +61,13 @@ func NewPostPersonnelPeoplePersonIDImpersonateUnauthorized() *PostPersonnelPeopl
 }
 
 // WithPayload adds the payload to the post personnel people person Id impersonate unauthorized response
-func (o *PostPersonnelPeoplePersonIDImpersonateUnauthorized) WithPayload(payload *models.Error) *PostPersonnelPeoplePersonIDImpersonateUnauthorized {
+func (o *PostPersonnelPeoplePersonIDImpersonateUnauthorized) WithPayload(payload *dtos.Error) *PostPersonnelPeoplePersonIDImpersonateUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post personnel people person Id impersonate unauthorized response
-func (o *PostPersonnelPeoplePersonIDImpersonateUnauthorized) SetPayload(payload *models.Error) {
+func (o *PostPersonnelPeoplePersonIDImpersonateUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

@@ -3,6 +3,7 @@ package schedule_domain
 import (
 	"errors"
 	"fmt"
+	"showplanner.io/pkg/restapi/dtos"
 	"strings"
 	"time"
 
@@ -12,7 +13,6 @@ import (
 	"showplanner.io/pkg/config"
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/models"
 )
 
 func createCalendarForPerson(id uuid.UUID) (_ string, err error) {
@@ -74,7 +74,7 @@ func createEventsForShow(cal *ics.Calendar, show database.Show, userId uuid.UUID
 	return nil
 }
 
-func getDescription(show database.Show, event database.Event, mappedRoles []*models.ScheduleEventDTORolesItems0) string {
+func getDescription(show database.Show, event database.Event, mappedRoles []*dtos.ScheduleEventDTORolesItems0) string {
 	sBuilder := []string{}
 
 	if event.CurtainsUp != nil {
@@ -108,7 +108,7 @@ func getDescription(show database.Show, event database.Event, mappedRoles []*mod
 	return strings.Join(sBuilder, "\n")
 }
 
-func getEventSummary(show database.Show, event database.Event, mappedRoles []*models.ScheduleEventDTORolesItems0) string {
+func getEventSummary(show database.Show, event database.Event, mappedRoles []*dtos.ScheduleEventDTORolesItems0) string {
 	summaryArray := []string{}
 	if event.Name != nil {
 		summaryArray = append(summaryArray, *event.Name)
@@ -124,7 +124,7 @@ func getEventSummary(show database.Show, event database.Event, mappedRoles []*mo
 	return strings.Join(summaryArray, " - ")
 }
 
-func isUserRequired(mappedRoles []*models.ScheduleEventDTORolesItems0) bool {
+func isUserRequired(mappedRoles []*dtos.ScheduleEventDTORolesItems0) bool {
 	if len(mappedRoles) == 0 {
 		return false
 	}

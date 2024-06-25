@@ -6,8 +6,8 @@ import (
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/schedule_domain"
 	"showplanner.io/pkg/logger"
-	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
+	"showplanner.io/pkg/restapi/dtos"
 	"showplanner.io/pkg/restapi/operations"
 )
 
@@ -37,7 +37,7 @@ var handleGetRoster = operations.GetRosterHandlerFunc(func(params operations.Get
 	schedule_domain.NameEventsWithCurtainsUp(mappedEvents)
 
 	return &operations.GetRosterOK{
-		Payload: &models.RosterDTO{
+		Payload: &dtos.RosterDTO{
 			Events: mappedEvents,
 			Roles:  conv.MapArrayOfPointer(roles, mapToRoleDTO),
 		},

@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetShowreportsOKCode is the HTTP code returned for type GetShowreportsOK
@@ -26,7 +26,7 @@ type GetShowreportsOK struct {
 	/*
 	  In: Body
 	*/
-	Payload []*models.ShowReportSummaryDTO `json:"body,omitempty"`
+	Payload []*dtos.ShowReportSummaryDTO `json:"body,omitempty"`
 }
 
 // NewGetShowreportsOK creates GetShowreportsOK with default headers values
@@ -36,13 +36,13 @@ func NewGetShowreportsOK() *GetShowreportsOK {
 }
 
 // WithPayload adds the payload to the get showreports o k response
-func (o *GetShowreportsOK) WithPayload(payload []*models.ShowReportSummaryDTO) *GetShowreportsOK {
+func (o *GetShowreportsOK) WithPayload(payload []*dtos.ShowReportSummaryDTO) *GetShowreportsOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showreports o k response
-func (o *GetShowreportsOK) SetPayload(payload []*models.ShowReportSummaryDTO) {
+func (o *GetShowreportsOK) SetPayload(payload []*dtos.ShowReportSummaryDTO) {
 	o.Payload = payload
 }
 
@@ -53,7 +53,7 @@ func (o *GetShowreportsOK) WriteResponse(rw http.ResponseWriter, producer runtim
 	payload := o.Payload
 	if payload == nil {
 		// return empty array
-		payload = make([]*models.ShowReportSummaryDTO, 0, 50)
+		payload = make([]*dtos.ShowReportSummaryDTO, 0, 50)
 	}
 
 	if err := producer.Produce(rw, payload); err != nil {
@@ -74,7 +74,7 @@ type GetShowreportsUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowreportsUnauthorized creates GetShowreportsUnauthorized with default headers values
@@ -84,13 +84,13 @@ func NewGetShowreportsUnauthorized() *GetShowreportsUnauthorized {
 }
 
 // WithPayload adds the payload to the get showreports unauthorized response
-func (o *GetShowreportsUnauthorized) WithPayload(payload *models.Error) *GetShowreportsUnauthorized {
+func (o *GetShowreportsUnauthorized) WithPayload(payload *dtos.Error) *GetShowreportsUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showreports unauthorized response
-func (o *GetShowreportsUnauthorized) SetPayload(payload *models.Error) {
+func (o *GetShowreportsUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -119,7 +119,7 @@ type GetShowreportsNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowreportsNotFound creates GetShowreportsNotFound with default headers values
@@ -129,13 +129,13 @@ func NewGetShowreportsNotFound() *GetShowreportsNotFound {
 }
 
 // WithPayload adds the payload to the get showreports not found response
-func (o *GetShowreportsNotFound) WithPayload(payload *models.Error) *GetShowreportsNotFound {
+func (o *GetShowreportsNotFound) WithPayload(payload *dtos.Error) *GetShowreportsNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showreports not found response
-func (o *GetShowreportsNotFound) SetPayload(payload *models.Error) {
+func (o *GetShowreportsNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -164,7 +164,7 @@ type GetShowreportsInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowreportsInternalServerError creates GetShowreportsInternalServerError with default headers values
@@ -174,13 +174,13 @@ func NewGetShowreportsInternalServerError() *GetShowreportsInternalServerError {
 }
 
 // WithPayload adds the payload to the get showreports internal server error response
-func (o *GetShowreportsInternalServerError) WithPayload(payload *models.Error) *GetShowreportsInternalServerError {
+func (o *GetShowreportsInternalServerError) WithPayload(payload *dtos.Error) *GetShowreportsInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showreports internal server error response
-func (o *GetShowreportsInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetShowreportsInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // PostEventsOKCode is the HTTP code returned for type PostEventsOK
@@ -26,7 +26,7 @@ type PostEventsOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.EventDTO `json:"body,omitempty"`
+	Payload *dtos.EventDTO `json:"body,omitempty"`
 }
 
 // NewPostEventsOK creates PostEventsOK with default headers values
@@ -36,13 +36,13 @@ func NewPostEventsOK() *PostEventsOK {
 }
 
 // WithPayload adds the payload to the post events o k response
-func (o *PostEventsOK) WithPayload(payload *models.EventDTO) *PostEventsOK {
+func (o *PostEventsOK) WithPayload(payload *dtos.EventDTO) *PostEventsOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post events o k response
-func (o *PostEventsOK) SetPayload(payload *models.EventDTO) {
+func (o *PostEventsOK) SetPayload(payload *dtos.EventDTO) {
 	o.Payload = payload
 }
 
@@ -71,7 +71,7 @@ type PostEventsBadRequest struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostEventsBadRequest creates PostEventsBadRequest with default headers values
@@ -81,13 +81,13 @@ func NewPostEventsBadRequest() *PostEventsBadRequest {
 }
 
 // WithPayload adds the payload to the post events bad request response
-func (o *PostEventsBadRequest) WithPayload(payload *models.Error) *PostEventsBadRequest {
+func (o *PostEventsBadRequest) WithPayload(payload *dtos.Error) *PostEventsBadRequest {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post events bad request response
-func (o *PostEventsBadRequest) SetPayload(payload *models.Error) {
+func (o *PostEventsBadRequest) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -116,7 +116,7 @@ type PostEventsInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostEventsInternalServerError creates PostEventsInternalServerError with default headers values
@@ -126,13 +126,13 @@ func NewPostEventsInternalServerError() *PostEventsInternalServerError {
 }
 
 // WithPayload adds the payload to the post events internal server error response
-func (o *PostEventsInternalServerError) WithPayload(payload *models.Error) *PostEventsInternalServerError {
+func (o *PostEventsInternalServerError) WithPayload(payload *dtos.Error) *PostEventsInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post events internal server error response
-func (o *PostEventsInternalServerError) SetPayload(payload *models.Error) {
+func (o *PostEventsInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

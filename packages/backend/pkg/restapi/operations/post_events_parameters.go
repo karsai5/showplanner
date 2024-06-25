@@ -13,7 +13,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // NewPostEventsParams creates a new PostEventsParams object
@@ -36,7 +36,7 @@ type PostEventsParams struct {
 	/*The show to create
 	  In: body
 	*/
-	Event *models.CreateEventDTO
+	Event *dtos.CreateEventDTO
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -50,7 +50,7 @@ func (o *PostEventsParams) BindRequest(r *http.Request, route *middleware.Matche
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.CreateEventDTO
+		var body dtos.CreateEventDTO
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			res = append(res, errors.NewParseError("event", "body", "", err))
 		} else {

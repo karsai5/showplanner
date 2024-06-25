@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetPersonnelAssignedGoogleContactsCSVOKCode is the HTTP code returned for type GetPersonnelAssignedGoogleContactsCSVOK
@@ -69,7 +69,7 @@ type GetPersonnelAssignedGoogleContactsCSVUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetPersonnelAssignedGoogleContactsCSVUnauthorized creates GetPersonnelAssignedGoogleContactsCSVUnauthorized with default headers values
@@ -79,13 +79,13 @@ func NewGetPersonnelAssignedGoogleContactsCSVUnauthorized() *GetPersonnelAssigne
 }
 
 // WithPayload adds the payload to the get personnel assigned google contacts c s v unauthorized response
-func (o *GetPersonnelAssignedGoogleContactsCSVUnauthorized) WithPayload(payload *models.Error) *GetPersonnelAssignedGoogleContactsCSVUnauthorized {
+func (o *GetPersonnelAssignedGoogleContactsCSVUnauthorized) WithPayload(payload *dtos.Error) *GetPersonnelAssignedGoogleContactsCSVUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get personnel assigned google contacts c s v unauthorized response
-func (o *GetPersonnelAssignedGoogleContactsCSVUnauthorized) SetPayload(payload *models.Error) {
+func (o *GetPersonnelAssignedGoogleContactsCSVUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -114,7 +114,7 @@ type GetPersonnelAssignedGoogleContactsCSVInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetPersonnelAssignedGoogleContactsCSVInternalServerError creates GetPersonnelAssignedGoogleContactsCSVInternalServerError with default headers values
@@ -124,13 +124,13 @@ func NewGetPersonnelAssignedGoogleContactsCSVInternalServerError() *GetPersonnel
 }
 
 // WithPayload adds the payload to the get personnel assigned google contacts c s v internal server error response
-func (o *GetPersonnelAssignedGoogleContactsCSVInternalServerError) WithPayload(payload *models.Error) *GetPersonnelAssignedGoogleContactsCSVInternalServerError {
+func (o *GetPersonnelAssignedGoogleContactsCSVInternalServerError) WithPayload(payload *dtos.Error) *GetPersonnelAssignedGoogleContactsCSVInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get personnel assigned google contacts c s v internal server error response
-func (o *GetPersonnelAssignedGoogleContactsCSVInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetPersonnelAssignedGoogleContactsCSVInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

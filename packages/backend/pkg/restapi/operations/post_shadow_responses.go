@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // PostShadowOKCode is the HTTP code returned for type PostShadowOK
@@ -51,7 +51,7 @@ type PostShadowUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostShadowUnauthorized creates PostShadowUnauthorized with default headers values
@@ -61,13 +61,13 @@ func NewPostShadowUnauthorized() *PostShadowUnauthorized {
 }
 
 // WithPayload adds the payload to the post shadow unauthorized response
-func (o *PostShadowUnauthorized) WithPayload(payload *models.Error) *PostShadowUnauthorized {
+func (o *PostShadowUnauthorized) WithPayload(payload *dtos.Error) *PostShadowUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post shadow unauthorized response
-func (o *PostShadowUnauthorized) SetPayload(payload *models.Error) {
+func (o *PostShadowUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -96,7 +96,7 @@ type PostShadowNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostShadowNotFound creates PostShadowNotFound with default headers values
@@ -106,13 +106,13 @@ func NewPostShadowNotFound() *PostShadowNotFound {
 }
 
 // WithPayload adds the payload to the post shadow not found response
-func (o *PostShadowNotFound) WithPayload(payload *models.Error) *PostShadowNotFound {
+func (o *PostShadowNotFound) WithPayload(payload *dtos.Error) *PostShadowNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post shadow not found response
-func (o *PostShadowNotFound) SetPayload(payload *models.Error) {
+func (o *PostShadowNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -141,7 +141,7 @@ type PostShadowInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostShadowInternalServerError creates PostShadowInternalServerError with default headers values
@@ -151,13 +151,13 @@ func NewPostShadowInternalServerError() *PostShadowInternalServerError {
 }
 
 // WithPayload adds the payload to the post shadow internal server error response
-func (o *PostShadowInternalServerError) WithPayload(payload *models.Error) *PostShadowInternalServerError {
+func (o *PostShadowInternalServerError) WithPayload(payload *dtos.Error) *PostShadowInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post shadow internal server error response
-func (o *PostShadowInternalServerError) SetPayload(payload *models.Error) {
+func (o *PostShadowInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

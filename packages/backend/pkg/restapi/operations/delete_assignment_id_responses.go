@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // DeleteAssignmentIDOKCode is the HTTP code returned for type DeleteAssignmentIDOK
@@ -51,7 +51,7 @@ type DeleteAssignmentIDUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewDeleteAssignmentIDUnauthorized creates DeleteAssignmentIDUnauthorized with default headers values
@@ -61,13 +61,13 @@ func NewDeleteAssignmentIDUnauthorized() *DeleteAssignmentIDUnauthorized {
 }
 
 // WithPayload adds the payload to the delete assignment Id unauthorized response
-func (o *DeleteAssignmentIDUnauthorized) WithPayload(payload *models.Error) *DeleteAssignmentIDUnauthorized {
+func (o *DeleteAssignmentIDUnauthorized) WithPayload(payload *dtos.Error) *DeleteAssignmentIDUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete assignment Id unauthorized response
-func (o *DeleteAssignmentIDUnauthorized) SetPayload(payload *models.Error) {
+func (o *DeleteAssignmentIDUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -96,7 +96,7 @@ type DeleteAssignmentIDNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewDeleteAssignmentIDNotFound creates DeleteAssignmentIDNotFound with default headers values
@@ -106,13 +106,13 @@ func NewDeleteAssignmentIDNotFound() *DeleteAssignmentIDNotFound {
 }
 
 // WithPayload adds the payload to the delete assignment Id not found response
-func (o *DeleteAssignmentIDNotFound) WithPayload(payload *models.Error) *DeleteAssignmentIDNotFound {
+func (o *DeleteAssignmentIDNotFound) WithPayload(payload *dtos.Error) *DeleteAssignmentIDNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete assignment Id not found response
-func (o *DeleteAssignmentIDNotFound) SetPayload(payload *models.Error) {
+func (o *DeleteAssignmentIDNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -141,7 +141,7 @@ type DeleteAssignmentIDInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewDeleteAssignmentIDInternalServerError creates DeleteAssignmentIDInternalServerError with default headers values
@@ -151,13 +151,13 @@ func NewDeleteAssignmentIDInternalServerError() *DeleteAssignmentIDInternalServe
 }
 
 // WithPayload adds the payload to the delete assignment Id internal server error response
-func (o *DeleteAssignmentIDInternalServerError) WithPayload(payload *models.Error) *DeleteAssignmentIDInternalServerError {
+func (o *DeleteAssignmentIDInternalServerError) WithPayload(payload *dtos.Error) *DeleteAssignmentIDInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete assignment Id internal server error response
-func (o *DeleteAssignmentIDInternalServerError) SetPayload(payload *models.Error) {
+func (o *DeleteAssignmentIDInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

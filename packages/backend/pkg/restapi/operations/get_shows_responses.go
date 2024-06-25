@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetShowsOKCode is the HTTP code returned for type GetShowsOK
@@ -26,7 +26,7 @@ type GetShowsOK struct {
 	/*
 	  In: Body
 	*/
-	Payload []*models.ShowDTO `json:"body,omitempty"`
+	Payload []*dtos.ShowDTO `json:"body,omitempty"`
 }
 
 // NewGetShowsOK creates GetShowsOK with default headers values
@@ -36,13 +36,13 @@ func NewGetShowsOK() *GetShowsOK {
 }
 
 // WithPayload adds the payload to the get shows o k response
-func (o *GetShowsOK) WithPayload(payload []*models.ShowDTO) *GetShowsOK {
+func (o *GetShowsOK) WithPayload(payload []*dtos.ShowDTO) *GetShowsOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get shows o k response
-func (o *GetShowsOK) SetPayload(payload []*models.ShowDTO) {
+func (o *GetShowsOK) SetPayload(payload []*dtos.ShowDTO) {
 	o.Payload = payload
 }
 
@@ -53,7 +53,7 @@ func (o *GetShowsOK) WriteResponse(rw http.ResponseWriter, producer runtime.Prod
 	payload := o.Payload
 	if payload == nil {
 		// return empty array
-		payload = make([]*models.ShowDTO, 0, 50)
+		payload = make([]*dtos.ShowDTO, 0, 50)
 	}
 
 	if err := producer.Produce(rw, payload); err != nil {
@@ -74,7 +74,7 @@ type GetShowsUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowsUnauthorized creates GetShowsUnauthorized with default headers values
@@ -84,13 +84,13 @@ func NewGetShowsUnauthorized() *GetShowsUnauthorized {
 }
 
 // WithPayload adds the payload to the get shows unauthorized response
-func (o *GetShowsUnauthorized) WithPayload(payload *models.Error) *GetShowsUnauthorized {
+func (o *GetShowsUnauthorized) WithPayload(payload *dtos.Error) *GetShowsUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get shows unauthorized response
-func (o *GetShowsUnauthorized) SetPayload(payload *models.Error) {
+func (o *GetShowsUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -119,7 +119,7 @@ type GetShowsInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowsInternalServerError creates GetShowsInternalServerError with default headers values
@@ -129,13 +129,13 @@ func NewGetShowsInternalServerError() *GetShowsInternalServerError {
 }
 
 // WithPayload adds the payload to the get shows internal server error response
-func (o *GetShowsInternalServerError) WithPayload(payload *models.Error) *GetShowsInternalServerError {
+func (o *GetShowsInternalServerError) WithPayload(payload *dtos.Error) *GetShowsInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get shows internal server error response
-func (o *GetShowsInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetShowsInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

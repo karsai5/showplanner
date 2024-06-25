@@ -3,6 +3,7 @@ package schedule_domain
 import (
 	"errors"
 	"net/http"
+	dto2 "showplanner.io/pkg/restapi/dtos"
 	"slices"
 
 	"showplanner.io/pkg/domains/people_domain_old"
@@ -11,7 +12,6 @@ import (
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
-	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
 
@@ -53,11 +53,11 @@ var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operation
 		return logError(&err)
 	}
 
-	scheduledEvents := []*models.ScheduleEventDTO{}
+	scheduledEvents := []*dto2.ScheduleEventDTO{}
 
 	for _, e := range events {
 		scheduledEvents = append(scheduledEvents, conv.Pointer(
-			models.ScheduleEventDTO{
+			dto2.ScheduleEventDTO{
 				EventDTO:     e.MapToEventDTO(),
 				Roles:        MapRoles(roles, e, userId),
 				Availability: getAvailability(e.Availabilities),
@@ -95,15 +95,15 @@ var getPublicCalendarIDHandler = operations.GetPublicCalendarIDHandlerFunc(func(
 	})
 })
 
-func getAvailability(availabilities []database.Availability) *models.AvailabilityDTO {
+func getAvailability(availabilities []database.Availability) *dto2.AvailabilityDTO {
 	if len(availabilities) > 0 {
 		return conv.Pointer(mapAvailabilityDTO(availabilities[0]))
 	}
 	return nil
 }
 
-func MapRoles(roles []database.Role, event database.Event, userId uuid.UUID) []*models.ScheduleEventDTORolesItems0 {
-	arr := []*models.ScheduleEventDTORolesItems0{}
+func MapRoles(roles []database.Role, event database.Event, userId uuid.UUID) []*dto2.ScheduleEventDTORolesItems0 {
+	arr := []*dto2.ScheduleEventDTORolesItems0{}
 
 	// Get base roles, check if role is covered, check if role is shadowed
 	for _, role := range roles {
@@ -119,8 +119,8 @@ func MapRoles(roles []database.Role, event database.Event, userId uuid.UUID) []*
 	return arr
 }
 
-func getBaseRole(role database.Role, event database.Event, userId uuid.UUID) *models.ScheduleEventDTORolesItems0 {
-	baseRole := models.ScheduleEventDTORolesItems0{
+func getBaseRole(role database.Role, event database.Event, userId uuid.UUID) *dto2.ScheduleEventDTORolesItems0 {
+	baseRole := dto2.ScheduleEventDTORolesItems0{
 		CoveredBy:  nil,
 		Covering:   nil,
 		ID:         conv.UintToInt64(role.ID),
@@ -142,11 +142,11 @@ func getBaseRole(role database.Role, event database.Event, userId uuid.UUID) *mo
 	return &baseRole
 }
 
-func getRolesUserIsShadowing(shadows []database.Shadow, userId uuid.UUID) []*models.ScheduleEventDTORolesItems0 {
-	arr := []*models.ScheduleEventDTORolesItems0{}
+func getRolesUserIsShadowing(shadows []database.Shadow, userId uuid.UUID) []*dto2.ScheduleEventDTORolesItems0 {
+	arr := []*dto2.ScheduleEventDTORolesItems0{}
 	for _, shadow := range shadows {
 		if shadow.PersonID == userId {
-			role := models.ScheduleEventDTORolesItems0{
+			role := dto2.ScheduleEventDTORolesItems0{
 				ID:        conv.UintToInt64(shadow.RoleID),
 				Name:      &shadow.Role.Name,
 				Type:      SHADOWING,
@@ -161,11 +161,11 @@ func getRolesUserIsShadowing(shadows []database.Shadow, userId uuid.UUID) []*mod
 	return arr
 }
 
-func getAssignmentsAndCovers(event database.Event, userId uuid.UUID) []*models.ScheduleEventDTORolesItems0 {
-	arr := []*models.ScheduleEventDTORolesItems0{}
+func getAssignmentsAndCovers(event database.Event, userId uuid.UUID) []*dto2.ScheduleEventDTORolesItems0 {
+	arr := []*dto2.ScheduleEventDTORolesItems0{}
 	for _, assignment := range event.Assignments {
 		if assignment.PersonID == userId {
-			role := models.ScheduleEventDTORolesItems0{
+			role := dto2.ScheduleEventDTORolesItems0{
 				ID:       conv.UintToInt64(assignment.RoleID),
 				Name:     conv.Pointer(assignment.Role.Name),
 				Covering: nil,
@@ -185,8 +185,8 @@ func getAssignmentsAndCovers(event database.Event, userId uuid.UUID) []*models.S
 	return arr
 }
 
-func addShadows(role *models.ScheduleEventDTORolesItems0, event database.Event, roleId uint) {
-	shadowsForRole := []*models.PersonSummaryDTO{}
+func addShadows(role *dto2.ScheduleEventDTORolesItems0, event database.Event, roleId uint) {
+	shadowsForRole := []*dto2.PersonSummaryDTO{}
 	for _, s := range event.Shadows {
 		if s.RoleID == roleId {
 			shadowsForRole = append(shadowsForRole, conv.Pointer(people_domain_old.MapToPersonSummaryDTO(s.Person)))
@@ -197,8 +197,8 @@ func addShadows(role *models.ScheduleEventDTORolesItems0, event database.Event, 
 	}
 }
 
-func mapAssignmentsToEventRole(assignment database.Assignment) models.ScheduleEventDTORolesItems0 {
-	return models.ScheduleEventDTORolesItems0{
+func mapAssignmentsToEventRole(assignment database.Assignment) dto2.ScheduleEventDTORolesItems0 {
+	return dto2.ScheduleEventDTORolesItems0{
 		ID:   conv.UintToInt64(assignment.RoleID),
 		Name: conv.Pointer(assignment.Role.Name),
 	}

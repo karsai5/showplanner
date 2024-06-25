@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetMeOKCode is the HTTP code returned for type GetMeOK
@@ -26,7 +26,7 @@ type GetMeOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.MeDetailsDTO `json:"body,omitempty"`
+	Payload *dtos.MeDetailsDTO `json:"body,omitempty"`
 }
 
 // NewGetMeOK creates GetMeOK with default headers values
@@ -36,13 +36,13 @@ func NewGetMeOK() *GetMeOK {
 }
 
 // WithPayload adds the payload to the get me o k response
-func (o *GetMeOK) WithPayload(payload *models.MeDetailsDTO) *GetMeOK {
+func (o *GetMeOK) WithPayload(payload *dtos.MeDetailsDTO) *GetMeOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get me o k response
-func (o *GetMeOK) SetPayload(payload *models.MeDetailsDTO) {
+func (o *GetMeOK) SetPayload(payload *dtos.MeDetailsDTO) {
 	o.Payload = payload
 }
 

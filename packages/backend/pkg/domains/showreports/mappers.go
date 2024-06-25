@@ -1,25 +1,25 @@
 package showreports
 
 import (
+	dto2 "showplanner.io/pkg/restapi/dtos"
 	"time"
 
 	"github.com/go-openapi/strfmt"
 	uuid "github.com/satori/go.uuid"
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/models"
 )
 
-func mapShowReportToSummaryDTO(sr database.ShowReport) models.ShowReportSummaryDTO {
+func mapShowReportToSummaryDTO(sr database.ShowReport) dto2.ShowReportSummaryDTO {
 	sr.GenerateDetailsFromEvent()
-	return models.ShowReportSummaryDTO{
+	return dto2.ShowReportSummaryDTO{
 		LastUpdated: strfmt.DateTime(sr.UpdatedAt),
 		ID:          *conv.UUIDToStrmFmtUUID(sr.ID),
 		Title:       sr.Title,
 	}
 }
 
-func mapShowReportToDatabase(id uuid.UUID, createdByID uuid.UUID, dto models.UpdateShowreportDTO) database.ShowReport {
+func mapShowReportToDatabase(id uuid.UUID, createdByID uuid.UUID, dto dto2.UpdateShowreportDTO) database.ShowReport {
 	sr := database.ShowReport{
 		ID:                 id,
 		Title:              mapStringIfExists(dto.Title),
@@ -41,11 +41,11 @@ func mapShowReportToDatabase(id uuid.UUID, createdByID uuid.UUID, dto models.Upd
 	return sr
 }
 
-func mapShowReportToDTO(sr database.ShowReport) models.ShowReportDTO {
+func mapShowReportToDTO(sr database.ShowReport) dto2.ShowReportDTO {
 	sr.GenerateDetailsFromEvent()
-	dto := models.ShowReportDTO{
+	dto := dto2.ShowReportDTO{
 		ID: *conv.UUIDToStrmFmtUUID(sr.ID),
-		UpdateShowreportDTO: models.UpdateShowreportDTO{
+		UpdateShowreportDTO: dto2.UpdateShowreportDTO{
 			ActOneFOHClearance: mapTimeIfExists(sr.ActOneFOHClearance),
 			ActTwoFOHClearance: mapTimeIfExists(sr.ActTwoFOHClearance),
 			HouseOpen:          mapTimeIfExists(sr.HouseOpen),

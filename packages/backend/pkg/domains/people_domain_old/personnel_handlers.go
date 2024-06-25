@@ -1,6 +1,7 @@
 package people_domain_old
 
 import (
+	"showplanner.io/pkg/restapi/dtos"
 	"sort"
 	"strings"
 
@@ -9,7 +10,6 @@ import (
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
-	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
 )
@@ -109,7 +109,7 @@ var handleAssignedPersonnel = operations.GetPersonnelAssignedHandlerFunc(func(pa
 	}
 
 	return &operations.GetPersonnelAssignedOK{
-		Payload: &models.ArrayOfPersonSummaryDTO{
+		Payload: &dtos.ArrayOfPersonSummaryDTO{
 			People: conv.MapArrayOfPointer(people, personMapper),
 		},
 	}
@@ -137,7 +137,7 @@ var handleAssignablePersonnel = operations.GetPersonnelAssignableHandlerFunc(fun
 	})
 
 	return &operations.GetPersonnelAssignableOK{
-		Payload: &models.ArrayOfPersonSummaryDTO{
+		Payload: &dtos.ArrayOfPersonSummaryDTO{
 			People: conv.MapArrayOfPointer(people, MapToPersonSummaryDTO),
 		},
 	}

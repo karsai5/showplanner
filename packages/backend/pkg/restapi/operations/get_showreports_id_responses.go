@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetShowreportsIDOKCode is the HTTP code returned for type GetShowreportsIDOK
@@ -26,7 +26,7 @@ type GetShowreportsIDOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.ShowReportDTO `json:"body,omitempty"`
+	Payload *dtos.ShowReportDTO `json:"body,omitempty"`
 }
 
 // NewGetShowreportsIDOK creates GetShowreportsIDOK with default headers values
@@ -36,13 +36,13 @@ func NewGetShowreportsIDOK() *GetShowreportsIDOK {
 }
 
 // WithPayload adds the payload to the get showreports Id o k response
-func (o *GetShowreportsIDOK) WithPayload(payload *models.ShowReportDTO) *GetShowreportsIDOK {
+func (o *GetShowreportsIDOK) WithPayload(payload *dtos.ShowReportDTO) *GetShowreportsIDOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showreports Id o k response
-func (o *GetShowreportsIDOK) SetPayload(payload *models.ShowReportDTO) {
+func (o *GetShowreportsIDOK) SetPayload(payload *dtos.ShowReportDTO) {
 	o.Payload = payload
 }
 
@@ -71,7 +71,7 @@ type GetShowreportsIDUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowreportsIDUnauthorized creates GetShowreportsIDUnauthorized with default headers values
@@ -81,13 +81,13 @@ func NewGetShowreportsIDUnauthorized() *GetShowreportsIDUnauthorized {
 }
 
 // WithPayload adds the payload to the get showreports Id unauthorized response
-func (o *GetShowreportsIDUnauthorized) WithPayload(payload *models.Error) *GetShowreportsIDUnauthorized {
+func (o *GetShowreportsIDUnauthorized) WithPayload(payload *dtos.Error) *GetShowreportsIDUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showreports Id unauthorized response
-func (o *GetShowreportsIDUnauthorized) SetPayload(payload *models.Error) {
+func (o *GetShowreportsIDUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -116,7 +116,7 @@ type GetShowreportsIDNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowreportsIDNotFound creates GetShowreportsIDNotFound with default headers values
@@ -126,13 +126,13 @@ func NewGetShowreportsIDNotFound() *GetShowreportsIDNotFound {
 }
 
 // WithPayload adds the payload to the get showreports Id not found response
-func (o *GetShowreportsIDNotFound) WithPayload(payload *models.Error) *GetShowreportsIDNotFound {
+func (o *GetShowreportsIDNotFound) WithPayload(payload *dtos.Error) *GetShowreportsIDNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showreports Id not found response
-func (o *GetShowreportsIDNotFound) SetPayload(payload *models.Error) {
+func (o *GetShowreportsIDNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -161,7 +161,7 @@ type GetShowreportsIDInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowreportsIDInternalServerError creates GetShowreportsIDInternalServerError with default headers values
@@ -171,13 +171,13 @@ func NewGetShowreportsIDInternalServerError() *GetShowreportsIDInternalServerErr
 }
 
 // WithPayload adds the payload to the get showreports Id internal server error response
-func (o *GetShowreportsIDInternalServerError) WithPayload(payload *models.Error) *GetShowreportsIDInternalServerError {
+func (o *GetShowreportsIDInternalServerError) WithPayload(payload *dtos.Error) *GetShowreportsIDInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showreports Id internal server error response
-func (o *GetShowreportsIDInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetShowreportsIDInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetAvailabilitiesOKCode is the HTTP code returned for type GetAvailabilitiesOK
@@ -26,7 +26,7 @@ type GetAvailabilitiesOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.AvailabilitiesDTO `json:"body,omitempty"`
+	Payload *dtos.AvailabilitiesDTO `json:"body,omitempty"`
 }
 
 // NewGetAvailabilitiesOK creates GetAvailabilitiesOK with default headers values
@@ -36,13 +36,13 @@ func NewGetAvailabilitiesOK() *GetAvailabilitiesOK {
 }
 
 // WithPayload adds the payload to the get availabilities o k response
-func (o *GetAvailabilitiesOK) WithPayload(payload *models.AvailabilitiesDTO) *GetAvailabilitiesOK {
+func (o *GetAvailabilitiesOK) WithPayload(payload *dtos.AvailabilitiesDTO) *GetAvailabilitiesOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get availabilities o k response
-func (o *GetAvailabilitiesOK) SetPayload(payload *models.AvailabilitiesDTO) {
+func (o *GetAvailabilitiesOK) SetPayload(payload *dtos.AvailabilitiesDTO) {
 	o.Payload = payload
 }
 
@@ -71,7 +71,7 @@ type GetAvailabilitiesUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetAvailabilitiesUnauthorized creates GetAvailabilitiesUnauthorized with default headers values
@@ -81,13 +81,13 @@ func NewGetAvailabilitiesUnauthorized() *GetAvailabilitiesUnauthorized {
 }
 
 // WithPayload adds the payload to the get availabilities unauthorized response
-func (o *GetAvailabilitiesUnauthorized) WithPayload(payload *models.Error) *GetAvailabilitiesUnauthorized {
+func (o *GetAvailabilitiesUnauthorized) WithPayload(payload *dtos.Error) *GetAvailabilitiesUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get availabilities unauthorized response
-func (o *GetAvailabilitiesUnauthorized) SetPayload(payload *models.Error) {
+func (o *GetAvailabilitiesUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -116,7 +116,7 @@ type GetAvailabilitiesInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetAvailabilitiesInternalServerError creates GetAvailabilitiesInternalServerError with default headers values
@@ -126,13 +126,13 @@ func NewGetAvailabilitiesInternalServerError() *GetAvailabilitiesInternalServerE
 }
 
 // WithPayload adds the payload to the get availabilities internal server error response
-func (o *GetAvailabilitiesInternalServerError) WithPayload(payload *models.Error) *GetAvailabilitiesInternalServerError {
+func (o *GetAvailabilitiesInternalServerError) WithPayload(payload *dtos.Error) *GetAvailabilitiesInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get availabilities internal server error response
-func (o *GetAvailabilitiesInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetAvailabilitiesInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

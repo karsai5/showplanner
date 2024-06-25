@@ -2,13 +2,13 @@ package database
 
 import (
 	"fmt"
+	dto2 "showplanner.io/pkg/restapi/dtos"
 	"time"
 
 	"github.com/go-openapi/strfmt"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 	"showplanner.io/pkg/conv"
-	"showplanner.io/pkg/models"
 )
 
 type EventOptions struct {
@@ -65,10 +65,10 @@ func (e *Event) GetCalculatedName() (string, error) {
 	return "", nil
 }
 
-func (e *Event) MapToEventDTO() models.EventDTO {
+func (e *Event) MapToEventDTO() dto2.EventDTO {
 	start := strfmt.DateTime(e.Start)
 
-	dto := models.EventDTO{
+	dto := dto2.EventDTO{
 		ID:        conv.UintToInt64(e.ID),
 		ShowID:    int64(e.ShowID),
 		Start:     &start,
@@ -76,7 +76,7 @@ func (e *Event) MapToEventDTO() models.EventDTO {
 		Name:      e.Name,
 		Shortnote: e.ShortNote,
 		Address:   e.Address,
-		Options: &models.EventOptionsDTO{
+		Options: &dto2.EventOptionsDTO{
 			Divider:            conv.Pointer(e.Options.Divider),
 			AttendanceRequired: conv.Pointer(e.Options.AttendanceRequired),
 		},
@@ -176,8 +176,8 @@ func (p *Person) GetFullName() string {
 	return fmt.Sprintf("%s %s", p.GetFirstName(), p.LastName)
 }
 
-func (p *Person) MapToPersonSummaryDTO() models.PersonSummaryDTO {
-	dto := models.PersonSummaryDTO{
+func (p *Person) MapToPersonSummaryDTO() dto2.PersonSummaryDTO {
+	dto := dto2.PersonSummaryDTO{
 		FirstName: &p.FirstName,
 		ID:        conv.UUIDToStrmFmtUUID(p.ID),
 		LastName:  &p.LastName,
@@ -276,8 +276,8 @@ type Invitation struct {
 	Email    *string `gorm:"uniqueIndex:unique_invitation_to_email"`
 }
 
-func (i *Invitation) MapToInvitationDTO() models.InvitationDTO {
-	dto := models.InvitationDTO{
+func (i *Invitation) MapToInvitationDTO() dto2.InvitationDTO {
+	dto := dto2.InvitationDTO{
 		ID: int64(i.ID),
 	}
 

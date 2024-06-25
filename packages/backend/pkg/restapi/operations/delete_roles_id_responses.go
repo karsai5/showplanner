@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // DeleteRolesIDOKCode is the HTTP code returned for type DeleteRolesIDOK
@@ -51,7 +51,7 @@ type DeleteRolesIDUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewDeleteRolesIDUnauthorized creates DeleteRolesIDUnauthorized with default headers values
@@ -61,13 +61,13 @@ func NewDeleteRolesIDUnauthorized() *DeleteRolesIDUnauthorized {
 }
 
 // WithPayload adds the payload to the delete roles Id unauthorized response
-func (o *DeleteRolesIDUnauthorized) WithPayload(payload *models.Error) *DeleteRolesIDUnauthorized {
+func (o *DeleteRolesIDUnauthorized) WithPayload(payload *dtos.Error) *DeleteRolesIDUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete roles Id unauthorized response
-func (o *DeleteRolesIDUnauthorized) SetPayload(payload *models.Error) {
+func (o *DeleteRolesIDUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -96,7 +96,7 @@ type DeleteRolesIDInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewDeleteRolesIDInternalServerError creates DeleteRolesIDInternalServerError with default headers values
@@ -106,13 +106,13 @@ func NewDeleteRolesIDInternalServerError() *DeleteRolesIDInternalServerError {
 }
 
 // WithPayload adds the payload to the delete roles Id internal server error response
-func (o *DeleteRolesIDInternalServerError) WithPayload(payload *models.Error) *DeleteRolesIDInternalServerError {
+func (o *DeleteRolesIDInternalServerError) WithPayload(payload *dtos.Error) *DeleteRolesIDInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete roles Id internal server error response
-func (o *DeleteRolesIDInternalServerError) SetPayload(payload *models.Error) {
+func (o *DeleteRolesIDInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetRosterOKCode is the HTTP code returned for type GetRosterOK
@@ -26,7 +26,7 @@ type GetRosterOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.RosterDTO `json:"body,omitempty"`
+	Payload *dtos.RosterDTO `json:"body,omitempty"`
 }
 
 // NewGetRosterOK creates GetRosterOK with default headers values
@@ -36,13 +36,13 @@ func NewGetRosterOK() *GetRosterOK {
 }
 
 // WithPayload adds the payload to the get roster o k response
-func (o *GetRosterOK) WithPayload(payload *models.RosterDTO) *GetRosterOK {
+func (o *GetRosterOK) WithPayload(payload *dtos.RosterDTO) *GetRosterOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get roster o k response
-func (o *GetRosterOK) SetPayload(payload *models.RosterDTO) {
+func (o *GetRosterOK) SetPayload(payload *dtos.RosterDTO) {
 	o.Payload = payload
 }
 
@@ -71,7 +71,7 @@ type GetRosterUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetRosterUnauthorized creates GetRosterUnauthorized with default headers values
@@ -81,13 +81,13 @@ func NewGetRosterUnauthorized() *GetRosterUnauthorized {
 }
 
 // WithPayload adds the payload to the get roster unauthorized response
-func (o *GetRosterUnauthorized) WithPayload(payload *models.Error) *GetRosterUnauthorized {
+func (o *GetRosterUnauthorized) WithPayload(payload *dtos.Error) *GetRosterUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get roster unauthorized response
-func (o *GetRosterUnauthorized) SetPayload(payload *models.Error) {
+func (o *GetRosterUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -116,7 +116,7 @@ type GetRosterInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetRosterInternalServerError creates GetRosterInternalServerError with default headers values
@@ -126,13 +126,13 @@ func NewGetRosterInternalServerError() *GetRosterInternalServerError {
 }
 
 // WithPayload adds the payload to the get roster internal server error response
-func (o *GetRosterInternalServerError) WithPayload(payload *models.Error) *GetRosterInternalServerError {
+func (o *GetRosterInternalServerError) WithPayload(payload *dtos.Error) *GetRosterInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get roster internal server error response
-func (o *GetRosterInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetRosterInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

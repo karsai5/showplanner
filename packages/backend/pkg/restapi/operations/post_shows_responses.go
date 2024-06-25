@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // PostShowsOKCode is the HTTP code returned for type PostShowsOK
@@ -26,7 +26,7 @@ type PostShowsOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.ShowDTO `json:"body,omitempty"`
+	Payload *dtos.ShowDTO `json:"body,omitempty"`
 }
 
 // NewPostShowsOK creates PostShowsOK with default headers values
@@ -36,13 +36,13 @@ func NewPostShowsOK() *PostShowsOK {
 }
 
 // WithPayload adds the payload to the post shows o k response
-func (o *PostShowsOK) WithPayload(payload *models.ShowDTO) *PostShowsOK {
+func (o *PostShowsOK) WithPayload(payload *dtos.ShowDTO) *PostShowsOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post shows o k response
-func (o *PostShowsOK) SetPayload(payload *models.ShowDTO) {
+func (o *PostShowsOK) SetPayload(payload *dtos.ShowDTO) {
 	o.Payload = payload
 }
 
@@ -71,7 +71,7 @@ type PostShowsBadRequest struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostShowsBadRequest creates PostShowsBadRequest with default headers values
@@ -81,13 +81,13 @@ func NewPostShowsBadRequest() *PostShowsBadRequest {
 }
 
 // WithPayload adds the payload to the post shows bad request response
-func (o *PostShowsBadRequest) WithPayload(payload *models.Error) *PostShowsBadRequest {
+func (o *PostShowsBadRequest) WithPayload(payload *dtos.Error) *PostShowsBadRequest {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post shows bad request response
-func (o *PostShowsBadRequest) SetPayload(payload *models.Error) {
+func (o *PostShowsBadRequest) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -116,7 +116,7 @@ type PostShowsUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPostShowsUnauthorized creates PostShowsUnauthorized with default headers values
@@ -126,13 +126,13 @@ func NewPostShowsUnauthorized() *PostShowsUnauthorized {
 }
 
 // WithPayload adds the payload to the post shows unauthorized response
-func (o *PostShowsUnauthorized) WithPayload(payload *models.Error) *PostShowsUnauthorized {
+func (o *PostShowsUnauthorized) WithPayload(payload *dtos.Error) *PostShowsUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the post shows unauthorized response
-func (o *PostShowsUnauthorized) SetPayload(payload *models.Error) {
+func (o *PostShowsUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

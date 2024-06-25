@@ -11,7 +11,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetShowreportsIDPdfOKCode is the HTTP code returned for type GetShowreportsIDPdfOK
@@ -70,7 +70,7 @@ type GetShowreportsIDPdfUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowreportsIDPdfUnauthorized creates GetShowreportsIDPdfUnauthorized with default headers values
@@ -80,13 +80,13 @@ func NewGetShowreportsIDPdfUnauthorized() *GetShowreportsIDPdfUnauthorized {
 }
 
 // WithPayload adds the payload to the get showreports Id pdf unauthorized response
-func (o *GetShowreportsIDPdfUnauthorized) WithPayload(payload *models.Error) *GetShowreportsIDPdfUnauthorized {
+func (o *GetShowreportsIDPdfUnauthorized) WithPayload(payload *dtos.Error) *GetShowreportsIDPdfUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showreports Id pdf unauthorized response
-func (o *GetShowreportsIDPdfUnauthorized) SetPayload(payload *models.Error) {
+func (o *GetShowreportsIDPdfUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -115,7 +115,7 @@ type GetShowreportsIDPdfNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowreportsIDPdfNotFound creates GetShowreportsIDPdfNotFound with default headers values
@@ -125,13 +125,13 @@ func NewGetShowreportsIDPdfNotFound() *GetShowreportsIDPdfNotFound {
 }
 
 // WithPayload adds the payload to the get showreports Id pdf not found response
-func (o *GetShowreportsIDPdfNotFound) WithPayload(payload *models.Error) *GetShowreportsIDPdfNotFound {
+func (o *GetShowreportsIDPdfNotFound) WithPayload(payload *dtos.Error) *GetShowreportsIDPdfNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showreports Id pdf not found response
-func (o *GetShowreportsIDPdfNotFound) SetPayload(payload *models.Error) {
+func (o *GetShowreportsIDPdfNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -160,7 +160,7 @@ type GetShowreportsIDPdfInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowreportsIDPdfInternalServerError creates GetShowreportsIDPdfInternalServerError with default headers values
@@ -170,13 +170,13 @@ func NewGetShowreportsIDPdfInternalServerError() *GetShowreportsIDPdfInternalSer
 }
 
 // WithPayload adds the payload to the get showreports Id pdf internal server error response
-func (o *GetShowreportsIDPdfInternalServerError) WithPayload(payload *models.Error) *GetShowreportsIDPdfInternalServerError {
+func (o *GetShowreportsIDPdfInternalServerError) WithPayload(payload *dtos.Error) *GetShowreportsIDPdfInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showreports Id pdf internal server error response
-func (o *GetShowreportsIDPdfInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetShowreportsIDPdfInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

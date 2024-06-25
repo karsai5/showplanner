@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetRolesOKCode is the HTTP code returned for type GetRolesOK
@@ -26,7 +26,7 @@ type GetRolesOK struct {
 	/*
 	  In: Body
 	*/
-	Payload []*models.RoleDTO `json:"body,omitempty"`
+	Payload []*dtos.RoleDTO `json:"body,omitempty"`
 }
 
 // NewGetRolesOK creates GetRolesOK with default headers values
@@ -36,13 +36,13 @@ func NewGetRolesOK() *GetRolesOK {
 }
 
 // WithPayload adds the payload to the get roles o k response
-func (o *GetRolesOK) WithPayload(payload []*models.RoleDTO) *GetRolesOK {
+func (o *GetRolesOK) WithPayload(payload []*dtos.RoleDTO) *GetRolesOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get roles o k response
-func (o *GetRolesOK) SetPayload(payload []*models.RoleDTO) {
+func (o *GetRolesOK) SetPayload(payload []*dtos.RoleDTO) {
 	o.Payload = payload
 }
 
@@ -53,7 +53,7 @@ func (o *GetRolesOK) WriteResponse(rw http.ResponseWriter, producer runtime.Prod
 	payload := o.Payload
 	if payload == nil {
 		// return empty array
-		payload = make([]*models.RoleDTO, 0, 50)
+		payload = make([]*dtos.RoleDTO, 0, 50)
 	}
 
 	if err := producer.Produce(rw, payload); err != nil {
@@ -74,7 +74,7 @@ type GetRolesInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetRolesInternalServerError creates GetRolesInternalServerError with default headers values
@@ -84,13 +84,13 @@ func NewGetRolesInternalServerError() *GetRolesInternalServerError {
 }
 
 // WithPayload adds the payload to the get roles internal server error response
-func (o *GetRolesInternalServerError) WithPayload(payload *models.Error) *GetRolesInternalServerError {
+func (o *GetRolesInternalServerError) WithPayload(payload *dtos.Error) *GetRolesInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get roles internal server error response
-func (o *GetRolesInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetRolesInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

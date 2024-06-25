@@ -2,12 +2,12 @@ package people_domain_old
 
 import (
 	"errors"
+	"showplanner.io/pkg/restapi/dtos"
 
 	"github.com/go-openapi/runtime/middleware"
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
-	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
 )
@@ -52,7 +52,7 @@ var getInvitationsHandler = operations.GetInvitationsHandlerFunc(func(params ope
 		return logError(&err)
 	}
 
-	mappedInvitations := conv.MapArrayOfPointer(invitations, func(i database.Invitation) models.InvitationDTO { return i.MapToInvitationDTO() })
+	mappedInvitations := conv.MapArrayOfPointer(invitations, func(i database.Invitation) dtos.InvitationDTO { return i.MapToInvitationDTO() })
 
 	return &operations.GetInvitationsOK{
 		Payload: mappedInvitations,

@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetPublicCalendarIDOKCode is the HTTP code returned for type GetPublicCalendarIDOK
@@ -69,7 +69,7 @@ type GetPublicCalendarIDNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetPublicCalendarIDNotFound creates GetPublicCalendarIDNotFound with default headers values
@@ -79,13 +79,13 @@ func NewGetPublicCalendarIDNotFound() *GetPublicCalendarIDNotFound {
 }
 
 // WithPayload adds the payload to the get public calendar Id not found response
-func (o *GetPublicCalendarIDNotFound) WithPayload(payload *models.Error) *GetPublicCalendarIDNotFound {
+func (o *GetPublicCalendarIDNotFound) WithPayload(payload *dtos.Error) *GetPublicCalendarIDNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get public calendar Id not found response
-func (o *GetPublicCalendarIDNotFound) SetPayload(payload *models.Error) {
+func (o *GetPublicCalendarIDNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -114,7 +114,7 @@ type GetPublicCalendarIDInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetPublicCalendarIDInternalServerError creates GetPublicCalendarIDInternalServerError with default headers values
@@ -124,13 +124,13 @@ func NewGetPublicCalendarIDInternalServerError() *GetPublicCalendarIDInternalSer
 }
 
 // WithPayload adds the payload to the get public calendar Id internal server error response
-func (o *GetPublicCalendarIDInternalServerError) WithPayload(payload *models.Error) *GetPublicCalendarIDInternalServerError {
+func (o *GetPublicCalendarIDInternalServerError) WithPayload(payload *dtos.Error) *GetPublicCalendarIDInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get public calendar Id internal server error response
-func (o *GetPublicCalendarIDInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetPublicCalendarIDInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

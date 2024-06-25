@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetShowreportsIDTexOKCode is the HTTP code returned for type GetShowreportsIDTexOK
@@ -71,7 +71,7 @@ type GetShowreportsIDTexUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowreportsIDTexUnauthorized creates GetShowreportsIDTexUnauthorized with default headers values
@@ -81,13 +81,13 @@ func NewGetShowreportsIDTexUnauthorized() *GetShowreportsIDTexUnauthorized {
 }
 
 // WithPayload adds the payload to the get showreports Id tex unauthorized response
-func (o *GetShowreportsIDTexUnauthorized) WithPayload(payload *models.Error) *GetShowreportsIDTexUnauthorized {
+func (o *GetShowreportsIDTexUnauthorized) WithPayload(payload *dtos.Error) *GetShowreportsIDTexUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showreports Id tex unauthorized response
-func (o *GetShowreportsIDTexUnauthorized) SetPayload(payload *models.Error) {
+func (o *GetShowreportsIDTexUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -116,7 +116,7 @@ type GetShowreportsIDTexNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowreportsIDTexNotFound creates GetShowreportsIDTexNotFound with default headers values
@@ -126,13 +126,13 @@ func NewGetShowreportsIDTexNotFound() *GetShowreportsIDTexNotFound {
 }
 
 // WithPayload adds the payload to the get showreports Id tex not found response
-func (o *GetShowreportsIDTexNotFound) WithPayload(payload *models.Error) *GetShowreportsIDTexNotFound {
+func (o *GetShowreportsIDTexNotFound) WithPayload(payload *dtos.Error) *GetShowreportsIDTexNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showreports Id tex not found response
-func (o *GetShowreportsIDTexNotFound) SetPayload(payload *models.Error) {
+func (o *GetShowreportsIDTexNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -161,7 +161,7 @@ type GetShowreportsIDTexInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetShowreportsIDTexInternalServerError creates GetShowreportsIDTexInternalServerError with default headers values
@@ -171,13 +171,13 @@ func NewGetShowreportsIDTexInternalServerError() *GetShowreportsIDTexInternalSer
 }
 
 // WithPayload adds the payload to the get showreports Id tex internal server error response
-func (o *GetShowreportsIDTexInternalServerError) WithPayload(payload *models.Error) *GetShowreportsIDTexInternalServerError {
+func (o *GetShowreportsIDTexInternalServerError) WithPayload(payload *dtos.Error) *GetShowreportsIDTexInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get showreports Id tex internal server error response
-func (o *GetShowreportsIDTexInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetShowreportsIDTexInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

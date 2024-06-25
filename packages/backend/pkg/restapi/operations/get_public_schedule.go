@@ -15,7 +15,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetPublicScheduleHandlerFunc turns a function with the right signature into a get public schedule handler
@@ -68,7 +68,7 @@ func (o *GetPublicSchedule) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 type GetPublicScheduleOKBody struct {
 
 	// events
-	Events []*models.EventPublicDTO `json:"events"`
+	Events []*dtos.EventPublicDTO `json:"events"`
 
 	// show name
 	ShowName string `json:"showName,omitempty"`

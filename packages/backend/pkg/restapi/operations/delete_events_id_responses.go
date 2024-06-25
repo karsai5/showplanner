@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // DeleteEventsIDOKCode is the HTTP code returned for type DeleteEventsIDOK
@@ -51,7 +51,7 @@ type DeleteEventsIDUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewDeleteEventsIDUnauthorized creates DeleteEventsIDUnauthorized with default headers values
@@ -61,13 +61,13 @@ func NewDeleteEventsIDUnauthorized() *DeleteEventsIDUnauthorized {
 }
 
 // WithPayload adds the payload to the delete events Id unauthorized response
-func (o *DeleteEventsIDUnauthorized) WithPayload(payload *models.Error) *DeleteEventsIDUnauthorized {
+func (o *DeleteEventsIDUnauthorized) WithPayload(payload *dtos.Error) *DeleteEventsIDUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete events Id unauthorized response
-func (o *DeleteEventsIDUnauthorized) SetPayload(payload *models.Error) {
+func (o *DeleteEventsIDUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -96,7 +96,7 @@ type DeleteEventsIDNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewDeleteEventsIDNotFound creates DeleteEventsIDNotFound with default headers values
@@ -106,13 +106,13 @@ func NewDeleteEventsIDNotFound() *DeleteEventsIDNotFound {
 }
 
 // WithPayload adds the payload to the delete events Id not found response
-func (o *DeleteEventsIDNotFound) WithPayload(payload *models.Error) *DeleteEventsIDNotFound {
+func (o *DeleteEventsIDNotFound) WithPayload(payload *dtos.Error) *DeleteEventsIDNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete events Id not found response
-func (o *DeleteEventsIDNotFound) SetPayload(payload *models.Error) {
+func (o *DeleteEventsIDNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -141,7 +141,7 @@ type DeleteEventsIDInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewDeleteEventsIDInternalServerError creates DeleteEventsIDInternalServerError with default headers values
@@ -151,13 +151,13 @@ func NewDeleteEventsIDInternalServerError() *DeleteEventsIDInternalServerError {
 }
 
 // WithPayload adds the payload to the delete events Id internal server error response
-func (o *DeleteEventsIDInternalServerError) WithPayload(payload *models.Error) *DeleteEventsIDInternalServerError {
+func (o *DeleteEventsIDInternalServerError) WithPayload(payload *dtos.Error) *DeleteEventsIDInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the delete events Id internal server error response
-func (o *DeleteEventsIDInternalServerError) SetPayload(payload *models.Error) {
+func (o *DeleteEventsIDInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

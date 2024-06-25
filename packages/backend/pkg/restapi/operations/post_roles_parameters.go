@@ -13,7 +13,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // NewPostRolesParams creates a new PostRolesParams object
@@ -36,7 +36,7 @@ type PostRolesParams struct {
 	/*The availability to create or update
 	  In: body
 	*/
-	RoleDetails *models.RoleUpdateDTO
+	RoleDetails *dtos.RoleUpdateDTO
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -50,7 +50,7 @@ func (o *PostRolesParams) BindRequest(r *http.Request, route *middleware.Matched
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.RoleUpdateDTO
+		var body dtos.RoleUpdateDTO
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			res = append(res, errors.NewParseError("roleDetails", "body", "", err))
 		} else {

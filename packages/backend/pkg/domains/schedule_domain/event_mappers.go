@@ -1,17 +1,16 @@
 package schedule_domain
 
 import (
+	dto2 "showplanner.io/pkg/restapi/dtos"
 	"sort"
 	"strconv"
 	"time"
 
-	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/models"
-
 	"github.com/go-openapi/strfmt"
+	"showplanner.io/pkg/database"
 )
 
-func mapToDatabaseEvent(dto models.CreateEventDTO) database.Event {
+func mapToDatabaseEvent(dto dto2.CreateEventDTO) database.Event {
 	event := database.Event{
 		ShowID:     uint(*dto.ShowID),
 		Start:      time.Time(*dto.Start),
@@ -44,7 +43,7 @@ type Event interface {
 	int64 | float64
 }
 
-func NameEventsWithCurtainsUp[E models.EventWithCurtainsUp](events []E) {
+func NameEventsWithCurtainsUp[E dto2.EventWithCurtainsUp](events []E) {
 	var showEvents []E
 	for _, event := range events {
 		if (event).GetCurtainsUp() != nil {

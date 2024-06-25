@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // GetEventsIDOKCode is the HTTP code returned for type GetEventsIDOK
@@ -26,7 +26,7 @@ type GetEventsIDOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.EventDTO `json:"body,omitempty"`
+	Payload *dtos.EventDTO `json:"body,omitempty"`
 }
 
 // NewGetEventsIDOK creates GetEventsIDOK with default headers values
@@ -36,13 +36,13 @@ func NewGetEventsIDOK() *GetEventsIDOK {
 }
 
 // WithPayload adds the payload to the get events Id o k response
-func (o *GetEventsIDOK) WithPayload(payload *models.EventDTO) *GetEventsIDOK {
+func (o *GetEventsIDOK) WithPayload(payload *dtos.EventDTO) *GetEventsIDOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get events Id o k response
-func (o *GetEventsIDOK) SetPayload(payload *models.EventDTO) {
+func (o *GetEventsIDOK) SetPayload(payload *dtos.EventDTO) {
 	o.Payload = payload
 }
 
@@ -71,7 +71,7 @@ type GetEventsIDUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetEventsIDUnauthorized creates GetEventsIDUnauthorized with default headers values
@@ -81,13 +81,13 @@ func NewGetEventsIDUnauthorized() *GetEventsIDUnauthorized {
 }
 
 // WithPayload adds the payload to the get events Id unauthorized response
-func (o *GetEventsIDUnauthorized) WithPayload(payload *models.Error) *GetEventsIDUnauthorized {
+func (o *GetEventsIDUnauthorized) WithPayload(payload *dtos.Error) *GetEventsIDUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get events Id unauthorized response
-func (o *GetEventsIDUnauthorized) SetPayload(payload *models.Error) {
+func (o *GetEventsIDUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -116,7 +116,7 @@ type GetEventsIDNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetEventsIDNotFound creates GetEventsIDNotFound with default headers values
@@ -126,13 +126,13 @@ func NewGetEventsIDNotFound() *GetEventsIDNotFound {
 }
 
 // WithPayload adds the payload to the get events Id not found response
-func (o *GetEventsIDNotFound) WithPayload(payload *models.Error) *GetEventsIDNotFound {
+func (o *GetEventsIDNotFound) WithPayload(payload *dtos.Error) *GetEventsIDNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get events Id not found response
-func (o *GetEventsIDNotFound) SetPayload(payload *models.Error) {
+func (o *GetEventsIDNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -161,7 +161,7 @@ type GetEventsIDInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewGetEventsIDInternalServerError creates GetEventsIDInternalServerError with default headers values
@@ -171,13 +171,13 @@ func NewGetEventsIDInternalServerError() *GetEventsIDInternalServerError {
 }
 
 // WithPayload adds the payload to the get events Id internal server error response
-func (o *GetEventsIDInternalServerError) WithPayload(payload *models.Error) *GetEventsIDInternalServerError {
+func (o *GetEventsIDInternalServerError) WithPayload(payload *dtos.Error) *GetEventsIDInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get events Id internal server error response
-func (o *GetEventsIDInternalServerError) SetPayload(payload *models.Error) {
+func (o *GetEventsIDInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

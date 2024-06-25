@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // PutAssignmentIDOKCode is the HTTP code returned for type PutAssignmentIDOK
@@ -26,7 +26,7 @@ type PutAssignmentIDOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.AssignedDTO `json:"body,omitempty"`
+	Payload *dtos.AssignedDTO `json:"body,omitempty"`
 }
 
 // NewPutAssignmentIDOK creates PutAssignmentIDOK with default headers values
@@ -36,13 +36,13 @@ func NewPutAssignmentIDOK() *PutAssignmentIDOK {
 }
 
 // WithPayload adds the payload to the put assignment Id o k response
-func (o *PutAssignmentIDOK) WithPayload(payload *models.AssignedDTO) *PutAssignmentIDOK {
+func (o *PutAssignmentIDOK) WithPayload(payload *dtos.AssignedDTO) *PutAssignmentIDOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the put assignment Id o k response
-func (o *PutAssignmentIDOK) SetPayload(payload *models.AssignedDTO) {
+func (o *PutAssignmentIDOK) SetPayload(payload *dtos.AssignedDTO) {
 	o.Payload = payload
 }
 
@@ -71,7 +71,7 @@ type PutAssignmentIDUnauthorized struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPutAssignmentIDUnauthorized creates PutAssignmentIDUnauthorized with default headers values
@@ -81,13 +81,13 @@ func NewPutAssignmentIDUnauthorized() *PutAssignmentIDUnauthorized {
 }
 
 // WithPayload adds the payload to the put assignment Id unauthorized response
-func (o *PutAssignmentIDUnauthorized) WithPayload(payload *models.Error) *PutAssignmentIDUnauthorized {
+func (o *PutAssignmentIDUnauthorized) WithPayload(payload *dtos.Error) *PutAssignmentIDUnauthorized {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the put assignment Id unauthorized response
-func (o *PutAssignmentIDUnauthorized) SetPayload(payload *models.Error) {
+func (o *PutAssignmentIDUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -116,7 +116,7 @@ type PutAssignmentIDNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPutAssignmentIDNotFound creates PutAssignmentIDNotFound with default headers values
@@ -126,13 +126,13 @@ func NewPutAssignmentIDNotFound() *PutAssignmentIDNotFound {
 }
 
 // WithPayload adds the payload to the put assignment Id not found response
-func (o *PutAssignmentIDNotFound) WithPayload(payload *models.Error) *PutAssignmentIDNotFound {
+func (o *PutAssignmentIDNotFound) WithPayload(payload *dtos.Error) *PutAssignmentIDNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the put assignment Id not found response
-func (o *PutAssignmentIDNotFound) SetPayload(payload *models.Error) {
+func (o *PutAssignmentIDNotFound) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 
@@ -161,7 +161,7 @@ type PutAssignmentIDInternalServerError struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Error `json:"body,omitempty"`
+	Payload *dtos.Error `json:"body,omitempty"`
 }
 
 // NewPutAssignmentIDInternalServerError creates PutAssignmentIDInternalServerError with default headers values
@@ -171,13 +171,13 @@ func NewPutAssignmentIDInternalServerError() *PutAssignmentIDInternalServerError
 }
 
 // WithPayload adds the payload to the put assignment Id internal server error response
-func (o *PutAssignmentIDInternalServerError) WithPayload(payload *models.Error) *PutAssignmentIDInternalServerError {
+func (o *PutAssignmentIDInternalServerError) WithPayload(payload *dtos.Error) *PutAssignmentIDInternalServerError {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the put assignment Id internal server error response
-func (o *PutAssignmentIDInternalServerError) SetPayload(payload *models.Error) {
+func (o *PutAssignmentIDInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
 

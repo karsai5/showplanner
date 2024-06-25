@@ -14,7 +14,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/validate"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // NewPostShowreportsIDParams creates a new PostShowreportsIDParams object
@@ -42,7 +42,7 @@ type PostShowreportsIDParams struct {
 	/*Show report
 	  In: body
 	*/
-	Report *models.UpdateShowreportDTO
+	Report *dtos.UpdateShowreportDTO
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -61,7 +61,7 @@ func (o *PostShowreportsIDParams) BindRequest(r *http.Request, route *middleware
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.UpdateShowreportDTO
+		var body dtos.UpdateShowreportDTO
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			res = append(res, errors.NewParseError("report", "body", "", err))
 		} else {

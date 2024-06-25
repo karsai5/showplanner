@@ -13,7 +13,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // NewPostMeParams creates a new PostMeParams object
@@ -36,7 +36,7 @@ type PostMeParams struct {
 	/*
 	  In: body
 	*/
-	PersonalDetails *models.PersonUpdateDTO
+	PersonalDetails *dtos.PersonUpdateDTO
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -50,7 +50,7 @@ func (o *PostMeParams) BindRequest(r *http.Request, route *middleware.MatchedRou
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.PersonUpdateDTO
+		var body dtos.PersonUpdateDTO
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			res = append(res, errors.NewParseError("personalDetails", "body", "", err))
 		} else {

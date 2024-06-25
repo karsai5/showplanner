@@ -13,7 +13,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // NewPostAvailabilitiesParams creates a new PostAvailabilitiesParams object
@@ -36,7 +36,7 @@ type PostAvailabilitiesParams struct {
 	/*The availability to create or update
 	  In: body
 	*/
-	Availability *models.AvailabilityDTO
+	Availability *dtos.AvailabilityDTO
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -50,7 +50,7 @@ func (o *PostAvailabilitiesParams) BindRequest(r *http.Request, route *middlewar
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.AvailabilityDTO
+		var body dtos.AvailabilityDTO
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			res = append(res, errors.NewParseError("availability", "body", "", err))
 		} else {

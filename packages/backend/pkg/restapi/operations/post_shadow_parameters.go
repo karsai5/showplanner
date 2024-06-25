@@ -13,7 +13,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
 
-	"showplanner.io/pkg/models"
+	"showplanner.io/pkg/restapi/dtos"
 )
 
 // NewPostShadowParams creates a new PostShadowParams object
@@ -36,7 +36,7 @@ type PostShadowParams struct {
 	/*The details of the shadow
 	  In: body
 	*/
-	Shadow *models.CreateShadowDTO
+	Shadow *dtos.CreateShadowDTO
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -50,7 +50,7 @@ func (o *PostShadowParams) BindRequest(r *http.Request, route *middleware.Matche
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.CreateShadowDTO
+		var body dtos.CreateShadowDTO
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			res = append(res, errors.NewParseError("shadow", "body", "", err))
 		} else {

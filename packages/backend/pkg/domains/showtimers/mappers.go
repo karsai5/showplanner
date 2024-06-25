@@ -1,16 +1,16 @@
 package showtimers
 
 import (
+	dto2 "showplanner.io/pkg/restapi/dtos"
 	"time"
 
 	"github.com/go-openapi/strfmt"
 	uuid "github.com/satori/go.uuid"
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/models"
 )
 
-func mapShowTimerToDatabase(id uuid.UUID, createdByID uuid.UUID, dto models.UpdateShowTimerDTO) database.ShowTimer {
+func mapShowTimerToDatabase(id uuid.UUID, createdByID uuid.UUID, dto dto2.UpdateShowTimerDTO) database.ShowTimer {
 	st := database.ShowTimer{
 		ID:                 id,
 		ShowStart:          mapStrfmtTimeIfExists(dto.ShowStart),
@@ -30,18 +30,18 @@ func mapShowTimerToDatabase(id uuid.UUID, createdByID uuid.UUID, dto models.Upda
 	return st
 }
 
-func mapShowTimerToSummaryDTO(sr database.ShowTimer) models.ShowTimerSummaryDTO {
-	return models.ShowTimerSummaryDTO{
+func mapShowTimerToSummaryDTO(sr database.ShowTimer) dto2.ShowTimerSummaryDTO {
+	return dto2.ShowTimerSummaryDTO{
 		ID:        *conv.UUIDToStrmFmtUUID(sr.ID),
 		ShowStart: mapTimeIfExists(sr.ShowStart),
 		ShowEnd:   mapTimeIfExists(sr.ShowEnd),
 	}
 }
 
-func mapShowTimerToDTO(sr database.ShowTimer) models.ShowTimerDTO {
-	dto := models.ShowTimerDTO{
+func mapShowTimerToDTO(sr database.ShowTimer) dto2.ShowTimerDTO {
+	dto := dto2.ShowTimerDTO{
 		ID: *conv.UUIDToStrmFmtUUID(sr.ID),
-		UpdateShowTimerDTO: models.UpdateShowTimerDTO{
+		UpdateShowTimerDTO: dto2.UpdateShowTimerDTO{
 			ActOneFOHClearance: mapTimeIfExists(sr.ActOneFOHClearance),
 			ActTwoFOHClearance: mapTimeIfExists(sr.ActTwoFOHClearance),
 			HouseOpen:          mapTimeIfExists(sr.HouseOpen),
