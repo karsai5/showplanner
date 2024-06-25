@@ -6,7 +6,6 @@ import { StickyLoadingSpinner } from "core/components/LoadingBox/PersistantLoadi
 import { H2 } from "core/components/Typography";
 import { showToastError } from "core/utils/errors";
 import { getSerialisedDTO, Serialised } from "core/utils/ssr";
-import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
 import { ShowTimer } from "domains/showtimer/ShowTimer";
 import { Timers, TimersOnChange } from "domains/showtimer/ShowTimer/types";
 import moment from "moment";
@@ -14,7 +13,6 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ReactElement } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 export default function ShowTimerPage({
@@ -124,10 +122,6 @@ export const getServerSideProps = (async (context) => {
   id: string;
   initialTimers: Serialised<ShowTimerDTO>;
 }>;
-
-ShowTimerPage.getLayout = (page: ReactElement) => (
-  <LayoutWithShowSidebar>{page}</LayoutWithShowSidebar>
-);
 
 const getTimersFromSSR = (
   timers: Serialised<ShowTimerDTO>

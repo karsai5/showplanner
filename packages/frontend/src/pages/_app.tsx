@@ -4,7 +4,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import {
   MeContext,
   MeContextWrapper,
@@ -87,7 +86,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
               </Head>
 
               <ImpersonnatingWarning />
-              {loading ? <LoadingBox /> : <Component {...pageProps} />}
+
+              {loading ? <DelayedLoading /> : <Component {...pageProps} />}
             </MeContextWrapper>
           )}
         </ConfirmationModalWrapper>
@@ -97,6 +97,24 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     </SuperTokensWrapper>
   );
 }
+
+const DelayedLoading = () => {
+  const [showLoader, setShowLoader] = useState(false);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowLoader(true);
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, [showLoader, setShowLoader]);
+  if (!showLoader) {
+    return null;
+  }
+  return (
+    <div className="flex h-full">
+      <div className="loading loading-dots loading-lg mx-auto"></div>
+    </div>
+  );
+};
 
 const ImpersonnatingWarning = () => {
   const session = Session.useSessionContext();

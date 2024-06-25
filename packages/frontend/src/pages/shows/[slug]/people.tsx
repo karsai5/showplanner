@@ -1,35 +1,55 @@
 import { useMutation } from "@tanstack/react-query";
-import { api } from "core/api";
-import { AccessDenied } from "core/components/AccessDenied/AccessDenied";
+import { api, serverSideApi } from "core/api";
+import { ArrayOfPersonSummaryDTO, ShowDTO } from "core/api/generated";
 import { H2, H3 } from "core/components/Typography";
-import { HasPermission, PERMISSION, showPermission } from "core/permissions";
+import {
+  HasPermission,
+  PERMISSION,
+  PermissionRequired,
+  showPermission,
+} from "core/permissions";
 import { Toggle } from "core/toggles/toggles";
 import { showToastError } from "core/utils/errors";
+import { getSSRErrorReturn } from "core/utils/ssr";
 import { AddPersonModal } from "domains/personnel/AddPersonModal/AddPersonModal";
 import { Invitations } from "domains/personnel/Invitations/Invitations";
 import { PeopleTable } from "domains/personnel/PeopleTable/PeopleTable";
 import { AddRoleModal } from "domains/rostering/AddRoleModal/AddRoleModal";
 import { RolesTable } from "domains/rostering/RolesTable";
-import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
-import { useShowSummary } from "domains/shows/lib/summaryContext";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
-import { ReactElement } from "react";
 import sanitize from "sanitize-filename";
-import { SessionAuth } from "supertokens-auth-react/recipe/session";
-import { PermissionClaim } from "supertokens-auth-react/recipe/userroles";
+import superjson from "superjson";
 
-const ShowPage = () => {
-  const show = useShowSummary();
+export const getServerSideProps = (async (context) => {
+  const slug = context.query.slug;
+  const ssrApi = serverSideApi(context);
+
+  if (typeof slug !== "string") {
+    throw new Error("Incorrect slug format");
+  }
+
+  try {
+    const show = await ssrApi.showsShowSlugSummaryGet({
+      showSlug: slug,
+    });
+    const data = await ssrApi.personnelAssignedGet({ showId: show.id });
+    return {
+      props: { show, peopleJSON: superjson.stringify(data) },
+    };
+  } catch (err) {
+    return getSSRErrorReturn(err);
+  }
+}) satisfies GetServerSideProps<{ show: ShowDTO; peopleJSON: string }>;
+
+export default function PeoplePage(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
+  const { show } = props;
 
   return (
-    <SessionAuth
-      accessDeniedScreen={AccessDenied}
-      overrideGlobalClaimValidators={(globalValidators) => [
-        ...globalValidators,
-        PermissionClaim.validators.includes(
-          showPermission(show?.id, PERMISSION.personnel)
-        ),
-      ]}
+    <PermissionRequired
+      permission={showPermission(show?.id, PERMISSION.personnel)}
     >
       <Head>
         <title>People - {show.name} - ShowPlanner</title>
@@ -55,19 +75,24 @@ const ShowPage = () => {
               <H3>Roles</H3>
               <AddRoleModal showId={show.id} />
             </div>
-            <RolesTable />
+            <RolesTable showId={show.id} />
           </div>
         </Toggle>
         <div>
-          <PeopleTable showId={show.id} />
+          <PeopleTable
+            showId={show.id}
+            initialData={superjson.parse<ArrayOfPersonSummaryDTO>(
+              props.peopleJSON
+            )}
+          />
           <HasPermission permission={PERMISSION.personnelEdit} showId={show.id}>
             <Invitations showId={show.id} />
           </HasPermission>
         </div>
       </div>
-    </SessionAuth>
+    </PermissionRequired>
   );
-};
+}
 
 const DownloadGoogleCSVButton: React.FC<{ showId: number }> = ({ showId }) => {
   const mutation = useDownloadCSV(showId, "google-contacts.csv", "text/csv");
@@ -95,9 +120,3 @@ const useDownloadCSV = (id: number, filename: string, type: string) => {
     },
   });
 };
-
-ShowPage.getLayout = (page: ReactElement) => (
-  <LayoutWithShowSidebar>{page}</LayoutWithShowSidebar>
-);
-
-export default ShowPage;

@@ -8,28 +8,25 @@ import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { useConfirmationModal } from "core/components/Modal/ConfirmationModal";
 import { showToastError } from "core/utils/errors";
 import { PersonSelector } from "domains/personnel/PersonSelector/PersonSelector";
-import { useShowSummary } from "domains/shows/lib/summaryContext";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 export const RolesTable: React.FC<{
   className?: string;
-}> = ({ className }) => {
-  const show = useShowSummary();
+  showId: number;
+}> = ({ className, showId }) => {
   const {
     isError,
     isLoading,
     data: roles,
-  } = useQuery(["show-roles", show.id], () =>
-    api.rolesGet({ showId: show.id })
-  );
+  } = useQuery(["show-roles", showId], () => api.rolesGet({ showId: showId }));
 
   const {
     data: assignedPersonnel,
     isLoading: isLoadingPeople,
     isError: isErrorPeople,
-  } = useQuery(["assigned-people", show.id], () =>
-    api.personnelAssignedGet({ showId: show.id })
+  } = useQuery(["assigned-people", showId], () =>
+    api.personnelAssignedGet({ showId: showId })
   );
 
   return (

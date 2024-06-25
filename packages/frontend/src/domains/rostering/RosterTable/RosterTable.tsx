@@ -7,6 +7,7 @@ import { api } from "core/api";
 import {
   PersonSummaryDTO,
   RoleDTO,
+  RosterDTO,
   RosterDTOEventsInner,
 } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
@@ -32,10 +33,13 @@ import { AssignmentCell, AssignmentDisplay } from "./AssignmentCell";
 export const RosterTable: React.FC<{
   showId: number;
   showPastEvents?: boolean;
-}> = ({ showId, showPastEvents }) => {
-  const rosterRequest = useQuery(["roster", showId], () =>
-    api.rosterGet({ showId: showId })
-  );
+  initialData?: RosterDTO;
+}> = ({ showId, showPastEvents, initialData }) => {
+  const rosterRequest = useQuery({
+    initialData: initialData,
+    queryKey: ["roster", showId],
+    queryFn: () => api.rosterGet({ showId: showId }),
+  });
 
   if (rosterRequest.isError) {
     return <ErrorBox>Could not get shows</ErrorBox>;

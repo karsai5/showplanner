@@ -1,15 +1,17 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
-import { api, getApi } from "core/api";
+import { api, getApi, serverSideApi } from "core/api";
 import {
   PersonSummaryDTO,
   ScheduleEventDTO,
   ScheduleEventDTOAllOfRoles,
   ScheduleEventDTOAllOfRolesTypeEnum,
+  ShowDTO,
 } from "core/api/generated";
 import Address from "core/components/Address/Address";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
+import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { useModal } from "core/components/Modal/Modal";
 import { Td } from "core/components/tables/tables";
 import { TimeRangeWithCurtainsUpCell } from "core/components/tables/TimeRangeWithCurtainsUp";
@@ -21,6 +23,7 @@ import {
   useHasPermission,
 } from "core/permissions";
 import { showToastError } from "core/utils/errors";
+import { getSSRErrorReturn } from "core/utils/ssr";
 import dayjs from "dayjs";
 import { EventDividerForm } from "domains/events/EventDividerForm/EventDividerForm";
 import { EventForm } from "domains/events/EventForm/EventForm";
@@ -35,20 +38,18 @@ import { DeleteEventModal } from "domains/events/EventTable/modals/DeleteEventMo
 import { EditEventModal } from "domains/events/EventTable/modals/EditEventModal";
 import { displayDate } from "domains/events/lib/displayDate";
 import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
-import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
-import { useShowSummary } from "domains/shows/lib/summaryContext";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FC, ReactElement, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
+import superjson from "superjson";
 
-ShowPage.getLayout = (page: ReactElement) => (
-  <LayoutWithShowSidebar>{page}</LayoutWithShowSidebar>
-);
-
-export default function ShowPage() {
+export default function ShowPage(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
   const api = getApi();
-  const show = useShowSummary();
+  const { show } = props;
   const [showAllEvents, setShowAllEvents] = useState(false);
   const {
     data: events,
@@ -58,6 +59,7 @@ export default function ShowPage() {
   } = useQuery({
     queryKey: ["EventsList", show.id],
     queryFn: () => api.scheduleGet({ showId: show.id }),
+    initialData: superjson.parse<ScheduleEventDTO[]>(props.eventsJSON),
   });
   const startOfToday = dayjs().startOf("day");
   const allEvents = events || [];
@@ -101,36 +103,48 @@ export default function ShowPage() {
         </div>
       </div>
       {isError && <ErrorBox>Could not get shows</ErrorBox>}
-      {isLoading && <progress className="progress w-56"></progress>}
+      {isLoading && <LoadingBox />}
       {events && (
         <>
           {futureEvents.length === 0 && allEvents.length > 0 && (
             <ErrorBox info>Show is over. All events are in the past</ErrorBox>
           )}
-          <Schedule events={showAllEvents ? allEvents : futureEvents} />
+          <EventTable
+            headers={<Headers showId={show.id} />}
+            eventRenderer={eventRenderer(show.id)}
+            dividerRenderer={DividerRenderer}
+            events={showAllEvents ? allEvents : futureEvents}
+          />
         </>
       )}
     </>
   );
 }
 
-export const Schedule: React.FC<{ events: Array<ScheduleEventDTO> }> = ({
-  events,
-}) => {
-  return (
-    <EventTable
-      headers={<Headers />}
-      eventRenderer={EventRenderer}
-      dividerRenderer={DividerRenderer}
-      events={events}
-    />
-  );
-};
+export const getServerSideProps = (async (context) => {
+  const slug = context.query.slug;
+  const ssrApi = serverSideApi(context);
 
-const Headers: React.FC = () => {
-  const show = useShowSummary();
+  if (typeof slug !== "string") {
+    throw new Error("Incorrect slug format");
+  }
+
+  try {
+    const show = await ssrApi.showsShowSlugSummaryGet({
+      showSlug: slug,
+    });
+    const events = await ssrApi.scheduleGet({ showId: show.id });
+    return {
+      props: { show, eventsJSON: superjson.stringify(events) },
+    };
+  } catch (err) {
+    return getSSRErrorReturn(err);
+  }
+}) satisfies GetServerSideProps<{ show: ShowDTO; eventsJSON: string }>;
+
+const Headers: React.FC<{ showId: number }> = ({ showId }) => {
   const canEditEvents = useHasPermission()(
-    showPermission(show.id, PERMISSION.addEvents)
+    showPermission(showId, PERMISSION.addEvents)
   );
   return (
     <>
@@ -150,72 +164,75 @@ const Headers: React.FC = () => {
   );
 };
 
-const EventRenderer: EventRendererType<ScheduleEventDTO> = ({
-  event: e,
-  groupLength,
-}) => {
-  const show = useShowSummary();
-  const path = usePathname();
-  const canEditEvents = useHasPermission()(
-    showPermission(show.id, PERMISSION.addEvents)
-  );
-  return (
-    <>
-      {groupLength && (
-        <Td className="whitespace-nowrap" rowSpan={groupLength}>
-          {displayDate(e.start)}
-        </Td>
-      )}
-      <TimeRangeWithCurtainsUpCell event={e} />
-      <td className="border-l border-slate-200 relative">
-        <AvailabilityDropdown event={e} />
-      </td>
-      <td className="border-l border-slate-200 relative">
-        <RolesDescription
-          roles={e.roles}
-          isShow={!!e.curtainsUp && !e.options?.attendanceRequired}
-        />
-      </td>
-
-      <Td>
-        {e.address && (
-          <div className="min-w-60">
-            <Address address={e?.address} />
-          </div>
+function eventRenderer(showId: number): EventRendererType<ScheduleEventDTO> {
+  const EventRenderer: EventRendererType<ScheduleEventDTO> = ({
+    event: e,
+    groupLength,
+  }) => {
+    const path = usePathname();
+    const canEditEvents = useHasPermission()(
+      showPermission(showId, PERMISSION.addEvents)
+    );
+    return (
+      <>
+        {groupLength && (
+          <Td className="whitespace-nowrap" rowSpan={groupLength}>
+            {displayDate(e.start)}
+          </Td>
         )}
-      </Td>
-      <Td>{e.shortnote}</Td>
+        <TimeRangeWithCurtainsUpCell event={e} />
+        <td className="border-l border-slate-200 relative">
+          <AvailabilityDropdown event={e} />
+        </td>
+        <td className="border-l border-slate-200 relative">
+          <RolesDescription
+            roles={e.roles}
+            isShow={!!e.curtainsUp && !e.options?.attendanceRequired}
+          />
+        </td>
 
-      {canEditEvents && (
-        <>
-          <td className="border border-slate-200 relative">
-            <div className="flex gap-2">
-              <Link
-                href={`${path}/event/${e.id}/showreport`}
-                className={cc("link whitespace-nowrap", {
-                  ["text-slate-400"]: !e.showReport,
-                })}
-              >
-                Show report
-              </Link>
-              <Link
-                href={`${path}/event/${e.id}/showtimer`}
-                className={cc("link whitespace-nowrap", {
-                  ["text-slate-400"]: !e.showTimer,
-                })}
-              >
-                Show timer
-              </Link>
+        <Td>
+          {e.address && (
+            <div className="min-w-60">
+              <Address address={e?.address} />
             </div>
-          </td>
-          <td className="border border-slate-200 relative">
-            <AdminButtons event={e} />
-          </td>
-        </>
-      )}
-    </>
-  );
-};
+          )}
+        </Td>
+        <Td>{e.shortnote}</Td>
+
+        {canEditEvents && (
+          <>
+            <td className="border border-slate-200 relative">
+              <div className="flex gap-2">
+                <Link
+                  href={`${path}/event/${e.id}/showreport`}
+                  className={cc("link whitespace-nowrap", {
+                    ["text-slate-400"]: !e.showReport,
+                  })}
+                >
+                  Show report
+                </Link>
+                <Link
+                  href={`${path}/event/${e.id}/showtimer`}
+                  className={cc("link whitespace-nowrap", {
+                    ["text-slate-400"]: !e.showTimer,
+                  })}
+                >
+                  Show timer
+                </Link>
+              </div>
+            </td>
+            <td className="border border-slate-200 relative">
+              <AdminButtons event={e} />
+            </td>
+          </>
+        )}
+      </>
+    );
+  };
+
+  return EventRenderer;
+}
 
 const DividerRenderer: DividerRendererType<ScheduleEventDTO> = ({
   event: e,

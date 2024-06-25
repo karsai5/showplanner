@@ -10,10 +10,16 @@ import {
   EventTable,
 } from "domains/events/EventTable/EventTable";
 import { displayDate } from "domains/events/lib/displayDate";
+import { BaseLayout } from "domains/layout/DefaultLayout";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { ReactElement } from "react";
 
-const ShowPage = () => {
+PublicSchedule.getLayout = (page: ReactElement) => (
+  <BaseLayout>{page}</BaseLayout>
+);
+
+export default function PublicSchedule() {
   const api = getApi();
   const {
     query: { slug },
@@ -79,7 +85,7 @@ const ShowPage = () => {
       </div>
     </>
   );
-};
+}
 
 const EventRenderer: EventRendererType<EventPublicDTO> = ({
   event: e,
@@ -96,5 +102,3 @@ const EventRenderer: EventRendererType<EventPublicDTO> = ({
     </>
   );
 };
-
-export default ShowPage;

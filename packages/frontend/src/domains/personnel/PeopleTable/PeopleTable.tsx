@@ -6,7 +6,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { api } from "core/api";
-import { PersonSummaryDTO } from "core/api/generated";
+import { ArrayOfPersonSummaryDTO, PersonSummaryDTO } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { PERMISSION, showPermission, useHasPermission } from "core/permissions";
@@ -15,12 +15,14 @@ import { FC } from "react";
 
 export const PeopleTable: React.FC<{
   showId: number;
-}> = ({ showId }) => {
+  initialData?: ArrayOfPersonSummaryDTO;
+}> = ({ showId, initialData }) => {
   const hasPermission = useHasPermission();
-  const { data, isLoading, isError } = useQuery(
-    ["assigned-people", showId],
-    () => api.personnelAssignedGet({ showId })
-  );
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["assigned-people", showId],
+    queryFn: () => api.personnelAssignedGet({ showId }),
+    initialData: initialData,
+  });
   if (isLoading) {
     return <LoadingBox />;
   }

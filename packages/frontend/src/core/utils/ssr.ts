@@ -1,3 +1,4 @@
+import { ResponseError } from "core/api/generated";
 import { map, pickBy } from "lodash";
 
 export type Serialised<T> = Partial<Record<keyof T, string | null>>;
@@ -16,3 +17,39 @@ export function getSerialisedDTO<T extends object>(dto: T): Serialised<T> {
 
   return pickBy(serialisedDTO, (x) => x) as Serialised<T>;
 }
+
+export const getSSRErrorReturn = (err: unknown) => {
+  if (err instanceof ResponseError) {
+    switch (err.response.status) {
+      case 404:
+        return {
+          redirect: {
+            destination: "/500",
+            permanent: false,
+          },
+        };
+      case 400:
+        return {
+          redirect: {
+            destination: "/400",
+            permanent: false,
+          },
+        };
+      case 500:
+      default:
+        return {
+          redirect: {
+            destination: "/500",
+            permanent: false,
+          },
+        };
+    }
+  } else {
+    return {
+      redirect: {
+        destination: "/500",
+        permanent: false,
+      },
+    };
+  }
+};
