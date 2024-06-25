@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"os"
+	"showplanner.io/pkg/domains/people_domain"
 	"strconv"
 	"strings"
 
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/permissions"
 
 	"github.com/supertokens/supertokens-golang/recipe/userroles"
@@ -97,7 +97,7 @@ func AddToShow() *cli.Command {
 			if err != nil {
 				return err
 			}
-			return personnel_domain.AddToShow(showId, userId)
+			return people_domain.AddToShow(showId, userId)
 		},
 	}
 }
@@ -118,7 +118,7 @@ func RemoveFromShow() *cli.Command {
 			person, err := selectPersonForShow(show.ID)
 
 			permissions.InitSupertokens()
-			return personnel_domain.RemoveFromShow(show.ID, person.ID)
+			return people_domain.RemoveFromShow(show.ID, person.ID)
 		},
 	}
 }

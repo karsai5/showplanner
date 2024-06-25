@@ -1,4 +1,4 @@
-package people_domain
+package schedule_domain
 
 import (
 	"errors"
@@ -12,7 +12,6 @@ import (
 	"showplanner.io/pkg/config"
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/schedule_domain"
 	"showplanner.io/pkg/models"
 )
 
@@ -45,7 +44,7 @@ func createEventsForShow(cal *ics.Calendar, show database.Show, userId uuid.UUID
 	}
 
 	eventPointers := conv.MapArrayOfPointer(events, func(e database.Event) database.Event { return e })
-	schedule_domain.NameEventsWithCurtainsUp(eventPointers)
+	NameEventsWithCurtainsUp(eventPointers)
 
 	roles, err := database.GetRolesForPerson(show.ID, userId)
 
@@ -54,7 +53,7 @@ func createEventsForShow(cal *ics.Calendar, show database.Show, userId uuid.UUID
 	}
 
 	for _, e := range eventPointers {
-		mappedRoles := schedule_domain.MapRoles(roles, *e, userId)
+		mappedRoles := MapRoles(roles, *e, userId)
 
 		event := cal.AddEvent(fmt.Sprintf("%v@showplanner.io", e.ID))
 		event.SetCreatedTime(time.Now())
@@ -97,11 +96,11 @@ func getDescription(show database.Show, event database.Event, mappedRoles []*mod
 			sBuilder = append(sBuilder, strings.Join(asBuilder, ", "))
 		}
 
-		if r.Type == schedule_domain.COVERING {
+		if r.Type == COVERING {
 			cover := *r.Covering
 			sBuilder = append(sBuilder, fmt.Sprintf("Covering %s %s as %s", *cover.FirstName, *cover.LastName, *r.Name))
 		}
-		if r.Type == schedule_domain.SHADOWING {
+		if r.Type == SHADOWING {
 			shadowing := *r.Shadowing
 			sBuilder = append(sBuilder, fmt.Sprintf("Shadowing %s %s as %s", *shadowing.FirstName, *shadowing.LastName, *r.Name))
 		}

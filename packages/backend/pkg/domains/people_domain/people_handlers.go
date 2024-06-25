@@ -110,28 +110,6 @@ var getMeHandler = operations.GetMeHandlerFunc(func(params operations.GetMeParam
 	}
 })
 
-var getPublicCalendarIDHandler = operations.GetPublicCalendarIDHandlerFunc(func(params operations.GetPublicCalendarIDParams) middleware.Responder {
-	userId, err := uuid.FromString(params.ID)
-	if err != nil {
-		logger.Error("Error getting calendar", err)
-		return &operations.GetMeInternalServerError{}
-	}
-
-	calendarString, err := createCalendarForPerson(userId)
-
-	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
-		return &operations.GetPublicCalendarIDNotFound{}
-	}
-	if err != nil {
-		logger.Error("Error getting calendar", err)
-		return &operations.GetPublicCalendarIDInternalServerError{}
-	}
-
-	return middleware.ResponderFunc(func(w http.ResponseWriter, p runtime.Producer) {
-		w.Write([]byte(calendarString))
-	})
-})
-
 var postImpersonateHandler = operations.PostImpersonateHandlerFunc(func(params operations.PostImpersonateParams) middleware.Responder {
 	logErr := logger.CreateLogErrorFunc("Impersondating", &operations.PostImpersonateInternalServerError{})
 	userId, err := uuid.FromString(params.UserID)

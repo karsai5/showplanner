@@ -2,17 +2,20 @@ package schedule_domain
 
 import (
 	"errors"
+	"net/http"
 	"slices"
+
+	"showplanner.io/pkg/domains/people_domain"
 
 	"gorm.io/gorm"
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
 
+	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	uuid "github.com/satori/go.uuid"
 )
@@ -70,6 +73,28 @@ var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operation
 	}
 })
 
+var getPublicCalendarIDHandler = operations.GetPublicCalendarIDHandlerFunc(func(params operations.GetPublicCalendarIDParams) middleware.Responder {
+	userId, err := uuid.FromString(params.ID)
+	if err != nil {
+		logger.Error("Error getting calendar", err)
+		return &operations.GetMeInternalServerError{}
+	}
+
+	calendarString, err := createCalendarForPerson(userId)
+
+	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		return &operations.GetPublicCalendarIDNotFound{}
+	}
+	if err != nil {
+		logger.Error("Error getting calendar", err)
+		return &operations.GetPublicCalendarIDInternalServerError{}
+	}
+
+	return middleware.ResponderFunc(func(w http.ResponseWriter, p runtime.Producer) {
+		w.Write([]byte(calendarString))
+	})
+})
+
 func getAvailability(availabilities []database.Availability) *models.AvailabilityDTO {
 	if len(availabilities) > 0 {
 		return conv.Pointer(mapAvailabilityDTO(availabilities[0]))
@@ -109,7 +134,7 @@ func getBaseRole(role database.Role, event database.Event, userId uuid.UUID) *mo
 		return assignment.RoleID == role.ID && userId != assignment.PersonID
 	})
 	if coverIdx >= 0 {
-		baseRole.CoveredBy = conv.Pointer(personnel_domain.MapToPersonSummaryDTO(event.Assignments[coverIdx].Person))
+		baseRole.CoveredBy = conv.Pointer(people_domain.MapToPersonSummaryDTO(event.Assignments[coverIdx].Person))
 	}
 
 	addShadows(&baseRole, event, role.ID)
@@ -128,7 +153,7 @@ func getRolesUserIsShadowing(shadows []database.Shadow, userId uuid.UUID) []*mod
 				Shadowing: nil,
 			}
 			if shadow.Role.Person != nil {
-				role.Shadowing = conv.Pointer(personnel_domain.MapToPersonSummaryDTO(*shadow.Role.Person))
+				role.Shadowing = conv.Pointer(people_domain.MapToPersonSummaryDTO(*shadow.Role.Person))
 			}
 			arr = append(arr, conv.Pointer(role))
 		}
@@ -148,7 +173,7 @@ func getAssignmentsAndCovers(event database.Event, userId uuid.UUID) []*models.S
 			}
 
 			if assignment.Role.Person != nil {
-				role.Covering = conv.Pointer(personnel_domain.MapToPersonSummaryDTO(*assignment.Role.Person))
+				role.Covering = conv.Pointer(people_domain.MapToPersonSummaryDTO(*assignment.Role.Person))
 				role.Type = COVERING
 			}
 
@@ -164,7 +189,7 @@ func addShadows(role *models.ScheduleEventDTORolesItems0, event database.Event, 
 	shadowsForRole := []*models.PersonSummaryDTO{}
 	for _, s := range event.Shadows {
 		if s.RoleID == roleId {
-			shadowsForRole = append(shadowsForRole, conv.Pointer(personnel_domain.MapToPersonSummaryDTO(s.Person)))
+			shadowsForRole = append(shadowsForRole, conv.Pointer(people_domain.MapToPersonSummaryDTO(s.Person)))
 		}
 	}
 	if len(shadowsForRole) > 0 {

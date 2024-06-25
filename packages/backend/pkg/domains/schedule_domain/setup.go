@@ -9,4 +9,5 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 	api.DeleteEventsIDHandler = DeleteEventHandler
 
 	api.GetScheduleHandler = GetScheduleHandler
+	api.GetPublicCalendarIDHandler = getPublicCalendarIDHandler
 }

@@ -7,7 +7,6 @@ import (
 
 	"showplanner.io/pkg/domains/media_domain"
 	"showplanner.io/pkg/domains/people_domain"
-	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/domains/rostering_domain"
 	"showplanner.io/pkg/domains/schedule_domain"
 	"showplanner.io/pkg/domains/showreports"
@@ -54,7 +53,7 @@ func configureAPI(api *operations.GoBackendAPI) http.Handler {
 	getHandlers(api)
 	people_domain.SetupHandlers(api)
 	rostering_domain.SetupHandlers(api)
-	personnel_domain.SetupHandlers(api)
+	people_domain.SetupHandlers(api)
 	media_domain.SetupHandlers(api)
 	schedule_domain.SetupHandlers(api)
 	schedule_domain.SetupHandlers(api)

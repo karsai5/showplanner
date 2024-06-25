@@ -1,13 +1,13 @@
 package shows_domain
 
 import (
+	"showplanner.io/pkg/domains/people_domain"
 	"strconv"
 	"strings"
 
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/domains/media_domain"
-	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/models"
 	"showplanner.io/pkg/permissions"
@@ -117,7 +117,7 @@ var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostS
 		role.Initialise(showIdString)
 	}
 
-	err = personnel_domain.AddToShow(int64(show.ID), userId)
+	err = people_domain.AddToShow(int64(show.ID), userId)
 	if err != nil {
 		logger.Error("Could not add person to show", err)
 		return &operations.PostShowsInternalServerError{}

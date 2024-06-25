@@ -1,4 +1,4 @@
-package personnel_domain
+package people_domain
 
 import (
 	"showplanner.io/pkg/conv"

@@ -1,13 +1,13 @@
 package rostering_domain
 
 import (
+	"showplanner.io/pkg/domains/people_domain"
 	"slices"
 	"strconv"
 
 	"github.com/go-openapi/strfmt"
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/personnel_domain"
 	"showplanner.io/pkg/models"
 )
 
@@ -98,7 +98,7 @@ func mapAvailabilityToMap(availabilities []database.Availability) map[string]*mo
 }
 
 func fillPersonAndAvailabilityData(dto *models.RosterAssignedDTO, person database.Person, event database.Event) {
-	dto.Person = conv.Pointer(personnel_domain.MapToPersonSummaryDTO(person))
+	dto.Person = conv.Pointer(people_domain.MapToPersonSummaryDTO(person))
 	availablilityIdx := slices.IndexFunc(event.Availabilities, func(a database.Availability) bool { return a.PersonID == person.ID })
 	if availablilityIdx >= 0 {
 		dto.Available = &event.Availabilities[availablilityIdx].Available
@@ -110,7 +110,7 @@ func fillPersonAndAvailabilityData(dto *models.RosterAssignedDTO, person databas
 func mapToRoleDTO(role database.Role) models.RoleDTO {
 	var person *models.PersonSummaryDTO
 	if role.Person != nil {
-		person = conv.Pointer(personnel_domain.MapToPersonSummaryDTO(*role.Person))
+		person = conv.Pointer(people_domain.MapToPersonSummaryDTO(*role.Person))
 	}
 	return models.RoleDTO{
 		ID:     int64(role.ID),
@@ -123,7 +123,7 @@ func mapToShadowDTO(shadow database.Shadow, event database.Event) models.ShadowD
 	dto := models.ShadowDTO{
 		Available: nil,
 		ID:        conv.UintToInt64(shadow.ID),
-		Person:    conv.Pointer(personnel_domain.MapToPersonSummaryDTO(shadow.Person)),
+		Person:    conv.Pointer(people_domain.MapToPersonSummaryDTO(shadow.Person)),
 	}
 
 	availabilityIdx := slices.IndexFunc(event.Availabilities, func(a database.Availability) bool { return shadow.Person.ID == a.PersonID })
@@ -137,7 +137,7 @@ func mapToShadowDTO(shadow database.Shadow, event database.Event) models.ShadowD
 func mapToAssignedDTO(a database.Assignment) models.AssignedDTO {
 	return models.AssignedDTO{
 		EventID: conv.UintToInt64(a.EventID),
-		Person:  conv.Pointer(personnel_domain.MapToPersonSummaryDTO(a.Person)),
+		Person:  conv.Pointer(people_domain.MapToPersonSummaryDTO(a.Person)),
 		RoleID:  conv.UintToInt64(a.RoleID),
 	}
 }
