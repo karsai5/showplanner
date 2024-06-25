@@ -5,11 +5,9 @@ import {
   ShowReportForm,
   ShowReportInputs,
 } from "domains/showreports/ShowReportForm";
-import { LayoutWithShowSidebar } from "domains/shows/LayoutForShow";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ReactElement } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 const EventShowReport = ({
@@ -82,9 +80,5 @@ export const getServerSideProps = (async (context) => {
   hasTimer?: boolean;
   id: string;
 }>;
-
-EventShowReport.getLayout = (page: ReactElement) => (
-  <LayoutWithShowSidebar>{page}</LayoutWithShowSidebar>
-);
 
 export default EventShowReport;

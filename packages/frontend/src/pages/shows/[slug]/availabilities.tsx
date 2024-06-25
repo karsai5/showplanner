@@ -1,9 +1,5 @@
 import { serverSideApi } from "core/api";
-import {
-  AvailabilitiesDTO,
-  AvailabilityDTO,
-  ShowDTO,
-} from "core/api/generated";
+import { AvailabilitiesDTO, ShowDTO } from "core/api/generated";
 import { H2 } from "core/components/Typography";
 import {
   PERMISSION,
