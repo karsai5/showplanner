@@ -9,4 +9,10 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 
 	api.PostInvitationsHandler = postInvitationsHandler
 	api.GetInvitationsHandler = getInvitationsHandler
+
+	api.GetPersonnelAssignedHandler = handleAssignedPersonnel
+	api.GetPersonnelAssignedGoogleContactsCSVHandler = handleAssignablePersonnelGoogle
+	api.GetPersonnelAssignableHandler = handleAssignablePersonnel
+	api.PostPersonnelAssignHandler = handleAddPersonToShow
+	api.GetPersonnelHandler = handleGetPersonnel
 }

@@ -6,9 +6,34 @@ import (
 )
 
 func inviteExistingUserToShow(showId uint, userId uuid.UUID) error {
-	_, err := addInvitationToDatabase(showId, userId)
+	invitation, err := addInvitationToDatabase(showId, userId)
+	if err != nil {
+		return err
+	}
 	// TODO: Send email
+	err = acceptInvitation(invitation.ID) // TODO: Remove when logic is added for user to accept invitation
 	return err
+}
+
+// Adds a person to a show and deletes the invitation
+func acceptInvitation(invitationId uint) error {
+	db := database.GetDatabase()
+	invitation := database.Invitation{}
+	res := db.First(&invitation, invitationId)
+
+	if res.Error != nil || invitation.PersonID == nil {
+		return res.Error
+	}
+
+	err := AddToShow(int64(invitation.ShowID), *invitation.PersonID)
+
+	if err != nil {
+		return err
+	}
+
+	db.Delete(&invitation)
+
+	return nil
 }
 
 func addInvitationToDatabase(showId uint, userId uuid.UUID) (database.Invitation, error) {
