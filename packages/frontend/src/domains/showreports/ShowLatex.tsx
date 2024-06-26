@@ -1,6 +1,6 @@
 import { CodeBracketIcon } from "@heroicons/react/24/outline";
 import { useQuery } from "@tanstack/react-query";
-import { api_deprecated } from "core/api";
+import { api } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { useModal } from "core/components/Modal/Modal";
@@ -23,7 +23,7 @@ export const ShowLatexButton: React.FC<{ id: string }> = ({ id }) => {
 
 export const ModalContent: React.FC<{ id: string }> = ({ id }) => {
   const { data, isLoading, isError } = useQuery(["showReportTex", id], () =>
-    api_deprecated.showreportsIdTexGet({ id })
+    api.showdocs.showdocReportsIdTexGet({ id })
   );
   if (isLoading) {
     return <LoadingBox />;

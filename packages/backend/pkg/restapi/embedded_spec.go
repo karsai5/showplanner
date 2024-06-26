@@ -1008,10 +1008,13 @@ func init() {
         }
       }
     },
-    "/showreports": {
+    "/showdoc/reports": {
       "get": {
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "showdocs"
         ],
         "summary": "Get users show reports",
         "responses": {
@@ -1036,17 +1039,19 @@ func init() {
         }
       }
     },
-    "/showreports/{id}": {
+    "/showdoc/reports/{id}": {
       "get": {
         "produces": [
           "application/json"
         ],
-        "summary": "Adds a person to a show",
+        "tags": [
+          "showdocs"
+        ],
+        "summary": "Gets a particular show report",
         "parameters": [
           {
             "type": "string",
             "format": "uuid",
-            "description": "ID of the show report",
             "name": "id",
             "in": "path",
             "required": true
@@ -1074,7 +1079,10 @@ func init() {
         "produces": [
           "application/json"
         ],
-        "summary": "Adds a person to a show",
+        "tags": [
+          "showdocs"
+        ],
+        "summary": "Updates a show report",
         "parameters": [
           {
             "type": "string",
@@ -1109,10 +1117,13 @@ func init() {
         }
       }
     },
-    "/showreports/{id}/pdf": {
+    "/showdoc/reports/{id}/pdf": {
       "get": {
         "produces": [
           "application/pdf"
+        ],
+        "tags": [
+          "showdocs"
         ],
         "summary": "Returns the report in the PDF format",
         "parameters": [
@@ -1144,10 +1155,13 @@ func init() {
         }
       }
     },
-    "/showreports/{id}/tex": {
+    "/showdoc/reports/{id}/tex": {
       "get": {
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "showdocs"
         ],
         "summary": "Returns the report in the TEX format",
         "parameters": [
@@ -1176,6 +1190,113 @@ func init() {
             "$ref": "#/responses/Error"
           },
           "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/showdoc/timers": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "showdocs"
+        ],
+        "summary": "Get users timers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "./schemas/ShowTimer.yaml#/ShowTimerSummaryDTO"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/showdoc/timers/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "showdocs"
+        ],
+        "summary": "Gets a particular show timer",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/ShowTimer.yaml#/ShowTimerDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      },
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "showdocs"
+        ],
+        "summary": "Updates a show timer",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "timer",
+            "in": "body",
+            "schema": {
+              "$ref": "./schemas/ShowTimer.yaml#/UpdateShowTimerDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/ShowTimer.yaml#/ShowTimerDTO"
+            }
+          },
+          "401": {
             "$ref": "#/responses/Error"
           },
           "500": {
@@ -1268,107 +1389,6 @@ func init() {
             "$ref": "#/responses/Error"
           },
           "404": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "$ref": "#/responses/Error"
-          }
-        }
-      }
-    },
-    "/showtimers": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Get users show reports",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "./schemas/ShowTimer.yaml#/ShowTimerSummaryDTO"
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
-          "404": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "$ref": "#/responses/Error"
-          }
-        }
-      }
-    },
-    "/showtimers/{id}": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Adds a person to a show",
-        "parameters": [
-          {
-            "type": "string",
-            "format": "uuid",
-            "description": "ID of the show report",
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "./schemas/ShowTimer.yaml#/ShowTimerDTO"
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
-          "404": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "$ref": "#/responses/Error"
-          }
-        }
-      },
-      "post": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Adds a person to a show",
-        "parameters": [
-          {
-            "type": "string",
-            "format": "uuid",
-            "description": "ID of the show report",
-            "name": "id",
-            "in": "path",
-            "required": true
-          },
-          {
-            "description": "Show report",
-            "name": "timer",
-            "in": "body",
-            "schema": {
-              "$ref": "./schemas/ShowTimer.yaml#/UpdateShowTimerDTO"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "./schemas/ShowTimer.yaml#/ShowTimerDTO"
-            }
-          },
-          "401": {
             "$ref": "#/responses/Error"
           },
           "500": {
@@ -2616,10 +2636,13 @@ func init() {
         }
       }
     },
-    "/showreports": {
+    "/showdoc/reports": {
       "get": {
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "showdocs"
         ],
         "summary": "Get users show reports",
         "responses": {
@@ -2653,17 +2676,19 @@ func init() {
         }
       }
     },
-    "/showreports/{id}": {
+    "/showdoc/reports/{id}": {
       "get": {
         "produces": [
           "application/json"
         ],
-        "summary": "Adds a person to a show",
+        "tags": [
+          "showdocs"
+        ],
+        "summary": "Gets a particular show report",
         "parameters": [
           {
             "type": "string",
             "format": "uuid",
-            "description": "ID of the show report",
             "name": "id",
             "in": "path",
             "required": true
@@ -2700,7 +2725,10 @@ func init() {
         "produces": [
           "application/json"
         ],
-        "summary": "Adds a person to a show",
+        "tags": [
+          "showdocs"
+        ],
+        "summary": "Updates a show report",
         "parameters": [
           {
             "type": "string",
@@ -2741,10 +2769,13 @@ func init() {
         }
       }
     },
-    "/showreports/{id}/pdf": {
+    "/showdoc/reports/{id}/pdf": {
       "get": {
         "produces": [
           "application/pdf"
+        ],
+        "tags": [
+          "showdocs"
         ],
         "summary": "Returns the report in the PDF format",
         "parameters": [
@@ -2785,10 +2816,13 @@ func init() {
         }
       }
     },
-    "/showreports/{id}/tex": {
+    "/showdoc/reports/{id}/tex": {
       "get": {
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "showdocs"
         ],
         "summary": "Returns the report in the TEX format",
         "parameters": [
@@ -2820,6 +2854,137 @@ func init() {
             }
           },
           "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/showdoc/timers": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "showdocs"
+        ],
+        "summary": "Get users timers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/showTimerSummaryDTO"
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/showdoc/timers/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "showdocs"
+        ],
+        "summary": "Gets a particular show timer",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/showTimerDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "showdocs"
+        ],
+        "summary": "Updates a show timer",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "timer",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/updateShowTimerDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/showTimerDTO"
+            }
+          },
+          "401": {
             "description": "Error",
             "schema": {
               "$ref": "#/definitions/Error"
@@ -2933,131 +3098,6 @@ func init() {
             }
           },
           "404": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/showtimers": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Get users show reports",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/showTimerSummaryDTO"
-              }
-            }
-          },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "404": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/showtimers/{id}": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Adds a person to a show",
-        "parameters": [
-          {
-            "type": "string",
-            "format": "uuid",
-            "description": "ID of the show report",
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/showTimerDTO"
-            }
-          },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "404": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "post": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Adds a person to a show",
-        "parameters": [
-          {
-            "type": "string",
-            "format": "uuid",
-            "description": "ID of the show report",
-            "name": "id",
-            "in": "path",
-            "required": true
-          },
-          {
-            "description": "Show report",
-            "name": "timer",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/updateShowTimerDTO"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/showTimerDTO"
-            }
-          },
-          "401": {
             "description": "Error",
             "schema": {
               "$ref": "#/definitions/Error"

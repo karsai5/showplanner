@@ -27,7 +27,7 @@ export const getServerSideProps = (async (context) => {
   }
   let showReport = null;
   try {
-    showReport = await ssrApi.showreportsIdGet({ id });
+    showReport = await ssrApi.showdocs.showdocReportsIdGet({ id });
   } catch (err) {
     // If the show report doesn't exist, we'll just show the form with default values
     // TODO: Should throw error if error is not a 400

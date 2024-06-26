@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { api_deprecated } from "core/api";
+import { api } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { H2 } from "core/components/Typography";
@@ -22,7 +22,7 @@ const ShowReport = () => {
   };
 
   const { data, isLoading, isError } = useQuery(["showreports"], async () =>
-    api_deprecated.showreportsGet()
+    api.showdocs.showdocReportsGet()
   );
 
   return (

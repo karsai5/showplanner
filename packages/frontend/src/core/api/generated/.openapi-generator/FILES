@@ -1,5 +1,6 @@
 apis/DefaultApi.ts
 apis/PersonnelApi.ts
+apis/ShowdocsApi.ts
 apis/index.ts
 index.ts
 models/ArrayOfPersonSummaryDTO.ts
@@ -38,7 +39,7 @@ models/ShowReportSummaryDTO.ts
 models/ShowSummaryDTO.ts
 models/ShowTimerDTO.ts
 models/ShowTimerSummaryDTO.ts
-models/ShowreportsIdTexGet200Response.ts
+models/ShowdocReportsIdTexGet200Response.ts
 models/UpdateAssignedDTO.ts
 models/UpdateShowTimerDTO.ts
 models/UpdateShowreportDTO.ts

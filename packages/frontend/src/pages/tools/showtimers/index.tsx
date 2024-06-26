@@ -1,6 +1,6 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useQuery } from "@tanstack/react-query";
-import { api_deprecated } from "core/api";
+import { api } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { H2 } from "core/components/Typography";
@@ -29,7 +29,7 @@ const ShowReport = () => {
   };
 
   const { data, isLoading, isError } = useQuery(["showtimers"], async () =>
-    api_deprecated.showtimersGet()
+    api.showdocs.showdocTimersGet()
   );
 
   return (

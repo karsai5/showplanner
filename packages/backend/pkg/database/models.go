@@ -2,7 +2,7 @@ package database
 
 import (
 	"fmt"
-	dto2 "showplanner.io/pkg/restapi/dtos"
+	"showplanner.io/pkg/restapi/dtos"
 	"time"
 
 	"github.com/go-openapi/strfmt"
@@ -65,10 +65,10 @@ func (e *Event) GetCalculatedName() (string, error) {
 	return "", nil
 }
 
-func (e *Event) MapToEventDTO() dto2.EventDTO {
+func (e *Event) MapToEventDTO() dtos.EventDTO {
 	start := strfmt.DateTime(e.Start)
 
-	dto := dto2.EventDTO{
+	dto := dtos.EventDTO{
 		ID:        conv.UintToInt64(e.ID),
 		ShowID:    int64(e.ShowID),
 		Start:     &start,
@@ -76,7 +76,7 @@ func (e *Event) MapToEventDTO() dto2.EventDTO {
 		Name:      e.Name,
 		Shortnote: e.ShortNote,
 		Address:   e.Address,
-		Options: &dto2.EventOptionsDTO{
+		Options: &dtos.EventOptionsDTO{
 			Divider:            conv.Pointer(e.Options.Divider),
 			AttendanceRequired: conv.Pointer(e.Options.AttendanceRequired),
 		},
@@ -124,7 +124,7 @@ type Assignment struct {
 	gorm.Model
 	PersonID uuid.UUID
 	EventID  uint
-	RoleID   uint 
+	RoleID   uint
 	Event    Event
 	Person   Person
 	Role     Role
@@ -176,8 +176,8 @@ func (p *Person) GetFullName() string {
 	return fmt.Sprintf("%s %s", p.GetFirstName(), p.LastName)
 }
 
-func (p *Person) MapToPersonSummaryDTO() dto2.PersonSummaryDTO {
-	dto := dto2.PersonSummaryDTO{
+func (p *Person) MapToPersonSummaryDTO() dtos.PersonSummaryDTO {
+	dto := dtos.PersonSummaryDTO{
 		FirstName: &p.FirstName,
 		ID:        conv.UUIDToStrmFmtUUID(p.ID),
 		LastName:  &p.LastName,
@@ -215,6 +215,34 @@ type ShowTimer struct {
 	CreatedBy   Person
 }
 
+func (st *ShowTimer) MapToSummaryDTO() dtos.ShowTimerSummaryDTO {
+	return dtos.ShowTimerSummaryDTO{
+		ID:        *conv.UUIDToStrmFmtUUID(st.ID),
+		ShowStart: conv.TimeToDateTime(st.ShowStart),
+		ShowEnd:   conv.TimeToDateTime(st.ShowEnd),
+	}
+}
+
+func (st *ShowTimer) MapToDTO() dtos.ShowTimerDTO {
+	dto := dtos.ShowTimerDTO{
+		ID: *conv.UUIDToStrmFmtUUID(st.ID),
+		UpdateShowTimerDTO: dtos.UpdateShowTimerDTO{
+			ActOneFOHClearance: mapTimeIfExists(st.ActOneFOHClearance),
+			ActTwoFOHClearance: mapTimeIfExists(st.ActTwoFOHClearance),
+			HouseOpen:          mapTimeIfExists(st.HouseOpen),
+			IntervalEnd:        mapTimeIfExists(st.IntervalEnd),
+			IntervalStart:      mapTimeIfExists(st.IntervalStart),
+			ShowEnd:            mapTimeIfExists(st.ShowEnd),
+			ShowStart:          mapTimeIfExists(st.ShowStart),
+			ExpectedCurtainsUp: mapTimeIfExists(st.ExpectedCurtainsUp),
+		},
+	}
+	if st.EventID != nil {
+		dto.EventID = conv.UintToInt64(*st.EventID)
+	}
+	return dto
+}
+
 type ShowReport struct {
 	ID        uuid.UUID `gorm:"type:uuid;primary_key"`
 	CreatedAt time.Time
@@ -242,6 +270,38 @@ type ShowReport struct {
 	// linked person
 	CreatedById uuid.UUID
 	CreatedBy   Person
+}
+
+func (sr *ShowReport) MapToSummaryDTO() dtos.ShowReportSummaryDTO {
+	sr.GenerateDetailsFromEvent()
+	return dtos.ShowReportSummaryDTO{
+		LastUpdated: strfmt.DateTime(sr.UpdatedAt),
+		ID:          *conv.UUIDToStrmFmtUUID(sr.ID),
+		Title:       sr.Title,
+	}
+}
+
+func (sr *ShowReport) MapToDTO() dtos.ShowReportDTO {
+	sr.GenerateDetailsFromEvent()
+	dto := dtos.ShowReportDTO{
+		ID: *conv.UUIDToStrmFmtUUID(sr.ID),
+		UpdateShowreportDTO: dtos.UpdateShowreportDTO{
+			ActOneFOHClearance: mapTimeIfExists(sr.ActOneFOHClearance),
+			ActTwoFOHClearance: mapTimeIfExists(sr.ActTwoFOHClearance),
+			HouseOpen:          mapTimeIfExists(sr.HouseOpen),
+			IntervalEnd:        mapTimeIfExists(sr.IntervalEnd),
+			IntervalStart:      mapTimeIfExists(sr.IntervalStart),
+			Notes:              &sr.Notes,
+			ShowEnd:            mapTimeIfExists(sr.ShowEnd),
+			ShowStart:          mapTimeIfExists(sr.ShowStart),
+			Subtitle:           conv.Pointer(sr.Subtitle),
+			Title:              conv.Pointer(sr.Title),
+		},
+	}
+	if sr.EventID != nil {
+		dto.EventID = conv.UintToInt64(*sr.EventID)
+	}
+	return dto
 }
 
 type Role struct {
@@ -276,8 +336,8 @@ type Invitation struct {
 	Email    *string
 }
 
-func (i *Invitation) MapToInvitationDTO() dto2.InvitationDTO {
-	dto := dto2.InvitationDTO{
+func (i *Invitation) MapToInvitationDTO() dtos.InvitationDTO {
+	dto := dtos.InvitationDTO{
 		ID: int64(i.ID),
 	}
 
@@ -286,4 +346,17 @@ func (i *Invitation) MapToInvitationDTO() dto2.InvitationDTO {
 	}
 
 	return dto
+}
+
+func mapTimeIfExists(t *time.Time) *strfmt.DateTime {
+	if t == nil {
+		return nil
+	}
+	return (*strfmt.DateTime)(t)
+}
+func mapStrfmtTimeIfExists(t *strfmt.DateTime) *time.Time {
+	if t == nil {
+		return nil
+	}
+	return (*time.Time)(t)
 }

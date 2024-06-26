@@ -7,7 +7,7 @@ import (
 
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/showreports"
+	"showplanner.io/pkg/showdoc"
 
 	uuid "github.com/satori/go.uuid"
 	"github.com/urfave/cli/v2"
@@ -51,7 +51,7 @@ func CreateShowReport() *cli.Command {
 				Notes:              "# General notes\n - one\n - two\n - three\n",
 			}
 
-			showreports.CreateShowReportPDF(sr)
+			showdoc.CreateShowReportPDF(sr)
 
 			return nil
 		},

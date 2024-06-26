@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api_deprecated, serverSideApi } from "core/api";
+import { api, serverSideApi } from "core/api";
 import { ShowTimerDTO } from "core/api/generated";
 import { ClockIcon } from "core/components/Icons";
 import { StickyLoadingSpinner } from "core/components/LoadingBox/PersistantLoadingSpinner";
@@ -28,7 +28,7 @@ export default function ShowTimerPage({
       if (!timers) {
         throw new Error("Missing timers");
       }
-      return api_deprecated.showtimersIdPost({
+      return api.showdocs.showdocTimersIdPost({
         id,
         timer: {
           expectedCurtainsUp: timers.expectedCurtainsUp,
@@ -89,12 +89,12 @@ export const getServerSideProps = (async (context) => {
     throw new Error("Incorrect ID format");
   }
 
-  const event = await ssrApi.eventsIdGet({
+  const event = await ssrApi.default.eventsIdGet({
     id: Number(id),
   });
 
   if (event.showTimer) {
-    const showTimer = await ssrApi.showtimersIdGet({
+    const showTimer = await ssrApi.showdocs.showdocTimersIdGet({
       id: event.showTimer,
     });
     return {
@@ -105,7 +105,7 @@ export const getServerSideProps = (async (context) => {
     };
   }
 
-  const newShowtimer = await ssrApi.showtimersIdPost({
+  const newShowtimer = await ssrApi.showdocs.showdocTimersIdPost({
     id: uuidv4().toString(),
     timer: {
       eventId: Number(id),

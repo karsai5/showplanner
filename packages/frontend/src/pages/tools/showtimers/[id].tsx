@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api_deprecated, serverSideApi } from "core/api";
+import { api, serverSideApi } from "core/api";
 import { ShowReportDTO, ShowTimerDTO } from "core/api/generated";
 import { ClockIcon } from "core/components/Icons";
 import { StickyLoadingSpinner } from "core/components/LoadingBox/PersistantLoadingSpinner";
@@ -24,7 +24,7 @@ export default function ShowTimerPage({
       if (!timers) {
         throw new Error("Missing timers");
       }
-      return api_deprecated.showtimersIdPost({
+      return api.showdocs.showdocTimersIdPost({
         id,
         timer: {
           expectedCurtainsUp: timers.expectedCurtainsUp,
@@ -78,7 +78,7 @@ export const getServerSideProps = (async (context) => {
   }
   let showTimer: ShowReportDTO | null = null;
   try {
-    showTimer = await ssrApi.showtimersIdGet({ id });
+    showTimer = await ssrApi.showdocs.showdocTimersIdGet({ id });
   } catch (err) {
     console.error(err);
     // If the show report doesn't exist, we'll just show the form with default values

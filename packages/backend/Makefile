@@ -9,7 +9,7 @@ watch-swagger:
 
 generate:
 	rm -rf pkg/restapi/dto/*_d_t_o.go pkg/restapi/operations
-	swagger generate server -f ../openapi/openapi.yaml -A go-backend -P models.Principal --model-package="pkg/restapi/dto" --server-package="pkg/restapi"
+	swagger generate server -f ../openapi/openapi.yaml -A go-backend -P models.Principal --model-package="pkg/restapi/dtos" --server-package="pkg/restapi"
 
 build: build-cli build-server
 

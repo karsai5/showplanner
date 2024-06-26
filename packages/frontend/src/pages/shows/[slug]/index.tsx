@@ -1,7 +1,7 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
-import { api_deprecated, getApi, serverSideApi } from "core/api";
+import { api_deprecated, getApi, serverSideApi_deprecated } from "core/api";
 import {
   PersonSummaryDTO,
   ScheduleEventDTO,
@@ -123,7 +123,7 @@ export default function ShowPage(
 
 export const getServerSideProps = (async (context) => {
   const slug = context.query.slug;
-  const ssrApi = serverSideApi(context);
+  const ssrApi = serverSideApi_deprecated(context);
 
   if (typeof slug !== "string") {
     throw new Error("Incorrect slug format");

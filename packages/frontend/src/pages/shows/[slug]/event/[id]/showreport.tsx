@@ -44,12 +44,12 @@ export const getServerSideProps = (async (context) => {
     throw new Error("Incorrect ID format");
   }
 
-  const event = await ssrApi.eventsIdGet({
+  const event = await ssrApi.default.eventsIdGet({
     id: Number(id),
   });
 
   if (event.showReport) {
-    const showReport = await ssrApi.showreportsIdGet({
+    const showReport = await ssrApi.showdocs.showdocReportsIdGet({
       id: event.showReport,
     });
     return {
@@ -61,7 +61,7 @@ export const getServerSideProps = (async (context) => {
     };
   }
 
-  const newShowReport = await ssrApi.showreportsIdPost({
+  const newShowReport = await ssrApi.showdocs.showdocReportsIdPost({
     id: uuidv4().toString(),
     report: {
       eventId: Number(id),

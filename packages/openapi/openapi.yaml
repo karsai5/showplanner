@@ -581,189 +581,6 @@ paths:
           description: Upload succesful
           schema:
             $ref: './schemas/Media.yaml#/MediaDTO'
-  /showreports:
-    get:
-      summary: Get users show reports
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            type: array
-            items:
-              $ref: './schemas/ShowReport.yaml#/ShowReportSummaryDTO'
-        401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
-        404:
-          $ref: '#/responses/Error'
-  /showreports/{id}:
-    get:
-      parameters:
-        - in: path
-          required: true
-          name: id
-          type: string
-          format: uuid
-          description: ID of the show report
-      summary: Adds a person to a show
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: './schemas/ShowReport.yaml#/ShowReportDTO'
-        401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
-        404:
-          $ref: '#/responses/Error'
-    post:
-      parameters:
-        - in: path
-          required: true
-          name: id
-          type: string
-          format: uuid
-          description: ID of the show report
-        - in: body
-          description: Show report
-          name: report
-          schema:
-            $ref: './schemas/ShowReport.yaml#/UpdateShowreportDTO'
-      summary: Adds a person to a show
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: './schemas/ShowReport.yaml#/ShowReportDTO'
-        401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
-  /showreports/{id}/pdf:
-    get:
-      parameters:
-        - in: path
-          required: true
-          name: id
-          type: string
-          format: uuid
-          description: ID of the show report
-      summary: Returns the report in the PDF format
-      produces:
-        - application/pdf
-      responses:
-        200:
-          description: A PDF file
-          schema:
-            type: file
-        401:
-          $ref: '#/responses/Error'
-        404:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
-  /showreports/{id}/tex:
-    get:
-      parameters:
-        - in: path
-          required: true
-          name: id
-          type: string
-          format: uuid
-          description: ID of the show report
-      summary: Returns the report in the TEX format
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Tex file contents
-          schema:
-            type: object
-            properties:
-              contents:
-                type: string
-        401:
-          $ref: '#/responses/Error'
-        404:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
-
-  # SHOWTIMERS
-  /showtimers:
-    get:
-      summary: Get users show reports
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            type: array
-            items:
-              $ref: './schemas/ShowTimer.yaml#/ShowTimerSummaryDTO'
-        401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
-        404:
-          $ref: '#/responses/Error'
-  /showtimers/{id}:
-    get:
-      parameters:
-        - in: path
-          required: true
-          name: id
-          type: string
-          format: uuid
-          description: ID of the show report
-      summary: Adds a person to a show
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: './schemas/ShowTimer.yaml#/ShowTimerDTO'
-        401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
-        404:
-          $ref: '#/responses/Error'
-    post:
-      parameters:
-        - in: path
-          required: true
-          name: id
-          type: string
-          format: uuid
-          description: ID of the show report
-        - in: body
-          description: Show report
-          name: timer
-          schema:
-            $ref: './schemas/ShowTimer.yaml#/UpdateShowTimerDTO'
-      summary: Adds a person to a show
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: './schemas/ShowTimer.yaml#/ShowTimerDTO'
-        401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
   /invitations/:
     get:
       parameters:
@@ -810,6 +627,9 @@ paths:
           $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'
+
+  # PERSONNEL
+  # =========
 
   /personnel/people:
     get:
@@ -882,6 +702,204 @@ paths:
           $ref: '#/responses/Error'
         200:
           description: OK
+
+  # SHOWDOCS
+  # ========
+
+  /showdoc/reports:
+    get:
+      tags:
+        - showdocs
+      summary: Get users show reports
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: './schemas/ShowReport.yaml#/ShowReportSummaryDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+  /showdoc/reports/{id}:
+    get:
+      tags:
+        - showdocs
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: string
+          format: uuid
+      summary: Gets a particular show report
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/ShowReport.yaml#/ShowReportDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+    post:
+      tags:
+        - showdocs
+      summary: Updates a show report
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: string
+          format: uuid
+          description: ID of the show report
+        - in: body
+          description: Show report
+          name: report
+          schema:
+            $ref: './schemas/ShowReport.yaml#/UpdateShowreportDTO'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/ShowReport.yaml#/ShowReportDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+  /showdoc/reports/{id}/pdf:
+    get:
+      tags:
+        - showdocs
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: string
+          format: uuid
+          description: ID of the show report
+      summary: Returns the report in the PDF format
+      produces:
+        - application/pdf
+      responses:
+        200:
+          description: A PDF file
+          schema:
+            type: file
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+  /showdoc/reports/{id}/tex:
+    get:
+      tags:
+        - showdocs
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: string
+          format: uuid
+          description: ID of the show report
+      summary: Returns the report in the TEX format
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Tex file contents
+          schema:
+            type: object
+            properties:
+              contents:
+                type: string
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+
+  /showdoc/timers:
+    get:
+      tags:
+        - showdocs
+      summary: Get users timers
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: './schemas/ShowTimer.yaml#/ShowTimerSummaryDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+  /showdoc/timers/{id}:
+    get:
+      tags:
+        - showdocs
+      summary: Gets a particular show timer
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: string
+          format: uuid
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/ShowTimer.yaml#/ShowTimerDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+    post:
+      tags:
+        - showdocs
+      summary: Updates a show timer
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: string
+          format: uuid
+        - in: body
+          name: timer
+          schema:
+            $ref: './schemas/ShowTimer.yaml#/UpdateShowTimerDTO'
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/ShowTimer.yaml#/ShowTimerDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
 
 responses:
   Error:

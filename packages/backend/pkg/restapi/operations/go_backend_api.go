@@ -21,6 +21,7 @@ import (
 	"github.com/go-openapi/swag"
 
 	"showplanner.io/pkg/restapi/operations/personnel"
+	"showplanner.io/pkg/restapi/operations/showdocs"
 )
 
 // NewGoBackendAPI creates a new GoBackend instance
@@ -104,29 +105,29 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetScheduleHandler: GetScheduleHandlerFunc(func(params GetScheduleParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetSchedule has not yet been implemented")
 		}),
-		GetShowreportsHandler: GetShowreportsHandlerFunc(func(params GetShowreportsParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetShowreports has not yet been implemented")
+		ShowdocsGetShowdocReportsHandler: showdocs.GetShowdocReportsHandlerFunc(func(params showdocs.GetShowdocReportsParams) middleware.Responder {
+			return middleware.NotImplemented("operation showdocs.GetShowdocReports has not yet been implemented")
 		}),
-		GetShowreportsIDHandler: GetShowreportsIDHandlerFunc(func(params GetShowreportsIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetShowreportsID has not yet been implemented")
+		ShowdocsGetShowdocReportsIDHandler: showdocs.GetShowdocReportsIDHandlerFunc(func(params showdocs.GetShowdocReportsIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation showdocs.GetShowdocReportsID has not yet been implemented")
 		}),
-		GetShowreportsIDPdfHandler: GetShowreportsIDPdfHandlerFunc(func(params GetShowreportsIDPdfParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetShowreportsIDPdf has not yet been implemented")
+		ShowdocsGetShowdocReportsIDPdfHandler: showdocs.GetShowdocReportsIDPdfHandlerFunc(func(params showdocs.GetShowdocReportsIDPdfParams) middleware.Responder {
+			return middleware.NotImplemented("operation showdocs.GetShowdocReportsIDPdf has not yet been implemented")
 		}),
-		GetShowreportsIDTexHandler: GetShowreportsIDTexHandlerFunc(func(params GetShowreportsIDTexParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetShowreportsIDTex has not yet been implemented")
+		ShowdocsGetShowdocReportsIDTexHandler: showdocs.GetShowdocReportsIDTexHandlerFunc(func(params showdocs.GetShowdocReportsIDTexParams) middleware.Responder {
+			return middleware.NotImplemented("operation showdocs.GetShowdocReportsIDTex has not yet been implemented")
+		}),
+		ShowdocsGetShowdocTimersHandler: showdocs.GetShowdocTimersHandlerFunc(func(params showdocs.GetShowdocTimersParams) middleware.Responder {
+			return middleware.NotImplemented("operation showdocs.GetShowdocTimers has not yet been implemented")
+		}),
+		ShowdocsGetShowdocTimersIDHandler: showdocs.GetShowdocTimersIDHandlerFunc(func(params showdocs.GetShowdocTimersIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation showdocs.GetShowdocTimersID has not yet been implemented")
 		}),
 		GetShowsHandler: GetShowsHandlerFunc(func(params GetShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetShows has not yet been implemented")
 		}),
 		GetShowsShowSlugSummaryHandler: GetShowsShowSlugSummaryHandlerFunc(func(params GetShowsShowSlugSummaryParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetShowsShowSlugSummary has not yet been implemented")
-		}),
-		GetShowtimersHandler: GetShowtimersHandlerFunc(func(params GetShowtimersParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetShowtimers has not yet been implemented")
-		}),
-		GetShowtimersIDHandler: GetShowtimersIDHandlerFunc(func(params GetShowtimersIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetShowtimersID has not yet been implemented")
 		}),
 		PostAssignmentHandler: PostAssignmentHandlerFunc(func(params PostAssignmentParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostAssignment has not yet been implemented")
@@ -161,14 +162,14 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		PostShadowHandler: PostShadowHandlerFunc(func(params PostShadowParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostShadow has not yet been implemented")
 		}),
-		PostShowreportsIDHandler: PostShowreportsIDHandlerFunc(func(params PostShowreportsIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostShowreportsID has not yet been implemented")
+		ShowdocsPostShowdocReportsIDHandler: showdocs.PostShowdocReportsIDHandlerFunc(func(params showdocs.PostShowdocReportsIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation showdocs.PostShowdocReportsID has not yet been implemented")
+		}),
+		ShowdocsPostShowdocTimersIDHandler: showdocs.PostShowdocTimersIDHandlerFunc(func(params showdocs.PostShowdocTimersIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation showdocs.PostShowdocTimersID has not yet been implemented")
 		}),
 		PostShowsHandler: PostShowsHandlerFunc(func(params PostShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostShows has not yet been implemented")
-		}),
-		PostShowtimersIDHandler: PostShowtimersIDHandlerFunc(func(params PostShowtimersIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostShowtimersID has not yet been implemented")
 		}),
 		PutAssignmentIDHandler: PutAssignmentIDHandlerFunc(func(params PutAssignmentIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation PutAssignmentID has not yet been implemented")
@@ -257,22 +258,22 @@ type GoBackendAPI struct {
 	GetRosterHandler GetRosterHandler
 	// GetScheduleHandler sets the operation handler for the get schedule operation
 	GetScheduleHandler GetScheduleHandler
-	// GetShowreportsHandler sets the operation handler for the get showreports operation
-	GetShowreportsHandler GetShowreportsHandler
-	// GetShowreportsIDHandler sets the operation handler for the get showreports ID operation
-	GetShowreportsIDHandler GetShowreportsIDHandler
-	// GetShowreportsIDPdfHandler sets the operation handler for the get showreports ID pdf operation
-	GetShowreportsIDPdfHandler GetShowreportsIDPdfHandler
-	// GetShowreportsIDTexHandler sets the operation handler for the get showreports ID tex operation
-	GetShowreportsIDTexHandler GetShowreportsIDTexHandler
+	// ShowdocsGetShowdocReportsHandler sets the operation handler for the get showdoc reports operation
+	ShowdocsGetShowdocReportsHandler showdocs.GetShowdocReportsHandler
+	// ShowdocsGetShowdocReportsIDHandler sets the operation handler for the get showdoc reports ID operation
+	ShowdocsGetShowdocReportsIDHandler showdocs.GetShowdocReportsIDHandler
+	// ShowdocsGetShowdocReportsIDPdfHandler sets the operation handler for the get showdoc reports ID pdf operation
+	ShowdocsGetShowdocReportsIDPdfHandler showdocs.GetShowdocReportsIDPdfHandler
+	// ShowdocsGetShowdocReportsIDTexHandler sets the operation handler for the get showdoc reports ID tex operation
+	ShowdocsGetShowdocReportsIDTexHandler showdocs.GetShowdocReportsIDTexHandler
+	// ShowdocsGetShowdocTimersHandler sets the operation handler for the get showdoc timers operation
+	ShowdocsGetShowdocTimersHandler showdocs.GetShowdocTimersHandler
+	// ShowdocsGetShowdocTimersIDHandler sets the operation handler for the get showdoc timers ID operation
+	ShowdocsGetShowdocTimersIDHandler showdocs.GetShowdocTimersIDHandler
 	// GetShowsHandler sets the operation handler for the get shows operation
 	GetShowsHandler GetShowsHandler
 	// GetShowsShowSlugSummaryHandler sets the operation handler for the get shows show slug summary operation
 	GetShowsShowSlugSummaryHandler GetShowsShowSlugSummaryHandler
-	// GetShowtimersHandler sets the operation handler for the get showtimers operation
-	GetShowtimersHandler GetShowtimersHandler
-	// GetShowtimersIDHandler sets the operation handler for the get showtimers ID operation
-	GetShowtimersIDHandler GetShowtimersIDHandler
 	// PostAssignmentHandler sets the operation handler for the post assignment operation
 	PostAssignmentHandler PostAssignmentHandler
 	// PostAvailabilitiesHandler sets the operation handler for the post availabilities operation
@@ -295,12 +296,12 @@ type GoBackendAPI struct {
 	PostRolesHandler PostRolesHandler
 	// PostShadowHandler sets the operation handler for the post shadow operation
 	PostShadowHandler PostShadowHandler
-	// PostShowreportsIDHandler sets the operation handler for the post showreports ID operation
-	PostShowreportsIDHandler PostShowreportsIDHandler
+	// ShowdocsPostShowdocReportsIDHandler sets the operation handler for the post showdoc reports ID operation
+	ShowdocsPostShowdocReportsIDHandler showdocs.PostShowdocReportsIDHandler
+	// ShowdocsPostShowdocTimersIDHandler sets the operation handler for the post showdoc timers ID operation
+	ShowdocsPostShowdocTimersIDHandler showdocs.PostShowdocTimersIDHandler
 	// PostShowsHandler sets the operation handler for the post shows operation
 	PostShowsHandler PostShowsHandler
-	// PostShowtimersIDHandler sets the operation handler for the post showtimers ID operation
-	PostShowtimersIDHandler PostShowtimersIDHandler
 	// PutAssignmentIDHandler sets the operation handler for the put assignment ID operation
 	PutAssignmentIDHandler PutAssignmentIDHandler
 	// PutRolesIDHandler sets the operation handler for the put roles ID operation
@@ -445,29 +446,29 @@ func (o *GoBackendAPI) Validate() error {
 	if o.GetScheduleHandler == nil {
 		unregistered = append(unregistered, "GetScheduleHandler")
 	}
-	if o.GetShowreportsHandler == nil {
-		unregistered = append(unregistered, "GetShowreportsHandler")
+	if o.ShowdocsGetShowdocReportsHandler == nil {
+		unregistered = append(unregistered, "showdocs.GetShowdocReportsHandler")
 	}
-	if o.GetShowreportsIDHandler == nil {
-		unregistered = append(unregistered, "GetShowreportsIDHandler")
+	if o.ShowdocsGetShowdocReportsIDHandler == nil {
+		unregistered = append(unregistered, "showdocs.GetShowdocReportsIDHandler")
 	}
-	if o.GetShowreportsIDPdfHandler == nil {
-		unregistered = append(unregistered, "GetShowreportsIDPdfHandler")
+	if o.ShowdocsGetShowdocReportsIDPdfHandler == nil {
+		unregistered = append(unregistered, "showdocs.GetShowdocReportsIDPdfHandler")
 	}
-	if o.GetShowreportsIDTexHandler == nil {
-		unregistered = append(unregistered, "GetShowreportsIDTexHandler")
+	if o.ShowdocsGetShowdocReportsIDTexHandler == nil {
+		unregistered = append(unregistered, "showdocs.GetShowdocReportsIDTexHandler")
+	}
+	if o.ShowdocsGetShowdocTimersHandler == nil {
+		unregistered = append(unregistered, "showdocs.GetShowdocTimersHandler")
+	}
+	if o.ShowdocsGetShowdocTimersIDHandler == nil {
+		unregistered = append(unregistered, "showdocs.GetShowdocTimersIDHandler")
 	}
 	if o.GetShowsHandler == nil {
 		unregistered = append(unregistered, "GetShowsHandler")
 	}
 	if o.GetShowsShowSlugSummaryHandler == nil {
 		unregistered = append(unregistered, "GetShowsShowSlugSummaryHandler")
-	}
-	if o.GetShowtimersHandler == nil {
-		unregistered = append(unregistered, "GetShowtimersHandler")
-	}
-	if o.GetShowtimersIDHandler == nil {
-		unregistered = append(unregistered, "GetShowtimersIDHandler")
 	}
 	if o.PostAssignmentHandler == nil {
 		unregistered = append(unregistered, "PostAssignmentHandler")
@@ -502,14 +503,14 @@ func (o *GoBackendAPI) Validate() error {
 	if o.PostShadowHandler == nil {
 		unregistered = append(unregistered, "PostShadowHandler")
 	}
-	if o.PostShowreportsIDHandler == nil {
-		unregistered = append(unregistered, "PostShowreportsIDHandler")
+	if o.ShowdocsPostShowdocReportsIDHandler == nil {
+		unregistered = append(unregistered, "showdocs.PostShowdocReportsIDHandler")
+	}
+	if o.ShowdocsPostShowdocTimersIDHandler == nil {
+		unregistered = append(unregistered, "showdocs.PostShowdocTimersIDHandler")
 	}
 	if o.PostShowsHandler == nil {
 		unregistered = append(unregistered, "PostShowsHandler")
-	}
-	if o.PostShowtimersIDHandler == nil {
-		unregistered = append(unregistered, "PostShowtimersIDHandler")
 	}
 	if o.PutAssignmentIDHandler == nil {
 		unregistered = append(unregistered, "PutAssignmentIDHandler")
@@ -686,19 +687,27 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/showreports"] = NewGetShowreports(o.context, o.GetShowreportsHandler)
+	o.handlers["GET"]["/showdoc/reports"] = showdocs.NewGetShowdocReports(o.context, o.ShowdocsGetShowdocReportsHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/showreports/{id}"] = NewGetShowreportsID(o.context, o.GetShowreportsIDHandler)
+	o.handlers["GET"]["/showdoc/reports/{id}"] = showdocs.NewGetShowdocReportsID(o.context, o.ShowdocsGetShowdocReportsIDHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/showreports/{id}/pdf"] = NewGetShowreportsIDPdf(o.context, o.GetShowreportsIDPdfHandler)
+	o.handlers["GET"]["/showdoc/reports/{id}/pdf"] = showdocs.NewGetShowdocReportsIDPdf(o.context, o.ShowdocsGetShowdocReportsIDPdfHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/showreports/{id}/tex"] = NewGetShowreportsIDTex(o.context, o.GetShowreportsIDTexHandler)
+	o.handlers["GET"]["/showdoc/reports/{id}/tex"] = showdocs.NewGetShowdocReportsIDTex(o.context, o.ShowdocsGetShowdocReportsIDTexHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/showdoc/timers"] = showdocs.NewGetShowdocTimers(o.context, o.ShowdocsGetShowdocTimersHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/showdoc/timers/{id}"] = showdocs.NewGetShowdocTimersID(o.context, o.ShowdocsGetShowdocTimersIDHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
@@ -707,14 +716,6 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/shows/{showSlug}/summary"] = NewGetShowsShowSlugSummary(o.context, o.GetShowsShowSlugSummaryHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/showtimers"] = NewGetShowtimers(o.context, o.GetShowtimersHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/showtimers/{id}"] = NewGetShowtimersID(o.context, o.GetShowtimersIDHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
@@ -762,15 +763,15 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/showreports/{id}"] = NewPostShowreportsID(o.context, o.PostShowreportsIDHandler)
+	o.handlers["POST"]["/showdoc/reports/{id}"] = showdocs.NewPostShowdocReportsID(o.context, o.ShowdocsPostShowdocReportsIDHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/showdoc/timers/{id}"] = showdocs.NewPostShowdocTimersID(o.context, o.ShowdocsPostShowdocTimersIDHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/shows"] = NewPostShows(o.context, o.PostShowsHandler)
-	if o.handlers["POST"] == nil {
-		o.handlers["POST"] = make(map[string]http.Handler)
-	}
-	o.handlers["POST"]["/showtimers/{id}"] = NewPostShowtimersID(o.context, o.PostShowtimersIDHandler)
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)
 	}

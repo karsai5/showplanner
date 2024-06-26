@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { api_deprecated, serverSideApi } from "core/api";
+import { api_deprecated, serverSideApi_deprecated } from "core/api";
 import { ArrayOfPersonSummaryDTO, ShowDTO } from "core/api/generated";
 import { H2, H3 } from "core/components/Typography";
 import {
@@ -23,7 +23,7 @@ import superjson from "superjson";
 
 export const getServerSideProps = (async (context) => {
   const slug = context.query.slug;
-  const ssrApi = serverSideApi(context);
+  const ssrApi = serverSideApi_deprecated(context);
 
   if (typeof slug !== "string") {
     throw new Error("Incorrect slug format");

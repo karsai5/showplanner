@@ -1,4 +1,4 @@
-import { serverSideApi } from "core/api";
+import { serverSideApi_deprecated } from "core/api";
 import { RosterDTO, ShowDTO } from "core/api/generated";
 import { H2 } from "core/components/Typography";
 import { HasPermission, PERMISSION } from "core/permissions";
@@ -12,7 +12,7 @@ import superjson from "superjson";
 
 export const getServerSideProps = (async (context) => {
   const slug = context.query.slug;
-  const ssrApi = serverSideApi(context);
+  const ssrApi = serverSideApi_deprecated(context);
 
   if (typeof slug !== "string") {
     throw new Error("Incorrect slug format");
