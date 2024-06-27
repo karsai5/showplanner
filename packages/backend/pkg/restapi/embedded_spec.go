@@ -390,6 +390,73 @@ func init() {
         }
       }
     },
+    "/invitations/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "View invitation",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of invitation",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/Invitations.yaml#/InvitationDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/invitations/{id}/accept": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Accept an invitation",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of invitation",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/me": {
       "get": {
         "produces": [
@@ -1948,6 +2015,85 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Error"
             }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/invitations/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "View invitation",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of invitation",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/invitationDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/invitations/{id}/accept": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Accept an invitation",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of invitation",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Error",
@@ -3688,7 +3834,8 @@ func init() {
           "format": "date-time"
         },
         "id": {
-          "type": "integer"
+          "type": "string",
+          "format": "uuid"
         },
         "person": {
           "$ref": "#/definitions/personSummaryDTO"

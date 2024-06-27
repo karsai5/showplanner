@@ -73,6 +73,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		RosteringGetInvitationsHandler: rostering.GetInvitationsHandlerFunc(func(params rostering.GetInvitationsParams) middleware.Responder {
 			return middleware.NotImplemented("operation rostering.GetInvitations has not yet been implemented")
 		}),
+		RosteringGetInvitationsIDHandler: rostering.GetInvitationsIDHandlerFunc(func(params rostering.GetInvitationsIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation rostering.GetInvitationsID has not yet been implemented")
+		}),
 		PersonnelGetMeHandler: personnel.GetMeHandlerFunc(func(params personnel.GetMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation personnel.GetMe has not yet been implemented")
 		}),
@@ -147,6 +150,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		}),
 		RosteringPostInvitationsHandler: rostering.PostInvitationsHandlerFunc(func(params rostering.PostInvitationsParams) middleware.Responder {
 			return middleware.NotImplemented("operation rostering.PostInvitations has not yet been implemented")
+		}),
+		RosteringPostInvitationsIDAcceptHandler: rostering.PostInvitationsIDAcceptHandlerFunc(func(params rostering.PostInvitationsIDAcceptParams) middleware.Responder {
+			return middleware.NotImplemented("operation rostering.PostInvitationsIDAccept has not yet been implemented")
 		}),
 		PersonnelPostMeHandler: personnel.PostMeHandlerFunc(func(params personnel.PostMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation personnel.PostMe has not yet been implemented")
@@ -240,6 +246,8 @@ type GoBackendAPI struct {
 	GetEventsIDHandler GetEventsIDHandler
 	// RosteringGetInvitationsHandler sets the operation handler for the get invitations operation
 	RosteringGetInvitationsHandler rostering.GetInvitationsHandler
+	// RosteringGetInvitationsIDHandler sets the operation handler for the get invitations ID operation
+	RosteringGetInvitationsIDHandler rostering.GetInvitationsIDHandler
 	// PersonnelGetMeHandler sets the operation handler for the get me operation
 	PersonnelGetMeHandler personnel.GetMeHandler
 	// GetPersonnelAssignableHandler sets the operation handler for the get personnel assignable operation
@@ -290,6 +298,8 @@ type GoBackendAPI struct {
 	PostEventsIDHandler PostEventsIDHandler
 	// RosteringPostInvitationsHandler sets the operation handler for the post invitations operation
 	RosteringPostInvitationsHandler rostering.PostInvitationsHandler
+	// RosteringPostInvitationsIDAcceptHandler sets the operation handler for the post invitations ID accept operation
+	RosteringPostInvitationsIDAcceptHandler rostering.PostInvitationsIDAcceptHandler
 	// PersonnelPostMeHandler sets the operation handler for the post me operation
 	PersonnelPostMeHandler personnel.PostMeHandler
 	// PostMediaUploadHandler sets the operation handler for the post media upload operation
@@ -419,6 +429,9 @@ func (o *GoBackendAPI) Validate() error {
 	if o.RosteringGetInvitationsHandler == nil {
 		unregistered = append(unregistered, "rostering.GetInvitationsHandler")
 	}
+	if o.RosteringGetInvitationsIDHandler == nil {
+		unregistered = append(unregistered, "rostering.GetInvitationsIDHandler")
+	}
 	if o.PersonnelGetMeHandler == nil {
 		unregistered = append(unregistered, "personnel.GetMeHandler")
 	}
@@ -493,6 +506,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.RosteringPostInvitationsHandler == nil {
 		unregistered = append(unregistered, "rostering.PostInvitationsHandler")
+	}
+	if o.RosteringPostInvitationsIDAcceptHandler == nil {
+		unregistered = append(unregistered, "rostering.PostInvitationsIDAcceptHandler")
 	}
 	if o.PersonnelPostMeHandler == nil {
 		unregistered = append(unregistered, "personnel.PostMeHandler")
@@ -652,6 +668,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
+	o.handlers["GET"]["/invitations/{id}"] = rostering.NewGetInvitationsID(o.context, o.RosteringGetInvitationsIDHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
 	o.handlers["GET"]["/me"] = personnel.NewGetMe(o.context, o.PersonnelGetMeHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -749,6 +769,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/invitations"] = rostering.NewPostInvitations(o.context, o.RosteringPostInvitationsHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/invitations/{id}/accept"] = rostering.NewPostInvitationsIDAccept(o.context, o.RosteringPostInvitationsIDAcceptHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

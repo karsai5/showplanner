@@ -24,7 +24,8 @@ type InvitationDTO struct {
 	DateCreated strfmt.DateTime `json:"dateCreated,omitempty"`
 
 	// id
-	ID int64 `json:"id,omitempty"`
+	// Format: uuid
+	ID strfmt.UUID `json:"id,omitempty"`
 
 	// person
 	Person *PersonSummaryDTO `json:"person,omitempty"`
@@ -38,6 +39,10 @@ func (m *InvitationDTO) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateDateCreated(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateID(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -61,6 +66,18 @@ func (m *InvitationDTO) validateDateCreated(formats strfmt.Registry) error {
 	}
 
 	if err := validate.FormatOf("dateCreated", "body", "date-time", m.DateCreated.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *InvitationDTO) validateID(formats strfmt.Registry) error {
+	if swag.IsZero(m.ID) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("id", "body", "uuid", m.ID.String(), formats); err != nil {
 		return err
 	}
 

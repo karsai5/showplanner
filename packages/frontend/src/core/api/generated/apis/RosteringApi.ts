@@ -30,6 +30,14 @@ import {
   ShowSummaryDTOToJSON,
 } from "../models/index";
 
+export interface InvitationsIdAcceptPostRequest {
+  id: string;
+}
+
+export interface InvitationsIdGetRequest {
+  id: string;
+}
+
 export interface InvitationsPostRequest {
   showId: number;
   personId?: string;
@@ -83,6 +91,100 @@ export class RosteringApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<InvitationDTO>> {
     const response = await this.invitationsGetRaw(initOverrides);
+    return await response.value();
+  }
+
+  /**
+   * Accept an invitation
+   */
+  async invitationsIdAcceptPostRaw(
+    requestParameters: InvitationsIdAcceptPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling invitationsIdAcceptPost."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/invitations/{id}/accept`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Accept an invitation
+   */
+  async invitationsIdAcceptPost(
+    requestParameters: InvitationsIdAcceptPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.invitationsIdAcceptPostRaw(requestParameters, initOverrides);
+  }
+
+  /**
+   * View invitation
+   */
+  async invitationsIdGetRaw(
+    requestParameters: InvitationsIdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<InvitationDTO>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling invitationsIdGet."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/invitations/{id}`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      InvitationDTOFromJSON(jsonValue)
+    );
+  }
+
+  /**
+   * View invitation
+   */
+  async invitationsIdGet(
+    requestParameters: InvitationsIdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<InvitationDTO> {
+    const response = await this.invitationsIdGetRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 

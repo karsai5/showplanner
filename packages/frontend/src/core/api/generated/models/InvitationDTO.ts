@@ -34,10 +34,10 @@ import {
 export interface InvitationDTO {
   /**
    *
-   * @type {number}
+   * @type {string}
    * @memberof InvitationDTO
    */
-  id?: number;
+  id?: string;
   /**
    *
    * @type {PersonSummaryDTO}

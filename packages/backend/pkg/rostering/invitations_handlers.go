@@ -2,6 +2,7 @@ package rostering
 
 import (
 	"errors"
+	"fmt"
 
 	"showplanner.io/pkg/restapi/dtos"
 
@@ -76,4 +77,53 @@ var handleGetInviationForPerson = rostering.GetInvitationsHandlerFunc(func(param
 	return &rostering.GetInvitationsOK{
 		Payload: conv.MapArrayOfPointer(invitations, func(i database.Invitation) dtos.InvitationDTO { return i.MapToInvitationDTO() }),
 	}
+})
+
+var handleGetInvitationByID = rostering.GetInvitationsIDHandlerFunc(func(params rostering.GetInvitationsIDParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting invitation", &rostering.GetInvitationsIDInternalServerError{})
+
+	invitation, err := getInvitation(*conv.StrfmtUUIDToUUID(&params.ID))
+	if err != nil {
+		return logError(&err)
+	}
+
+	userId, err := permissions.GetUserId(params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+
+	fmt.Printf("invitation.PersonID: %v\n", invitation.PersonID)
+	fmt.Printf("userId: %v\n", userId)
+	if *invitation.PersonID != userId {
+		return &rostering.GetInvitationsIDUnauthorized{}
+	}
+
+	return &rostering.GetInvitationsIDOK{
+		Payload: conv.Pointer(invitation.MapToInvitationDTO()),
+	}
+})
+
+var handleAcceptInvitation = rostering.PostInvitationsIDAcceptHandlerFunc(func(params rostering.PostInvitationsIDAcceptParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Accepting invitation", &rostering.PostInvitationsIDAcceptInternalServerError{})
+
+	invitation, err := getInvitation(*conv.StrfmtUUIDToUUID(&params.ID))
+	if err != nil {
+		return logError(&err)
+	}
+
+	userId, err := permissions.GetUserId(params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+
+	if *invitation.PersonID != userId {
+		return &rostering.GetInvitationsIDUnauthorized{}
+	}
+
+	err = acceptInvitation(*conv.StrfmtUUIDToUUID(&params.ID))
+	if err != nil {
+		return logError(&err)
+	}
+
+	return &rostering.PostInvitationsIDAcceptOK{}
 })

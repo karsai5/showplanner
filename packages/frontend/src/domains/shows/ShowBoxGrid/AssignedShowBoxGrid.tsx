@@ -16,7 +16,7 @@ export const AssignedShowBoxGrid: React.FC = () => {
     data: shows,
     isLoading,
     isError,
-  } = useQuery(["ShowList"], () => {
+  } = useQuery(["shows"], () => {
     return api.rostering.rosteringShowsGet();
   });
 

@@ -13,15 +13,18 @@ export const PendingInvitations: React.FC = () => {
     return (
       <div className="card bg-slate-50 shadow-xl mt-4 mb-8 p-4">
         <h1 className="text-xl mb-4 font-bold">✨ Pending Invitations</h1>
-        {data.map((invitation) => {
-          return invitation.show ? (
-            <ShowBox
-              key={invitation.show?.id}
-              show={invitation.show}
-              className="max-w-96"
-            />
-          ) : null;
-        })}
+        <div className="flex flex-wrap gap-4">
+          {data.map((invitation) => {
+            return invitation.show ? (
+              <ShowBox
+                key={invitation.show?.id}
+                show={invitation.show}
+                href={`/invitations/${invitation.id}`}
+                className="w-96"
+              />
+            ) : null;
+          })}
+        </div>
       </div>
     );
   }

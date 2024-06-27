@@ -934,6 +934,50 @@ paths:
           $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'
+  /invitations/{id}:
+    get:
+      tags:
+        - rostering
+      summary: View invitation
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: string
+          format: uuid
+          required: true
+          description: ID of invitation
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/Invitations.yaml#/InvitationDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+  /invitations/{id}/accept:
+    post:
+      tags:
+        - rostering
+      summary: Accept an invitation
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          type: string
+          format: uuid
+          required: true
+          description: ID of invitation
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
 
 responses:
   Error:

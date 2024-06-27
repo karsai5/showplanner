@@ -16,7 +16,7 @@ func inviteExistingUserToShow(showId uint, userId uuid.UUID) error {
 }
 
 // Adds a person to a show and deletes the invitation
-func acceptInvitation(invitationId uint) error {
+func acceptInvitation(invitationId uuid.UUID) error {
 	db := database.GetDatabase()
 	invitation := database.Invitation{}
 	res := db.First(&invitation, invitationId)
@@ -65,4 +65,13 @@ func getInvitationsForPerson(personId uuid.UUID) ([]database.Invitation, error) 
 	res := db.Preload("Person").Preload("Show").Where("person_id = ?", personId).Find(&invitations)
 
 	return invitations, res.Error
+}
+
+func getInvitation(invitationId uuid.UUID) (database.Invitation, error) {
+	db := database.GetDatabase()
+
+	invitation := database.Invitation{}
+	res := db.Preload("Person").Preload("Show").First(&invitation, invitationId)
+
+	return invitation, res.Error
 }

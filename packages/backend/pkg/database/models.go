@@ -376,7 +376,10 @@ func (media *Media) MapToDTO() dtos.MediaDTO {
 // If the person already exists in the system, the PersonID will be set.
 // If the person does not exist, the email will be set.
 type Invitation struct {
-	gorm.Model
+	ID        uuid.UUID `gorm:"type:uuid;primary_key;"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time `gorm:"index"`
 
 	ShowID uint
 	Show   Show
@@ -386,9 +389,15 @@ type Invitation struct {
 	Email    *string
 }
 
+func (i *Invitation) BeforeCreate(tx *gorm.DB) error {
+	uuid := uuid.NewV4()
+	tx.Model(i).Update("ID", uuid)
+	return nil
+}
+
 func (i *Invitation) MapToInvitationDTO() dtos.InvitationDTO {
 	dto := dtos.InvitationDTO{
-		ID: int64(i.ID),
+		ID: *conv.UUIDToStrmFmtUUID(i.ID),
 	}
 
 	if i.PersonID != nil {
