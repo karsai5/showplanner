@@ -28,7 +28,7 @@ export const getSSRErrorReturn = (err: unknown) => {
             permanent: false,
           },
         };
-      case 400:
+      case 401:
         return {
           redirect: {
             destination: "/400",

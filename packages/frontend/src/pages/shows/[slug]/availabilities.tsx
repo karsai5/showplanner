@@ -22,7 +22,7 @@ export const getServerSideProps = (async (context) => {
   }
 
   try {
-    const show = await ssrApi.rostering.rosteringShowsShowSlugSummaryGet({
+    const show = await ssrApi.rostering.showsShowSlugSummaryGet({
       showSlug: slug,
     });
     const data = await ssrApi.default.availabilitiesGet({ showId: show.id });

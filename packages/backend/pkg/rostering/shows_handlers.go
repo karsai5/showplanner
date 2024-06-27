@@ -1,10 +1,11 @@
 package rostering
 
 import (
-	"showplanner.io/pkg/domains/people_domain_old"
-	"showplanner.io/pkg/restapi/dtos"
 	"strconv"
 	"strings"
+
+	"showplanner.io/pkg/domains/people_domain_old"
+	"showplanner.io/pkg/restapi/dtos"
 
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
@@ -46,25 +47,25 @@ var handleGetShows = rostering.GetRosteringShowsHandlerFunc(func(params rosterin
 	}
 })
 
-var handleGetShowSummary = rostering.GetRosteringShowsShowSlugSummaryHandlerFunc(func(params rostering.GetRosteringShowsShowSlugSummaryParams) middleware.Responder {
+var handleGetShowSummary = rostering.GetShowsShowSlugSummaryHandlerFunc(func(params rostering.GetShowsShowSlugSummaryParams) middleware.Responder {
 	show, err := database.GetShowBySlug(params.ShowSlug)
 	if err != nil {
 		println("Could not find show: " + err.Error())
-		return &rostering.GetRosteringShowsShowSlugSummaryNotFound{}
+		return &rostering.GetShowsShowSlugSummaryNotFound{}
 	}
 
 	hasPermission, err := permissions.ViewEvents.HasPermission(show.ID, params.HTTPRequest)
 
 	if err != nil {
 		println("Error getting permission: " + err.Error())
-		return &rostering.GetRosteringShowsShowSlugSummaryInternalServerError{}
+		return &rostering.GetShowsShowSlugSummaryInternalServerError{}
 	}
 
 	if !hasPermission {
-		return &rostering.GetRosteringShowsShowSlugSummaryUnauthorized{}
+		return &rostering.GetShowsShowSlugSummaryUnauthorized{}
 	}
 
-	return &rostering.GetRosteringShowsShowSlugSummaryOK{
+	return &rostering.GetShowsShowSlugSummaryOK{
 		Payload: conv.Pointer(show.MapToSummaryDTO()),
 	}
 })

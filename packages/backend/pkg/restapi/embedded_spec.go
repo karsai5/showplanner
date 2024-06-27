@@ -975,43 +975,6 @@ func init() {
         }
       }
     },
-    "/rostering/shows/{showSlug}/summary": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "rostering"
-        ],
-        "summary": "Return details about a show from its slug",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Slug of show",
-            "name": "showSlug",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Show",
-            "schema": {
-              "$ref": "./schemas/Show.yaml#/ShowSummaryDTO"
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
-          "404": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "$ref": "#/responses/Error"
-          }
-        }
-      }
-    },
     "/schedule": {
       "get": {
         "produces": [
@@ -1431,6 +1394,43 @@ func init() {
             }
           },
           "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/shows/{showSlug}/summary": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Return details about a show from its slug",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Slug of show",
+            "name": "showSlug",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Show",
+            "schema": {
+              "$ref": "./schemas/Show.yaml#/ShowSummaryDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
             "$ref": "#/responses/Error"
           },
           "500": {
@@ -2633,52 +2633,6 @@ func init() {
         }
       }
     },
-    "/rostering/shows/{showSlug}/summary": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "rostering"
-        ],
-        "summary": "Return details about a show from its slug",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Slug of show",
-            "name": "showSlug",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Show",
-            "schema": {
-              "$ref": "#/definitions/showSummaryDTO"
-            }
-          },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "404": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
     "/schedule": {
       "get": {
         "produces": [
@@ -3188,6 +3142,52 @@ func init() {
             }
           },
           "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/shows/{showSlug}/summary": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Return details about a show from its slug",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Slug of show",
+            "name": "showSlug",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Show",
+            "schema": {
+              "$ref": "#/definitions/showSummaryDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
             "description": "Error",
             "schema": {
               "$ref": "#/definitions/Error"

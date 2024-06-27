@@ -129,7 +129,7 @@ export const getServerSideProps = (async (context) => {
   }
 
   try {
-    const show = await ssrApi.rostering.rosteringShowsShowSlugSummaryGet({
+    const show = await ssrApi.rostering.showsShowSlugSummaryGet({
       showSlug: slug,
     });
     const events = await ssrApi.default.scheduleGet({ showId: show.id });

@@ -6,9 +6,12 @@ import (
 
 func SetupHandlers(api *operations.GoBackendAPI) {
 	api.RosteringGetRosteringShowsHandler = handleGetShows
-	api.RosteringGetRosteringShowsShowSlugSummaryHandler = handleGetShowSummary
+
+	api.RosteringGetShowsShowSlugSummaryHandler = handleGetShowSummary
 	api.RosteringPostRosteringShowsHandler = handlePostShow
 
 	api.RosteringGetShowsShowIDInvitationsHandler = handleGetInviationsForShow
+
 	api.RosteringPostInvitationsHandler = handlePostInvitation
+	api.RosteringGetInvitationsHandler = handleGetInviationForPerson
 }

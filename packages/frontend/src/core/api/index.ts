@@ -48,6 +48,6 @@ export const serverSideApi = (ctx: GetServerSidePropsContext) => {
     default: new DefaultApi(ssrConfig),
     personnel: new PersonnelApi(ssrConfig),
     showdocs: new ShowdocsApi(ssrConfig),
-    rostering: new RosteringApi(config),
+    rostering: new RosteringApi(ssrConfig),
   };
 };

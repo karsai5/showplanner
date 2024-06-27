@@ -2,6 +2,7 @@ package rostering
 
 import (
 	"errors"
+
 	"showplanner.io/pkg/restapi/dtos"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -47,7 +48,7 @@ var handleGetInviationsForShow = rostering.GetShowsShowIDInvitationsHandlerFunc(
 		return logError(conv.Pointer(errors.New("User does not have permission to view invitations for this show")))
 	}
 
-	invitations, err := getInvitations(uint(params.ShowID))
+	invitations, err := getInvitationsForShow(uint(params.ShowID))
 	if err != nil {
 		return logError(&err)
 	}
@@ -56,5 +57,23 @@ var handleGetInviationsForShow = rostering.GetShowsShowIDInvitationsHandlerFunc(
 
 	return &rostering.GetShowsShowIDInvitationsOK{
 		Payload: mappedInvitations,
+	}
+})
+
+var handleGetInviationForPerson = rostering.GetInvitationsHandlerFunc(func(params rostering.GetInvitationsParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting invitations", &rostering.GetInvitationsInternalServerError{})
+
+	userId, err := permissions.GetUserId(params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+
+	invitations, err := getInvitationsForPerson(userId)
+	if err != nil {
+		return logError(&err)
+	}
+
+	return &rostering.GetInvitationsOK{
+		Payload: conv.MapArrayOfPointer(invitations, func(i database.Invitation) dtos.InvitationDTO { return i.MapToInvitationDTO() }),
 	}
 })

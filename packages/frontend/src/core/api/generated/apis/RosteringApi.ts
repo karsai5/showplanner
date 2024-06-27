@@ -39,12 +39,12 @@ export interface RosteringShowsPostRequest {
   show?: CreateShowDTO;
 }
 
-export interface RosteringShowsShowSlugSummaryGetRequest {
-  showSlug: string;
-}
-
 export interface ShowsShowIdInvitationsGetRequest {
   showId: number;
+}
+
+export interface ShowsShowSlugSummaryGetRequest {
+  showSlug: string;
 }
 
 /**
@@ -217,59 +217,6 @@ export class RosteringApi extends runtime.BaseAPI {
   }
 
   /**
-   * Return details about a show from its slug
-   */
-  async rosteringShowsShowSlugSummaryGetRaw(
-    requestParameters: RosteringShowsShowSlugSummaryGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<ShowSummaryDTO>> {
-    if (
-      requestParameters.showSlug === null ||
-      requestParameters.showSlug === undefined
-    ) {
-      throw new runtime.RequiredError(
-        "showSlug",
-        "Required parameter requestParameters.showSlug was null or undefined when calling rosteringShowsShowSlugSummaryGet."
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/rostering/shows/{showSlug}/summary`.replace(
-          `{${"showSlug"}}`,
-          encodeURIComponent(String(requestParameters.showSlug))
-        ),
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ShowSummaryDTOFromJSON(jsonValue)
-    );
-  }
-
-  /**
-   * Return details about a show from its slug
-   */
-  async rosteringShowsShowSlugSummaryGet(
-    requestParameters: RosteringShowsShowSlugSummaryGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<ShowSummaryDTO> {
-    const response = await this.rosteringShowsShowSlugSummaryGetRaw(
-      requestParameters,
-      initOverrides
-    );
-    return await response.value();
-  }
-
-  /**
    * Get invitations for a show
    */
   async showsShowIdInvitationsGetRaw(
@@ -316,6 +263,59 @@ export class RosteringApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<InvitationDTO>> {
     const response = await this.showsShowIdInvitationsGetRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
+  /**
+   * Return details about a show from its slug
+   */
+  async showsShowSlugSummaryGetRaw(
+    requestParameters: ShowsShowSlugSummaryGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ShowSummaryDTO>> {
+    if (
+      requestParameters.showSlug === null ||
+      requestParameters.showSlug === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "showSlug",
+        "Required parameter requestParameters.showSlug was null or undefined when calling showsShowSlugSummaryGet."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/shows/{showSlug}/summary`.replace(
+          `{${"showSlug"}}`,
+          encodeURIComponent(String(requestParameters.showSlug))
+        ),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      ShowSummaryDTOFromJSON(jsonValue)
+    );
+  }
+
+  /**
+   * Return details about a show from its slug
+   */
+  async showsShowSlugSummaryGet(
+    requestParameters: ShowsShowSlugSummaryGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ShowSummaryDTO> {
+    const response = await this.showsShowSlugSummaryGetRaw(
       requestParameters,
       initOverrides
     );

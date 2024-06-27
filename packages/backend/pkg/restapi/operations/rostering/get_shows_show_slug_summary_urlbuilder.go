@@ -12,8 +12,8 @@ import (
 	"strings"
 )
 
-// GetRosteringShowsShowSlugSummaryURL generates an URL for the get rostering shows show slug summary operation
-type GetRosteringShowsShowSlugSummaryURL struct {
+// GetShowsShowSlugSummaryURL generates an URL for the get shows show slug summary operation
+type GetShowsShowSlugSummaryURL struct {
 	ShowSlug string
 
 	_basePath string
@@ -24,7 +24,7 @@ type GetRosteringShowsShowSlugSummaryURL struct {
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetRosteringShowsShowSlugSummaryURL) WithBasePath(bp string) *GetRosteringShowsShowSlugSummaryURL {
+func (o *GetShowsShowSlugSummaryURL) WithBasePath(bp string) *GetShowsShowSlugSummaryURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -32,21 +32,21 @@ func (o *GetRosteringShowsShowSlugSummaryURL) WithBasePath(bp string) *GetRoster
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetRosteringShowsShowSlugSummaryURL) SetBasePath(bp string) {
+func (o *GetShowsShowSlugSummaryURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *GetRosteringShowsShowSlugSummaryURL) Build() (*url.URL, error) {
+func (o *GetShowsShowSlugSummaryURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/rostering/shows/{showSlug}/summary"
+	var _path = "/shows/{showSlug}/summary"
 
 	showSlug := o.ShowSlug
 	if showSlug != "" {
 		_path = strings.Replace(_path, "{showSlug}", showSlug, -1)
 	} else {
-		return nil, errors.New("showSlug is required on GetRosteringShowsShowSlugSummaryURL")
+		return nil, errors.New("showSlug is required on GetShowsShowSlugSummaryURL")
 	}
 
 	_basePath := o._basePath
@@ -59,7 +59,7 @@ func (o *GetRosteringShowsShowSlugSummaryURL) Build() (*url.URL, error) {
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *GetRosteringShowsShowSlugSummaryURL) Must(u *url.URL, err error) *url.URL {
+func (o *GetShowsShowSlugSummaryURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -70,17 +70,17 @@ func (o *GetRosteringShowsShowSlugSummaryURL) Must(u *url.URL, err error) *url.U
 }
 
 // String returns the string representation of the path with query string
-func (o *GetRosteringShowsShowSlugSummaryURL) String() string {
+func (o *GetShowsShowSlugSummaryURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *GetRosteringShowsShowSlugSummaryURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *GetShowsShowSlugSummaryURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on GetRosteringShowsShowSlugSummaryURL")
+		return nil, errors.New("scheme is required for a full url on GetShowsShowSlugSummaryURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on GetRosteringShowsShowSlugSummaryURL")
+		return nil, errors.New("host is required for a full url on GetShowsShowSlugSummaryURL")
 	}
 
 	base, err := o.Build()
@@ -94,6 +94,6 @@ func (o *GetRosteringShowsShowSlugSummaryURL) BuildFull(scheme, host string) (*u
 }
 
 // StringFull returns the string representation of a complete url
-func (o *GetRosteringShowsShowSlugSummaryURL) StringFull(scheme, host string) string {
+func (o *GetShowsShowSlugSummaryURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

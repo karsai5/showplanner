@@ -841,31 +841,6 @@ paths:
           schema:
             $ref: './schemas/Show.yaml#/ShowDTO'
 
-  /rostering/shows/{showSlug}/summary:
-    get:
-      tags:
-        - rostering
-      summary: Return details about a show from its slug
-      parameters:
-        - in: path
-          name: showSlug
-          type: string
-          required: true
-          description: Slug of show
-      produces:
-        - application/json
-      responses:
-        500:
-          $ref: '#/responses/Error'
-        401:
-          $ref: '#/responses/Error'
-        404:
-          $ref: '#/responses/Error'
-        200:
-          description: 'Show'
-          schema:
-            $ref: './schemas/Show.yaml#/ShowSummaryDTO'
-
   /shows/{showId}/invitations:
     get:
       tags:
@@ -889,6 +864,31 @@ paths:
           $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'
+
+  /shows/{showSlug}/summary:
+    get:
+      tags:
+        - rostering
+      summary: Return details about a show from its slug
+      parameters:
+        - in: path
+          name: showSlug
+          type: string
+          required: true
+          description: Slug of show
+      produces:
+        - application/json
+      responses:
+        500:
+          $ref: '#/responses/Error'
+        401:
+          $ref: '#/responses/Error'
+        404:
+          $ref: '#/responses/Error'
+        200:
+          description: 'Show'
+          schema:
+            $ref: './schemas/Show.yaml#/ShowSummaryDTO'
 
   /invitations/:
     get:

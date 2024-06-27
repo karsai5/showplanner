@@ -1,5 +1,6 @@
 import { useModal } from "core/components/Modal/Modal";
 import { HasPermission, PERMISSION } from "core/permissions";
+import { PendingInvitations } from "domains/personnel/Invitations/PendingInvitations";
 import NewShowForm from "domains/shows/NewShowForm/NewShowForm";
 import { AssignedShowBoxGrid } from "domains/shows/ShowBoxGrid/AssignedShowBoxGrid";
 import Head from "next/head";
@@ -25,6 +26,7 @@ const Shows = () => {
           </Link>
         </div>
       </div>
+      <PendingInvitations />
       <AssignedShowBoxGrid />
     </SessionAuth>
   );
