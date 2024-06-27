@@ -39,24 +39,22 @@ var GetEventsHandler = operations.GetEventsIDHandlerFunc(func(params operations.
 })
 
 var CreateEventHandler = operations.PostEventsHandlerFunc(func(params operations.PostEventsParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Creating event", &operations.PostEventsInternalServerError{})
 	hasPermission, err := permissions.AddEvents.HasPermission(uint(*params.Event.ShowID), params.HTTPRequest)
 
 	if err != nil {
-		println("error", err.Error())
-		return &operations.PostShowsInternalServerError{}
+		return logError(&err)
 	}
 
 	if !hasPermission {
-		println("not authorized")
-		return &operations.PostShowsInternalServerError{}
+		return logError(&err)
 	}
 
 	event := mapToDatabaseEvent(*params.Event)
 	event, err = database.CreateEvent(event)
 
 	if err != nil {
-		println("Error creating event: " + err.Error())
-		return &operations.PostShowsInternalServerError{}
+		return logError(&err)
 	}
 
 	return &operations.PostEventsOK{
@@ -65,27 +63,28 @@ var CreateEventHandler = operations.PostEventsHandlerFunc(func(params operations
 })
 
 var UpdateEventHandler = operations.PostEventsIDHandlerFunc(func(params operations.PostEventsIDParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Updating event", &operations.PostEventsInternalServerError{})
 	existingEvent, err := database.GetEvent(uint(params.ID))
 
 	if err != nil {
-		return &operations.PostShowsInternalServerError{}
+		return logError(&err)
 	}
 
 	hasPermission, err := permissions.AddEvents.HasPermission(existingEvent.ShowID, params.HTTPRequest)
 
 	if err != nil {
-		return &operations.PostShowsInternalServerError{}
+		return logError(&err)
 	}
 
 	if !hasPermission {
-		return &operations.PostShowsInternalServerError{}
+		return &operations.PostEventsIDUnauthorized{}
 	}
 
 	event := mapToDatabaseEvent(*params.Event)
 	event, err = database.UpdateEvent(existingEvent.ID, event)
 
 	if err != nil {
-		return &operations.PostShowsInternalServerError{}
+		return logError(&err)
 	}
 
 	return &operations.PostEventsOK{

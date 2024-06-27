@@ -1,7 +1,7 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
-import { api_deprecated, getApi, serverSideApi_deprecated } from "core/api";
+import { api, serverSideApi } from "core/api";
 import {
   PersonSummaryDTO,
   ScheduleEventDTO,
@@ -48,7 +48,6 @@ import superjson from "superjson";
 export default function ShowPage(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
-  const api = getApi();
   const { show } = props;
   const [showAllEvents, setShowAllEvents] = useState(false);
   const {
@@ -58,7 +57,7 @@ export default function ShowPage(
     isSuccess,
   } = useQuery({
     queryKey: ["EventsList", show.id],
-    queryFn: () => api.scheduleGet({ showId: show.id }),
+    queryFn: () => api.default.scheduleGet({ showId: show.id }),
     initialData: superjson.parse<ScheduleEventDTO[]>(props.eventsJSON),
   });
   const startOfToday = dayjs().startOf("day");
@@ -123,17 +122,17 @@ export default function ShowPage(
 
 export const getServerSideProps = (async (context) => {
   const slug = context.query.slug;
-  const ssrApi = serverSideApi_deprecated(context);
+  const ssrApi = serverSideApi(context);
 
   if (typeof slug !== "string") {
     throw new Error("Incorrect slug format");
   }
 
   try {
-    const show = await ssrApi.showsShowSlugSummaryGet({
+    const show = await ssrApi.rostering.rosteringShowsShowSlugSummaryGet({
       showSlug: slug,
     });
-    const events = await ssrApi.scheduleGet({ showId: show.id });
+    const events = await ssrApi.default.scheduleGet({ showId: show.id });
     return {
       props: { show, eventsJSON: superjson.stringify(events) },
     };
@@ -239,7 +238,7 @@ const DividerRenderer: DividerRendererType<ScheduleEventDTO> = ({
 }) => {
   const queryClient = useQueryClient();
   const mutation = useMutation<unknown, Error>({
-    mutationFn: () => api_deprecated.eventsIdDelete({ id: e.id }),
+    mutationFn: () => api.default.eventsIdDelete({ id: e.id }),
     onError: (e) => {
       showToastError("Could not delete dividier", e);
     },

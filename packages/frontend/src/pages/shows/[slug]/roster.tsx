@@ -1,4 +1,4 @@
-import { serverSideApi_deprecated } from "core/api";
+import { serverSideApi } from "core/api";
 import { RosterDTO, ShowDTO } from "core/api/generated";
 import { H2 } from "core/components/Typography";
 import { HasPermission, PERMISSION } from "core/permissions";
@@ -12,17 +12,17 @@ import superjson from "superjson";
 
 export const getServerSideProps = (async (context) => {
   const slug = context.query.slug;
-  const ssrApi = serverSideApi_deprecated(context);
+  const ssrApi = serverSideApi(context);
 
   if (typeof slug !== "string") {
     throw new Error("Incorrect slug format");
   }
 
   try {
-    const show = await ssrApi.showsShowSlugSummaryGet({
+    const show = await ssrApi.rostering.rosteringShowsShowSlugSummaryGet({
       showSlug: slug,
     });
-    const data = await ssrApi.rosterGet({ showId: show.id });
+    const data = await ssrApi.default.rosterGet({ showId: show.id });
     return {
       props: { show, rosterJSON: superjson.stringify(data) },
     };

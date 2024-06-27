@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getApi } from "core/api";
+import { api } from "core/api";
 import { MediaDTO } from "core/api/generated";
 import FileInput from "core/components/fields/FileInput";
 import Input from "core/components/fields/TextInput";
@@ -25,7 +25,6 @@ interface NewShowFormProps {
 
 const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
   const queryClient = useQueryClient();
-  const api = getApi();
   const refresh = useRefreshToken();
 
   const {
@@ -38,7 +37,7 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
 
   const mutation = useMutation<unknown, unknown, Inputs>({
     mutationFn: (show) =>
-      api.showsPost({
+      api.rostering.rosteringShowsPost({
         show: {
           ...show,
           imageId: show.file?.id,

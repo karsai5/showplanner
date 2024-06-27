@@ -1,4 +1,4 @@
-package shows_domain
+package rostering
 
 import (
 	"showplanner.io/pkg/domains/people_domain_old"
@@ -12,12 +12,19 @@ import (
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
+	"showplanner.io/pkg/restapi/operations/rostering"
 
 	"github.com/go-openapi/runtime/middleware"
 )
 
-var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetShowsParams) middleware.Responder {
-	logError := logger.CreateLogErrorFunc("Getting shows", &operations.GetShowsInternalServerError{})
+func SetupHandlers(api *operations.GoBackendAPI) {
+	api.RosteringGetRosteringShowsHandler = GetShowsHandler
+	api.RosteringGetRosteringShowsShowSlugSummaryHandler = GetShowsSlugSummaryHandler
+	api.RosteringPostRosteringShowsHandler = PostRosteringShowsHandler
+}
+
+var GetShowsHandler = rostering.GetRosteringShowsHandlerFunc(func(params rostering.GetRosteringShowsParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting shows", &rostering.GetRosteringShowsInternalServerError{})
 
 	userId, err := permissions.GetUserId(params.HTTPRequest)
 	if err != nil {
@@ -30,7 +37,7 @@ var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetS
 		return logError(&err)
 	}
 
-	mappedShows := conv.MapArray(shows, MapShow)
+	mappedShows := conv.MapArrayOfPointer(shows, func(s database.Show) dtos.ShowDTO { return s.MapToDTO() })
 
 	for _, show := range mappedShows {
 		if show.Image != nil {
@@ -41,49 +48,49 @@ var GetShowsHandler = operations.GetShowsHandlerFunc(func(params operations.GetS
 		}
 	}
 
-	return &operations.GetShowsOK{
+	return &rostering.GetRosteringShowsOK{
 		Payload: mappedShows,
 	}
 })
 
-var GetShowsSlugSummaryHandler = operations.GetShowsShowSlugSummaryHandlerFunc(func(params operations.GetShowsShowSlugSummaryParams) middleware.Responder {
+var GetShowsSlugSummaryHandler = rostering.GetRosteringShowsShowSlugSummaryHandlerFunc(func(params rostering.GetRosteringShowsShowSlugSummaryParams) middleware.Responder {
 	show, err := database.GetShowBySlug(params.ShowSlug)
 	if err != nil {
 		println("Could not find show: " + err.Error())
-		return &operations.GetShowsShowSlugSummaryNotFound{}
+		return &rostering.GetRosteringShowsShowSlugSummaryNotFound{}
 	}
 
 	hasPermission, err := permissions.ViewEvents.HasPermission(show.ID, params.HTTPRequest)
 
 	if err != nil {
 		println("Error getting permission: " + err.Error())
-		return &operations.GetShowsShowSlugSummaryInternalServerError{}
+		return &rostering.GetRosteringShowsShowSlugSummaryInternalServerError{}
 	}
 
 	if !hasPermission {
-		return &operations.GetShowsShowSlugSummaryUnauthorized{}
+		return &rostering.GetRosteringShowsShowSlugSummaryUnauthorized{}
 	}
 
-	return &operations.GetShowsShowSlugSummaryOK{
-		Payload: MapShowSummary(show),
+	return &rostering.GetRosteringShowsShowSlugSummaryOK{
+		Payload: conv.Pointer(show.MapToSummaryDTO()),
 	}
 })
 
-var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostShowsParams) middleware.Responder {
+var PostRosteringShowsHandler = rostering.PostRosteringShowsHandlerFunc(func(psp rostering.PostRosteringShowsParams) middleware.Responder {
 
 	userId, err := permissions.GetUserId(psp.HTTPRequest)
 	if err != nil {
-		return &operations.PostShowsInternalServerError{}
+		return &rostering.PostRosteringShowsInternalServerError{}
 	}
 
 	hasPermission, err := permissions.AddShow.HasPermission(psp.HTTPRequest)
 
 	if err != nil {
-		return &operations.PostShowsInternalServerError{}
+		return &rostering.PostRosteringShowsInternalServerError{}
 	}
 
 	if !hasPermission {
-		return &operations.PostShowsUnauthorized{}
+		return &rostering.PostRosteringShowsUnauthorized{}
 	}
 
 	show := database.Show{
@@ -104,7 +111,7 @@ var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostS
 		if strings.Contains(err.Error(), "UNIQUE constraint failed: shows.slug") {
 			message = "Slug must be unique"
 		}
-		return &operations.PostShowsBadRequest{
+		return &rostering.PostRosteringShowsBadRequest{
 			Payload: &dtos.Error{
 				Code:    &code,
 				Message: &message,
@@ -120,16 +127,16 @@ var PostShowsHandler = operations.PostShowsHandlerFunc(func(psp operations.PostS
 	err = people_domain_old.AddToShow(int64(show.ID), userId)
 	if err != nil {
 		logger.Error("Could not add person to show", err)
-		return &operations.PostShowsInternalServerError{}
+		return &rostering.PostRosteringShowsInternalServerError{}
 	}
 
 	err = permissions.AddManagerToShow(showIdString, userId)
 	if err != nil {
 		logger.Error("Could not add manager to show", err)
-		return &operations.PostShowsInternalServerError{}
+		return &rostering.PostRosteringShowsInternalServerError{}
 	}
 
-	return &operations.PostShowsOK{
-		Payload: MapShow(show),
+	return &rostering.PostRosteringShowsOK{
+		Payload: conv.Pointer(show.MapToDTO()),
 	}
 })

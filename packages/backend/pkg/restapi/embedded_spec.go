@@ -914,6 +914,107 @@ func init() {
         }
       }
     },
+    "/rostering/shows": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Returns a list of shows",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "./schemas/Show.yaml#/ShowDTO"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Creates a show",
+        "parameters": [
+          {
+            "description": "The show to create",
+            "name": "show",
+            "in": "body",
+            "schema": {
+              "$ref": "./schemas/Show.yaml#/CreateShowDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/Show.yaml#/ShowDTO"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/Error"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/rostering/shows/{showSlug}/summary": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Return details about a show from its slug",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Slug of show",
+            "name": "showSlug",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Show",
+            "schema": {
+              "$ref": "./schemas/Show.yaml#/ShowSummaryDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "404": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/schedule": {
       "get": {
         "produces": [
@@ -1297,98 +1398,6 @@ func init() {
             }
           },
           "401": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "$ref": "#/responses/Error"
-          }
-        }
-      }
-    },
-    "/shows": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns a list of shows",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "./schemas/Show.yaml#/ShowDTO"
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "$ref": "#/responses/Error"
-          }
-        }
-      },
-      "post": {
-        "consumes": [
-          "application/json"
-        ],
-        "summary": "Creates a show",
-        "parameters": [
-          {
-            "description": "The show to create",
-            "name": "show",
-            "in": "body",
-            "schema": {
-              "$ref": "./schemas/Show.yaml#/CreateShowDTO"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "./schemas/Show.yaml#/ShowDTO"
-            }
-          },
-          "400": {
-            "$ref": "#/responses/Error"
-          },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/shows/{showSlug}/summary": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Return details about a show",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Slug of show",
-            "name": "showSlug",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Show",
-            "schema": {
-              "$ref": "./schemas/Show.yaml#/ShowSummaryDTO"
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
-          "404": {
             "$ref": "#/responses/Error"
           },
           "500": {
@@ -2518,6 +2527,128 @@ func init() {
         }
       }
     },
+    "/rostering/shows": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Returns a list of shows",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/showDTO"
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Creates a show",
+        "parameters": [
+          {
+            "description": "The show to create",
+            "name": "show",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/createShowDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/showDTO"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/rostering/shows/{showSlug}/summary": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Return details about a show from its slug",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Slug of show",
+            "name": "showSlug",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Show",
+            "schema": {
+              "$ref": "#/definitions/showSummaryDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/schedule": {
       "get": {
         "produces": [
@@ -2985,119 +3116,6 @@ func init() {
             }
           },
           "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/shows": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns a list of shows",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/showDTO"
-              }
-            }
-          },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "post": {
-        "consumes": [
-          "application/json"
-        ],
-        "summary": "Creates a show",
-        "parameters": [
-          {
-            "description": "The show to create",
-            "name": "show",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/createShowDTO"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/showDTO"
-            }
-          },
-          "400": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/shows/{showSlug}/summary": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Return details about a show",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "Slug of show",
-            "name": "showSlug",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Show",
-            "schema": {
-              "$ref": "#/definitions/showSummaryDTO"
-            }
-          },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "404": {
             "description": "Error",
             "schema": {
               "$ref": "#/definitions/Error"

@@ -5,6 +5,7 @@ import {
   Configuration,
   DefaultApi,
   PersonnelApi,
+  RosteringApi,
   ShowdocsApi,
 } from "./generated";
 
@@ -21,6 +22,7 @@ export const api = {
   personnel: new PersonnelApi(config),
   default: new DefaultApi(config),
   showdocs: new ShowdocsApi(config),
+  rostering: new RosteringApi(config),
 };
 
 export const serverSideApi_deprecated = (ctx: GetServerSidePropsContext) => {
@@ -46,5 +48,6 @@ export const serverSideApi = (ctx: GetServerSidePropsContext) => {
     default: new DefaultApi(ssrConfig),
     personnel: new PersonnelApi(ssrConfig),
     showdocs: new ShowdocsApi(ssrConfig),
+    rostering: new RosteringApi(config),
   };
 };

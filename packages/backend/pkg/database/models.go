@@ -2,8 +2,9 @@ package database
 
 import (
 	"fmt"
-	"showplanner.io/pkg/restapi/dtos"
 	"time"
+
+	"showplanner.io/pkg/restapi/dtos"
 
 	"github.com/go-openapi/strfmt"
 	uuid "github.com/satori/go.uuid"
@@ -111,6 +112,47 @@ type Show struct {
 	People  []Person `gorm:"many2many:show_people;"`
 	ImageID *uint
 	Image   *Media
+}
+
+func (show *Show) MapToDTO() dtos.ShowDTO {
+	mappedShow := dtos.ShowDTO{
+		ID:      conv.UintToInt64(show.ID),
+		Name:    &show.Name,
+		Slug:    &show.Slug,
+		Company: &show.Company,
+		Start:   nil,
+		End:     nil,
+	}
+
+	if len(show.Events) > 0 {
+		start := show.Events[0].Start
+		end := show.Events[0].Start
+		for _, e := range show.Events {
+			if e.Start.Before(start) {
+				start = e.Start
+			}
+			if e.Start.After(end) {
+				end = e.Start
+			}
+		}
+		mappedShow.Start = conv.TimeToDateTime(&start)
+		mappedShow.End = conv.TimeToDateTime(&end)
+	}
+
+	if show.Image != nil {
+		mappedShow.Image = conv.Pointer(show.Image.MapToDTO())
+	}
+
+	return mappedShow
+}
+
+func (show *Show) MapToSummaryDTO() dtos.ShowSummaryDTO {
+	return dtos.ShowSummaryDTO{
+		ID:      conv.UintToInt64(show.ID),
+		Name:    &show.Name,
+		Slug:    &show.Slug,
+		Company: &show.Company,
+	}
 }
 
 type Availability struct {
@@ -320,6 +362,14 @@ type Media struct {
 
 func (e *Media) GetUrl() string {
 	return ""
+}
+
+func (media *Media) MapToDTO() dtos.MediaDTO {
+	return dtos.MediaDTO{
+		ID:  conv.UintToInt64(media.ID),
+		Key: &media.Key,
+		URL: conv.Pointer(media.GetUrl()),
+	}
 }
 
 // An invitation to a person to join a show.

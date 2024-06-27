@@ -1,4 +1,4 @@
-import { serverSideApi_deprecated } from "core/api";
+import { serverSideApi } from "core/api";
 import { AvailabilitiesDTO, ShowDTO } from "core/api/generated";
 import { H2 } from "core/components/Typography";
 import {
@@ -15,17 +15,17 @@ import superjson from "superjson";
 
 export const getServerSideProps = (async (context) => {
   const slug = context.query.slug;
-  const ssrApi = serverSideApi_deprecated(context);
+  const ssrApi = serverSideApi(context);
 
   if (typeof slug !== "string") {
     throw new Error("Incorrect slug format");
   }
 
   try {
-    const show = await ssrApi.showsShowSlugSummaryGet({
+    const show = await ssrApi.rostering.rosteringShowsShowSlugSummaryGet({
       showSlug: slug,
     });
-    const data = await ssrApi.availabilitiesGet({ showId: show.id });
+    const data = await ssrApi.default.availabilitiesGet({ showId: show.id });
     return {
       props: { show, dataJSON: superjson.stringify(data) },
     };

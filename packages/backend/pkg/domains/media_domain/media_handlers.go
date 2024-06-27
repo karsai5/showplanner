@@ -37,7 +37,7 @@ var uploadMediaHandler = operations.PostMediaUploadHandlerFunc(func(params opera
 	}
 
 	fmt.Printf("file uploaded to, %s\n", aws.StringValue(&result.Location))
-	mappedMedia := MapToMediaDTO(media)
+	mappedMedia := media.MapToDTO()
 	err = AddSignedURL(&mappedMedia)
 	if err != nil {
 		return logError(&err)

@@ -21,6 +21,7 @@ import (
 	"github.com/go-openapi/swag"
 
 	"showplanner.io/pkg/restapi/operations/personnel"
+	"showplanner.io/pkg/restapi/operations/rostering"
 	"showplanner.io/pkg/restapi/operations/showdocs"
 )
 
@@ -102,6 +103,12 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetRosterHandler: GetRosterHandlerFunc(func(params GetRosterParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetRoster has not yet been implemented")
 		}),
+		RosteringGetRosteringShowsHandler: rostering.GetRosteringShowsHandlerFunc(func(params rostering.GetRosteringShowsParams) middleware.Responder {
+			return middleware.NotImplemented("operation rostering.GetRosteringShows has not yet been implemented")
+		}),
+		RosteringGetRosteringShowsShowSlugSummaryHandler: rostering.GetRosteringShowsShowSlugSummaryHandlerFunc(func(params rostering.GetRosteringShowsShowSlugSummaryParams) middleware.Responder {
+			return middleware.NotImplemented("operation rostering.GetRosteringShowsShowSlugSummary has not yet been implemented")
+		}),
 		GetScheduleHandler: GetScheduleHandlerFunc(func(params GetScheduleParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetSchedule has not yet been implemented")
 		}),
@@ -122,12 +129,6 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		}),
 		ShowdocsGetShowdocTimersIDHandler: showdocs.GetShowdocTimersIDHandlerFunc(func(params showdocs.GetShowdocTimersIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation showdocs.GetShowdocTimersID has not yet been implemented")
-		}),
-		GetShowsHandler: GetShowsHandlerFunc(func(params GetShowsParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetShows has not yet been implemented")
-		}),
-		GetShowsShowSlugSummaryHandler: GetShowsShowSlugSummaryHandlerFunc(func(params GetShowsShowSlugSummaryParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetShowsShowSlugSummary has not yet been implemented")
 		}),
 		PostAssignmentHandler: PostAssignmentHandlerFunc(func(params PostAssignmentParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostAssignment has not yet been implemented")
@@ -159,6 +160,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		PostRolesHandler: PostRolesHandlerFunc(func(params PostRolesParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostRoles has not yet been implemented")
 		}),
+		RosteringPostRosteringShowsHandler: rostering.PostRosteringShowsHandlerFunc(func(params rostering.PostRosteringShowsParams) middleware.Responder {
+			return middleware.NotImplemented("operation rostering.PostRosteringShows has not yet been implemented")
+		}),
 		PostShadowHandler: PostShadowHandlerFunc(func(params PostShadowParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostShadow has not yet been implemented")
 		}),
@@ -167,9 +171,6 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		}),
 		ShowdocsPostShowdocTimersIDHandler: showdocs.PostShowdocTimersIDHandlerFunc(func(params showdocs.PostShowdocTimersIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation showdocs.PostShowdocTimersID has not yet been implemented")
-		}),
-		PostShowsHandler: PostShowsHandlerFunc(func(params PostShowsParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostShows has not yet been implemented")
 		}),
 		PutAssignmentIDHandler: PutAssignmentIDHandlerFunc(func(params PutAssignmentIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation PutAssignmentID has not yet been implemented")
@@ -256,6 +257,10 @@ type GoBackendAPI struct {
 	GetRolesHandler GetRolesHandler
 	// GetRosterHandler sets the operation handler for the get roster operation
 	GetRosterHandler GetRosterHandler
+	// RosteringGetRosteringShowsHandler sets the operation handler for the get rostering shows operation
+	RosteringGetRosteringShowsHandler rostering.GetRosteringShowsHandler
+	// RosteringGetRosteringShowsShowSlugSummaryHandler sets the operation handler for the get rostering shows show slug summary operation
+	RosteringGetRosteringShowsShowSlugSummaryHandler rostering.GetRosteringShowsShowSlugSummaryHandler
 	// GetScheduleHandler sets the operation handler for the get schedule operation
 	GetScheduleHandler GetScheduleHandler
 	// ShowdocsGetShowdocReportsHandler sets the operation handler for the get showdoc reports operation
@@ -270,10 +275,6 @@ type GoBackendAPI struct {
 	ShowdocsGetShowdocTimersHandler showdocs.GetShowdocTimersHandler
 	// ShowdocsGetShowdocTimersIDHandler sets the operation handler for the get showdoc timers ID operation
 	ShowdocsGetShowdocTimersIDHandler showdocs.GetShowdocTimersIDHandler
-	// GetShowsHandler sets the operation handler for the get shows operation
-	GetShowsHandler GetShowsHandler
-	// GetShowsShowSlugSummaryHandler sets the operation handler for the get shows show slug summary operation
-	GetShowsShowSlugSummaryHandler GetShowsShowSlugSummaryHandler
 	// PostAssignmentHandler sets the operation handler for the post assignment operation
 	PostAssignmentHandler PostAssignmentHandler
 	// PostAvailabilitiesHandler sets the operation handler for the post availabilities operation
@@ -294,14 +295,14 @@ type GoBackendAPI struct {
 	PersonnelPostPersonnelPeoplePersonIDImpersonateHandler personnel.PostPersonnelPeoplePersonIDImpersonateHandler
 	// PostRolesHandler sets the operation handler for the post roles operation
 	PostRolesHandler PostRolesHandler
+	// RosteringPostRosteringShowsHandler sets the operation handler for the post rostering shows operation
+	RosteringPostRosteringShowsHandler rostering.PostRosteringShowsHandler
 	// PostShadowHandler sets the operation handler for the post shadow operation
 	PostShadowHandler PostShadowHandler
 	// ShowdocsPostShowdocReportsIDHandler sets the operation handler for the post showdoc reports ID operation
 	ShowdocsPostShowdocReportsIDHandler showdocs.PostShowdocReportsIDHandler
 	// ShowdocsPostShowdocTimersIDHandler sets the operation handler for the post showdoc timers ID operation
 	ShowdocsPostShowdocTimersIDHandler showdocs.PostShowdocTimersIDHandler
-	// PostShowsHandler sets the operation handler for the post shows operation
-	PostShowsHandler PostShowsHandler
 	// PutAssignmentIDHandler sets the operation handler for the put assignment ID operation
 	PutAssignmentIDHandler PutAssignmentIDHandler
 	// PutRolesIDHandler sets the operation handler for the put roles ID operation
@@ -443,6 +444,12 @@ func (o *GoBackendAPI) Validate() error {
 	if o.GetRosterHandler == nil {
 		unregistered = append(unregistered, "GetRosterHandler")
 	}
+	if o.RosteringGetRosteringShowsHandler == nil {
+		unregistered = append(unregistered, "rostering.GetRosteringShowsHandler")
+	}
+	if o.RosteringGetRosteringShowsShowSlugSummaryHandler == nil {
+		unregistered = append(unregistered, "rostering.GetRosteringShowsShowSlugSummaryHandler")
+	}
 	if o.GetScheduleHandler == nil {
 		unregistered = append(unregistered, "GetScheduleHandler")
 	}
@@ -463,12 +470,6 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.ShowdocsGetShowdocTimersIDHandler == nil {
 		unregistered = append(unregistered, "showdocs.GetShowdocTimersIDHandler")
-	}
-	if o.GetShowsHandler == nil {
-		unregistered = append(unregistered, "GetShowsHandler")
-	}
-	if o.GetShowsShowSlugSummaryHandler == nil {
-		unregistered = append(unregistered, "GetShowsShowSlugSummaryHandler")
 	}
 	if o.PostAssignmentHandler == nil {
 		unregistered = append(unregistered, "PostAssignmentHandler")
@@ -500,6 +501,9 @@ func (o *GoBackendAPI) Validate() error {
 	if o.PostRolesHandler == nil {
 		unregistered = append(unregistered, "PostRolesHandler")
 	}
+	if o.RosteringPostRosteringShowsHandler == nil {
+		unregistered = append(unregistered, "rostering.PostRosteringShowsHandler")
+	}
 	if o.PostShadowHandler == nil {
 		unregistered = append(unregistered, "PostShadowHandler")
 	}
@@ -508,9 +512,6 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.ShowdocsPostShowdocTimersIDHandler == nil {
 		unregistered = append(unregistered, "showdocs.PostShowdocTimersIDHandler")
-	}
-	if o.PostShowsHandler == nil {
-		unregistered = append(unregistered, "PostShowsHandler")
 	}
 	if o.PutAssignmentIDHandler == nil {
 		unregistered = append(unregistered, "PutAssignmentIDHandler")
@@ -683,6 +684,14 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
+	o.handlers["GET"]["/rostering/shows"] = rostering.NewGetRosteringShows(o.context, o.RosteringGetRosteringShowsHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/rostering/shows/{showSlug}/summary"] = rostering.NewGetRosteringShowsShowSlugSummary(o.context, o.RosteringGetRosteringShowsShowSlugSummaryHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
 	o.handlers["GET"]["/schedule"] = NewGetSchedule(o.context, o.GetScheduleHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -708,14 +717,6 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/showdoc/timers/{id}"] = showdocs.NewGetShowdocTimersID(o.context, o.ShowdocsGetShowdocTimersIDHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/shows"] = NewGetShows(o.context, o.GetShowsHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/shows/{showSlug}/summary"] = NewGetShowsShowSlugSummary(o.context, o.GetShowsShowSlugSummaryHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
@@ -759,6 +760,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
+	o.handlers["POST"]["/rostering/shows"] = rostering.NewPostRosteringShows(o.context, o.RosteringPostRosteringShowsHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
 	o.handlers["POST"]["/shadow"] = NewPostShadow(o.context, o.PostShadowHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
@@ -768,10 +773,6 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/showdoc/timers/{id}"] = showdocs.NewPostShowdocTimersID(o.context, o.ShowdocsPostShowdocTimersIDHandler)
-	if o.handlers["POST"] == nil {
-		o.handlers["POST"] = make(map[string]http.Handler)
-	}
-	o.handlers["POST"]["/shows"] = NewPostShows(o.context, o.PostShowsHandler)
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)
 	}

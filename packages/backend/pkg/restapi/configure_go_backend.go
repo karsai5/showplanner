@@ -6,6 +6,7 @@ import (
 	"crypto/tls"
 
 	"showplanner.io/pkg/personnel"
+	"showplanner.io/pkg/rostering"
 	"showplanner.io/pkg/showdoc"
 
 	"showplanner.io/pkg/domains/media_domain"
@@ -60,6 +61,7 @@ func configureAPI(api *operations.GoBackendAPI) http.Handler {
 	media_domain.SetupHandlers(api)
 	schedule_domain.SetupHandlers(api)
 	schedule_domain.SetupHandlers(api)
+	rostering.SetupHandlers(api)
 	showdoc.SetupHandlers(api)
 
 	personnel.SetupHandlers(api)

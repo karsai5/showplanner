@@ -8,7 +8,7 @@ import {
   UsersIcon,
 } from "@heroicons/react/24/outline";
 import { useQuery } from "@tanstack/react-query";
-import { api_deprecated } from "core/api";
+import { api } from "core/api";
 import { UserIcon } from "core/components/Icons";
 import {
   PERMISSION,
@@ -92,7 +92,7 @@ export const useMainNavItems = (): NavItem[] => {
 export const useNavItemsForShow = (): NavItem[] => {
   const slug = useShowSlugFromUrl();
   const { data: show } = useQuery(["Show", slug], () =>
-    api_deprecated.showsShowSlugSummaryGet({ showSlug: slug as string })
+    api.rostering.rosteringShowsShowSlugSummaryGet({ showSlug: slug as string })
   );
 
   const hasPermission = useHasPermission();

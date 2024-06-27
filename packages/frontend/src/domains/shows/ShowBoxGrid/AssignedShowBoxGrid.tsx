@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import cc from "classnames";
-import { getApi } from "core/api";
+import { api } from "core/api";
 import { ShowDTO } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import dayjs from "dayjs";
@@ -12,13 +12,12 @@ import missingImg from "./missing.png";
 import styles from "./styles.module.scss";
 
 export const AssignedShowBoxGrid: React.FC = () => {
-  const api = getApi();
   const {
     data: shows,
     isLoading,
     isError,
   } = useQuery(["ShowList"], () => {
-    return api.showsGet();
+    return api.rostering.rosteringShowsGet();
   });
 
   if (isError) {

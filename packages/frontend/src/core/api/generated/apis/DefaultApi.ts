@@ -21,7 +21,6 @@ import type {
   CreateAssignedDTO,
   CreateEventDTO,
   CreateShadowDTO,
-  CreateShowDTO,
   EventDTO,
   HealthCheck,
   InvitationDTO,
@@ -31,8 +30,6 @@ import type {
   RoleUpdateDTO,
   RosterDTO,
   ScheduleEventDTO,
-  ShowDTO,
-  ShowSummaryDTO,
   UpdateAssignedDTO,
 } from "../models/index";
 import {
@@ -50,8 +47,6 @@ import {
   CreateEventDTOToJSON,
   CreateShadowDTOFromJSON,
   CreateShadowDTOToJSON,
-  CreateShowDTOFromJSON,
-  CreateShowDTOToJSON,
   EventDTOFromJSON,
   EventDTOToJSON,
   HealthCheckFromJSON,
@@ -70,10 +65,6 @@ import {
   RosterDTOToJSON,
   ScheduleEventDTOFromJSON,
   ScheduleEventDTOToJSON,
-  ShowDTOFromJSON,
-  ShowDTOToJSON,
-  ShowSummaryDTOFromJSON,
-  ShowSummaryDTOToJSON,
   UpdateAssignedDTOFromJSON,
   UpdateAssignedDTOToJSON,
 } from "../models/index";
@@ -186,14 +177,6 @@ export interface ShadowIdDeleteRequest {
 
 export interface ShadowPostRequest {
   shadow?: CreateShadowDTO;
-}
-
-export interface ShowsPostRequest {
-  show?: CreateShowDTO;
-}
-
-export interface ShowsShowSlugSummaryGetRequest {
-  showSlug: string;
 }
 
 /**
@@ -1544,133 +1527,5 @@ export class DefaultApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<void> {
     await this.shadowPostRaw(requestParameters, initOverrides);
-  }
-
-  /**
-   * Returns a list of shows
-   */
-  async showsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<Array<ShowDTO>>> {
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/shows`,
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      jsonValue.map(ShowDTOFromJSON)
-    );
-  }
-
-  /**
-   * Returns a list of shows
-   */
-  async showsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<Array<ShowDTO>> {
-    const response = await this.showsGetRaw(initOverrides);
-    return await response.value();
-  }
-
-  /**
-   * Creates a show
-   */
-  async showsPostRaw(
-    requestParameters: ShowsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<ShowDTO>> {
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    headerParameters["Content-Type"] = "application/json";
-
-    const response = await this.request(
-      {
-        path: `/shows`,
-        method: "POST",
-        headers: headerParameters,
-        query: queryParameters,
-        body: CreateShowDTOToJSON(requestParameters.show),
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ShowDTOFromJSON(jsonValue)
-    );
-  }
-
-  /**
-   * Creates a show
-   */
-  async showsPost(
-    requestParameters: ShowsPostRequest = {},
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<ShowDTO> {
-    const response = await this.showsPostRaw(requestParameters, initOverrides);
-    return await response.value();
-  }
-
-  /**
-   * Return details about a show
-   */
-  async showsShowSlugSummaryGetRaw(
-    requestParameters: ShowsShowSlugSummaryGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<ShowSummaryDTO>> {
-    if (
-      requestParameters.showSlug === null ||
-      requestParameters.showSlug === undefined
-    ) {
-      throw new runtime.RequiredError(
-        "showSlug",
-        "Required parameter requestParameters.showSlug was null or undefined when calling showsShowSlugSummaryGet."
-      );
-    }
-
-    const queryParameters: any = {};
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/shows/{showSlug}/summary`.replace(
-          `{${"showSlug"}}`,
-          encodeURIComponent(String(requestParameters.showSlug))
-        ),
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ShowSummaryDTOFromJSON(jsonValue)
-    );
-  }
-
-  /**
-   * Return details about a show
-   */
-  async showsShowSlugSummaryGet(
-    requestParameters: ShowsShowSlugSummaryGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<ShowSummaryDTO> {
-    const response = await this.showsShowSlugSummaryGetRaw(
-      requestParameters,
-      initOverrides
-    );
-    return await response.value();
   }
 }

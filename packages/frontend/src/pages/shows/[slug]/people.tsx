@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { api_deprecated, serverSideApi_deprecated } from "core/api";
+import { api, serverSideApi } from "core/api";
 import { ArrayOfPersonSummaryDTO, ShowDTO } from "core/api/generated";
 import { H2, H3 } from "core/components/Typography";
 import {
@@ -23,17 +23,17 @@ import superjson from "superjson";
 
 export const getServerSideProps = (async (context) => {
   const slug = context.query.slug;
-  const ssrApi = serverSideApi_deprecated(context);
+  const ssrApi = serverSideApi(context);
 
   if (typeof slug !== "string") {
     throw new Error("Incorrect slug format");
   }
 
   try {
-    const show = await ssrApi.showsShowSlugSummaryGet({
+    const show = await ssrApi.rostering.rosteringShowsShowSlugSummaryGet({
       showSlug: slug,
     });
-    const data = await ssrApi.personnelAssignedGet({ showId: show.id });
+    const data = await ssrApi.default.personnelAssignedGet({ showId: show.id });
     return {
       props: { show, peopleJSON: superjson.stringify(data) },
     };
@@ -106,7 +106,7 @@ const DownloadGoogleCSVButton: React.FC<{ showId: number }> = ({ showId }) => {
 const useDownloadCSV = (id: number, filename: string, type: string) => {
   return useMutation<string>({
     mutationFn: () => {
-      return api_deprecated.personnelAssignedGoogleContactsCSVGet({
+      return api.default.personnelAssignedGoogleContactsCSVGet({
         showId: id,
       });
     },
