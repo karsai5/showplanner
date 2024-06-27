@@ -92,7 +92,7 @@ export const useMainNavItems = (): NavItem[] => {
 export const useNavItemsForShow = (): NavItem[] => {
   const slug = useShowSlugFromUrl();
   const { data: show } = useQuery(["Show", slug], () =>
-    api.rostering.rosteringShowsShowSlugSummaryGet({ showSlug: slug as string })
+    api.rostering.showsShowSlugSummaryGet({ showSlug: slug as string })
   );
 
   const hasPermission = useHasPermission();

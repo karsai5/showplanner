@@ -66,7 +66,7 @@ export const AssignedShowBoxGrid: React.FC = () => {
         </div>
       )}
 
-      <div className={cc("grid gap-2", styles.grid)}>
+      <div className={cc("grid gap-4", styles.grid)}>
         {groupedShows?.nodates &&
           groupedShows.nodates.map((show) => (
             <ShowBox key={show.id} show={show} />

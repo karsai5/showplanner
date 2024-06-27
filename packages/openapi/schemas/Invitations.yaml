@@ -6,6 +6,9 @@ InvitationDTO:
     person:
       x-nullable: true
       $ref: './People.yaml#/PersonSummaryDTO'
+    show:
+      x-nullable: true
+      $ref: './Show.yaml#/ShowDTO'
     dateCreated:
       type: string
       format: date-time

@@ -10,10 +10,15 @@ const colorHash = new ColorHash();
 
 type Props = {
   show: ShowDTO;
+  className?: string;
+  href?: string;
 };
 
-export const ShowBox: React.FunctionComponent<Props> = (props) => {
-  const { show } = props;
+export const ShowBox: React.FunctionComponent<Props> = ({
+  show,
+  className,
+  href,
+}) => {
   const pastEvent = show.end && dayjs(show.end).isBefore(new Date());
 
   const showCount = 0;
@@ -32,10 +37,10 @@ export const ShowBox: React.FunctionComponent<Props> = (props) => {
       transitionSpeed={2000}
       tiltMaxAngleX={10}
       tiltMaxAngleY={10}
-      className="w-full"
+      className={cc(className, "w-full")}
     >
       <Link
-        href={`/shows/${show.slug}`}
+        href={href || `/shows/${show.slug}`}
         className={cc(
           {
             grayscale: pastEvent,

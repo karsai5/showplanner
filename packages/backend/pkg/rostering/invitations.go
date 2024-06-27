@@ -6,12 +6,12 @@ import (
 )
 
 func inviteExistingUserToShow(showId uint, userId uuid.UUID) error {
-	invitation, err := addInvitationToDatabase(showId, userId)
+	_, err := addInvitationToDatabase(showId, userId)
 	if err != nil {
 		return err
 	}
 	// TODO: Send email
-	err = acceptInvitation(invitation.ID) // TODO: Remove when logic is added for user to accept invitation
+	// err = acceptInvitation(invitation.ID) // TODO: Remove when logic is added for user to accept invitation
 	return err
 }
 
@@ -62,7 +62,7 @@ func getInvitationsForPerson(personId uuid.UUID) ([]database.Invitation, error) 
 	db := database.GetDatabase()
 
 	var invitations []database.Invitation
-	res := db.Where("person_id = ?", personId).Find(&invitations)
+	res := db.Preload("Person").Preload("Show").Where("person_id = ?", personId).Find(&invitations)
 
 	return invitations, res.Error
 }

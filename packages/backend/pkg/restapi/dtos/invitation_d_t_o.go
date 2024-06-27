@@ -28,6 +28,9 @@ type InvitationDTO struct {
 
 	// person
 	Person *PersonSummaryDTO `json:"person,omitempty"`
+
+	// show
+	Show *ShowDTO `json:"show,omitempty"`
 }
 
 // Validate validates this invitation d t o
@@ -39,6 +42,10 @@ func (m *InvitationDTO) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validatePerson(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateShow(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -79,11 +86,34 @@ func (m *InvitationDTO) validatePerson(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *InvitationDTO) validateShow(formats strfmt.Registry) error {
+	if swag.IsZero(m.Show) { // not required
+		return nil
+	}
+
+	if m.Show != nil {
+		if err := m.Show.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("show")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("show")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 // ContextValidate validate this invitation d t o based on the context it is used
 func (m *InvitationDTO) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.contextValidatePerson(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateShow(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -106,6 +136,27 @@ func (m *InvitationDTO) contextValidatePerson(ctx context.Context, formats strfm
 				return ve.ValidateName("person")
 			} else if ce, ok := err.(*errors.CompositeError); ok {
 				return ce.ValidateName("person")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *InvitationDTO) contextValidateShow(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Show != nil {
+
+		if swag.IsZero(m.Show) { // not required
+			return nil
+		}
+
+		if err := m.Show.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("show")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("show")
 			}
 			return err
 		}

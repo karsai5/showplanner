@@ -395,6 +395,10 @@ func (i *Invitation) MapToInvitationDTO() dtos.InvitationDTO {
 		dto.Person = conv.Pointer(i.Person.MapToPersonSummaryDTO())
 	}
 
+	if i.Show.ID != 0 {
+		dto.Show = conv.Pointer(i.Show.MapToDTO())
+	}
+
 	return dto
 }
 

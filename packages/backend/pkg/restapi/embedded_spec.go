@@ -3692,6 +3692,9 @@ func init() {
         },
         "person": {
           "$ref": "#/definitions/personSummaryDTO"
+        },
+        "show": {
+          "$ref": "#/definitions/showDTO"
         }
       }
     },
