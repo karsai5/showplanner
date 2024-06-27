@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { api_deprecated } from "core/api";
+import { api } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 
 export const Invitations: React.FC<{ showId: number }> = ({ showId }) => {
   const { data, isError } = useQuery(["invitations", showId], () =>
-    api_deprecated.invitationsGet({ showId })
+    api.rostering.showsShowIdInvitationsGet({ showId })
   );
   if (isError) {
     return <ErrorBox>Could not load invitations</ErrorBox>;

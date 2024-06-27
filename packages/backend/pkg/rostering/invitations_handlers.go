@@ -1,4 +1,4 @@
-package people_domain_old
+package rostering
 
 import (
 	"errors"
@@ -9,11 +9,11 @@ import (
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/permissions"
-	"showplanner.io/pkg/restapi/operations"
+	"showplanner.io/pkg/restapi/operations/rostering"
 )
 
-var postInvitationsHandler = operations.PostInvitationsHandlerFunc(func(params operations.PostInvitationsParams) middleware.Responder {
-	logError := logger.CreateLogErrorFunc("Sending invitations", &operations.PostInvitationsInternalServerError{})
+var handlePostInvitation = rostering.PostInvitationsHandlerFunc(func(params rostering.PostInvitationsParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Sending invitations", &rostering.PostInvitationsInternalServerError{})
 
 	hasPerm, err := permissions.AddPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
 	if err != nil {
@@ -25,7 +25,7 @@ var postInvitationsHandler = operations.PostInvitationsHandlerFunc(func(params o
 
 	personId := conv.StrfmtUUIDToUUID(params.PersonID)
 	if personId == nil {
-		return &operations.PostInvitationsBadRequest{}
+		return &rostering.PostInvitationsBadRequest{}
 	}
 
 	err = inviteExistingUserToShow(uint(params.ShowID), *personId)
@@ -33,11 +33,11 @@ var postInvitationsHandler = operations.PostInvitationsHandlerFunc(func(params o
 		return logError(&err)
 	}
 
-	return &operations.PostInvitationsOK{}
+	return &rostering.PostInvitationsOK{}
 })
 
-var getInvitationsHandler = operations.GetInvitationsHandlerFunc(func(params operations.GetInvitationsParams) middleware.Responder {
-	logError := logger.CreateLogErrorFunc("Getting invitations", &operations.GetInvitationsInternalServerError{})
+var handleGetInviationsForShow = rostering.GetShowsShowIDInvitationsHandlerFunc(func(params rostering.GetShowsShowIDInvitationsParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Getting invitations", &rostering.GetShowsShowIDInvitationsInternalServerError{})
 
 	hasPerm, err := permissions.AddPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
 	if err != nil {
@@ -54,7 +54,7 @@ var getInvitationsHandler = operations.GetInvitationsHandlerFunc(func(params ope
 
 	mappedInvitations := conv.MapArrayOfPointer(invitations, func(i database.Invitation) dtos.InvitationDTO { return i.MapToInvitationDTO() })
 
-	return &operations.GetInvitationsOK{
+	return &rostering.GetShowsShowIDInvitationsOK{
 		Payload: mappedInvitations,
 	}
 })

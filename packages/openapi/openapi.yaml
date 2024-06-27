@@ -521,52 +521,6 @@ paths:
           description: Upload succesful
           schema:
             $ref: './schemas/Media.yaml#/MediaDTO'
-  /invitations/:
-    get:
-      parameters:
-        - in: query
-          required: true
-          name: showId
-          type: integer
-          description: ID of the show to get invitations for
-      summary: Get invitations for a show
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            type: array
-            items:
-              $ref: './schemas/Invitations.yaml#/InvitationDTO'
-        401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
-    post:
-      parameters:
-        - in: query
-          required: true
-          name: showId
-          type: integer
-          description: ID of the show to invite a person to
-        - in: query
-          name: personId
-          type: string
-          format: uuid
-          description: Id of the person to invite
-      summary: Invites a person to a show
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-        401:
-          $ref: '#/responses/Error'
-        400:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
 
   # PERSONNEL
   # =========
@@ -911,6 +865,75 @@ paths:
           description: 'Show'
           schema:
             $ref: './schemas/Show.yaml#/ShowSummaryDTO'
+
+  /shows/{showId}/invitations:
+    get:
+      tags:
+        - rostering
+      parameters:
+        - in: path
+          required: true
+          name: showId
+          type: integer
+      summary: Get invitations for a show
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: './schemas/Invitations.yaml#/InvitationDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+
+  /invitations/:
+    get:
+      tags:
+        - rostering
+      summary: Get my invitations
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: './schemas/Invitations.yaml#/InvitationDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+    post:
+      tags:
+        - rostering
+      parameters:
+        - in: query
+          required: true
+          name: showId
+          type: integer
+          description: ID of the show to invite a person to
+        - in: query
+          name: personId
+          type: string
+          format: uuid
+          description: Id of the person to invite
+      summary: Invites a person to a show
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: '#/responses/Error'
+        400:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
 
 responses:
   Error:

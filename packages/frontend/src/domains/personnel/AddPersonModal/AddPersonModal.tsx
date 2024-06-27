@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { api_deprecated } from "core/api";
+import { api } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { useModal } from "core/components/Modal/Modal";
@@ -12,7 +12,7 @@ export const AddPersonModal: React.FC<{
   const { Modal, open, close, isOpen } = useModal();
   const { data, isLoading, isError } = useQuery(
     ["unassigned-people", showId],
-    () => api_deprecated.personnelAssignableGet({ showId: showId })
+    () => api.default.personnelAssignableGet({ showId: showId })
   );
 
   const queryClient = useQueryClient();
@@ -21,7 +21,7 @@ export const AddPersonModal: React.FC<{
       if (!personId) {
         throw new Error("Person id missing");
       }
-      return api_deprecated.invitationsPost({ showId, personId });
+      return api.rostering.invitationsPost({ showId, personId });
     },
     onError: (e) => {
       showToastError("Something went wrong adding person to show.", e);

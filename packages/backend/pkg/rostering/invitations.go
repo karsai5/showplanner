@@ -1,4 +1,4 @@
-package people_domain_old
+package rostering
 
 import (
 	uuid "github.com/satori/go.uuid"
@@ -25,7 +25,7 @@ func acceptInvitation(invitationId uint) error {
 		return res.Error
 	}
 
-	err := AddToShow(int64(invitation.ShowID), *invitation.PersonID)
+	err := addToShow(int64(invitation.ShowID), *invitation.PersonID)
 
 	if err != nil {
 		return err

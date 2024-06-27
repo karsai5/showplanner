@@ -23,7 +23,6 @@ import type {
   CreateShadowDTO,
   EventDTO,
   HealthCheck,
-  InvitationDTO,
   MediaDTO,
   PublicScheduleGet200Response,
   RoleDTO,
@@ -51,8 +50,6 @@ import {
   EventDTOToJSON,
   HealthCheckFromJSON,
   HealthCheckToJSON,
-  InvitationDTOFromJSON,
-  InvitationDTOToJSON,
   MediaDTOFromJSON,
   MediaDTOToJSON,
   PublicScheduleGet200ResponseFromJSON,
@@ -105,15 +102,6 @@ export interface EventsIdPostRequest {
 
 export interface EventsPostRequest {
   event?: CreateEventDTO;
-}
-
-export interface InvitationsGetRequest {
-  showId: number;
-}
-
-export interface InvitationsPostRequest {
-  showId: number;
-  personId?: string;
 }
 
 export interface MediaUploadPostRequest {
@@ -599,112 +587,6 @@ export class DefaultApi extends runtime.BaseAPI {
   ): Promise<EventDTO> {
     const response = await this.eventsPostRaw(requestParameters, initOverrides);
     return await response.value();
-  }
-
-  /**
-   * Get invitations for a show
-   */
-  async invitationsGetRaw(
-    requestParameters: InvitationsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<Array<InvitationDTO>>> {
-    if (
-      requestParameters.showId === null ||
-      requestParameters.showId === undefined
-    ) {
-      throw new runtime.RequiredError(
-        "showId",
-        "Required parameter requestParameters.showId was null or undefined when calling invitationsGet."
-      );
-    }
-
-    const queryParameters: any = {};
-
-    if (requestParameters.showId !== undefined) {
-      queryParameters["showId"] = requestParameters.showId;
-    }
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/invitations/`,
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      jsonValue.map(InvitationDTOFromJSON)
-    );
-  }
-
-  /**
-   * Get invitations for a show
-   */
-  async invitationsGet(
-    requestParameters: InvitationsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<Array<InvitationDTO>> {
-    const response = await this.invitationsGetRaw(
-      requestParameters,
-      initOverrides
-    );
-    return await response.value();
-  }
-
-  /**
-   * Invites a person to a show
-   */
-  async invitationsPostRaw(
-    requestParameters: InvitationsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<void>> {
-    if (
-      requestParameters.showId === null ||
-      requestParameters.showId === undefined
-    ) {
-      throw new runtime.RequiredError(
-        "showId",
-        "Required parameter requestParameters.showId was null or undefined when calling invitationsPost."
-      );
-    }
-
-    const queryParameters: any = {};
-
-    if (requestParameters.showId !== undefined) {
-      queryParameters["showId"] = requestParameters.showId;
-    }
-
-    if (requestParameters.personId !== undefined) {
-      queryParameters["personId"] = requestParameters.personId;
-    }
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/invitations/`,
-        method: "POST",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.VoidApiResponse(response);
-  }
-
-  /**
-   * Invites a person to a show
-   */
-  async invitationsPost(
-    requestParameters: InvitationsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<void> {
-    await this.invitationsPostRaw(requestParameters, initOverrides);
   }
 
   /**

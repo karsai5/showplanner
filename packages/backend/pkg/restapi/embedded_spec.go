@@ -328,16 +328,10 @@ func init() {
         "produces": [
           "application/json"
         ],
-        "summary": "Get invitations for a show",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the show to get invitations for",
-            "name": "showId",
-            "in": "query",
-            "required": true
-          }
+        "tags": [
+          "rostering"
         ],
+        "summary": "Get my invitations",
         "responses": {
           "200": {
             "description": "OK",
@@ -359,6 +353,9 @@ func init() {
       "post": {
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "rostering"
         ],
         "summary": "Invites a person to a show",
         "parameters": [
@@ -1405,6 +1402,42 @@ func init() {
           }
         }
       }
+    },
+    "/shows/{showId}/invitations": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Get invitations for a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "showId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "./schemas/Invitations.yaml#/InvitationDTO"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -1854,16 +1887,10 @@ func init() {
         "produces": [
           "application/json"
         ],
-        "summary": "Get invitations for a show",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the show to get invitations for",
-            "name": "showId",
-            "in": "query",
-            "required": true
-          }
+        "tags": [
+          "rostering"
         ],
+        "summary": "Get my invitations",
         "responses": {
           "200": {
             "description": "OK",
@@ -1891,6 +1918,9 @@ func init() {
       "post": {
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "rostering"
         ],
         "summary": "Invites a person to a show",
         "parameters": [
@@ -3113,6 +3143,48 @@ func init() {
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/showTimerDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/shows/{showId}/invitations": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Get invitations for a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "showId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/invitationDTO"
+              }
             }
           },
           "401": {
