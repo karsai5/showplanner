@@ -2,13 +2,14 @@ import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
 import { useMutation } from "@tanstack/react-query";
 import cc from "classnames";
 import { api } from "core/api";
-import { UpdateShowreportDTO } from "core/api/generated";
+import { ShowReportDTO, UpdateShowreportDTO } from "core/api/generated";
 import TextArea from "core/components/fields/TextArea";
 import Input from "core/components/fields/TextInput";
 import { StickyLoadingSpinner } from "core/components/LoadingBox/PersistantLoadingSpinner";
 import { showToastError } from "core/utils/errors";
 import dayjs from "dayjs";
 import { debounce } from "lodash";
+import pickBy from "lodash/pickBy";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -30,7 +31,7 @@ export type ShowReportInputs = {
 };
 
 export const ShowReportForm: React.FC<{
-  initialValues?: ShowReportInputs;
+  initialValues?: ShowReportDTO;
   id: string;
   readOnlyTimers?: boolean;
   readOnlyTitles?: boolean;
@@ -42,7 +43,7 @@ export const ShowReportForm: React.FC<{
     watch,
   } = useForm<ShowReportInputs>({
     defaultValues: {
-      ...initialValues,
+      ...getDefaultValuesForShowReport(initialValues),
     },
     mode: "onChange",
   });
@@ -196,6 +197,37 @@ export const ShowReportForm: React.FC<{
   );
 };
 
+export const getDefaultValuesForShowReport = (
+  showReport: ShowReportDTO | undefined
+): ShowReportInputs => {
+  if (!showReport) {
+    return {};
+  }
+  const valuesFromShowReport: ShowReportInputs = {
+    title: showReport.title || undefined,
+    subtitle: showReport.subtitle || undefined,
+    notes: showReport.notes || undefined,
+
+    showStart: parseTimeToString(showReport.showStart),
+    showEnd: parseTimeToString(showReport.showEnd),
+    intervalStart: parseTimeToString(showReport.intervalStart),
+    intervalEnd: parseTimeToString(showReport.intervalEnd),
+    houseOpen: parseTimeToString(showReport.houseOpen),
+    actOneFOHClearance: parseTimeToString(showReport.actOneFOHClearance),
+    actTwoFOHClearance: parseTimeToString(showReport.actTwoFOHClearance),
+
+    eventId: showReport.eventId || undefined,
+  };
+
+  return pickBy(valuesFromShowReport, (x) => x);
+};
+
+const parseTimeToString = (time: Date | null | undefined) => {
+  if (!time) {
+    return undefined;
+  }
+  return dayjs(time).format("HH:mm");
+};
 const parseTime = (time: string | undefined) => {
   if (!time) {
     return undefined;

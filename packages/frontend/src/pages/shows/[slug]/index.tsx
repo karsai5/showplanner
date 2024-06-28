@@ -1,13 +1,12 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
-import { api, serverSideApi } from "core/api";
+import { api } from "core/api";
 import {
   PersonSummaryDTO,
   ScheduleEventDTO,
   ScheduleEventDTOAllOfRoles,
   ScheduleEventDTOAllOfRolesTypeEnum,
-  ShowDTO,
 } from "core/api/generated";
 import Address from "core/components/Address/Address";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
@@ -22,8 +21,8 @@ import {
   showPermission,
   useHasPermission,
 } from "core/permissions";
+import { ssrWrapper } from "core/permissions/ssr";
 import { showToastError } from "core/utils/errors";
-import { getSSRErrorReturn } from "core/utils/ssr";
 import dayjs from "dayjs";
 import { EventDividerForm } from "domains/events/EventDividerForm/EventDividerForm";
 import { EventForm } from "domains/events/EventForm/EventForm";
@@ -38,12 +37,27 @@ import { DeleteEventModal } from "domains/events/EventTable/modals/DeleteEventMo
 import { EditEventModal } from "domains/events/EventTable/modals/EditEventModal";
 import { displayDate } from "domains/events/lib/displayDate";
 import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import superjson from "superjson";
+
+export const getServerSideProps = ssrWrapper(async (ctx, api) => {
+  const slug = ctx.query.slug;
+  if (typeof slug !== "string") {
+    throw new Error("Incorrect slug format");
+  }
+
+  const show = await api.rostering.showsShowSlugSummaryGet({
+    showSlug: slug,
+  });
+  const events = await api.default.scheduleGet({ showId: show.id });
+  return {
+    props: { show, eventsJSON: superjson.stringify(events) },
+  };
+});
 
 export default function ShowPage(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -119,27 +133,6 @@ export default function ShowPage(
     </>
   );
 }
-
-export const getServerSideProps = (async (context) => {
-  const slug = context.query.slug;
-  const ssrApi = serverSideApi(context);
-
-  if (typeof slug !== "string") {
-    throw new Error("Incorrect slug format");
-  }
-
-  try {
-    const show = await ssrApi.rostering.showsShowSlugSummaryGet({
-      showSlug: slug,
-    });
-    const events = await ssrApi.default.scheduleGet({ showId: show.id });
-    return {
-      props: { show, eventsJSON: superjson.stringify(events) },
-    };
-  } catch (err) {
-    return getSSRErrorReturn(err);
-  }
-}) satisfies GetServerSideProps<{ show: ShowDTO; eventsJSON: string }>;
 
 const Headers: React.FC<{ showId: number }> = ({ showId }) => {
   const canEditEvents = useHasPermission()(

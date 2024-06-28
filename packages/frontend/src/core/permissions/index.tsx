@@ -1,9 +1,4 @@
-import * as cookie from "cookie";
 import { AccessDenied } from "core/components/AccessDenied/AccessDenied";
-import { getRequiredEnvVariable } from "core/utils/envVariables";
-import JsonWebToken, { JwtHeader, SigningKeyCallback } from "jsonwebtoken";
-import jwksClient from "jwks-rsa";
-import { GetServerSidePropsContext } from "next/types";
 import { ReactNode } from "react";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import Session from "supertokens-auth-react/recipe/session";
@@ -11,19 +6,6 @@ import {
   PermissionClaim,
   UserRoleClaim,
 } from "supertokens-auth-react/recipe/userroles";
-
-const client = jwksClient({
-  jwksUri: `${getRequiredEnvVariable(
-    process.env.NEXT_PUBLIC_SUPERTOKENS_URL
-  )}/auth/jwt/jwks.json`,
-});
-
-function getKey(header: JwtHeader, callback: SigningKeyCallback) {
-  client.getSigningKey(header.kid, function (err, key) {
-    const signingKey = key?.getPublicKey();
-    callback(err, signingKey);
-  });
-}
 
 export const enum PERMISSION {
   addEvents = "add-events",
@@ -55,42 +37,6 @@ export const useUserId = () => {
     return undefined;
   }
   return session.userId;
-};
-
-export const getDecodedJWT = async (ctx: GetServerSidePropsContext) => {
-  const c = ctx.req.headers.cookie;
-  if (!c) {
-    return undefined;
-  }
-  const sAccessToken = cookie.parse(c).sAccessToken;
-  if (!sAccessToken) {
-    return undefined;
-  }
-
-  try {
-    const jwt = await new Promise<JsonWebToken.JwtPayload>(
-      (resolve, reject) => {
-        JsonWebToken.verify(sAccessToken, getKey, {}, function (err, decoded) {
-          if (err) {
-            return reject(err);
-          }
-          if (decoded === undefined || typeof decoded === "string") {
-            return reject(new Error("Decoded value incorrect type"));
-          }
-          resolve(decoded);
-        });
-      }
-    );
-    return jwt;
-  } catch (err) {
-    return undefined;
-  }
-};
-
-export const getLoggedIn = async (ctx: GetServerSidePropsContext) => {
-  const jwt = await getDecodedJWT(ctx);
-
-  return !!jwt;
 };
 
 export const useHasPermission = () => {

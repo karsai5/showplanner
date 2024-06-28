@@ -24,6 +24,7 @@ import {
 import { ToastContainer, Zoom } from "react-toastify";
 import SuperTokensReact from "supertokens-auth-react";
 import { SuperTokensWrapper } from "supertokens-auth-react";
+import { redirectToAuth } from "supertokens-auth-react";
 import Session from "supertokens-auth-react/recipe/session";
 
 import { frontendConfig } from "../../config/frontendConfig";
@@ -56,6 +57,35 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const loading = usePageLoading();
   const getLayout =
     Component.getLayout ?? ((page) => <DefaultLayout>{page}</DefaultLayout>);
+
+  useEffect(() => {
+    async function doRefresh() {
+      // pageProps.fromSupertokens === 'needs-refresh' will be true
+      // when in getServerSideProps, getSession throws a TRY_REFRESH_TOKEN
+      // error.
+
+      if (pageProps.fromSupertokens === "needs-refresh") {
+        if (await Session.attemptRefreshingSession()) {
+          // post session refreshing, we reload the page. This will
+          // send the new access token to the server, and then
+          // getServerSideProps will succeed
+          location.reload();
+        } else {
+          // the user's session has expired. So we redirect
+          // them to the login page
+          redirectToAuth();
+        }
+      }
+    }
+    doRefresh();
+  }, [pageProps.fromSupertokens]);
+
+  if (pageProps.fromSupertokens === "needs-refresh") {
+    // in case the frontend needs to refresh, we show nothing.
+    // Alternatively, you can show a spinner.
+
+    return null;
+  }
 
   return (
     <SuperTokensWrapper>

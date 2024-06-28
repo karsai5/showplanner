@@ -1,31 +1,26 @@
 import { useMutation } from "@tanstack/react-query";
-import { api, serverSideApi } from "core/api";
+import { api } from "core/api";
 import { InvitationDTO } from "core/api/generated";
+import { ssrWrapper } from "core/permissions/ssr";
 import { showToastError } from "core/utils/errors";
-import { getSSRErrorReturn } from "core/utils/ssr";
 import { ShowBox } from "domains/shows/ShowBox";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import superjson from "superjson";
 
-export const getServerSideProps = (async (context) => {
-  const id = context.query.id;
-  const ssrApi = serverSideApi(context);
+export const getServerSideProps = ssrWrapper(async (ctx, api) => {
+  const id = ctx.query.id;
 
   if (typeof id !== "string") {
     throw new Error("Incorrect slug format");
   }
 
-  try {
-    const invitation = await ssrApi.rostering.invitationsIdGet({ id });
-    return {
-      props: { invitationJson: superjson.stringify(invitation) },
-    };
-  } catch (err) {
-    return getSSRErrorReturn(err);
-  }
-}) satisfies GetServerSideProps<{ invitationJson: string }>;
+  const invitation = await api.rostering.invitationsIdGet({ id });
+  return {
+    props: { invitationJson: superjson.stringify(invitation) },
+  };
+});
 
 export default function InvitationPage(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -39,7 +34,10 @@ export default function InvitationPage(
     {
       onSuccess: () => {
         toast.success("Invitation accepted");
-        router.push(`/shows/${invitation.show?.slug}`);
+        // Have to refresh session so that we get the new permissions
+        router.push(
+          `/refresh-session?redirect=/shows/${invitation.show?.slug}`
+        );
       },
       onError: (e) => {
         showToastError("Something went wrong accepting invitation", e);
@@ -58,12 +56,13 @@ export default function InvitationPage(
       {invitation.show && (
         <ShowBox
           show={invitation.show}
-          className="w-96 pointer-events-none mb-6"
+          className="max-w-96 pointer-events-none mb-6"
         />
       )}
       <div className="prose mb-4">
         <p>
-          The managers of this show will get access to the following details:
+          The managers of this show will get access to the following personal
+          details:
         </p>
         <ul>
           <li>Full</li>
@@ -75,7 +74,14 @@ export default function InvitationPage(
           <li>WWC number</li>
         </ul>
       </div>
-      <button className="btn btn-primary" onClick={() => mutation.mutate()}>
+      <button
+        className="btn btn-primary"
+        onClick={() => mutation.mutate()}
+        disabled={mutation.isLoading}
+      >
+        {mutation.isLoading && (
+          <span className="loading loading-spinner"></span>
+        )}
         Accept invitation
       </button>
     </div>

@@ -1,38 +1,32 @@
-import { serverSideApi } from "core/api";
-import ErrorBox from "core/components/ErrorBox/ErrorBox";
-import { getDefaultValuesForShowReport } from "domains/showreports/getDefaultValuesForShowReport";
-import {
-  ShowReportForm,
-  ShowReportInputs,
-} from "domains/showreports/ShowReportForm";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { useParams } from "next/navigation";
+import { ShowReportDTO } from "core/api/generated";
+import { ifResponseErrorCode, ssrWrapper } from "core/permissions/ssr";
+import { ShowReportForm } from "domains/showreports/ShowReportForm";
+import { InferGetServerSidePropsType } from "next";
+import superjson from "superjson";
 
-export default function ShowReport({
-  initialValues,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const params = useParams();
-  if (!params.id || typeof params.id !== "string") {
-    return <ErrorBox>Could not find show report id</ErrorBox>;
-  }
-  return <ShowReportForm initialValues={initialValues} id={params.id} />;
-}
-
-export const getServerSideProps = (async (context) => {
+export const getServerSideProps = ssrWrapper(async (context, api) => {
   const id = context.query.id;
-  const ssrApi = serverSideApi(context);
-
   if (typeof id !== "string") {
     throw new Error("Incorrect ID format");
   }
-  let showReport = null;
   try {
-    showReport = await ssrApi.showdocs.showdocReportsIdGet({ id });
+    const showReport = await api.showdocs.showdocReportsIdGet({ id });
+    return { props: { id, showReportJSON: superjson.stringify(showReport) } };
   } catch (err) {
-    // If the show report doesn't exist, we'll just show the form with default values
-    // TODO: Should throw error if error is not a 400
+    if (ifResponseErrorCode(err, 404)) {
+      return { props: { id, showReportJSON: superjson.stringify({}) } };
+    }
+    throw err;
   }
-  return {
-    props: { initialValues: getDefaultValuesForShowReport(showReport) },
-  };
-}) satisfies GetServerSideProps<{ initialValues: ShowReportInputs }>;
+});
+
+export default function ShowReport(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
+  return (
+    <ShowReportForm
+      initialValues={superjson.parse<ShowReportDTO>(props.showReportJSON)}
+      id={props.id}
+    />
+  );
+}

@@ -1,38 +1,32 @@
-import { serverSideApi } from "core/api";
-import { AvailabilitiesDTO, ShowDTO } from "core/api/generated";
+import { AvailabilitiesDTO } from "core/api/generated";
 import { H2 } from "core/components/Typography";
 import {
   PERMISSION,
   PermissionRequired,
   showPermission,
 } from "core/permissions";
-import { getSSRErrorReturn } from "core/utils/ssr";
+import { ssrWrapper } from "core/permissions/ssr";
 import { AvailabilitiesTable } from "domains/rostering/AvailabilitiesTable/AvailabilitiesTable";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import React from "react";
 import superjson from "superjson";
 
-export const getServerSideProps = (async (context) => {
+export const getServerSideProps = ssrWrapper(async (context, api) => {
   const slug = context.query.slug;
-  const ssrApi = serverSideApi(context);
 
   if (typeof slug !== "string") {
     throw new Error("Incorrect slug format");
   }
 
-  try {
-    const show = await ssrApi.rostering.showsShowSlugSummaryGet({
-      showSlug: slug,
-    });
-    const data = await ssrApi.default.availabilitiesGet({ showId: show.id });
-    return {
-      props: { show, dataJSON: superjson.stringify(data) },
-    };
-  } catch (err) {
-    return getSSRErrorReturn(err);
-  }
-}) satisfies GetServerSideProps<{ show: ShowDTO; dataJSON: string }>;
+  const show = await api.rostering.showsShowSlugSummaryGet({
+    showSlug: slug,
+  });
+  const data = await api.default.availabilitiesGet({ showId: show.id });
+  return {
+    props: { show, dataJSON: superjson.stringify(data) },
+  };
+});
 
 export default function AvailabilitiesPage(
   props: InferGetServerSidePropsType<typeof getServerSideProps>

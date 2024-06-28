@@ -23,6 +23,7 @@ func main() {
 			GiveRole(),
 			AddToShow(),
 			CreateShowReport(),
+			RemoveFromShow(),
 		},
 	}
 

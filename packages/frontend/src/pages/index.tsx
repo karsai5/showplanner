@@ -1,5 +1,5 @@
 import HomeHero from "core/components/HomeHero/HomeHero";
-import { getLoggedIn } from "core/permissions";
+import { getLoggedIn } from "core/permissions/ssr";
 import { LayoutWithBackgroundImage } from "domains/layout/LayoutWithBackgroundImage";
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";

@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { api, serverSideApi } from "core/api";
-import { ArrayOfPersonSummaryDTO, ShowDTO } from "core/api/generated";
+import { api } from "core/api";
+import { ArrayOfPersonSummaryDTO } from "core/api/generated";
 import { H2, H3 } from "core/components/Typography";
 import {
   HasPermission,
@@ -8,39 +8,34 @@ import {
   PermissionRequired,
   showPermission,
 } from "core/permissions";
+import { ssrWrapper } from "core/permissions/ssr";
 import { Toggle } from "core/toggles/toggles";
 import { showToastError } from "core/utils/errors";
-import { getSSRErrorReturn } from "core/utils/ssr";
 import { AddPersonModal } from "domains/personnel/AddPersonModal/AddPersonModal";
 import { Invitations } from "domains/personnel/Invitations/Invitations";
 import { PeopleTable } from "domains/personnel/PeopleTable/PeopleTable";
 import { AddRoleModal } from "domains/rostering/AddRoleModal/AddRoleModal";
 import { RolesTable } from "domains/rostering/RolesTable";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import sanitize from "sanitize-filename";
 import superjson from "superjson";
 
-export const getServerSideProps = (async (context) => {
+export const getServerSideProps = ssrWrapper(async (context, api) => {
   const slug = context.query.slug;
-  const ssrApi = serverSideApi(context);
 
   if (typeof slug !== "string") {
     throw new Error("Incorrect slug format");
   }
 
-  try {
-    const show = await ssrApi.rostering.showsShowSlugSummaryGet({
-      showSlug: slug,
-    });
-    const data = await ssrApi.default.personnelAssignedGet({ showId: show.id });
-    return {
-      props: { show, peopleJSON: superjson.stringify(data) },
-    };
-  } catch (err) {
-    return getSSRErrorReturn(err);
-  }
-}) satisfies GetServerSideProps<{ show: ShowDTO; peopleJSON: string }>;
+  const show = await api.rostering.showsShowSlugSummaryGet({
+    showSlug: slug,
+  });
+  const data = await api.default.personnelAssignedGet({ showId: show.id });
+  return {
+    props: { show, peopleJSON: superjson.stringify(data) },
+  };
+});
 
 export default function PeoplePage(
   props: InferGetServerSidePropsType<typeof getServerSideProps>

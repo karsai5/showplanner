@@ -13,12 +13,19 @@ const config = new Configuration({
   basePath: API_URL,
 });
 
+export type ApiType = {
+  default: DefaultApi;
+  personnel: PersonnelApi;
+  showdocs: ShowdocsApi;
+  rostering: RosteringApi;
+};
+
 export const getApi = (): DefaultApi => {
   return new DefaultApi(config);
 };
 
 export const api_deprecated = new DefaultApi(config);
-export const api = {
+export const api: ApiType = {
   personnel: new PersonnelApi(config),
   default: new DefaultApi(config),
   showdocs: new ShowdocsApi(config),

@@ -1,35 +1,29 @@
-import { serverSideApi } from "core/api";
-import { RosterDTO, ShowDTO } from "core/api/generated";
+import { RosterDTO } from "core/api/generated";
 import { H2 } from "core/components/Typography";
 import { HasPermission, PERMISSION } from "core/permissions";
-import { getSSRErrorReturn } from "core/utils/ssr";
+import { ssrWrapper } from "core/permissions/ssr";
 import { AddRoleModal } from "domains/rostering/AddRoleModal/AddRoleModal";
 import { RosterTable } from "domains/rostering/RosterTable/RosterTable";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import React, { useState } from "react";
 import superjson from "superjson";
 
-export const getServerSideProps = (async (context) => {
+export const getServerSideProps = ssrWrapper(async (context, api) => {
   const slug = context.query.slug;
-  const ssrApi = serverSideApi(context);
 
   if (typeof slug !== "string") {
     throw new Error("Incorrect slug format");
   }
 
-  try {
-    const show = await ssrApi.rostering.showsShowSlugSummaryGet({
-      showSlug: slug,
-    });
-    const data = await ssrApi.default.rosterGet({ showId: show.id });
-    return {
-      props: { show, rosterJSON: superjson.stringify(data) },
-    };
-  } catch (err) {
-    return getSSRErrorReturn(err);
-  }
-}) satisfies GetServerSideProps<{ show: ShowDTO; rosterJSON: string }>;
+  const show = await api.rostering.showsShowSlugSummaryGet({
+    showSlug: slug,
+  });
+  const data = await api.default.rosterGet({ showId: show.id });
+  return {
+    props: { show, rosterJSON: superjson.stringify(data) },
+  };
+});
 
 const ShowPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
