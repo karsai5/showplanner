@@ -3,9 +3,11 @@ package main
 import (
 	"fmt"
 	"os"
-	"showplanner.io/pkg/domains/people_domain_old"
 	"strconv"
 	"strings"
+
+	"showplanner.io/pkg/domains/people_domain_old"
+	"showplanner.io/pkg/rostering"
 
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/permissions"
@@ -97,7 +99,7 @@ func AddToShow() *cli.Command {
 			if err != nil {
 				return err
 			}
-			return people_domain_old.AddToShow(showId, userId)
+			return rostering.AddPersonToShow(showId, userId)
 		},
 	}
 }

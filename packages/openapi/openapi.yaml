@@ -335,30 +335,6 @@ paths:
           $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'
-  /personnel/assign:
-    post:
-      parameters:
-        - in: query
-          required: true
-          name: showId
-          type: integer
-          description: ID of the show
-        - in: query
-          required: true
-          name: personId
-          type: string
-          format: uuid
-          description: ID of the person
-      summary: Adds a person to a show
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-        401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
   /roles/{id}:
     put:
       parameters:

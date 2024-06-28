@@ -25,10 +25,3 @@ type UserFilledInProfileLetter struct {
 type NewUserLetter struct {
 	Email string
 }
-
-type UserAddedToShowLetter struct {
-	Email    string
-	ShowName string
-	ShowSlug string
-	ShowId   string
-}

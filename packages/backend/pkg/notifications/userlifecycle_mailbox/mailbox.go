@@ -63,22 +63,6 @@ func Setup() {
 		},
 	)
 
-	router.AddNoPublisherHandler(
-		"email_user_added_to_show",
-		topics.UserAddedToShow,
-		postoffice.PubSub,
-		func(msg *message.Message) error {
-			letter := letters.UserAddedToShowLetter{}
-
-			err := json.Unmarshal(msg.Payload, &letter)
-			if err != nil {
-				return err
-			}
-
-			return sendWelcomeToShowEmail(letter)
-		},
-	)
-
 	if err := router.Run(context.Background()); err != nil {
 		panic(err)
 	}

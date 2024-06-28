@@ -548,42 +548,6 @@ func init() {
         }
       }
     },
-    "/personnel/assign": {
-      "post": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Adds a person to a show",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the show",
-            "name": "showId",
-            "in": "query",
-            "required": true
-          },
-          {
-            "type": "string",
-            "format": "uuid",
-            "description": "ID of the person",
-            "name": "personId",
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "$ref": "#/responses/Error"
-          }
-        }
-      }
-    },
     "/personnel/assignable": {
       "get": {
         "produces": [
@@ -2200,48 +2164,6 @@ func init() {
           },
           "500": {
             "description": ""
-          }
-        }
-      }
-    },
-    "/personnel/assign": {
-      "post": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Adds a person to a show",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the show",
-            "name": "showId",
-            "in": "query",
-            "required": true
-          },
-          {
-            "type": "string",
-            "format": "uuid",
-            "description": "ID of the person",
-            "name": "personId",
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
           }
         }
       }

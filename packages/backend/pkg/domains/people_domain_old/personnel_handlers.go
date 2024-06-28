@@ -6,38 +6,12 @@ import (
 	"strings"
 
 	"github.com/go-openapi/runtime/middleware"
-	uuid "github.com/satori/go.uuid"
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
 )
-
-var handleAddPersonToShow = operations.PostPersonnelAssignHandlerFunc(func(params operations.PostPersonnelAssignParams) middleware.Responder {
-	hasPerm, err := permissions.AddPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
-	if err != nil {
-		logger.Error("Adding person to show", err)
-		return &operations.PostPersonnelAssignInternalServerError{}
-	}
-	if !hasPerm {
-		return &operations.PostPersonnelAssignUnauthorized{}
-	}
-
-	personId, err := uuid.FromString(params.PersonID.String())
-	if err != nil {
-		logger.Error("Adding person to show", err)
-		return &operations.PostPersonnelAssignInternalServerError{}
-	}
-
-	err = AddToShow(params.ShowID, personId)
-
-	if err != nil {
-		logger.Error("Adding person to show", err)
-		return &operations.PostPersonnelAssignInternalServerError{}
-	}
-	return &operations.PostPersonnelAssignOK{}
-})
 
 var handleAssignablePersonnelGoogle = operations.GetPersonnelAssignedGoogleContactsCSVHandlerFunc(func(params operations.GetPersonnelAssignedGoogleContactsCSVParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting people assigned to show as google csv", &operations.GetPersonnelAssignedGoogleContactsCSVInternalServerError{})

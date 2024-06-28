@@ -1,17 +1,27 @@
 package rostering
 
 import (
+	"fmt"
+
 	uuid "github.com/satori/go.uuid"
+	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/permissions"
+	"showplanner.io/pkg/rostering/emails"
 )
 
-func inviteExistingUserToShow(showId uint, userId uuid.UUID) error {
-	_, err := addInvitationToDatabase(showId, userId)
+func invitePersonToShow(person database.Person, show database.Show, invitingPerson database.Person) error {
+	_, err := addInvitationToDatabase(show.ID, person.ID)
 	if err != nil {
 		return err
 	}
-	// TODO: Send email
-	// err = acceptInvitation(invitation.ID) // TODO: Remove when logic is added for user to accept invitation
+
+	emails.SendInvitationEmail(emails.InvitationEmail{
+		Email:         person.Email,
+		ShowName:      show.Name,
+		NameOfInviter: invitingPerson.GetFullName(),
+	})
+
 	return err
 }
 
@@ -25,7 +35,7 @@ func acceptInvitation(invitationId uuid.UUID) error {
 		return res.Error
 	}
 
-	err := addToShow(int64(invitation.ShowID), *invitation.PersonID)
+	err := AddPersonToShow(int64(invitation.ShowID), *invitation.PersonID)
 
 	if err != nil {
 		return err
@@ -74,4 +84,37 @@ func getInvitation(invitationId uuid.UUID) (database.Invitation, error) {
 	res := db.Preload("Person").Preload("Show").First(&invitation, invitationId)
 
 	return invitation, res.Error
+}
+
+func AddPersonToShow(showId int64, userId uuid.UUID) (err error) {
+	defer func() {
+		if err != nil {
+			err = fmt.Errorf("while adding person to show: %w", err)
+		}
+	}()
+
+	user, err := permissions.GetUserById(userId)
+	if err != nil {
+		return err
+	}
+
+	show, err := database.GetShowById(showId)
+	if err != nil {
+		return err
+	}
+
+	database.AddPersonToShow(show.ID, userId)
+
+	err = permissions.GiveRole(permissions.ShowMember.Key(fmt.Sprint(showId)), userId)
+	if err != nil {
+		return err
+	}
+
+	emails.SendWelcomeToShowEmail(emails.WelcomeToShowEmail{
+		Email:    user.Email,
+		ShowName: show.Name,
+		ShowSlug: show.Slug,
+		ShowId:   conv.UintToString(&show.ID),
+	})
+	return nil
 }

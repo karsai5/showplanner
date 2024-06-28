@@ -2,7 +2,6 @@ package rostering
 
 import (
 	"errors"
-	"fmt"
 
 	"showplanner.io/pkg/restapi/dtos"
 
@@ -25,12 +24,30 @@ var handlePostInvitation = rostering.PostInvitationsHandlerFunc(func(params rost
 		return logError(conv.Pointer(errors.New("User does not have permission to send invitations")))
 	}
 
+	invitingUserId, err := permissions.GetUserId(params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+	invitingPerson, err := database.GetPerson(invitingUserId)
+	if err != nil {
+		return logError(&err)
+	}
+
 	personId := conv.StrfmtUUIDToUUID(params.PersonID)
 	if personId == nil {
 		return &rostering.PostInvitationsBadRequest{}
 	}
+	person, err := database.GetPerson(*personId)
+	if err != nil {
+		return logError(&err)
+	}
 
-	err = inviteExistingUserToShow(uint(params.ShowID), *personId)
+	show, err := database.GetShowById(params.ShowID)
+	if err != nil {
+		return logError(&err)
+	}
+
+	err = invitePersonToShow(person, show, invitingPerson)
 	if err != nil {
 		return logError(&err)
 	}
@@ -92,8 +109,6 @@ var handleGetInvitationByID = rostering.GetInvitationsIDHandlerFunc(func(params 
 		return logError(&err)
 	}
 
-	fmt.Printf("invitation.PersonID: %v\n", invitation.PersonID)
-	fmt.Printf("userId: %v\n", userId)
 	if *invitation.PersonID != userId {
 		return &rostering.GetInvitationsIDUnauthorized{}
 	}

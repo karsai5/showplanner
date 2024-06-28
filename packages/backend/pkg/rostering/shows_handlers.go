@@ -4,7 +4,6 @@ import (
 	"strconv"
 	"strings"
 
-	"showplanner.io/pkg/domains/people_domain_old"
 	"showplanner.io/pkg/restapi/dtos"
 
 	"showplanner.io/pkg/conv"
@@ -118,7 +117,7 @@ var handlePostShow = rostering.PostRosteringShowsHandlerFunc(func(psp rostering.
 		role.Initialise(showIdString)
 	}
 
-	err = people_domain_old.AddToShow(int64(show.ID), userId)
+	err = AddPersonToShow(int64(show.ID), userId)
 	if err != nil {
 		logger.Error("Could not add person to show", err)
 		return &rostering.PostRosteringShowsInternalServerError{}

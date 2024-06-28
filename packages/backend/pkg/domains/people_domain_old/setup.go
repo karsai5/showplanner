@@ -6,7 +6,6 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 
 	api.GetPersonnelAssignedGoogleContactsCSVHandler = handleAssignablePersonnelGoogle
 	api.GetPersonnelAssignableHandler = handleAssignablePersonnel
-	api.PostPersonnelAssignHandler = handleAddPersonToShow
 
 	api.GetPersonnelAssignedHandler = handleAssignedPersonnel
 }

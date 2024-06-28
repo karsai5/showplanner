@@ -109,11 +109,6 @@ export interface MediaUploadPostRequest {
   key: string;
 }
 
-export interface PersonnelAssignPostRequest {
-  showId: number;
-  personId: string;
-}
-
 export interface PersonnelAssignableGetRequest {
   showId: number;
 }
@@ -667,68 +662,6 @@ export class DefaultApi extends runtime.BaseAPI {
       initOverrides
     );
     return await response.value();
-  }
-
-  /**
-   * Adds a person to a show
-   */
-  async personnelAssignPostRaw(
-    requestParameters: PersonnelAssignPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<void>> {
-    if (
-      requestParameters.showId === null ||
-      requestParameters.showId === undefined
-    ) {
-      throw new runtime.RequiredError(
-        "showId",
-        "Required parameter requestParameters.showId was null or undefined when calling personnelAssignPost."
-      );
-    }
-
-    if (
-      requestParameters.personId === null ||
-      requestParameters.personId === undefined
-    ) {
-      throw new runtime.RequiredError(
-        "personId",
-        "Required parameter requestParameters.personId was null or undefined when calling personnelAssignPost."
-      );
-    }
-
-    const queryParameters: any = {};
-
-    if (requestParameters.showId !== undefined) {
-      queryParameters["showId"] = requestParameters.showId;
-    }
-
-    if (requestParameters.personId !== undefined) {
-      queryParameters["personId"] = requestParameters.personId;
-    }
-
-    const headerParameters: runtime.HTTPHeaders = {};
-
-    const response = await this.request(
-      {
-        path: `/personnel/assign`,
-        method: "POST",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    );
-
-    return new runtime.VoidApiResponse(response);
-  }
-
-  /**
-   * Adds a person to a show
-   */
-  async personnelAssignPost(
-    requestParameters: PersonnelAssignPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<void> {
-    await this.personnelAssignPostRaw(requestParameters, initOverrides);
   }
 
   /**

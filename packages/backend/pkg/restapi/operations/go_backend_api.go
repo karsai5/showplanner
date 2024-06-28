@@ -160,9 +160,6 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		PostMediaUploadHandler: PostMediaUploadHandlerFunc(func(params PostMediaUploadParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostMediaUpload has not yet been implemented")
 		}),
-		PostPersonnelAssignHandler: PostPersonnelAssignHandlerFunc(func(params PostPersonnelAssignParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostPersonnelAssign has not yet been implemented")
-		}),
 		PersonnelPostPersonnelPeoplePersonIDImpersonateHandler: personnel.PostPersonnelPeoplePersonIDImpersonateHandlerFunc(func(params personnel.PostPersonnelPeoplePersonIDImpersonateParams) middleware.Responder {
 			return middleware.NotImplemented("operation personnel.PostPersonnelPeoplePersonIDImpersonate has not yet been implemented")
 		}),
@@ -304,8 +301,6 @@ type GoBackendAPI struct {
 	PersonnelPostMeHandler personnel.PostMeHandler
 	// PostMediaUploadHandler sets the operation handler for the post media upload operation
 	PostMediaUploadHandler PostMediaUploadHandler
-	// PostPersonnelAssignHandler sets the operation handler for the post personnel assign operation
-	PostPersonnelAssignHandler PostPersonnelAssignHandler
 	// PersonnelPostPersonnelPeoplePersonIDImpersonateHandler sets the operation handler for the post personnel people person ID impersonate operation
 	PersonnelPostPersonnelPeoplePersonIDImpersonateHandler personnel.PostPersonnelPeoplePersonIDImpersonateHandler
 	// PostRolesHandler sets the operation handler for the post roles operation
@@ -515,9 +510,6 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.PostMediaUploadHandler == nil {
 		unregistered = append(unregistered, "PostMediaUploadHandler")
-	}
-	if o.PostPersonnelAssignHandler == nil {
-		unregistered = append(unregistered, "PostPersonnelAssignHandler")
 	}
 	if o.PersonnelPostPersonnelPeoplePersonIDImpersonateHandler == nil {
 		unregistered = append(unregistered, "personnel.PostPersonnelPeoplePersonIDImpersonateHandler")
@@ -781,10 +773,6 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/media/upload"] = NewPostMediaUpload(o.context, o.PostMediaUploadHandler)
-	if o.handlers["POST"] == nil {
-		o.handlers["POST"] = make(map[string]http.Handler)
-	}
-	o.handlers["POST"]["/personnel/assign"] = NewPostPersonnelAssign(o.context, o.PostPersonnelAssignHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

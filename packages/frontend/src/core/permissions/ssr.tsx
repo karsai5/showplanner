@@ -1,5 +1,5 @@
 import * as cookie from "cookie";
-import { serverSideApi, ApiType } from "core/api";
+import { ApiType, serverSideApi } from "core/api";
 import { ResponseError } from "core/api/generated";
 import { getRequiredEnvVariable } from "core/utils/envVariables";
 import JsonWebToken, {
@@ -172,7 +172,7 @@ export function ssrWrapper<T>(
     }
     try {
       const ssrApi = serverSideApi(ctx);
-      return callback(ctx, ssrApi);
+      return await callback(ctx, ssrApi);
     } catch (err) {
       return getSSRErrorReturn(err);
     }
