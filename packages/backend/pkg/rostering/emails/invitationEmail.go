@@ -22,7 +22,7 @@ The ShowPlanner Team`, email.NameOfInviter, email.ShowName, config.FRONTEND_URL)
 
 	err := notifications.SendEmail(notifications.Email{
 		ToEmail: email.Email,
-		Subject: fmt.Sprintf("You've been added to the show '%s'", email.ShowName),
+		Subject: fmt.Sprintf("You've been invited to join '%s'", email.ShowName),
 		Body:    body,
 	})
 
