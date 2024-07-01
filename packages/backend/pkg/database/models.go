@@ -381,6 +381,9 @@ type Invitation struct {
 	UpdatedAt time.Time
 	DeletedAt *time.Time `gorm:"index"`
 
+	CreatedByID uuid.UUID
+	CreatedBy   *Person
+
 	ShowID uint
 	Show   Show
 

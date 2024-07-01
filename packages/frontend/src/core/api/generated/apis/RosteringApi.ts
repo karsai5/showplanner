@@ -34,7 +34,15 @@ export interface InvitationsIdAcceptPostRequest {
   id: string;
 }
 
+export interface InvitationsIdDeleteRequest {
+  id: string;
+}
+
 export interface InvitationsIdGetRequest {
+  id: string;
+}
+
+export interface InvitationsIdNotifyPostRequest {
   id: string;
 }
 
@@ -139,6 +147,50 @@ export class RosteringApi extends runtime.BaseAPI {
   }
 
   /**
+   * Delete an invitation
+   */
+  async invitationsIdDeleteRaw(
+    requestParameters: InvitationsIdDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling invitationsIdDelete."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/invitations/{id}`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "DELETE",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Delete an invitation
+   */
+  async invitationsIdDelete(
+    requestParameters: InvitationsIdDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.invitationsIdDeleteRaw(requestParameters, initOverrides);
+  }
+
+  /**
    * View invitation
    */
   async invitationsIdGetRaw(
@@ -186,6 +238,50 @@ export class RosteringApi extends runtime.BaseAPI {
       initOverrides
     );
     return await response.value();
+  }
+
+  /**
+   * Re send invitation email
+   */
+  async invitationsIdNotifyPostRaw(
+    requestParameters: InvitationsIdNotifyPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling invitationsIdNotifyPost."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/invitations/{id}/notify`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Re send invitation email
+   */
+  async invitationsIdNotifyPost(
+    requestParameters: InvitationsIdNotifyPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.invitationsIdNotifyPostRaw(requestParameters, initOverrides);
   }
 
   /**

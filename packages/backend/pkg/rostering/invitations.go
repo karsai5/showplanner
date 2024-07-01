@@ -11,15 +11,25 @@ import (
 )
 
 func invitePersonToShow(person database.Person, show database.Show, invitingPerson database.Person) error {
-	_, err := addInvitationToDatabase(show.ID, person.ID)
+	invitation, err := addInvitationToDatabase(show.ID, person.ID, invitingPerson.ID)
 	if err != nil {
 		return err
 	}
 
-	emails.SendInvitationEmail(emails.InvitationEmail{
-		Email:         person.Email,
-		ShowName:      show.Name,
-		NameOfInviter: invitingPerson.GetFullName(),
+	err = sendInvitationEmail(invitation.ID)
+	return err
+}
+
+func sendInvitationEmail(invitationId uuid.UUID) error {
+	invitation, err := getInvitation(invitationId)
+	if err != nil {
+		return err
+	}
+
+	err = emails.SendInvitationEmail(emails.InvitationEmail{
+		Email:         invitation.Person.Email,
+		ShowName:      invitation.Show.Name,
+		NameOfInviter: invitation.CreatedBy.GetFullName(),
 	})
 
 	return err
@@ -46,13 +56,27 @@ func acceptInvitation(invitationId uuid.UUID) error {
 	return nil
 }
 
-func addInvitationToDatabase(showId uint, userId uuid.UUID) (database.Invitation, error) {
+func deleteInvitation(invitationId uuid.UUID) error {
+	db := database.GetDatabase()
+	invitation := database.Invitation{}
+	res := db.First(&invitation, invitationId)
+
+	if res.Error != nil {
+		return res.Error
+	}
+
+	db.Delete(&invitation)
+
+	return nil
+}
+
+func addInvitationToDatabase(showId uint, userId uuid.UUID, createdBy uuid.UUID) (database.Invitation, error) {
 	db := database.GetDatabase()
 
 	invitation := database.Invitation{
-		ShowID:   showId,
-		Show:     database.Show{},
-		PersonID: &userId,
+		ShowID:      showId,
+		PersonID:    &userId,
+		CreatedByID: createdBy,
 	}
 	res := db.Create(&invitation)
 
@@ -81,7 +105,7 @@ func getInvitation(invitationId uuid.UUID) (database.Invitation, error) {
 	db := database.GetDatabase()
 
 	invitation := database.Invitation{}
-	res := db.Preload("Person").Preload("Show").First(&invitation, invitationId)
+	res := db.Preload("Person").Preload("Show").Preload("CreatedBy").First(&invitation, invitationId)
 
 	return invitation, res.Error
 }

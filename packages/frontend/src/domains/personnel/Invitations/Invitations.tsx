@@ -1,8 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
+import { showToastError } from "core/utils/errors";
+import { toast } from "react-toastify";
 
 export const Invitations: React.FC<{ showId: number }> = ({ showId }) => {
+  const queryClient = useQueryClient();
+  const invalidateQuery = () =>
+    queryClient.invalidateQueries(["invitations", showId]);
   const { data, isError } = useQuery(["invitations", showId], () =>
     api.rostering.showsShowIdInvitationsGet({ showId })
   );
@@ -17,6 +22,7 @@ export const Invitations: React.FC<{ showId: number }> = ({ showId }) => {
           <thead>
             <tr>
               <th>Person</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -24,6 +30,17 @@ export const Invitations: React.FC<{ showId: number }> = ({ showId }) => {
               <tr key={invitation.id}>
                 <td>
                   {invitation.person?.firstName} {invitation.person?.lastName}
+                </td>
+                <td>
+                  {invitation.id && (
+                    <div className="flex gap-2">
+                      <DeleteButton
+                        id={invitation.id}
+                        onSuccess={() => invalidateQuery()}
+                      />
+                      <ResendEmail id={invitation.id} />
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}
@@ -33,4 +50,56 @@ export const Invitations: React.FC<{ showId: number }> = ({ showId }) => {
     );
   }
   return null;
+};
+
+const ResendEmail: React.FC<{ id: string }> = ({ id }) => {
+  const mutation = useMutation(
+    () => api.rostering.invitationsIdNotifyPost({ id }),
+    {
+      onError: (err) => {
+        showToastError("Failed to resend email", err as Error);
+      },
+      onSuccess: () => {
+        toast.success("Email sent");
+      },
+    }
+  );
+  return (
+    <button
+      className="btn"
+      disabled={mutation.isLoading}
+      onClick={() => mutation.mutate()}
+    >
+      {mutation.isLoading && <span className="loading loading-spinner" />}
+      Resend Email
+    </button>
+  );
+};
+
+const DeleteButton: React.FC<{ id: string; onSuccess?: () => void }> = ({
+  id,
+  onSuccess,
+}) => {
+  const mutation = useMutation(
+    () => api.rostering.invitationsIdDelete({ id }),
+    {
+      onSuccess: () => {
+        onSuccess && onSuccess();
+      },
+      onError: (err) => {
+        showToastError("Failed to delete invitation", err as Error);
+      },
+    }
+  );
+
+  return (
+    <button
+      className="btn"
+      disabled={mutation.isLoading}
+      onClick={() => mutation.mutate()}
+    >
+      {mutation.isLoading && <span className="loading loading-spinner" />}
+      Delete
+    </button>
+  );
 };

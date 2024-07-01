@@ -13,6 +13,32 @@ import (
 	"showplanner.io/pkg/restapi/operations/rostering"
 )
 
+var handleDeleteInviation = rostering.DeleteInvitationsIDHandlerFunc(func(params rostering.DeleteInvitationsIDParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Deleting invitation", &rostering.DeleteInvitationsIDInternalServerError{})
+
+	userId, err := permissions.GetUserId(params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+
+	invitation, err := getInvitation(*conv.StrfmtUUIDToUUID(&params.ID))
+	if err != nil {
+		return logError(&err)
+	}
+
+	// Check user has permission to delete invitation
+	if invitation.CreatedByID != userId {
+		return &rostering.DeleteInvitationsIDUnauthorized{}
+	}
+
+	err = deleteInvitation(invitation.ID)
+	if err != nil {
+		return logError(&err)
+	}
+
+	return &rostering.DeleteInvitationsIDOK{}
+})
+
 var handlePostInvitation = rostering.PostInvitationsHandlerFunc(func(params rostering.PostInvitationsParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Sending invitations", &rostering.PostInvitationsInternalServerError{})
 
@@ -141,4 +167,30 @@ var handleAcceptInvitation = rostering.PostInvitationsIDAcceptHandlerFunc(func(p
 	}
 
 	return &rostering.PostInvitationsIDAcceptOK{}
+})
+
+var handleNotifyInvitation = rostering.PostInvitationsIDNotifyHandlerFunc(func(params rostering.PostInvitationsIDNotifyParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Notifying invitation", &rostering.PostInvitationsIDNotifyInternalServerError{})
+
+	userId, err := permissions.GetUserId(params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+
+	invitation, err := getInvitation(*conv.StrfmtUUIDToUUID(&params.ID))
+	if err != nil {
+		return logError(&err)
+	}
+
+	// Check user has permission to delete invitation
+	if invitation.CreatedByID != userId {
+		return &rostering.DeleteInvitationsIDUnauthorized{}
+	}
+
+	err = sendInvitationEmail(invitation.ID)
+	if err != nil {
+		return logError(&err)
+	}
+
+	return rostering.NewPostInvitationsIDNotifyOK()
 })

@@ -58,6 +58,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		DeleteEventsIDHandler: DeleteEventsIDHandlerFunc(func(params DeleteEventsIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation DeleteEventsID has not yet been implemented")
 		}),
+		RosteringDeleteInvitationsIDHandler: rostering.DeleteInvitationsIDHandlerFunc(func(params rostering.DeleteInvitationsIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation rostering.DeleteInvitationsID has not yet been implemented")
+		}),
 		DeleteRolesIDHandler: DeleteRolesIDHandlerFunc(func(params DeleteRolesIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation DeleteRolesID has not yet been implemented")
 		}),
@@ -154,6 +157,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		RosteringPostInvitationsIDAcceptHandler: rostering.PostInvitationsIDAcceptHandlerFunc(func(params rostering.PostInvitationsIDAcceptParams) middleware.Responder {
 			return middleware.NotImplemented("operation rostering.PostInvitationsIDAccept has not yet been implemented")
 		}),
+		RosteringPostInvitationsIDNotifyHandler: rostering.PostInvitationsIDNotifyHandlerFunc(func(params rostering.PostInvitationsIDNotifyParams) middleware.Responder {
+			return middleware.NotImplemented("operation rostering.PostInvitationsIDNotify has not yet been implemented")
+		}),
 		PersonnelPostMeHandler: personnel.PostMeHandlerFunc(func(params personnel.PostMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation personnel.PostMe has not yet been implemented")
 		}),
@@ -233,6 +239,8 @@ type GoBackendAPI struct {
 	DeleteAssignmentIDHandler DeleteAssignmentIDHandler
 	// DeleteEventsIDHandler sets the operation handler for the delete events ID operation
 	DeleteEventsIDHandler DeleteEventsIDHandler
+	// RosteringDeleteInvitationsIDHandler sets the operation handler for the delete invitations ID operation
+	RosteringDeleteInvitationsIDHandler rostering.DeleteInvitationsIDHandler
 	// DeleteRolesIDHandler sets the operation handler for the delete roles ID operation
 	DeleteRolesIDHandler DeleteRolesIDHandler
 	// DeleteShadowIDHandler sets the operation handler for the delete shadow ID operation
@@ -297,6 +305,8 @@ type GoBackendAPI struct {
 	RosteringPostInvitationsHandler rostering.PostInvitationsHandler
 	// RosteringPostInvitationsIDAcceptHandler sets the operation handler for the post invitations ID accept operation
 	RosteringPostInvitationsIDAcceptHandler rostering.PostInvitationsIDAcceptHandler
+	// RosteringPostInvitationsIDNotifyHandler sets the operation handler for the post invitations ID notify operation
+	RosteringPostInvitationsIDNotifyHandler rostering.PostInvitationsIDNotifyHandler
 	// PersonnelPostMeHandler sets the operation handler for the post me operation
 	PersonnelPostMeHandler personnel.PostMeHandler
 	// PostMediaUploadHandler sets the operation handler for the post media upload operation
@@ -409,6 +419,9 @@ func (o *GoBackendAPI) Validate() error {
 	if o.DeleteEventsIDHandler == nil {
 		unregistered = append(unregistered, "DeleteEventsIDHandler")
 	}
+	if o.RosteringDeleteInvitationsIDHandler == nil {
+		unregistered = append(unregistered, "rostering.DeleteInvitationsIDHandler")
+	}
 	if o.DeleteRolesIDHandler == nil {
 		unregistered = append(unregistered, "DeleteRolesIDHandler")
 	}
@@ -504,6 +517,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.RosteringPostInvitationsIDAcceptHandler == nil {
 		unregistered = append(unregistered, "rostering.PostInvitationsIDAcceptHandler")
+	}
+	if o.RosteringPostInvitationsIDNotifyHandler == nil {
+		unregistered = append(unregistered, "rostering.PostInvitationsIDNotifyHandler")
 	}
 	if o.PersonnelPostMeHandler == nil {
 		unregistered = append(unregistered, "personnel.PostMeHandler")
@@ -640,6 +656,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["DELETE"] == nil {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
 	}
+	o.handlers["DELETE"]["/invitations/{id}"] = rostering.NewDeleteInvitationsID(o.context, o.RosteringDeleteInvitationsIDHandler)
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
 	o.handlers["DELETE"]["/roles/{id}"] = NewDeleteRolesID(o.context, o.DeleteRolesIDHandler)
 	if o.handlers["DELETE"] == nil {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
@@ -765,6 +785,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/invitations/{id}/accept"] = rostering.NewPostInvitationsIDAccept(o.context, o.RosteringPostInvitationsIDAcceptHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/invitations/{id}/notify"] = rostering.NewPostInvitationsIDNotify(o.context, o.RosteringPostInvitationsIDNotifyHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

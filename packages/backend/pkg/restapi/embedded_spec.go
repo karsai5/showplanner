@@ -423,6 +423,36 @@ func init() {
             "$ref": "#/responses/Error"
           }
         }
+      },
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Delete an invitation",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of invitation",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
       }
     },
     "/invitations/{id}/accept": {
@@ -434,6 +464,38 @@ func init() {
           "rostering"
         ],
         "summary": "Accept an invitation",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of invitation",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/invitations/{id}/notify": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Re send invitation email",
         "parameters": [
           {
             "type": "string",
@@ -2034,6 +2096,42 @@ func init() {
             }
           }
         }
+      },
+      "delete": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Delete an invitation",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of invitation",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
       }
     },
     "/invitations/{id}/accept": {
@@ -2045,6 +2143,44 @@ func init() {
           "rostering"
         ],
         "summary": "Accept an invitation",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of invitation",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/invitations/{id}/notify": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Re send invitation email",
         "parameters": [
           {
             "type": "string",
