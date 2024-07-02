@@ -194,7 +194,7 @@ const InviteEmailButton: React.FC<{
 
   return (
     <button
-      className="btn"
+      className="btn mb-2"
       onClick={() => mutation.mutate()}
       disabled={mutation.isLoading}
     >

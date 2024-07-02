@@ -181,3 +181,36 @@ func AddPersonToShow(showId int64, userId uuid.UUID) (err error) {
 	})
 	return nil
 }
+
+// Convert all email invitations into person invitations.
+// Assuming that they have already been added to the system.
+func ConvertEmailInvitationsIntoPeopleInvitations() error {
+
+	db := database.GetDatabase()
+	var invitations []database.Invitation
+
+	res := db.Where("email IS NOT NULL").Find(&invitations)
+	if res.Error != nil {
+		return res.Error
+	}
+
+	for _, invitation := range invitations {
+		person, err := database.GetPersonByEmail(*invitation.Email)
+		if err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				continue
+			}
+			return err
+		}
+
+		invitation.PersonID = &person.ID
+		invitation.Email = nil
+
+		res := db.Save(&invitation)
+		if res.Error != nil {
+			return res.Error
+		}
+	}
+
+	return nil
+}

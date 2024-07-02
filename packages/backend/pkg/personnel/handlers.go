@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"showplanner.io/pkg/restapi/dtos"
+	"showplanner.io/pkg/rostering"
 
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
@@ -186,6 +187,7 @@ var postMeHandler = personnel.PostMeHandlerFunc(func(params personnel.PostMePara
 			PreviousWork:     *person.PreviousWork,
 			ReasonForCrewing: *person.ReasonForCrewing,
 		})
+		rostering.ConvertEmailInvitationsIntoPeopleInvitations()
 	}
 
 	return &personnel.PostMeOK{}
