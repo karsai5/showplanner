@@ -17,6 +17,7 @@ export * from "./InvitationDTO";
 export * from "./MeDetailsDTO";
 export * from "./MediaDTO";
 export * from "./ModelError";
+export * from "./PersonSearchResultDTO";
 export * from "./PersonSummaryDTO";
 export * from "./PersonSummaryDTOPrivate";
 export * from "./PersonSummaryDTOPrivateEmergencyContact";

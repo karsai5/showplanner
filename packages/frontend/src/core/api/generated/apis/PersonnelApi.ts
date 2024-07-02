@@ -16,6 +16,7 @@ import * as runtime from "../runtime";
 import type {
   ArrayOfPersonSummaryDTO,
   MeDetailsDTO,
+  PersonSearchResultDTO,
   PersonUpdateDTO,
 } from "../models/index";
 import {
@@ -23,6 +24,8 @@ import {
   ArrayOfPersonSummaryDTOToJSON,
   MeDetailsDTOFromJSON,
   MeDetailsDTOToJSON,
+  PersonSearchResultDTOFromJSON,
+  PersonSearchResultDTOToJSON,
   PersonUpdateDTOFromJSON,
   PersonUpdateDTOToJSON,
 } from "../models/index";
@@ -33,6 +36,11 @@ export interface MePostRequest {
 
 export interface PersonnelPeoplePersonIdImpersonatePostRequest {
   personId: string;
+}
+
+export interface PersonnelSearchGetRequest {
+  s: string;
+  showId?: number;
 }
 
 /**
@@ -194,5 +202,60 @@ export class PersonnelApi extends runtime.BaseAPI {
       requestParameters,
       initOverrides
     );
+  }
+
+  /**
+   * Searches for people
+   */
+  async personnelSearchGetRaw(
+    requestParameters: PersonnelSearchGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<PersonSearchResultDTO>>> {
+    if (requestParameters.s === null || requestParameters.s === undefined) {
+      throw new runtime.RequiredError(
+        "s",
+        "Required parameter requestParameters.s was null or undefined when calling personnelSearchGet."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters.showId !== undefined) {
+      queryParameters["showId"] = requestParameters.showId;
+    }
+
+    if (requestParameters.s !== undefined) {
+      queryParameters["s"] = requestParameters.s;
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/personnel/search`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.JSONApiResponse(response, (jsonValue) =>
+      jsonValue.map(PersonSearchResultDTOFromJSON)
+    );
+  }
+
+  /**
+   * Searches for people
+   */
+  async personnelSearchGet(
+    requestParameters: PersonnelSearchGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<PersonSearchResultDTO>> {
+    const response = await this.personnelSearchGetRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
   }
 }

@@ -94,6 +94,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		PersonnelGetPersonnelPeopleHandler: personnel.GetPersonnelPeopleHandlerFunc(func(params personnel.GetPersonnelPeopleParams) middleware.Responder {
 			return middleware.NotImplemented("operation personnel.GetPersonnelPeople has not yet been implemented")
 		}),
+		PersonnelGetPersonnelSearchHandler: personnel.GetPersonnelSearchHandlerFunc(func(params personnel.GetPersonnelSearchParams) middleware.Responder {
+			return middleware.NotImplemented("operation personnel.GetPersonnelSearch has not yet been implemented")
+		}),
 		GetPublicCalendarIDHandler: GetPublicCalendarIDHandlerFunc(func(params GetPublicCalendarIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPublicCalendarID has not yet been implemented")
 		}),
@@ -263,6 +266,8 @@ type GoBackendAPI struct {
 	GetPersonnelAssignedGoogleContactsCSVHandler GetPersonnelAssignedGoogleContactsCSVHandler
 	// PersonnelGetPersonnelPeopleHandler sets the operation handler for the get personnel people operation
 	PersonnelGetPersonnelPeopleHandler personnel.GetPersonnelPeopleHandler
+	// PersonnelGetPersonnelSearchHandler sets the operation handler for the get personnel search operation
+	PersonnelGetPersonnelSearchHandler personnel.GetPersonnelSearchHandler
 	// GetPublicCalendarIDHandler sets the operation handler for the get public calendar ID operation
 	GetPublicCalendarIDHandler GetPublicCalendarIDHandler
 	// GetPublicHealthHandler sets the operation handler for the get public health operation
@@ -454,6 +459,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.PersonnelGetPersonnelPeopleHandler == nil {
 		unregistered = append(unregistered, "personnel.GetPersonnelPeopleHandler")
+	}
+	if o.PersonnelGetPersonnelSearchHandler == nil {
+		unregistered = append(unregistered, "personnel.GetPersonnelSearchHandler")
 	}
 	if o.GetPublicCalendarIDHandler == nil {
 		unregistered = append(unregistered, "GetPublicCalendarIDHandler")
@@ -701,6 +709,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/personnel/people"] = personnel.NewGetPersonnelPeople(o.context, o.PersonnelGetPersonnelPeopleHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/personnel/search"] = personnel.NewGetPersonnelSearch(o.context, o.PersonnelGetPersonnelSearchHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

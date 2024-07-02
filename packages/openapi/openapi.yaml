@@ -518,6 +518,36 @@ paths:
         500:
           $ref: '#/responses/Error'
 
+  /personnel/search:
+    get:
+      tags:
+        - personnel
+      summary: Searches for people
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: showId
+          type: integer
+        - in: query
+          required: true
+          name: s
+          description: Search query
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: './schemas/People.yaml#/PersonSearchResultDTO'
+        400:
+          $ref: '#/responses/Error'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+
   /personnel/people/{personId}/impersonate:
     post:
       summary: Impersonate a person, useful for testing and reproducing bugs

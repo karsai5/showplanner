@@ -6,10 +6,10 @@ import (
 	"net/http"
 
 	"showplanner.io/pkg/restapi/dtos"
-	dto2 "showplanner.io/pkg/restapi/dtos"
 
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/strfmt"
 	uuid "github.com/satori/go.uuid"
 	"github.com/supertokens/supertokens-golang/recipe/session"
 	"gorm.io/gorm"
@@ -29,7 +29,51 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 	api.PersonnelPostPersonnelPeoplePersonIDImpersonateHandler = handleImpersonate
 	api.PersonnelPostMeHandler = postMeHandler
 	api.PersonnelGetMeHandler = getMeHandler
+
+	api.PersonnelGetPersonnelSearchHandler = handleSearchForPeople
 }
+
+var handleSearchForPeople = personnel.GetPersonnelSearchHandlerFunc(func(params personnel.GetPersonnelSearchParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Searching for people", &personnel.GetPersonnelSearchInternalServerError{})
+
+	if len(params.S) < 3 {
+		return &personnel.GetPersonnelSearchBadRequest{
+			Payload: &dtos.Error{
+				Code:    conv.Pointer("400"),
+				Message: conv.Pointer("Search query must be at least 3 characters long"),
+			},
+		}
+	}
+
+	if params.ShowID == nil {
+		return logError(conv.Pointer(fmt.Errorf("Search without show ID not implemented")))
+	}
+
+	hasPerm, err := permissions.AddPersonnel.HasPermission(uint(*params.ShowID), params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+	if !hasPerm {
+		return &personnel.GetPersonnelPeopleUnauthorized{}
+	}
+
+	people, err := searchForPeople(params.S, &searchOptions{
+		showId: params.ShowID,
+	})
+
+	if err != nil {
+		return logError(&err)
+	}
+
+	return &personnel.GetPersonnelSearchOK{
+		Payload: conv.MapArrayOfPointer(people, func(p database.Person) dtos.PersonSearchResultDTO {
+			return dtos.PersonSearchResultDTO{
+				ID:   strfmt.UUID(p.ID.String()),
+				Name: p.GetFullName(),
+			}
+		}),
+	}
+})
 
 var handleGetAllPeople = personnel.GetPersonnelPeopleHandlerFunc(func(params personnel.GetPersonnelPeopleParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting all personnel", &personnel.GetPersonnelPeopleInternalServerError{})
@@ -49,8 +93,8 @@ var handleGetAllPeople = personnel.GetPersonnelPeopleHandlerFunc(func(params per
 		return logError(&err)
 	}
 	return &personnel.GetPersonnelPeopleOK{
-		Payload: &dto2.ArrayOfPersonSummaryDTO{
-			People: conv.MapArrayOfPointer(people, func(p database.Person) dto2.PersonSummaryDTO {
+		Payload: &dtos.ArrayOfPersonSummaryDTO{
+			People: conv.MapArrayOfPointer(people, func(p database.Person) dtos.PersonSummaryDTO {
 				dto := p.MapToPersonSummaryDTO()
 				dto.Private = &dtos.PersonSummaryDTOPrivate{
 					Email: p.Email,
@@ -164,7 +208,7 @@ var getMeHandler = personnel.GetMeHandlerFunc(func(params personnel.GetMeParams)
 	}
 
 	return &personnel.GetMeOK{
-		Payload: &dto2.MeDetailsDTO{
+		Payload: &dtos.MeDetailsDTO{
 			FirstName: person.FirstName,
 			Email:     person.Email,
 		},

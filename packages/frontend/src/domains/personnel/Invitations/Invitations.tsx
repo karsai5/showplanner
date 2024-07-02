@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "core/api";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { showToastError } from "core/utils/errors";
+import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
 import { toast } from "react-toastify";
 
 export const Invitations: React.FC<{ showId: number }> = ({ showId }) => {
@@ -29,7 +30,9 @@ export const Invitations: React.FC<{ showId: number }> = ({ showId }) => {
             {data.map((invitation) => (
               <tr key={invitation.id}>
                 <td>
-                  {invitation.person?.firstName} {invitation.person?.lastName}
+                  {invitation.person && (
+                    <PersonDisplayName person={invitation.person} />
+                  )}
                 </td>
                 <td>
                   {invitation.id && (

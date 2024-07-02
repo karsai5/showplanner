@@ -759,6 +759,51 @@ func init() {
         }
       }
     },
+    "/personnel/search": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "personnel"
+        ],
+        "summary": "Searches for people",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "showId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "Search query",
+            "name": "s",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "./schemas/People.yaml#/PersonSearchResultDTO"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/Error"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/public/calendar/{id}": {
       "get": {
         "description": "Healthcheck endpoint",
@@ -2480,6 +2525,60 @@ func init() {
         }
       }
     },
+    "/personnel/search": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "personnel"
+        ],
+        "summary": "Searches for people",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "showId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "Search query",
+            "name": "s",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/personSearchResultDTO"
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/public/calendar/{id}": {
       "get": {
         "description": "Healthcheck endpoint",
@@ -3928,6 +4027,18 @@ func init() {
           "type": "string"
         },
         "url": {
+          "type": "string"
+        }
+      }
+    },
+    "personSearchResultDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
           "type": "string"
         }
       }

@@ -21,6 +21,7 @@ models/InvitationDTO.ts
 models/MeDetailsDTO.ts
 models/MediaDTO.ts
 models/ModelError.ts
+models/PersonSearchResultDTO.ts
 models/PersonSummaryDTO.ts
 models/PersonSummaryDTOPrivate.ts
 models/PersonSummaryDTOPrivateEmergencyContact.ts

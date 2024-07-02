@@ -40,3 +40,9 @@ func GetPeopleNotAssignedToShow(id uint) ([]Person, error) {
 
 	return peopleNotAssignedToShow, res.Error
 }
+
+func SearchForPeople(search string) ([]Person, error) {
+	psr := []Person{}
+	res := db.Raw("select id, first_name, last_name, preferred_name from people_search where search_string like lower('%" + search + "%') order by search_string").Scan(&psr)
+	return psr, res.Error
+}

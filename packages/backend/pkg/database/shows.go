@@ -72,6 +72,13 @@ func GetShowById(showId int64) (Show, error) {
 	return show, res.Error
 }
 
+func GetShowByIdWithPeople(showId int64) (Show, error) {
+	show := Show{}
+	res := db.Preload("People").First(&show, showId)
+
+	return show, res.Error
+}
+
 func CreateShow(show Show) (Show, error) {
 	res := db.Create(&show)
 	return show, res.Error

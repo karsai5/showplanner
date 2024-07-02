@@ -84,5 +84,10 @@ func initDB() *gorm.DB {
 		panic("Failed to setup indexes")
 	}
 
+	err = setupViews(db)
+	if err != nil {
+		panic("Failed to setup views")
+	}
+
 	return db
 }

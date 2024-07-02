@@ -21,25 +21,25 @@ PersonSummaryDTO:
       x-nullable: true
       type: object
       properties:
-        email: 
+        email:
           type: string
-        phone: 
+        phone:
           type: string
-        wwc: 
+        wwc:
           x-nullable: true
           type: string
-        dob: 
+        dob:
           type: string
         allergies:
           type: string
         emergencyContact:
           type: object
           properties:
-            name: 
+            name:
               type: string
-            relationship: 
+            relationship:
               type: string
-            phone: 
+            phone:
               type: string
   required:
     - id
@@ -53,3 +53,12 @@ ArrayOfPersonSummaryDTO:
       type: array
       items:
         $ref: '#/PersonSummaryDTO'
+
+PersonSearchResultDTO:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+    name:
+      type: string
