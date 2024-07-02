@@ -107,20 +107,25 @@ const ResultsTable: React.FC<{ searchString: string; showId: number }> = ({
     },
   });
 
+  const showEmailInvitationButton = useShowEmailInvitationButton({
+    loading: search.isLoading,
+    searchString,
+    searchData: search.data,
+    showId,
+  });
+
   return (
     <div className="relative">
-      {search.data && (
-        <InviteEmailButton
-          searchString={searchString}
-          showId={showId}
-          searchData={search.data}
-        />
+      {showEmailInvitationButton && (
+        <InviteEmailButton searchString={searchString} showId={showId} />
       )}
       {search.isFetching && (
         <span className="loading loading-spinner absolute -top-14 right-4" />
       )}
       {search.isError && <ErrorBox>Something went wrong</ErrorBox>}
-      {search.data?.length === 0 && <p>No people returned from search</p>}
+      {search.data?.length === 0 && !showEmailInvitationButton && (
+        <p>No people returned from search</p>
+      )}
       {search.data && search?.data.length > 0 && (
         <table className="table">
           <tbody>
@@ -151,14 +156,8 @@ const ResultsTable: React.FC<{ searchString: string; showId: number }> = ({
 const InviteEmailButton: React.FC<{
   searchString: string;
   showId: number;
-  searchData: PersonSearchResultDTO[];
-}> = ({ searchString, showId, searchData }) => {
+}> = ({ searchString, showId }) => {
   const queryClient = useQueryClient();
-
-  const { data: invitations, isLoading } = useQuery(
-    ["invitations", showId],
-    () => api.rostering.showsShowIdInvitationsGet({ showId })
-  );
 
   const mutation = useMutation<unknown, Error>({
     mutationFn: () => {
@@ -173,33 +172,67 @@ const InviteEmailButton: React.FC<{
     },
   });
 
-  if (isLoading) {
-    return null;
+  return (
+    <div className="prose">
+      <p>That email address does not exist in the ShowPlanner.</p>
+      <p>
+        You can send them an invite using the button below, once they&apos;ve
+        setup their profile they will automatically be invited to the show.
+      </p>
+      <button
+        className="btn mb-2"
+        onClick={() => mutation.mutate()}
+        disabled={mutation.isLoading}
+      >
+        {mutation.isLoading && <span className="loading loading-spinner" />}
+        Invite {searchString} to join the show
+      </button>
+    </div>
+  );
+};
+
+type options = {
+  loading: boolean;
+  searchString: string;
+  showId: number;
+  searchData?: PersonSearchResultDTO[];
+};
+const useShowEmailInvitationButton = ({
+  loading,
+  searchString,
+  searchData,
+  showId,
+}: options): boolean => {
+  const invitations = useQuery(["invitations", showId], () =>
+    api.rostering.showsShowIdInvitationsGet({ showId })
+  );
+
+  const people = useQuery(["people", showId], () =>
+    api.default.personnelAssignedGet({ showId })
+  );
+
+  if (loading || invitations.isLoading || people.isLoading) {
+    return false;
   }
 
   // If not an email
   if (!isEmail(searchString)) {
-    return null;
+    return false;
   }
 
   // If email is already in search results
-  if (searchData.find((p) => p.matchEmail)) {
-    return null;
+  if (searchData?.find((p) => p.matchEmail)) {
+    return false;
   }
 
   // If email is already invited
-  if (invitations?.find((i) => i.email === searchString)) {
-    return null;
+  if (invitations.data?.find((i) => i.email === searchString)) {
+    return false;
   }
 
-  return (
-    <button
-      className="btn mb-2"
-      onClick={() => mutation.mutate()}
-      disabled={mutation.isLoading}
-    >
-      {mutation.isLoading && <span className="loading loading-spinner" />}
-      Invite {searchString} to join the show
-    </button>
-  );
+  // If email is already assigned
+  if (people.data?.people?.find((p) => p._private?.email === searchString)) {
+    return false;
+  }
+  return true;
 };
