@@ -27,14 +27,19 @@ func searchForPeople(s string, options *searchOptions) ([]database.Person, error
 
 func filterByShowId(people []database.Person, showId int64) ([]database.Person, error) {
 	filtered := []database.Person{}
-	show, err := database.GetShowByIdWithPeople(showId)
 
+	show, err := database.GetShowByIdWithPeople(showId)
+	if err != nil {
+		return nil, err
+	}
+
+	invitations, err := database.GetInvitationsByShowID(showId)
 	if err != nil {
 		return nil, err
 	}
 
 	for _, p := range people {
-		if !ifShowContainsPerson(show, p) {
+		if !ifShowContainsPerson(show, p) && !ifInvitationsContainPerson(invitations, p) {
 			filtered = append(filtered, p)
 		}
 	}
@@ -44,6 +49,15 @@ func filterByShowId(people []database.Person, showId int64) ([]database.Person, 
 func ifShowContainsPerson(show database.Show, person database.Person) bool {
 	for _, p := range show.People {
 		if p.ID == person.ID {
+			return true
+		}
+	}
+	return false
+}
+
+func ifInvitationsContainPerson(invitations []database.Invitation, person database.Person) bool {
+	for _, i := range invitations {
+		if i.PersonID != nil && *i.PersonID == person.ID {
 			return true
 		}
 	}
