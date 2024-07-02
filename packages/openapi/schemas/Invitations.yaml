@@ -7,6 +7,10 @@ InvitationDTO:
     person:
       x-nullable: true
       $ref: './People.yaml#/PersonSummaryDTO'
+    email:
+      x-nullable: true
+      type: string
+      format: email
     show:
       x-nullable: true
       $ref: './Show.yaml#/ShowDTO'

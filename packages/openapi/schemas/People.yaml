@@ -62,3 +62,5 @@ PersonSearchResultDTO:
       format: uuid
     name:
       type: string
+    matchEmail:
+      type: boolean

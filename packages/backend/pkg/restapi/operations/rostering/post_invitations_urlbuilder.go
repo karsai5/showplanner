@@ -16,6 +16,7 @@ import (
 
 // PostInvitationsURL generates an URL for the post invitations operation
 type PostInvitationsURL struct {
+	Email    *strfmt.Email
 	PersonID *strfmt.UUID
 	ShowID   int64
 
@@ -52,6 +53,14 @@ func (o *PostInvitationsURL) Build() (*url.URL, error) {
 	_result.Path = golangswaggerpaths.Join(_basePath, _path)
 
 	qs := make(url.Values)
+
+	var emailQ string
+	if o.Email != nil {
+		emailQ = o.Email.String()
+	}
+	if emailQ != "" {
+		qs.Set("email", emailQ)
+	}
 
 	var personIDQ string
 	if o.PersonID != nil {

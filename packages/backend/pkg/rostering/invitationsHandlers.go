@@ -59,13 +59,8 @@ var handlePostInvitation = rostering.PostInvitationsHandlerFunc(func(params rost
 		return logError(&err)
 	}
 
-	personId := conv.StrfmtUUIDToUUID(params.PersonID)
-	if personId == nil {
+	if params.Email == nil && params.PersonID == nil {
 		return &rostering.PostInvitationsBadRequest{}
-	}
-	person, err := database.GetPerson(*personId)
-	if err != nil {
-		return logError(&err)
 	}
 
 	show, err := database.GetShowById(params.ShowID)
@@ -73,7 +68,26 @@ var handlePostInvitation = rostering.PostInvitationsHandlerFunc(func(params rost
 		return logError(&err)
 	}
 
-	err = invitePersonToShow(person, show, invitingPerson)
+	inv := invitation{
+		show:           show,
+		invitingPerson: invitingPerson,
+	}
+	if params.Email != nil {
+		inv.email = conv.Pointer(params.Email.String())
+	}
+	if params.PersonID != nil {
+		personId := conv.StrfmtUUIDToUUID(params.PersonID)
+		if personId == nil {
+			return &rostering.PostInvitationsBadRequest{}
+		}
+		person, err := database.GetPerson(*personId)
+		if err != nil {
+			return logError(&err)
+		}
+		inv.invitedPerson = &person
+	}
+
+	err = invitePersonToShow(inv)
 	if err != nil {
 		return logError(&err)
 	}

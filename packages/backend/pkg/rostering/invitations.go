@@ -1,17 +1,54 @@
 package rostering
 
 import (
+	"errors"
 	"fmt"
 
 	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/rostering/emails"
 )
 
-func invitePersonToShow(person database.Person, show database.Show, invitingPerson database.Person) error {
-	invitation, err := addInvitationToDatabase(show.ID, person.ID, invitingPerson.ID)
+type invitation struct {
+	show           database.Show
+	invitingPerson database.Person
+	invitedPerson  *database.Person
+	email          *string
+}
+
+func (i invitation) IsValid() error {
+	if i.invitedPerson == nil && i.email == nil {
+		return fmt.Errorf("invitation must have either an invited person or an email")
+	}
+	if i.email != nil {
+		_, err := database.GetPersonByEmail(*i.email)
+		if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+			return err
+		}
+		if err == nil {
+			return fmt.Errorf("person with email %s already exists", *i.email)
+		}
+	}
+	return nil
+}
+
+func (i invitation) getInvitedPersonId() *uuid.UUID {
+	if i.invitedPerson != nil {
+		return &i.invitedPerson.ID
+	}
+	return nil
+}
+
+func invitePersonToShow(i invitation) error {
+	err := i.IsValid()
+	if err != nil {
+		return err
+	}
+
+	invitation, err := addInvitationToDatabase(i.show.ID, i.invitingPerson.ID, i.getInvitedPersonId(), i.email)
 	if err != nil {
 		return err
 	}
@@ -27,9 +64,10 @@ func sendInvitationEmail(invitationId uuid.UUID) error {
 	}
 
 	err = emails.SendInvitationEmail(emails.InvitationEmail{
-		Email:         invitation.Person.Email,
-		ShowName:      invitation.Show.Name,
-		NameOfInviter: invitation.CreatedBy.GetFullName(),
+		Email:          invitation.GetEmail(),
+		ShowName:       invitation.Show.Name,
+		NameOfInviter:  invitation.CreatedBy.GetFullName(),
+		IsExistingUser: invitation.PersonID != nil,
 	})
 
 	return err
@@ -70,12 +108,13 @@ func deleteInvitation(invitationId uuid.UUID) error {
 	return nil
 }
 
-func addInvitationToDatabase(showId uint, userId uuid.UUID, createdBy uuid.UUID) (database.Invitation, error) {
+func addInvitationToDatabase(showId uint, createdBy uuid.UUID, personId *uuid.UUID, email *string) (database.Invitation, error) {
 	db := database.GetDatabase()
 
 	invitation := database.Invitation{
 		ShowID:      showId,
-		PersonID:    &userId,
+		PersonID:    personId,
+		Email:       email,
 		CreatedByID: createdBy,
 	}
 	res := db.Create(&invitation)

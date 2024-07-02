@@ -372,6 +372,13 @@ func init() {
             "description": "Id of the person to invite",
             "name": "personId",
             "in": "query"
+          },
+          {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the person to invite",
+            "name": "email",
+            "in": "query"
           }
         ],
         "responses": {
@@ -2074,6 +2081,13 @@ func init() {
             "format": "uuid",
             "description": "Id of the person to invite",
             "name": "personId",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "format": "email",
+            "description": "Email of the person to invite",
+            "name": "email",
             "in": "query"
           }
         ],
@@ -3990,6 +4004,11 @@ func init() {
           "type": "string",
           "format": "date-time"
         },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "x-nullable": true
+        },
         "id": {
           "type": "string",
           "format": "uuid"
@@ -4037,6 +4056,9 @@ func init() {
         "id": {
           "type": "string",
           "format": "uuid"
+        },
+        "matchEmail": {
+          "type": "boolean"
         },
         "name": {
           "type": "string"

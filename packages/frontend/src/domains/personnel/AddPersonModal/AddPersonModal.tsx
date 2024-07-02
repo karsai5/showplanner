@@ -5,6 +5,7 @@ import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import Input from "core/components/fields/TextInput";
 import { useModal } from "core/components/Modal/Modal";
 import { showToastError } from "core/utils/errors";
+import { isEmail } from "core/utils/isEmail";
 import useDebounce from "core/utils/useDebounce";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -67,7 +68,8 @@ const ResultsTable: React.FC<{ searchString: string; showId: number }> = ({
   showId,
 }) => {
   const queryClient = useQueryClient();
-  const { data, isError, isFetching } = useQuery({
+
+  const search = useQuery({
     queryKey: ["people-search", showId, searchString],
     queryFn: () => {
       return api.personnel.personnelSearchGet({ s: searchString, showId });
@@ -91,8 +93,7 @@ const ResultsTable: React.FC<{ searchString: string; showId: number }> = ({
       showToastError("Something went wrong inviting person to show.", e);
     },
     onSuccess: (_, personId) => {
-      toast.success("Person added to show!");
-      queryClient.invalidateQueries({ queryKey: ["assigned-people", showId] });
+      toast.success("Person invited to show!");
       queryClient.invalidateQueries({ queryKey: ["invitations", showId] });
       queryClient.setQueryData(
         ["people-search", showId, searchString],
@@ -108,15 +109,22 @@ const ResultsTable: React.FC<{ searchString: string; showId: number }> = ({
 
   return (
     <div className="relative">
-      {isFetching && (
+      {search.data && (
+        <InviteEmailButton
+          searchString={searchString}
+          showId={showId}
+          searchData={search.data}
+        />
+      )}
+      {search.isFetching && (
         <span className="loading loading-spinner absolute -top-14 right-4" />
       )}
-      {isError && <ErrorBox>Something went wrong</ErrorBox>}
-      {data && data.length === 0 && <p>No people returned from search</p>}
-      {data && data.length > 0 && (
+      {search.isError && <ErrorBox>Something went wrong</ErrorBox>}
+      {search.data?.length === 0 && <p>No people returned from search</p>}
+      {search.data && search?.data.length > 0 && (
         <table className="table">
           <tbody>
-            {data.map((p) => {
+            {search.data.map((p) => {
               return (
                 <tr key={p.id}>
                   <td>
@@ -137,5 +145,61 @@ const ResultsTable: React.FC<{ searchString: string; showId: number }> = ({
         </table>
       )}
     </div>
+  );
+};
+
+const InviteEmailButton: React.FC<{
+  searchString: string;
+  showId: number;
+  searchData: PersonSearchResultDTO[];
+}> = ({ searchString, showId, searchData }) => {
+  const queryClient = useQueryClient();
+
+  const { data: invitations, isLoading } = useQuery(
+    ["invitations", showId],
+    () => api.rostering.showsShowIdInvitationsGet({ showId })
+  );
+
+  const mutation = useMutation<unknown, Error>({
+    mutationFn: () => {
+      return api.rostering.invitationsPost({ showId, email: searchString });
+    },
+    onError: (e) => {
+      showToastError("Something went wrong inviting person to show.", e);
+    },
+    onSuccess: () => {
+      toast.success("Person invited to show!");
+      queryClient.invalidateQueries({ queryKey: ["invitations", showId] });
+    },
+  });
+
+  if (isLoading) {
+    return null;
+  }
+
+  // If not an email
+  if (!isEmail(searchString)) {
+    return null;
+  }
+
+  // If email is already in search results
+  if (searchData.find((p) => p.matchEmail)) {
+    return null;
+  }
+
+  // If email is already invited
+  if (invitations?.find((i) => i.email === searchString)) {
+    return null;
+  }
+
+  return (
+    <button
+      className="btn"
+      onClick={() => mutation.mutate()}
+      disabled={mutation.isLoading}
+    >
+      {mutation.isLoading && <span className="loading loading-spinner" />}
+      Invite {searchString} to join the show
+    </button>
   );
 };

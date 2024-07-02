@@ -928,6 +928,11 @@ paths:
           type: string
           format: uuid
           description: Id of the person to invite
+        - in: query
+          name: email
+          type: string
+          format: email
+          description: Email of the person to invite
       summary: Invites a person to a show
       produces:
         - application/json

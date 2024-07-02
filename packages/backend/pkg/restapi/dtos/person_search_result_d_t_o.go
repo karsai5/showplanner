@@ -23,6 +23,9 @@ type PersonSearchResultDTO struct {
 	// Format: uuid
 	ID strfmt.UUID `json:"id,omitempty"`
 
+	// match email
+	MatchEmail bool `json:"matchEmail,omitempty"`
+
 	// name
 	Name string `json:"name,omitempty"`
 }

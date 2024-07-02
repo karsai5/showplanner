@@ -46,6 +46,12 @@ export interface InvitationDTO {
   person?: PersonSummaryDTO;
   /**
    *
+   * @type {string}
+   * @memberof InvitationDTO
+   */
+  email?: string | null;
+  /**
+   *
    * @type {ShowDTO}
    * @memberof InvitationDTO
    */
@@ -83,6 +89,7 @@ export function InvitationDTOFromJSONTyped(
     person: !exists(json, "person")
       ? undefined
       : PersonSummaryDTOFromJSON(json["person"]),
+    email: !exists(json, "email") ? undefined : json["email"],
     show: !exists(json, "show") ? undefined : ShowDTOFromJSON(json["show"]),
     dateCreated: !exists(json, "dateCreated")
       ? undefined
@@ -100,6 +107,7 @@ export function InvitationDTOToJSON(value?: InvitationDTO | null): any {
   return {
     id: value.id,
     person: PersonSummaryDTOToJSON(value.person),
+    email: value.email,
     show: ShowDTOToJSON(value.show),
     dateCreated:
       value.dateCreated === undefined

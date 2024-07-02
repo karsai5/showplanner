@@ -33,6 +33,7 @@ export const Invitations: React.FC<{ showId: number }> = ({ showId }) => {
                   {invitation.person && (
                     <PersonDisplayName person={invitation.person} />
                   )}
+                  {invitation.email && <span>{invitation.email}</span>}
                 </td>
                 <td>
                   {invitation.id && (

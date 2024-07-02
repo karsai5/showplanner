@@ -49,6 +49,7 @@ export interface InvitationsIdNotifyPostRequest {
 export interface InvitationsPostRequest {
   showId: number;
   personId?: string;
+  email?: string;
 }
 
 export interface RosteringShowsPostRequest {
@@ -309,6 +310,10 @@ export class RosteringApi extends runtime.BaseAPI {
 
     if (requestParameters.personId !== undefined) {
       queryParameters["personId"] = requestParameters.personId;
+    }
+
+    if (requestParameters.email !== undefined) {
+      queryParameters["email"] = requestParameters.email;
     }
 
     const headerParameters: runtime.HTTPHeaders = {};

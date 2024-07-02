@@ -15,6 +15,12 @@ func GetPerson(id uuid.UUID) (Person, error) {
 	return person, res.Error
 }
 
+func GetPersonByEmail(email string) (Person, error) {
+	person := Person{}
+	res := db.Where("email = ?", email).First(&person)
+	return person, res.Error
+}
+
 func GetPeopleAssignedToShow(id uint) ([]Person, error) {
 	show := Show{}
 	res := db.Preload("People").Find(&show, id)
@@ -43,7 +49,7 @@ func GetPeopleNotAssignedToShow(id uint) ([]Person, error) {
 
 func SearchForPeople(search string) ([]Person, error) {
 	psr := []Person{}
-	res := db.Raw(`select id, first_name, last_name, preferred_name from people_search 
+	res := db.Raw(`select id, first_name, last_name, preferred_name, email from people_search 
     where search_string like lower('%`+search+`%') 
     or email = ? 
     order by search_string`, search).Scan(&psr)

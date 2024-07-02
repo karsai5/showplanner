@@ -392,6 +392,16 @@ type Invitation struct {
 	Email    *string
 }
 
+func (i *Invitation) GetEmail() string {
+	if i.Email != nil {
+		return *i.Email
+	}
+	if i.Person != nil {
+		return i.Person.Email
+	}
+	return ""
+}
+
 func (i *Invitation) BeforeCreate(tx *gorm.DB) error {
 	uuid := uuid.NewV4()
 	tx.Model(i).Update("ID", uuid)
@@ -409,6 +419,10 @@ func (i *Invitation) MapToInvitationDTO() dtos.InvitationDTO {
 
 	if i.Show.ID != 0 {
 		dto.Show = conv.Pointer(i.Show.MapToDTO())
+	}
+
+	if i.Email != nil {
+		dto.Email = conv.Pointer(strfmt.Email(*i.Email))
 	}
 
 	return dto

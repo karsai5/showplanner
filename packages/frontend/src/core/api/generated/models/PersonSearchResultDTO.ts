@@ -31,6 +31,12 @@ export interface PersonSearchResultDTO {
    * @memberof PersonSearchResultDTO
    */
   name?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PersonSearchResultDTO
+   */
+  matchEmail?: boolean;
 }
 
 /**
@@ -58,6 +64,7 @@ export function PersonSearchResultDTOFromJSONTyped(
   return {
     id: !exists(json, "id") ? undefined : json["id"],
     name: !exists(json, "name") ? undefined : json["name"],
+    matchEmail: !exists(json, "matchEmail") ? undefined : json["matchEmail"],
   };
 }
 
@@ -73,5 +80,6 @@ export function PersonSearchResultDTOToJSON(
   return {
     id: value.id,
     name: value.name,
+    matchEmail: value.matchEmail,
   };
 }

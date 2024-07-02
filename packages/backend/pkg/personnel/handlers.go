@@ -68,8 +68,9 @@ var handleSearchForPeople = personnel.GetPersonnelSearchHandlerFunc(func(params 
 	return &personnel.GetPersonnelSearchOK{
 		Payload: conv.MapArrayOfPointer(people, func(p database.Person) dtos.PersonSearchResultDTO {
 			return dtos.PersonSearchResultDTO{
-				ID:   strfmt.UUID(p.ID.String()),
-				Name: p.GetFullName(),
+				ID:         strfmt.UUID(p.ID.String()),
+				Name:       p.GetFullName(),
+				MatchEmail: p.Email == params.S,
 			}
 		}),
 	}

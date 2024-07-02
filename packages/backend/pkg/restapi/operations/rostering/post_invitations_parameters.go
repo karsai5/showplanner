@@ -33,6 +33,10 @@ type PostInvitationsParams struct {
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
+	/*Email of the person to invite
+	  In: query
+	*/
+	Email *strfmt.Email
 	/*Id of the person to invite
 	  In: query
 	*/
@@ -55,6 +59,11 @@ func (o *PostInvitationsParams) BindRequest(r *http.Request, route *middleware.M
 
 	qs := runtime.Values(r.URL.Query())
 
+	qEmail, qhkEmail, _ := qs.GetOK("email")
+	if err := o.bindEmail(qEmail, qhkEmail, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
 	qPersonID, qhkPersonID, _ := qs.GetOK("personId")
 	if err := o.bindPersonID(qPersonID, qhkPersonID, route.Formats); err != nil {
 		res = append(res, err)
@@ -66,6 +75,43 @@ func (o *PostInvitationsParams) BindRequest(r *http.Request, route *middleware.M
 	}
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+// bindEmail binds and validates parameter Email from query.
+func (o *PostInvitationsParams) bindEmail(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+
+	// Required: false
+	// AllowEmptyValue: false
+
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	// Format: email
+	value, err := formats.Parse("email", raw)
+	if err != nil {
+		return errors.InvalidType("email", "query", "strfmt.Email", raw)
+	}
+	o.Email = (value.(*strfmt.Email))
+
+	if err := o.validateEmail(formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// validateEmail carries on validations for parameter Email
+func (o *PostInvitationsParams) validateEmail(formats strfmt.Registry) error {
+
+	if err := validate.FormatOf("email", "query", "email", o.Email.String(), formats); err != nil {
+		return err
 	}
 	return nil
 }
