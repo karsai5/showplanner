@@ -54,7 +54,7 @@ export const AddPersonModal: React.FC<{ showId: number }> = ({ showId }) => {
                 placeholder="Search"
               ></Input>
             </form>
-            <ResultsTable searchString={searchString} showId={showId} />
+            <ResultsTable searchString={searchString.trim()} showId={showId} />
           </div>
         </Modal>
       )}
