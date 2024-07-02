@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "core/api";
-import { MediaDTO } from "core/api/generated";
+import { MediaDTO, ShowDTO } from "core/api/generated";
 import FileInput from "core/components/fields/FileInput";
 import Input from "core/components/fields/TextInput";
 import { useRefreshToken } from "pages/me/refresh";
@@ -20,7 +20,7 @@ type Inputs = {
 };
 
 interface NewShowFormProps {
-  onSuccess?: () => void;
+  onSuccess?: (show: ShowDTO) => void;
 }
 
 const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
@@ -35,7 +35,7 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
     setValue,
   } = useForm<Inputs>();
 
-  const mutation = useMutation<unknown, unknown, Inputs>({
+  const mutation = useMutation<ShowDTO, unknown, Inputs>({
     mutationFn: (show) =>
       api.rostering.rosteringShowsPost({
         show: {
@@ -47,13 +47,11 @@ const NewShowForm: FC<NewShowFormProps> = ({ onSuccess }) => {
       toast.error("Something went wrong creating new show");
       console.error("Could not create show", e);
     },
-    onSuccess: async () => {
+    onSuccess: async (result) => {
       toast.success("Succesfully created a new show");
       queryClient.invalidateQueries({ queryKey: ["AssignedShowsList"] });
       reset();
-      if (onSuccess) {
-        onSuccess();
-      }
+      if (onSuccess) onSuccess(result);
       refresh();
     },
   });

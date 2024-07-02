@@ -9,7 +9,7 @@ func setupViews(db *gorm.DB) error {
 		`
     create view people_search as
       select lower(concat_ws(' ',p.first_name, p.last_name, p.preferred_name, split_part(p.email, '@', 1))) as search_string, 
-      p.first_name, p.last_name, p.preferred_name, p.id 
+      p.first_name, p.last_name, p.preferred_name, p.id, p.email
       from people p;
     `,
 	})

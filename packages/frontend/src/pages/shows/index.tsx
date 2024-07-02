@@ -5,6 +5,7 @@ import NewShowForm from "domains/shows/NewShowForm/NewShowForm";
 import { AssignedShowBoxGrid } from "domains/shows/ShowBoxGrid/AssignedShowBoxGrid";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import Session from "supertokens-auth-react/recipe/session";
 import { PermissionClaim } from "supertokens-auth-react/recipe/userroles";
@@ -35,6 +36,11 @@ const Shows = () => {
 const AddShowButton = () => {
   const { Modal, open, close, isOpen } = useModal();
   const claimValue = Session.useClaimValue(PermissionClaim);
+  const router = useRouter();
+  const onSuccess = (showSlug: string) => {
+    close();
+    router.push(`/refresh-session?redirect=/shows/${showSlug}`);
+  };
 
   if (claimValue.loading || !claimValue.doesSessionExist) {
     return null;
@@ -48,7 +54,7 @@ const AddShowButton = () => {
           Add show
         </button>
         <Modal isOpen={isOpen} close={close} title="Add a new show">
-          <NewShowForm onSuccess={close} />
+          <NewShowForm onSuccess={(show) => onSuccess(show.slug)} />
         </Modal>
       </>
     );
