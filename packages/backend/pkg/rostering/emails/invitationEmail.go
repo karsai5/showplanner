@@ -43,5 +43,9 @@ The ShowPlanner Team`, email.NameOfInviter, email.ShowName, config.FRONTEND_URL)
 
 They're using the ShowPlanner to manage this show. In order to join it, first create an account at %s/auth, then go to %s/shows to accept the invitation.
 
+In order for the show manager to properly assign you and cover any events you can't make, it's important to fill in your availabilities and keep them up to date.
+
+You must sign up with the email address you received this email on, if you use another address ask the stage manager to invite you again once your account is created.
+
 The Showplanner Team`, email.NameOfInviter, email.ShowName, config.FRONTEND_URL, config.FRONTEND_URL)
 }
