@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"showplanner.io/pkg/domains/people_domain_old"
 	"showplanner.io/pkg/rostering"
+	"showplanner.io/pkg/rostering/people"
 
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/permissions"
@@ -120,7 +120,7 @@ func RemoveFromShow() *cli.Command {
 			person, err := selectPersonForShow(show.ID)
 
 			permissions.InitSupertokens()
-			return people_domain_old.RemoveFromShow(show.ID, person.ID)
+			return people.RemovePersonFromShow(show.ID, person.ID)
 		},
 	}
 }

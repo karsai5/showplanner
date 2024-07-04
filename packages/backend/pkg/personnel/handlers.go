@@ -40,8 +40,7 @@ var handleSearchForPeople = personnel.GetPersonnelSearchHandlerFunc(func(params 
 	if len(params.S) < 3 {
 		return &personnel.GetPersonnelSearchBadRequest{
 			Payload: &dtos.Error{
-				Code:    conv.Pointer("400"),
-				Message: conv.Pointer("Search query must be at least 3 characters long"),
+				Message: "Search query must be at least 3 characters long",
 			},
 		}
 	}

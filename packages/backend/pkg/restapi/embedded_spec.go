@@ -1547,6 +1547,43 @@ func init() {
         }
       }
     },
+    "/shows/{showId}/unassign": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Unassign a person from a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "showId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "format": "uuid",
+            "name": "personId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/shows/{showSlug}/summary": {
       "get": {
         "produces": [
@@ -1622,15 +1659,12 @@ func init() {
     "Error": {
       "type": "object",
       "required": [
-        "code",
         "message"
       ],
       "properties": {
-        "code": {
-          "type": "string"
-        },
         "message": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": false
         }
       }
     },
@@ -3473,6 +3507,49 @@ func init() {
         }
       }
     },
+    "/shows/{showId}/unassign": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Unassign a person from a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "showId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "format": "uuid",
+            "name": "personId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/shows/{showSlug}/summary": {
       "get": {
         "produces": [
@@ -3560,15 +3637,12 @@ func init() {
     "Error": {
       "type": "object",
       "required": [
-        "code",
         "message"
       ],
       "properties": {
-        "code": {
-          "type": "string"
-        },
         "message": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": false
         }
       }
     },

@@ -16,7 +16,7 @@ type PersonDisplayNameOptions = {
 
 export const getPersonDisplayName = (
   person: PersonSummaryDTO,
-  options: PersonDisplayNameOptions
+  options: PersonDisplayNameOptions = {}
 ) => {
   const firstName = person.preferredName || person.firstName || "";
   const lastName = person.lastName || "";

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import imageSrc from "./400.png";
+import imageSrc from "./401.png";
 
 const NotFoundPage = () => {
   return (

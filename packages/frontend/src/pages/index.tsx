@@ -1,5 +1,4 @@
 import HomeHero from "core/components/HomeHero/HomeHero";
-import { getLoggedIn } from "core/permissions/ssr";
 import { LayoutWithBackgroundImage } from "domains/layout/LayoutWithBackgroundImage";
 import { GetServerSidePropsContext } from "next";
 import Head from "next/head";
@@ -21,9 +20,10 @@ Home.getLayout = (page: ReactElement) => (
 );
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const isLoggedIn = await getLoggedIn(context);
-
-  if (isLoggedIn) {
+  const accessToken = context.req.headers.cookie
+    ?.split(";")
+    .find((c) => c.trim().startsWith("sAccessToken"));
+  if (accessToken) {
     return {
       redirect: {
         destination: "/shows",

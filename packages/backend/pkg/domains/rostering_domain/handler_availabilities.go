@@ -54,14 +54,14 @@ var handleGetAvailabilities = operations.GetAvailabilitiesHandlerFunc(func(param
 var handleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(params operations.PostAvailabilitiesParams) middleware.Responder {
 	userId, err := permissions.GetUserId(params.HTTPRequest)
 	if err != nil {
-		logger.Error("Could not udpate availabilities", err)
+		logger.Error("Could not update availabilities", err)
 		return &operations.PostAvailabilitiesInternalServerError{}
 	}
 
 	if params.Availability.PersonID.String() != userId.String() {
 		return &operations.PostAvailabilitiesUnauthorized{
 			Payload: &dto2.Error{
-				Message: conv.Pointer("Cannot update an availability for another user"),
+				Message: "Cannot update an availability for another user",
 			},
 		}
 	}
@@ -75,7 +75,7 @@ var handleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(par
 	if hasPerm, _ := permissions.ViewEvents.HasPermission(event.ShowID, params.HTTPRequest); !hasPerm {
 		return &operations.PostAvailabilitiesUnauthorized{
 			Payload: &dto2.Error{
-				Message: conv.Pointer("Cannot update an availability for a show you are not assigned to"),
+				Message: "Cannot update an availability for a show you are not assigned to",
 			},
 		}
 	}

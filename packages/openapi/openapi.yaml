@@ -847,30 +847,6 @@ paths:
           schema:
             $ref: './schemas/Show.yaml#/ShowDTO'
 
-  /shows/{showId}/invitations:
-    get:
-      tags:
-        - rostering
-      parameters:
-        - in: path
-          required: true
-          name: showId
-          type: integer
-      summary: Get invitations for a show
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            type: array
-            items:
-              $ref: './schemas/Invitations.yaml#/InvitationDTO'
-        401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
-
   /shows/{showSlug}/summary:
     get:
       tags:
@@ -895,6 +871,55 @@ paths:
           description: 'Show'
           schema:
             $ref: './schemas/Show.yaml#/ShowSummaryDTO'
+
+  /shows/{showId}/invitations:
+    get:
+      tags:
+        - rostering
+      parameters:
+        - in: path
+          required: true
+          name: showId
+          type: integer
+      summary: Get invitations for a show
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: './schemas/Invitations.yaml#/InvitationDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+
+  /shows/{showId}/unassign:
+    post:
+      tags:
+        - rostering
+      parameters:
+        - in: path
+          required: true
+          name: showId
+          type: integer
+        - in: query
+          required: true
+          name: personId
+          type: string
+          format: uuid
+      summary: Unassign a person from a show
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
 
   /invitations/:
     get:
@@ -1047,12 +1072,10 @@ definitions:
   Error:
     type: object
     properties:
-      code:
-        type: string
       message:
         type: string
+        x-nullable: false
     required:
-      - code
       - message
   AvailabilitiesDTO:
     type: object

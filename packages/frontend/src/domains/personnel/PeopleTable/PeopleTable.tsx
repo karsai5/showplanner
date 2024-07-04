@@ -10,8 +10,13 @@ import { ArrayOfPersonSummaryDTO, PersonSummaryDTO } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { PERMISSION, showPermission, useHasPermission } from "core/permissions";
-import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
+import {
+  getPersonDisplayName,
+  PersonDisplayName,
+} from "domains/personnel/PersonDisplayName";
 import { FC } from "react";
+
+import { UnassignPersonButton } from "./UnassignPersonButton";
 
 export const PeopleTable: React.FC<{
   showId: number;
@@ -32,6 +37,7 @@ export const PeopleTable: React.FC<{
   if (data && data.people) {
     return (
       <PurePeopleTable
+        showId={showId}
         people={data.people}
         showPrivateDetails={hasPermission(
           showPermission(showId, PERMISSION.personnelPrivateDetails)
@@ -85,12 +91,26 @@ const privateDetailsColumns = [
 export const PurePeopleTable: FC<{
   people: PersonSummaryDTO[];
   showPrivateDetails?: boolean;
-}> = ({ people, showPrivateDetails }) => {
+  showId: number;
+}> = ({ people, showPrivateDetails, showId }) => {
   const table = useReactTable({
     data: people,
     columns: [
       ...baseColumns,
       ...(showPrivateDetails ? privateDetailsColumns : []),
+      columnHelper.accessor((row) => row, {
+        id: "actions",
+        cell: (info) => (
+          <div>
+            <UnassignPersonButton
+              id={info.getValue().id}
+              showId={showId}
+              name={getPersonDisplayName(info.getValue())}
+            />
+          </div>
+        ),
+        header: "Actions",
+      }),
     ],
     getCoreRowModel: getCoreRowModel(),
   });

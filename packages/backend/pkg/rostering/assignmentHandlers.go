@@ -1,0 +1,35 @@
+package rostering
+
+import (
+	"github.com/go-openapi/runtime/middleware"
+	"showplanner.io/pkg/conv"
+	"showplanner.io/pkg/logger"
+	"showplanner.io/pkg/permissions"
+	"showplanner.io/pkg/restapi/dtos"
+	"showplanner.io/pkg/restapi/operations/rostering"
+	"showplanner.io/pkg/rostering/people"
+)
+
+var handleUnasignPersonFromShow = rostering.PostShowsShowIDUnassignHandlerFunc(func(params rostering.PostShowsShowIDUnassignParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Unassigning person from show", &rostering.PostShowsShowIDUnassignInternalServerError{})
+
+	hasPerm, err := permissions.AddPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	if err != nil {
+		return logError(&err)
+	}
+
+	if !hasPerm {
+		return &rostering.PostShowsShowIDUnassignUnauthorized{
+			Payload: &dtos.Error{
+				Message: "User does not have permission to unassign person from show",
+			},
+		}
+	}
+
+	err = people.RemovePersonFromShow(uint(params.ShowID), *conv.StrfmtUUIDToUUID(&params.PersonID))
+	if err != nil {
+		return logError(&err)
+	}
+
+	return &rostering.PostShowsShowIDUnassignOK{}
+})

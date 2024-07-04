@@ -99,15 +99,13 @@ var handlePostShow = rostering.PostRosteringShowsHandlerFunc(func(psp rostering.
 	show, err = database.CreateShow(show)
 
 	if err != nil {
-		code := "400"
 		message := "Something went wrong"
 		if strings.Contains(err.Error(), "UNIQUE constraint failed: shows.slug") {
 			message = "Slug must be unique"
 		}
 		return &rostering.PostRosteringShowsBadRequest{
 			Payload: &dtos.Error{
-				Code:    &code,
-				Message: &message,
+				Message: message,
 			},
 		}
 	}

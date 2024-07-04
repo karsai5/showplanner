@@ -58,6 +58,54 @@ func RemovePersonFromShow(showId uint, id uuid.UUID) (err error) {
 	return nil
 }
 
+func RemovePersonAssignmentsFromShow(showId uint, id uuid.UUID) (err error) {
+	defer func() {
+		if err != nil {
+			err = fmt.Errorf("while removing persons assignments from show: %w", err)
+		}
+	}()
+
+	assignments := []Assignment{}
+	res := db.Joins("Event").Where("person_id = ? AND show_id = ?", id, showId).Find(&assignments)
+
+	if res.Error != nil {
+		return fmt.Errorf("while getting assignments: %w", err)
+	}
+
+	for _, assignment := range assignments {
+		err = db.Delete(&assignment).Error
+		if err != nil {
+			return fmt.Errorf("while deleting assignment: %w", err)
+		}
+	}
+
+	return nil
+}
+
+func RemovePersonRoleAssignmentsFromShow(showId uint, id uuid.UUID) (err error) {
+	defer func() {
+		if err != nil {
+			err = fmt.Errorf("while removing persons role assignment from show: %w", err)
+		}
+	}()
+
+	roles := []Role{}
+	res := db.Where("show_id = ? AND person_id = ?", showId, id).Find(&roles)
+	if res.Error != nil {
+		return fmt.Errorf("while getting roles: %w", err)
+	}
+
+	for _, role := range roles {
+		res := db.Model(&role).Association("Person").Clear()
+
+		if res != nil {
+			return fmt.Errorf("while clearing role association: %w", res)
+		}
+	}
+
+	return nil
+}
+
 func GetShowBySlug(slug string) (Show, error) {
 	show := Show{}
 	res := db.First(&show, "slug = ?", slug)

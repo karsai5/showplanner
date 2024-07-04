@@ -2,6 +2,8 @@ package rostering
 
 import (
 	"errors"
+	"fmt"
+	"log/slog"
 
 	"showplanner.io/pkg/restapi/dtos"
 
@@ -28,6 +30,7 @@ var handleDeleteInviation = rostering.DeleteInvitationsIDHandlerFunc(func(params
 
 	// Check user has permission to delete invitation
 	if invitation.CreatedByID != userId {
+		slog.Info(fmt.Sprintf("User %v does not have permission to delete invitation %v because it was created by %v", userId, invitation.ID, invitation.CreatedByID))
 		return &rostering.DeleteInvitationsIDUnauthorized{}
 	}
 
