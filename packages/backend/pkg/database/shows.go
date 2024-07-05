@@ -7,6 +7,27 @@ import (
 	"gorm.io/gorm"
 )
 
+type IDatabaseShows interface {
+	GetShowsForUser(id uuid.UUID) ([]Show, error)
+	GetEventsWithAvailabilityAndAssignmentsForUser(showId uint, userId uuid.UUID) ([]Event, error)
+}
+
+type DatabaseShows struct {
+}
+
+func (d *DatabaseShows) GetShowsForUser(id uuid.UUID) ([]Show, error) {
+	person := Person{}
+	res := db.Preload("Shows.Events").Preload("Shows.Image").First(&person, id)
+	return person.Shows, res.Error
+}
+
+func (d *DatabaseShows) GetEventsWithAvailabilityAndAssignmentsForUser(showId uint, userId uuid.UUID) ([]Event, error) {
+	var events []Event
+	res := db.Preload("Availabilities", "person_id = ?", userId).Preload("ShowReport").Preload("ShowTimer").Preload("Shadows.Role.Person").Preload("Shadows.Person").Preload("Assignments").Preload("Assignments.Role.Person").Preload("Assignments.Person").Where("show_id = ?", showId).Find(&events)
+
+	return events, res.Error
+}
+
 func GetAllShows() ([]Show, error) {
 	var shows []Show
 	result := db.Find(&shows)

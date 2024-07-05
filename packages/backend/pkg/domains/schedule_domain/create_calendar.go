@@ -15,14 +15,33 @@ import (
 	"showplanner.io/pkg/database"
 )
 
-func createCalendarForPerson(id uuid.UUID) (_ string, err error) {
+type ICalOptions struct {
+	UserId                   uuid.UUID
+	HideEventsNotRequiredFor bool
+}
+
+// func NewICalendar(database database.IDatabaseShows, options ICalOptions) *iCalendar {
+// 	return &iCalendar{
+// 		db:                       database,
+// 		userId:                   options.UserId,
+// 		hideEventsNotRequiredFor: options.HideEventsNotRequiredFor,
+// 	}
+// }
+
+type iCalendar struct {
+	UserId                   uuid.UUID
+	Db                       database.IDatabaseShows
+	HideEventsNotRequiredFor bool
+}
+
+func (ical *iCalendar) CreateCalendarForPerson() (_ string, err error) {
 	defer func() {
 		if err != nil {
-			err = fmt.Errorf("in creating calednar for '%s': %w", id.String(), err)
+			err = fmt.Errorf("in creating calednar for '%s': %w", ical.UserId.String(), err)
 		}
 	}()
 
-	shows, err := database.GetShowsForUser(id)
+	shows, err := ical.Db.GetShowsForUser(ical.UserId)
 
 	if err != nil {
 		return "", err
@@ -31,14 +50,14 @@ func createCalendarForPerson(id uuid.UUID) (_ string, err error) {
 	cal := ics.NewCalendar()
 
 	for _, show := range shows {
-		createEventsForShow(cal, show, id)
+		ical.createEventsForShow(cal, show, ical.UserId)
 	}
 
 	return cal.Serialize(), nil
 }
 
-func createEventsForShow(cal *ics.Calendar, show database.Show, userId uuid.UUID) error {
-	events, err := database.GetEventsWithAvailabilityAndAssignmentsForUser(show.ID, userId)
+func (ical *iCalendar) createEventsForShow(cal *ics.Calendar, show database.Show, userId uuid.UUID) error {
+	events, err := ical.Db.GetEventsWithAvailabilityAndAssignmentsForUser(show.ID, userId)
 	if err != nil {
 		return err
 	}
@@ -53,7 +72,18 @@ func createEventsForShow(cal *ics.Calendar, show database.Show, userId uuid.UUID
 	}
 
 	for _, e := range eventPointers {
-		mappedRoles := MapRoles(roles, *e, userId)
+
+		if e.Options.Divider {
+			continue
+		}
+
+		if ical.HideEventsNotRequiredFor {
+			if hide, _ := ical.shouldAttendingEventBeHidden(*e); e.Options.AttendanceRequired && hide {
+				continue
+			}
+		}
+
+		rolesForUser := MapRoles(roles, *e, userId)
 
 		event := cal.AddEvent(fmt.Sprintf("%v@showplanner.io", e.ID))
 		event.SetCreatedTime(time.Now())
@@ -64,17 +94,17 @@ func createEventsForShow(cal *ics.Calendar, show database.Show, userId uuid.UUID
 		if e.End != nil {
 			event.SetEndAt(*e.End)
 		}
-		event.SetSummary(getEventSummary(show, *e, mappedRoles))
+		event.SetSummary(ical.getEventSummary(show, *e, rolesForUser))
 		if e.Address != nil {
 			event.SetLocation(*e.Address)
 		}
-		event.SetDescription(getDescription(show, *e, mappedRoles))
+		event.SetDescription(ical.getDescription(show, *e, rolesForUser))
 	}
 
 	return nil
 }
 
-func getDescription(show database.Show, event database.Event, mappedRoles []*dtos.ScheduleEventDTORolesItems0) string {
+func (ical *iCalendar) getDescription(_ database.Show, event database.Event, mappedRoles []*dtos.ScheduleEventDTORolesItems0) string {
 	sBuilder := []string{}
 
 	if event.CurtainsUp != nil {
@@ -108,30 +138,68 @@ func getDescription(show database.Show, event database.Event, mappedRoles []*dto
 	return strings.Join(sBuilder, "\n")
 }
 
-func getEventSummary(show database.Show, event database.Event, mappedRoles []*dtos.ScheduleEventDTORolesItems0) string {
+func (ical iCalendar) getEventSummary(show database.Show, event database.Event, rolesForUser []*dtos.ScheduleEventDTORolesItems0) string {
 	summaryArray := []string{}
 	if event.Name != nil {
 		summaryArray = append(summaryArray, *event.Name)
 	}
-	if !isUserRequired(mappedRoles) && event.CurtainsUp != nil {
-		summaryArray = append(summaryArray, "Not required")
-	} else {
-		for _, r := range mappedRoles {
-			summaryArray = append(summaryArray, *r.Name)
-		}
-	}
+
+	ical.addAttendingEventSummaryInformation(&summaryArray, event)
+
+	// if !ical.isUserRequired(mappedRoles) && event.CurtainsUp != nil {
+	// 	summaryArray = append(summaryArray, "Not required")
+	// } else {
+	// 	for _, r := range mappedRoles {
+	// 		summaryArray = append(summaryArray, *r.Name)
+	// 	}
+	// }
 	summaryArray = append(summaryArray, show.Name)
 	return strings.Join(summaryArray, " - ")
 }
 
-func isUserRequired(mappedRoles []*dtos.ScheduleEventDTORolesItems0) bool {
-	if len(mappedRoles) == 0 {
+func (ical *iCalendar) addAttendingEventSummaryInformation(summaryArray *[]string, e database.Event) {
+	if e.Options.AttendanceRequired {
+		attendance := ical.findAvailabilityForUserInEvent(e)
+		if attendance == nil {
+			*summaryArray = append(*summaryArray, "Attendance unknown")
+		} else if attendance.Available {
+			*summaryArray = append(*summaryArray, "Attending")
+		} else {
+			*summaryArray = append(*summaryArray, "Not attending")
+		}
+	}
+}
+
+func (ical iCalendar) shouldAttendingEventBeHidden(event database.Event) (bool, error) {
+	if !event.Options.AttendanceRequired {
+		return false, fmt.Errorf("event %d does not require attendance", event.ID)
+	}
+	attendance := ical.findAvailabilityForUserInEvent(event)
+	if attendance == nil || attendance.Available {
+		return false, nil
+	}
+	return true, nil
+}
+
+func (ical iCalendar) isUserRequiredForRole(rolesForUser []*dtos.ScheduleEventDTORolesItems0) bool {
+	// If they have no roles
+	if len(rolesForUser) == 0 {
 		return false
 	}
-	for _, role := range mappedRoles {
+	// If one of their roles DOES NOT have a cover, they're required
+	for _, role := range rolesForUser {
 		if role.CoveredBy == nil {
 			return true
 		}
 	}
 	return false
+}
+
+func (ical *iCalendar) findAvailabilityForUserInEvent(event database.Event) *database.Availability {
+	for _, a := range event.Availabilities {
+		if a.PersonID == ical.UserId {
+			return &a
+		}
+	}
+	return nil
 }

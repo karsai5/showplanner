@@ -80,7 +80,13 @@ var getPublicCalendarIDHandler = operations.GetPublicCalendarIDHandlerFunc(func(
 		return &operations.GetPublicCalendarIDInternalServerError{}
 	}
 
-	calendarString, err := createCalendarForPerson(userId)
+	ical := iCalendar{
+		UserId:                   userId,
+		Db:                       &database.DatabaseShows{},
+		HideEventsNotRequiredFor: false,
+	}
+
+	calendarString, err := ical.CreateCalendarForPerson()
 
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return &operations.GetPublicCalendarIDNotFound{}
