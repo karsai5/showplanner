@@ -825,6 +825,12 @@ func init() {
             "name": "id",
             "in": "path",
             "required": true
+          },
+          {
+            "type": "boolean",
+            "description": "Hide events not required for",
+            "name": "hideEvents",
+            "in": "query"
           }
         ],
         "responses": {
@@ -2641,6 +2647,12 @@ func init() {
             "name": "id",
             "in": "path",
             "required": true
+          },
+          {
+            "type": "boolean",
+            "description": "Hide events not required for",
+            "name": "hideEvents",
+            "in": "query"
           }
         ],
         "responses": {

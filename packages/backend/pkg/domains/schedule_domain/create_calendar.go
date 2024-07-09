@@ -30,7 +30,7 @@ type ICalOptions struct {
 
 type iCalendar struct {
 	UserId                   uuid.UUID
-	Db                       database.IDatabaseShows
+	Db                       database.IDatabase
 	HideEventsNotRequiredFor bool
 }
 
@@ -65,7 +65,7 @@ func (ical *iCalendar) createEventsForShow(cal *ics.Calendar, show database.Show
 	eventPointers := conv.MapArrayOfPointer(events, func(e database.Event) database.Event { return e })
 	NameEventsWithCurtainsUp(eventPointers)
 
-	roles, err := database.GetRolesForPerson(show.ID, userId)
+	roles, err := ical.Db.GetRolesForPerson(show.ID, userId)
 
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return err
@@ -74,16 +74,24 @@ func (ical *iCalendar) createEventsForShow(cal *ics.Calendar, show database.Show
 	for _, e := range eventPointers {
 
 		if e.Options.Divider {
-			continue
+			continue // skip
 		}
 
 		if ical.HideEventsNotRequiredFor {
 			if hide, _ := ical.shouldAttendingEventBeHidden(*e); e.Options.AttendanceRequired && hide {
-				continue
+				continue // skip
 			}
 		}
 
 		rolesForUser := MapRoles(roles, *e, userId)
+
+		// If the user is not required for any roles,
+		// and the event is not required,
+		// and the event has a curtain time,
+		// and we're hiding events not required for, skip
+		if (len(rolesForUser) == 0 && !e.Options.AttendanceRequired && e.CurtainsUp != nil) && ical.HideEventsNotRequiredFor {
+			continue
+		}
 
 		event := cal.AddEvent(fmt.Sprintf("%v@showplanner.io", e.ID))
 		event.SetCreatedTime(time.Now())
@@ -146,13 +154,21 @@ func (ical iCalendar) getEventSummary(show database.Show, event database.Event, 
 
 	ical.addAttendingEventSummaryInformation(&summaryArray, event)
 
-	// if !ical.isUserRequired(mappedRoles) && event.CurtainsUp != nil {
-	// 	summaryArray = append(summaryArray, "Not required")
-	// } else {
-	// 	for _, r := range mappedRoles {
-	// 		summaryArray = append(summaryArray, *r.Name)
-	// 	}
-	// }
+	roleStrings := []string{}
+	for _, r := range rolesForUser {
+		name := *r.Name
+		if r.Shadowing != nil {
+			name = name + " (shadowing)"
+		}
+		roleStrings = append(roleStrings, name)
+	}
+
+	if len(roleStrings) > 0 {
+		summaryArray = append(summaryArray, strings.Join(roleStrings, ", "))
+	} else if !ical.isUserRequiredForRole(rolesForUser) && !event.Options.AttendanceRequired {
+		summaryArray = append(summaryArray, "Not required")
+	}
+
 	summaryArray = append(summaryArray, show.Name)
 	return strings.Join(summaryArray, " - ")
 }

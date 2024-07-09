@@ -9,8 +9,10 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // NewGetPublicCalendarIDParams creates a new GetPublicCalendarIDParams object
@@ -30,6 +32,10 @@ type GetPublicCalendarIDParams struct {
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
+	/*Hide events not required for
+	  In: query
+	*/
+	HideEvents *bool
 	/*ID of calendar to get
 	  Required: true
 	  In: path
@@ -46,6 +52,13 @@ func (o *GetPublicCalendarIDParams) BindRequest(r *http.Request, route *middlewa
 
 	o.HTTPRequest = r
 
+	qs := runtime.Values(r.URL.Query())
+
+	qHideEvents, qhkHideEvents, _ := qs.GetOK("hideEvents")
+	if err := o.bindHideEvents(qHideEvents, qhkHideEvents, route.Formats); err != nil {
+		res = append(res, err)
+	}
+
 	rID, rhkID, _ := route.Params.GetOK("id")
 	if err := o.bindID(rID, rhkID, route.Formats); err != nil {
 		res = append(res, err)
@@ -53,6 +66,29 @@ func (o *GetPublicCalendarIDParams) BindRequest(r *http.Request, route *middlewa
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+// bindHideEvents binds and validates parameter HideEvents from query.
+func (o *GetPublicCalendarIDParams) bindHideEvents(rawData []string, hasKey bool, formats strfmt.Registry) error {
+	var raw string
+	if len(rawData) > 0 {
+		raw = rawData[len(rawData)-1]
+	}
+
+	// Required: false
+	// AllowEmptyValue: false
+
+	if raw == "" { // empty values pass all other validations
+		return nil
+	}
+
+	value, err := swag.ConvertBool(raw)
+	if err != nil {
+		return errors.InvalidType("hideEvents", "query", "bool", raw)
+	}
+	o.HideEvents = &value
+
 	return nil
 }
 

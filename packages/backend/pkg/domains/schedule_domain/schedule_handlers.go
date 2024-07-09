@@ -28,6 +28,8 @@ var (
 )
 
 var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operations.GetScheduleParams) middleware.Responder {
+	db := &database.Database{}
+
 	logError := logger.CreateLogErrorFunc("Getting roster", &operations.GetScheduleInternalServerError{})
 	showId := uint(params.ShowID)
 
@@ -47,7 +49,7 @@ var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operation
 		return logError(&err)
 	}
 
-	roles, err := database.GetRolesForPerson(showId, userId)
+	roles, err := db.GetRolesForPerson(showId, userId)
 
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return logError(&err)
@@ -80,10 +82,15 @@ var getPublicCalendarIDHandler = operations.GetPublicCalendarIDHandlerFunc(func(
 		return &operations.GetPublicCalendarIDInternalServerError{}
 	}
 
+	hideEvents := false
+	if params.HideEvents != nil {
+		hideEvents = *params.HideEvents
+	}
+
 	ical := iCalendar{
 		UserId:                   userId,
-		Db:                       &database.DatabaseShows{},
-		HideEventsNotRequiredFor: false,
+		Db:                       &database.Database{},
+		HideEventsNotRequiredFor: hideEvents,
 	}
 
 	calendarString, err := ical.CreateCalendarForPerson()

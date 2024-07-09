@@ -10,11 +10,15 @@ import (
 	"net/url"
 	golangswaggerpaths "path"
 	"strings"
+
+	"github.com/go-openapi/swag"
 )
 
 // GetPublicCalendarIDURL generates an URL for the get public calendar ID operation
 type GetPublicCalendarIDURL struct {
 	ID string
+
+	HideEvents *bool
 
 	_basePath string
 	// avoid unkeyed usage
@@ -54,6 +58,18 @@ func (o *GetPublicCalendarIDURL) Build() (*url.URL, error) {
 		_basePath = "/v1"
 	}
 	_result.Path = golangswaggerpaths.Join(_basePath, _path)
+
+	qs := make(url.Values)
+
+	var hideEventsQ string
+	if o.HideEvents != nil {
+		hideEventsQ = swag.FormatBool(*o.HideEvents)
+	}
+	if hideEventsQ != "" {
+		qs.Set("hideEvents", hideEventsQ)
+	}
+
+	_result.RawQuery = qs.Encode()
 
 	return &_result, nil
 }

@@ -28,6 +28,11 @@ paths:
           type: string
           required: true
           description: ID of calendar to get
+        - in: query
+          name: hideEvents
+          type: boolean
+          required: false
+          description: Hide events not required for
       summary: Healthcheck
       description: Healthcheck endpoint
       produces:

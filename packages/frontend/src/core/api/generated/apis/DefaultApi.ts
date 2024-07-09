@@ -123,6 +123,7 @@ export interface PersonnelAssignedGoogleContactsCSVGetRequest {
 
 export interface PublicCalendarIdGetRequest {
   id: string;
+  hideEvents?: boolean;
 }
 
 export interface PublicScheduleGetRequest {
@@ -844,6 +845,10 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     const queryParameters: any = {};
+
+    if (requestParameters.hideEvents !== undefined) {
+      queryParameters["hideEvents"] = requestParameters.hideEvents;
+    }
 
     const headerParameters: runtime.HTTPHeaders = {};
 
