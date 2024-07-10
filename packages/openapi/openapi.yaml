@@ -901,7 +901,7 @@ paths:
         500:
           $ref: '#/responses/Error'
 
-  /shows/{showId}/unassign:
+  /shows/{showId}/people/unassign:
     post:
       tags:
         - rostering

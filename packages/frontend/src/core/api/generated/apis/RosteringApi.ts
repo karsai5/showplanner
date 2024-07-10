@@ -60,7 +60,7 @@ export interface ShowsShowIdInvitationsGetRequest {
   showId: number;
 }
 
-export interface ShowsShowIdUnassignPostRequest {
+export interface ShowsShowIdPeopleUnassignPostRequest {
   showId: number;
   personId: string;
 }
@@ -480,8 +480,8 @@ export class RosteringApi extends runtime.BaseAPI {
   /**
    * Unassign a person from a show
    */
-  async showsShowIdUnassignPostRaw(
-    requestParameters: ShowsShowIdUnassignPostRequest,
+  async showsShowIdPeopleUnassignPostRaw(
+    requestParameters: ShowsShowIdPeopleUnassignPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<void>> {
     if (
@@ -490,7 +490,7 @@ export class RosteringApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "showId",
-        "Required parameter requestParameters.showId was null or undefined when calling showsShowIdUnassignPost."
+        "Required parameter requestParameters.showId was null or undefined when calling showsShowIdPeopleUnassignPost."
       );
     }
 
@@ -500,7 +500,7 @@ export class RosteringApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "personId",
-        "Required parameter requestParameters.personId was null or undefined when calling showsShowIdUnassignPost."
+        "Required parameter requestParameters.personId was null or undefined when calling showsShowIdPeopleUnassignPost."
       );
     }
 
@@ -514,7 +514,7 @@ export class RosteringApi extends runtime.BaseAPI {
 
     const response = await this.request(
       {
-        path: `/shows/{showId}/unassign`.replace(
+        path: `/shows/{showId}/people/unassign`.replace(
           `{${"showId"}}`,
           encodeURIComponent(String(requestParameters.showId))
         ),
@@ -531,11 +531,14 @@ export class RosteringApi extends runtime.BaseAPI {
   /**
    * Unassign a person from a show
    */
-  async showsShowIdUnassignPost(
-    requestParameters: ShowsShowIdUnassignPostRequest,
+  async showsShowIdPeopleUnassignPost(
+    requestParameters: ShowsShowIdPeopleUnassignPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<void> {
-    await this.showsShowIdUnassignPostRaw(requestParameters, initOverrides);
+    await this.showsShowIdPeopleUnassignPostRaw(
+      requestParameters,
+      initOverrides
+    );
   }
 
   /**

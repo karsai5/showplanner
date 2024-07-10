@@ -10,8 +10,8 @@ import (
 	"showplanner.io/pkg/rostering/people"
 )
 
-var handleUnasignPersonFromShow = rostering.PostShowsShowIDUnassignHandlerFunc(func(params rostering.PostShowsShowIDUnassignParams) middleware.Responder {
-	logError := logger.CreateLogErrorFunc("Unassigning person from show", &rostering.PostShowsShowIDUnassignInternalServerError{})
+var handleUnasignPersonFromShow = rostering.PostShowsShowIDPeopleUnassignHandlerFunc(func(params rostering.PostShowsShowIDPeopleUnassignParams) middleware.Responder {
+	logError := logger.CreateLogErrorFunc("Unassigning person from show", &rostering.PostShowsShowIDPeopleUnassignInternalServerError{})
 
 	hasPerm, err := permissions.AddPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
 	if err != nil {
@@ -19,7 +19,7 @@ var handleUnasignPersonFromShow = rostering.PostShowsShowIDUnassignHandlerFunc(f
 	}
 
 	if !hasPerm {
-		return &rostering.PostShowsShowIDUnassignUnauthorized{
+		return &rostering.PostShowsShowIDPeopleUnassignUnauthorized{
 			Payload: &dtos.Error{
 				Message: "User does not have permission to unassign person from show",
 			},
@@ -31,5 +31,5 @@ var handleUnasignPersonFromShow = rostering.PostShowsShowIDUnassignHandlerFunc(f
 		return logError(&err)
 	}
 
-	return &rostering.PostShowsShowIDUnassignOK{}
+	return &rostering.PostShowsShowIDPeopleUnassignOK{}
 })

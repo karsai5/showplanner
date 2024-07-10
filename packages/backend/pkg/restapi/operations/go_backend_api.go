@@ -187,8 +187,8 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		ShowdocsPostShowdocTimersIDHandler: showdocs.PostShowdocTimersIDHandlerFunc(func(params showdocs.PostShowdocTimersIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation showdocs.PostShowdocTimersID has not yet been implemented")
 		}),
-		RosteringPostShowsShowIDUnassignHandler: rostering.PostShowsShowIDUnassignHandlerFunc(func(params rostering.PostShowsShowIDUnassignParams) middleware.Responder {
-			return middleware.NotImplemented("operation rostering.PostShowsShowIDUnassign has not yet been implemented")
+		RosteringPostShowsShowIDPeopleUnassignHandler: rostering.PostShowsShowIDPeopleUnassignHandlerFunc(func(params rostering.PostShowsShowIDPeopleUnassignParams) middleware.Responder {
+			return middleware.NotImplemented("operation rostering.PostShowsShowIDPeopleUnassign has not yet been implemented")
 		}),
 		PutAssignmentIDHandler: PutAssignmentIDHandlerFunc(func(params PutAssignmentIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation PutAssignmentID has not yet been implemented")
@@ -331,8 +331,8 @@ type GoBackendAPI struct {
 	ShowdocsPostShowdocReportsIDHandler showdocs.PostShowdocReportsIDHandler
 	// ShowdocsPostShowdocTimersIDHandler sets the operation handler for the post showdoc timers ID operation
 	ShowdocsPostShowdocTimersIDHandler showdocs.PostShowdocTimersIDHandler
-	// RosteringPostShowsShowIDUnassignHandler sets the operation handler for the post shows show ID unassign operation
-	RosteringPostShowsShowIDUnassignHandler rostering.PostShowsShowIDUnassignHandler
+	// RosteringPostShowsShowIDPeopleUnassignHandler sets the operation handler for the post shows show ID people unassign operation
+	RosteringPostShowsShowIDPeopleUnassignHandler rostering.PostShowsShowIDPeopleUnassignHandler
 	// PutAssignmentIDHandler sets the operation handler for the put assignment ID operation
 	PutAssignmentIDHandler PutAssignmentIDHandler
 	// PutRolesIDHandler sets the operation handler for the put roles ID operation
@@ -558,8 +558,8 @@ func (o *GoBackendAPI) Validate() error {
 	if o.ShowdocsPostShowdocTimersIDHandler == nil {
 		unregistered = append(unregistered, "showdocs.PostShowdocTimersIDHandler")
 	}
-	if o.RosteringPostShowsShowIDUnassignHandler == nil {
-		unregistered = append(unregistered, "rostering.PostShowsShowIDUnassignHandler")
+	if o.RosteringPostShowsShowIDPeopleUnassignHandler == nil {
+		unregistered = append(unregistered, "rostering.PostShowsShowIDPeopleUnassignHandler")
 	}
 	if o.PutAssignmentIDHandler == nil {
 		unregistered = append(unregistered, "PutAssignmentIDHandler")
@@ -844,7 +844,7 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/shows/{showId}/unassign"] = rostering.NewPostShowsShowIDUnassign(o.context, o.RosteringPostShowsShowIDUnassignHandler)
+	o.handlers["POST"]["/shows/{showId}/people/unassign"] = rostering.NewPostShowsShowIDPeopleUnassign(o.context, o.RosteringPostShowsShowIDPeopleUnassignHandler)
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)
 	}

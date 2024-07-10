@@ -16,19 +16,19 @@ import (
 	"github.com/go-openapi/validate"
 )
 
-// NewPostShowsShowIDUnassignParams creates a new PostShowsShowIDUnassignParams object
+// NewPostShowsShowIDPeopleUnassignParams creates a new PostShowsShowIDPeopleUnassignParams object
 //
 // There are no default values defined in the spec.
-func NewPostShowsShowIDUnassignParams() PostShowsShowIDUnassignParams {
+func NewPostShowsShowIDPeopleUnassignParams() PostShowsShowIDPeopleUnassignParams {
 
-	return PostShowsShowIDUnassignParams{}
+	return PostShowsShowIDPeopleUnassignParams{}
 }
 
-// PostShowsShowIDUnassignParams contains all the bound params for the post shows show ID unassign operation
+// PostShowsShowIDPeopleUnassignParams contains all the bound params for the post shows show ID people unassign operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters PostShowsShowIDUnassign
-type PostShowsShowIDUnassignParams struct {
+// swagger:parameters PostShowsShowIDPeopleUnassign
+type PostShowsShowIDPeopleUnassignParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
@@ -48,8 +48,8 @@ type PostShowsShowIDUnassignParams struct {
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewPostShowsShowIDUnassignParams() beforehand.
-func (o *PostShowsShowIDUnassignParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewPostShowsShowIDPeopleUnassignParams() beforehand.
+func (o *PostShowsShowIDPeopleUnassignParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r
@@ -72,7 +72,7 @@ func (o *PostShowsShowIDUnassignParams) BindRequest(r *http.Request, route *midd
 }
 
 // bindPersonID binds and validates parameter PersonID from query.
-func (o *PostShowsShowIDUnassignParams) bindPersonID(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *PostShowsShowIDPeopleUnassignParams) bindPersonID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	if !hasKey {
 		return errors.Required("personId", "query", rawData)
 	}
@@ -103,7 +103,7 @@ func (o *PostShowsShowIDUnassignParams) bindPersonID(rawData []string, hasKey bo
 }
 
 // validatePersonID carries on validations for parameter PersonID
-func (o *PostShowsShowIDUnassignParams) validatePersonID(formats strfmt.Registry) error {
+func (o *PostShowsShowIDPeopleUnassignParams) validatePersonID(formats strfmt.Registry) error {
 
 	if err := validate.FormatOf("personId", "query", "uuid", o.PersonID.String(), formats); err != nil {
 		return err
@@ -112,7 +112,7 @@ func (o *PostShowsShowIDUnassignParams) validatePersonID(formats strfmt.Registry
 }
 
 // bindShowID binds and validates parameter ShowID from path.
-func (o *PostShowsShowIDUnassignParams) bindShowID(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *PostShowsShowIDPeopleUnassignParams) bindShowID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]

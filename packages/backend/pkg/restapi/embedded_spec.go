@@ -1553,7 +1553,7 @@ func init() {
         }
       }
     },
-    "/shows/{showId}/unassign": {
+    "/shows/{showId}/people/unassign": {
       "post": {
         "produces": [
           "application/json"
@@ -3519,7 +3519,7 @@ func init() {
         }
       }
     },
-    "/shows/{showId}/unassign": {
+    "/shows/{showId}/people/unassign": {
       "post": {
         "produces": [
           "application/json"

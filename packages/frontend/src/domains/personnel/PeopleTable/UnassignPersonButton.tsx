@@ -14,7 +14,7 @@ export const UnassignPersonButton: FC<{
   const queryClient = useQueryClient();
 
   const mutation = useMutation<unknown, Error>(
-    () => api.rostering.showsShowIdUnassignPost({ showId, personId: id }),
+    () => api.rostering.showsShowIdPeopleUnassignPost({ showId, personId: id }),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["assigned-people", showId]);

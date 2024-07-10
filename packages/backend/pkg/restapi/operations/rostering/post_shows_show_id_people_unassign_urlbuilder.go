@@ -15,8 +15,8 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// PostShowsShowIDUnassignURL generates an URL for the post shows show ID unassign operation
-type PostShowsShowIDUnassignURL struct {
+// PostShowsShowIDPeopleUnassignURL generates an URL for the post shows show ID people unassign operation
+type PostShowsShowIDPeopleUnassignURL struct {
 	ShowID int64
 
 	PersonID strfmt.UUID
@@ -29,7 +29,7 @@ type PostShowsShowIDUnassignURL struct {
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *PostShowsShowIDUnassignURL) WithBasePath(bp string) *PostShowsShowIDUnassignURL {
+func (o *PostShowsShowIDPeopleUnassignURL) WithBasePath(bp string) *PostShowsShowIDPeopleUnassignURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -37,21 +37,21 @@ func (o *PostShowsShowIDUnassignURL) WithBasePath(bp string) *PostShowsShowIDUna
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *PostShowsShowIDUnassignURL) SetBasePath(bp string) {
+func (o *PostShowsShowIDPeopleUnassignURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *PostShowsShowIDUnassignURL) Build() (*url.URL, error) {
+func (o *PostShowsShowIDPeopleUnassignURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/shows/{showId}/unassign"
+	var _path = "/shows/{showId}/people/unassign"
 
 	showID := swag.FormatInt64(o.ShowID)
 	if showID != "" {
 		_path = strings.Replace(_path, "{showId}", showID, -1)
 	} else {
-		return nil, errors.New("showId is required on PostShowsShowIDUnassignURL")
+		return nil, errors.New("showId is required on PostShowsShowIDPeopleUnassignURL")
 	}
 
 	_basePath := o._basePath
@@ -73,7 +73,7 @@ func (o *PostShowsShowIDUnassignURL) Build() (*url.URL, error) {
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *PostShowsShowIDUnassignURL) Must(u *url.URL, err error) *url.URL {
+func (o *PostShowsShowIDPeopleUnassignURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -84,17 +84,17 @@ func (o *PostShowsShowIDUnassignURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *PostShowsShowIDUnassignURL) String() string {
+func (o *PostShowsShowIDPeopleUnassignURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *PostShowsShowIDUnassignURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *PostShowsShowIDPeopleUnassignURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on PostShowsShowIDUnassignURL")
+		return nil, errors.New("scheme is required for a full url on PostShowsShowIDPeopleUnassignURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on PostShowsShowIDUnassignURL")
+		return nil, errors.New("host is required for a full url on PostShowsShowIDPeopleUnassignURL")
 	}
 
 	base, err := o.Build()
@@ -108,6 +108,6 @@ func (o *PostShowsShowIDUnassignURL) BuildFull(scheme, host string) (*url.URL, e
 }
 
 // StringFull returns the string representation of a complete url
-func (o *PostShowsShowIDUnassignURL) StringFull(scheme, host string) string {
+func (o *PostShowsShowIDPeopleUnassignURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

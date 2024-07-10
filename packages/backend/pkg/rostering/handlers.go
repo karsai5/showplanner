@@ -19,5 +19,5 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 	api.RosteringDeleteInvitationsIDHandler = handleDeleteInviation
 	api.RosteringPostInvitationsIDNotifyHandler = handleNotifyInvitation
 
-	api.RosteringPostShowsShowIDUnassignHandler = handleUnasignPersonFromShow
+	api.RosteringPostShowsShowIDPeopleUnassignHandler = handleUnasignPersonFromShow
 }
