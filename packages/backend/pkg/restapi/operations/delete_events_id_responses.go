@@ -17,7 +17,7 @@ import (
 const DeleteEventsIDOKCode int = 200
 
 /*
-DeleteEventsIDOK delete events Id o k
+DeleteEventsIDOK OK
 
 swagger:response deleteEventsIdOK
 */

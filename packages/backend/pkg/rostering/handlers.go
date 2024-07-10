@@ -1,6 +1,7 @@
 package rostering
 
 import (
+	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/restapi/operations"
 )
 
@@ -20,4 +21,6 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 	api.RosteringPostInvitationsIDNotifyHandler = handleNotifyInvitation
 
 	api.RosteringPostShowsShowIDPeopleUnassignHandler = handleUnasignPersonFromShow
+
+	api.RosteringPostShowsShowIDRosterReleaseHandler = handleReleaseRoster(&database.Database{})
 }

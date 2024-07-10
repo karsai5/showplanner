@@ -283,7 +283,7 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "OK"
           },
           "401": {
             "$ref": "#/responses/Error"
@@ -309,7 +309,7 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "OK"
           },
           "401": {
             "$ref": "#/responses/Error"
@@ -1590,6 +1590,71 @@ func init() {
         }
       }
     },
+    "/shows/{showId}/roster/release": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Make the roster viewable by other members of the show",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "showId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "boolean",
+            "name": "sendEmail",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/shows/{showId}/roster/unrelease": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Make the roster hidden",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "showId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/shows/{showSlug}/summary": {
       "get": {
         "produces": [
@@ -2012,7 +2077,7 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "OK"
           },
           "401": {
             "description": "Error",
@@ -2044,7 +2109,7 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "OK"
           },
           "401": {
             "description": "Error",
@@ -3540,6 +3605,83 @@ func init() {
             "format": "uuid",
             "name": "personId",
             "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/shows/{showId}/roster/release": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Make the roster viewable by other members of the show",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "showId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "boolean",
+            "name": "sendEmail",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/shows/{showId}/roster/unrelease": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Make the roster hidden",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "showId",
+            "in": "path",
             "required": true
           }
         ],

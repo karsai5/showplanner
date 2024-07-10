@@ -3,9 +3,10 @@ package schedule_domain
 import (
 	"errors"
 	"fmt"
-	"showplanner.io/pkg/restapi/dtos"
 	"strings"
 	"time"
+
+	"showplanner.io/pkg/restapi/dtos"
 
 	ics "github.com/arran4/golang-ical"
 	uuid "github.com/satori/go.uuid"
@@ -20,17 +21,9 @@ type ICalOptions struct {
 	HideEventsNotRequiredFor bool
 }
 
-// func NewICalendar(database database.IDatabaseShows, options ICalOptions) *iCalendar {
-// 	return &iCalendar{
-// 		db:                       database,
-// 		userId:                   options.UserId,
-// 		hideEventsNotRequiredFor: options.HideEventsNotRequiredFor,
-// 	}
-// }
-
 type iCalendar struct {
-	UserId                   uuid.UUID
 	Db                       database.IDatabase
+	UserId                   uuid.UUID
 	HideEventsNotRequiredFor bool
 }
 
@@ -42,7 +35,6 @@ func (ical *iCalendar) CreateCalendarForPerson() (_ string, err error) {
 	}()
 
 	shows, err := ical.Db.GetShowsForUser(ical.UserId)
-
 	if err != nil {
 		return "", err
 	}

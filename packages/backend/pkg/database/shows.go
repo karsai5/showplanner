@@ -34,14 +34,13 @@ func GetShowsForUser(id uuid.UUID) ([]Show, error) {
 }
 
 func AddPersonToShow(showId uint, id uuid.UUID) error {
-	var show = Show{Model: gorm.Model{ID: showId}}
+	show := Show{Model: gorm.Model{ID: showId}}
 	person, err := GetPerson(id)
 	if err != nil {
 		return fmt.Errorf("while adding person to show: %w", err)
 	}
 
 	err = db.Model(&show).Association("People").Append(&person)
-
 	if err != nil {
 		return fmt.Errorf("while adding person to show: %w", err)
 	}
@@ -56,14 +55,13 @@ func RemovePersonFromShow(showId uint, id uuid.UUID) (err error) {
 		}
 	}()
 
-	var show = Show{Model: gorm.Model{ID: showId}}
+	show := Show{Model: gorm.Model{ID: showId}}
 	person, err := GetPerson(id)
 	if err != nil {
 		return fmt.Errorf("while getting person: %w", err)
 	}
 
 	err = db.Model(&show).Association("People").Delete(&person)
-
 	if err != nil {
 		return fmt.Errorf("while deleting person from association: %w", err)
 	}
@@ -142,5 +140,15 @@ func GetShowByIdWithPeople(showId int64) (Show, error) {
 
 func CreateShow(show Show) (Show, error) {
 	res := db.Create(&show)
+	return show, res.Error
+}
+
+func (d *Database) UpdateShow(show Show) (Show, error) {
+	res := db.Save(&show)
+	if res.Error != nil {
+		return show, res.Error
+	}
+
+	res = db.First(&show, show.ID)
 	return show, res.Error
 }

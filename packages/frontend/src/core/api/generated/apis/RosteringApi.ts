@@ -65,6 +65,15 @@ export interface ShowsShowIdPeopleUnassignPostRequest {
   personId: string;
 }
 
+export interface ShowsShowIdRosterReleasePostRequest {
+  showId: number;
+  sendEmail?: boolean;
+}
+
+export interface ShowsShowIdRosterUnreleasePostRequest {
+  showId: number;
+}
+
 export interface ShowsShowSlugSummaryGetRequest {
   showSlug: string;
 }
@@ -536,6 +545,110 @@ export class RosteringApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<void> {
     await this.showsShowIdPeopleUnassignPostRaw(
+      requestParameters,
+      initOverrides
+    );
+  }
+
+  /**
+   * Make the roster viewable by other members of the show
+   */
+  async showsShowIdRosterReleasePostRaw(
+    requestParameters: ShowsShowIdRosterReleasePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (
+      requestParameters.showId === null ||
+      requestParameters.showId === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "showId",
+        "Required parameter requestParameters.showId was null or undefined when calling showsShowIdRosterReleasePost."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    if (requestParameters.sendEmail !== undefined) {
+      queryParameters["sendEmail"] = requestParameters.sendEmail;
+    }
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/shows/{showId}/roster/release`.replace(
+          `{${"showId"}}`,
+          encodeURIComponent(String(requestParameters.showId))
+        ),
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Make the roster viewable by other members of the show
+   */
+  async showsShowIdRosterReleasePost(
+    requestParameters: ShowsShowIdRosterReleasePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.showsShowIdRosterReleasePostRaw(
+      requestParameters,
+      initOverrides
+    );
+  }
+
+  /**
+   * Make the roster hidden
+   */
+  async showsShowIdRosterUnreleasePostRaw(
+    requestParameters: ShowsShowIdRosterUnreleasePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<void>> {
+    if (
+      requestParameters.showId === null ||
+      requestParameters.showId === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "showId",
+        "Required parameter requestParameters.showId was null or undefined when calling showsShowIdRosterUnreleasePost."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/shows/{showId}/roster/unrelease`.replace(
+          `{${"showId"}}`,
+          encodeURIComponent(String(requestParameters.showId))
+        ),
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Make the roster hidden
+   */
+  async showsShowIdRosterUnreleasePost(
+    requestParameters: ShowsShowIdRosterUnreleasePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<void> {
+    await this.showsShowIdRosterUnreleasePostRaw(
       requestParameters,
       initOverrides
     );

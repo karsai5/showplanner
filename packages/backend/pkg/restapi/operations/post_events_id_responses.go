@@ -17,7 +17,7 @@ import (
 const PostEventsIDOKCode int = 200
 
 /*
-PostEventsIDOK post events Id o k
+PostEventsIDOK OK
 
 swagger:response postEventsIdOK
 */

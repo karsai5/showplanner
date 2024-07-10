@@ -102,16 +102,21 @@ func (e *Event) MapToEventDTO() dtos.EventDTO {
 	return dto
 }
 
+type ShowOptions struct {
+	IsRosterReleased bool
+}
+
 type Show struct {
+	ImageID *uint
+	Image   *Media
 	gorm.Model
 	Name    string
 	Company string
 	Slug    string `gorm:"unique"`
 	Events  []Event
 	Roles   []Role
-	People  []Person `gorm:"many2many:show_people;"`
-	ImageID *uint
-	Image   *Media
+	People  []Person    `gorm:"many2many:show_people;"`
+	Options ShowOptions `gorm:"embedded;embeddedPrefix:options_"`
 }
 
 func (show *Show) MapToDTO() dtos.ShowDTO {
@@ -434,6 +439,7 @@ func mapTimeIfExists(t *time.Time) *strfmt.DateTime {
 	}
 	return (*strfmt.DateTime)(t)
 }
+
 func mapStrfmtTimeIfExists(t *strfmt.DateTime) *time.Time {
 	if t == nil {
 		return nil
