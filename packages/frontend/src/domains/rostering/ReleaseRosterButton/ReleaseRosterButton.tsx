@@ -1,11 +1,11 @@
-import { FC, useState } from "react";
-import cc from "classnames";
-import { useModal } from "core/components/Modal/Modal";
 import { useMutation } from "@tanstack/react-query";
+import cc from "classnames";
 import { api } from "core/api";
-import { toast } from "react-toastify";
+import { useModal } from "core/components/Modal/Modal";
 import { showToastError } from "core/utils/errors";
 import { useRouter } from "next/router";
+import { FC, useState } from "react";
+import { toast } from "react-toastify";
 
 export const ReleaseRosterButton: FC<{ showId: number; className: string }> = ({
   showId,

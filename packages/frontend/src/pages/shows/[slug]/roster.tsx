@@ -114,7 +114,7 @@ const ShowPage = (
           <p>
             The roster has not been released yet.
             <br />
-            You'll get an email when the roster is released.
+            You&pos;ll get an email when the roster is released.
           </p>
         </div>
       )}

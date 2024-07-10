@@ -1,3 +1,4 @@
+import cc from "classnames";
 import { useBreakpoint } from "core/hooks/useBreakpoint";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -5,8 +6,6 @@ import { usePathname } from "next/navigation";
 import { NavItem, useMainNavItems } from "./items";
 import { MobileNav } from "./MobileNav";
 import { ItemAnchor, ItemLink } from "./Shared";
-import cc from "classnames";
-import classNames from "classnames";
 
 export const Nav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
   const isSmall = useBreakpoint("sm");
