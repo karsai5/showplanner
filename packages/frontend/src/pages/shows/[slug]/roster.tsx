@@ -3,6 +3,7 @@ import { H2 } from "core/components/Typography";
 import { HasPermission, PERMISSION } from "core/permissions";
 import { ifResponseErrorCode, ssrWrapper } from "core/permissions/ssr";
 import { AddRoleModal } from "domains/rostering/AddRoleModal/AddRoleModal";
+import { ReleaseRosterButton } from "domains/rostering/ReleaseRosterButton/ReleaseRosterButton";
 import { RosterTable } from "domains/rostering/RosterTable/RosterTable";
 import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
@@ -52,6 +53,9 @@ const ShowPage = (
         {props.rosterJSON && (
           <div>
             <HasPermission showId={show.id} permission={PERMISSION.rostering}>
+              {!show.isRosterReleased && (
+                <ReleaseRosterButton showId={show.id} className="mr-2" />
+              )}
               <AddRoleModal showId={show.id} className="mr-2" />
             </HasPermission>
             <button

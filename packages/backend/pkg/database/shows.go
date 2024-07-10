@@ -124,6 +124,13 @@ func GetShowBySlug(slug string) (Show, error) {
 	return show, res.Error
 }
 
+func (d *Database) GetShowById(showId uint) (Show, error) {
+	show := Show{}
+	res := db.First(&show, showId)
+
+	return show, res.Error
+}
+
 func GetShowById(showId int64) (Show, error) {
 	show := Show{}
 	res := db.First(&show, showId)
@@ -143,12 +150,11 @@ func CreateShow(show Show) (Show, error) {
 	return show, res.Error
 }
 
-func (d *Database) UpdateShow(show Show) (Show, error) {
-	res := db.Save(&show)
-	if res.Error != nil {
-		return show, res.Error
+func (d *Database) UpdateShow(id uint, show Show) (Show, error) {
+	updatedShow := Show{
+		Model: gorm.Model{ID: id},
 	}
 
-	res = db.First(&show, show.ID)
-	return show, res.Error
+	res := db.Model(&updatedShow).Updates(show)
+	return updatedShow, res.Error
 }

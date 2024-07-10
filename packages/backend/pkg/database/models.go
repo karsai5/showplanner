@@ -153,10 +153,11 @@ func (show *Show) MapToDTO() dtos.ShowDTO {
 
 func (show *Show) MapToSummaryDTO() dtos.ShowSummaryDTO {
 	return dtos.ShowSummaryDTO{
-		ID:      conv.UintToInt64(show.ID),
-		Name:    &show.Name,
-		Slug:    &show.Slug,
-		Company: &show.Company,
+		ID:               conv.UintToInt64(show.ID),
+		Name:             &show.Name,
+		Slug:             &show.Slug,
+		Company:          &show.Company,
+		IsRosterReleased: &show.Options.IsRosterReleased,
 	}
 }
 
@@ -168,13 +169,13 @@ type Availability struct {
 }
 
 type Assignment struct {
+	Event Event
+	Role  Role
 	gorm.Model
-	PersonID uuid.UUID
+	Person   Person
 	EventID  uint
 	RoleID   uint
-	Event    Event
-	Person   Person
-	Role     Role
+	PersonID uuid.UUID
 }
 
 type Shadow struct {

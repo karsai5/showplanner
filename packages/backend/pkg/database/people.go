@@ -27,6 +27,12 @@ func GetPeopleAssignedToShow(id uint) ([]Person, error) {
 	return show.People, res.Error
 }
 
+func (d *Database) GetPeopleAssignedToShow(id uint) ([]Person, error) {
+	show := Show{}
+	res := db.Preload("People").Find(&show, id)
+	return show.People, res.Error
+}
+
 func GetAllPeople() (people []Person, err error) {
 	res := db.Find(&people)
 	err = res.Error

@@ -29,6 +29,7 @@ import { RenameRole } from "domains/rostering/RolesTable";
 import React, { useState } from "react";
 
 import { AssignmentCell, AssignmentDisplay } from "./AssignmentCell";
+import { useRouter } from "next/router";
 
 export const RosterTable: React.FC<{
   showId: number;
@@ -42,7 +43,7 @@ export const RosterTable: React.FC<{
   });
 
   if (rosterRequest.isError) {
-    return <ErrorBox>Could not get shows</ErrorBox>;
+    return <ErrorBox>Could not get roster</ErrorBox>;
   }
   if (rosterRequest.isLoading) {
     return <progress className="progress w-56"></progress>;

@@ -27,6 +27,9 @@ type ShowSummaryDTO struct {
 	// Required: true
 	ID *int64 `json:"id"`
 
+	// is roster released
+	IsRosterReleased *bool `json:"isRosterReleased,omitempty"`
+
 	// name
 	// Required: true
 	Name *string `json:"name"`

@@ -8,6 +8,9 @@ ShowSummaryDTO:
       type: string
     slug:
       type: string
+    isRosterReleased:
+      type: boolean
+      x-nullable: true
   required:
     - id
     - name

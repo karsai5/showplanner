@@ -8,7 +8,10 @@ type IDatabase interface {
 	GetEventsWithAvailabilityAndAssignmentsForUser(showId uint, userId uuid.UUID) ([]Event, error)
 	GetRolesForPerson(showId uint, personId uuid.UUID) ([]Role, error)
 
-	UpdateShow(show Show) (Show, error)
+	UpdateShow(showId uint, show Show) (Show, error)
+	GetShowById(showId uint) (Show, error)
+
+	GetPeopleAssignedToShow(id uint) ([]Person, error)
 }
 
 type Database struct{}

@@ -4606,6 +4606,10 @@ func init() {
         "id": {
           "type": "integer"
         },
+        "isRosterReleased": {
+          "type": "boolean",
+          "x-nullable": true
+        },
         "name": {
           "type": "string"
         },

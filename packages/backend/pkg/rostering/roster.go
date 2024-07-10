@@ -1,39 +1,33 @@
 package rostering
 
 import (
-	"github.com/go-openapi/runtime/middleware"
+	"fmt"
+
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/logger"
-	"showplanner.io/pkg/permissions"
-	"showplanner.io/pkg/restapi/operations/rostering"
+	"showplanner.io/pkg/rostering/emails"
 )
 
-func handleReleaseRoster(db database.IDatabase) rostering.PostShowsShowIDRosterReleaseHandler {
-	return rostering.PostShowsShowIDRosterReleaseHandlerFunc(func(params rostering.PostShowsShowIDRosterReleaseParams) middleware.Responder {
-		logError := logger.CreateLogErrorFunc("Releasing roster", &rostering.PostShowsShowIDRosterReleaseInternalServerError{})
-
-		hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)
+func sendEmailNotifyingThatRosterHasBeenReleased(db database.IDatabase, showId uint) (err error) {
+	defer func() {
 		if err != nil {
-			return logError(&err)
+			err = fmt.Errorf("while sending email notifying that roster was released: %w", err)
 		}
+	}()
 
-		if !hasPerm {
-			return &rostering.PostShowsShowIDRosterReleaseUnauthorized{}
-		}
+	show, err := db.GetShowById(showId)
 
-		show := database.Show{
-			Options: database.ShowOptions{
-				IsRosterReleased: true,
-			},
-		}
+	assignedPeople, err := db.GetPeopleAssignedToShow(showId)
+	if err != nil {
+		return err
+	}
 
-		_, err = db.UpdateShow(show)
-		if err != nil {
-			return logError(&err)
-		}
+	for _, p := range assignedPeople {
+		emails.SendRosterReleasedEmail(emails.RosterReleasedEmail{
+			Email:    p.Email,
+			ShowName: show.Name,
+			ShowSlug: show.Slug,
+		})
+	}
 
-		// TODO: Send email
-
-		return rostering.NewPostShowsShowIDRosterReleaseOK()
-	})
+	return nil
 }
