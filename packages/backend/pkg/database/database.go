@@ -13,9 +13,4 @@ type IDatabase interface {
 
 type Database struct{}
 
-// UpdateShow implements IDatabase.
-func (d *Database) UpdateShow(show Show) (Show, error) {
-	panic("unimplemented")
-}
-
 var _ = IDatabase(&Database{})
