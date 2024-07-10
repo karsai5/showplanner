@@ -70,7 +70,7 @@ const ShowPage = (
       },
     ],
   };
-  if (hasRosteringPermission) {
+  if (hasRosteringPermission && show.isRosterReleased) {
     configItems.children?.push({
       title: "Unrelease roster",
       onClick: () =>
