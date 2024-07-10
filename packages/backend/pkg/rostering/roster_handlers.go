@@ -21,13 +21,7 @@ func handleReleaseRoster(db database.IDatabase) rostering.PostShowsShowIDRosterR
 			return &rostering.PostShowsShowIDRosterReleaseUnauthorized{}
 		}
 
-		update := database.Show{
-			Options: database.ShowOptions{
-				IsRosterReleased: true,
-			},
-		}
-
-		_, err = db.UpdateShow(uint(params.ShowID), update)
+		err = db.UpdateRosterReleaseStatus(uint(params.ShowID), true)
 		if err != nil {
 			return logError(&err)
 		}
@@ -36,6 +30,28 @@ func handleReleaseRoster(db database.IDatabase) rostering.PostShowsShowIDRosterR
 			sendEmailNotifyingThatRosterHasBeenReleased(db, uint(params.ShowID))
 		}
 
-		return rostering.NewPostShowsShowIDRosterReleaseOK()
+		return &rostering.PostShowsShowIDRosterReleaseOK{}
+	})
+}
+
+func handleUnreleaseRoster(db database.IDatabase) rostering.PostShowsShowIDRosterUnreleaseHandler {
+	return rostering.PostShowsShowIDRosterUnreleaseHandlerFunc(func(params rostering.PostShowsShowIDRosterUnreleaseParams) middleware.Responder {
+		logError := logger.CreateLogErrorFunc("Unreleasing roster", &rostering.PostShowsShowIDRosterUnreleaseInternalServerError{})
+
+		hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)
+		if err != nil {
+			return logError(&err)
+		}
+
+		if !hasPerm {
+			return &rostering.PostShowsShowIDRosterReleaseUnauthorized{}
+		}
+
+		err = db.UpdateRosterReleaseStatus(uint(params.ShowID), false)
+		if err != nil {
+			return logError(&err)
+		}
+
+		return &rostering.PostShowsShowIDRosterUnreleaseOK{}
 	})
 }

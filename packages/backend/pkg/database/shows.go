@@ -158,3 +158,11 @@ func (d *Database) UpdateShow(id uint, show Show) (Show, error) {
 	res := db.Model(&updatedShow).Updates(show)
 	return updatedShow, res.Error
 }
+
+func (d *Database) UpdateRosterReleaseStatus(showId uint, released bool) error {
+	show := Show{
+		Model: gorm.Model{ID: showId},
+	}
+	res := db.Model(&show).Update("options_is_roster_released", released)
+	return res.Error
+}

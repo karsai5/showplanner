@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { NavItem, useMainNavItems } from "./items";
 import { MobileNav } from "./MobileNav";
 import { ItemAnchor, ItemLink } from "./Shared";
+import cc from "classnames";
+import classNames from "classnames";
 
 export const Nav: React.FC<{ showShowMenu?: boolean }> = ({ showShowMenu }) => {
   const isSmall = useBreakpoint("sm");
@@ -42,10 +44,16 @@ const DisplayItem = ({ item }: { item: NavItem }) => {
   }
 };
 
-const DisplayDropdown = ({ item }: { item: NavItem }) => {
+export const DisplayDropdown = ({
+  item,
+  className,
+}: {
+  item: NavItem;
+  className?: string;
+}) => {
   return (
     <li className="dropdown dropdown-hover dropdown-end">
-      <a tabIndex={0}>
+      <a tabIndex={0} className={cc(className)}>
         {item.icon && item.icon}
         {item.title}
       </a>

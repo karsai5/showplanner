@@ -1,13 +1,26 @@
+import { useMutation } from "@tanstack/react-query";
+import { api } from "core/api";
 import { RosterDTO } from "core/api/generated";
+import { useConfirmationModal } from "core/components/Modal/ConfirmationModal";
 import { H2 } from "core/components/Typography";
-import { HasPermission, PERMISSION } from "core/permissions";
+import {
+  HasPermission,
+  PERMISSION,
+  showPermission,
+  useHasPermission,
+} from "core/permissions";
 import { ifResponseErrorCode, ssrWrapper } from "core/permissions/ssr";
+import { showToastError } from "core/utils/errors";
+import { DisplayDropdown } from "domains/layout/components/Nav";
+import { NavItem } from "domains/layout/components/Nav/items";
 import { AddRoleModal } from "domains/rostering/AddRoleModal/AddRoleModal";
 import { ReleaseRosterButton } from "domains/rostering/ReleaseRosterButton/ReleaseRosterButton";
 import { RosterTable } from "domains/rostering/RosterTable/RosterTable";
 import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import superjson from "superjson";
 
 export const getServerSideProps = ssrWrapper(async (context, api) => {
@@ -42,6 +55,33 @@ const ShowPage = (
 ) => {
   const { show } = props;
   const [showOldEvents, setShowOldEvents] = useState(false);
+  const hasRosteringPermission = useHasPermission()(
+    showPermission(show.id, PERMISSION.rostering)
+  );
+  const confirm = useConfirmationModal();
+  const unreleaseRosterMutation = useUnreleaseRosterMutation(show.id);
+
+  const configItems: NavItem = {
+    title: "...",
+    children: [
+      {
+        title: showOldEvents ? "Hide past events" : "Show past events",
+        onClick: () => setShowOldEvents(!showOldEvents),
+      },
+    ],
+  };
+  if (hasRosteringPermission) {
+    configItems.children?.push({
+      title: "Unrelease roster",
+      onClick: () =>
+        confirm(
+          "Unrelease roster",
+          "Are you sure you want to unrelease the roster?",
+          () => unreleaseRosterMutation.mutate()
+        ),
+    });
+  }
+
   return (
     <>
       <Head>
@@ -57,13 +97,8 @@ const ShowPage = (
                 <ReleaseRosterButton showId={show.id} className="mr-2" />
               )}
               <AddRoleModal showId={show.id} className="mr-2" />
+              <DisplayDropdown className="btn mr-2" item={configItems} />
             </HasPermission>
-            <button
-              className="btn"
-              onClick={() => setShowOldEvents(!showOldEvents)}
-            >
-              {showOldEvents ? "Hide" : "Show"} past events
-            </button>
           </div>
         )}
       </div>
@@ -85,6 +120,23 @@ const ShowPage = (
       )}
     </>
   );
+};
+
+const useUnreleaseRosterMutation = (showId: number) => {
+  const router = useRouter();
+  const mutation = useMutation<unknown, Error>(
+    () => api.rostering.showsShowIdRosterUnreleasePost({ showId }),
+    {
+      onSuccess: () => {
+        toast.success("Roster unreleased");
+        router.reload();
+      },
+      onError: (err) => {
+        showToastError("Could not unrelease roster", err);
+      },
+    }
+  );
+  return mutation;
 };
 
 export default ShowPage;

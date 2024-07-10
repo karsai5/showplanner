@@ -9,6 +9,7 @@ type IDatabase interface {
 	GetRolesForPerson(showId uint, personId uuid.UUID) ([]Role, error)
 
 	UpdateShow(showId uint, show Show) (Show, error)
+	UpdateRosterReleaseStatus(showId uint, released bool) error
 	GetShowById(showId uint) (Show, error)
 
 	GetPeopleAssignedToShow(id uint) ([]Person, error)

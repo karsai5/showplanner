@@ -6,6 +6,7 @@ import (
 )
 
 func SetupHandlers(api *operations.GoBackendAPI) {
+	db := database.Database{}
 	api.RosteringGetRosteringShowsHandler = handleGetShows
 
 	api.RosteringGetShowsShowSlugSummaryHandler = handleGetShowSummary
@@ -22,5 +23,6 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 
 	api.RosteringPostShowsShowIDPeopleUnassignHandler = handleUnasignPersonFromShow
 
-	api.RosteringPostShowsShowIDRosterReleaseHandler = handleReleaseRoster(&database.Database{})
+	api.RosteringPostShowsShowIDRosterReleaseHandler = handleReleaseRoster(&db)
+	api.RosteringPostShowsShowIDRosterUnreleaseHandler = handleUnreleaseRoster(&db)
 }
