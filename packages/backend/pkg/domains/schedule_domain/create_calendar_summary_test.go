@@ -19,49 +19,34 @@ var mockShow = database.Show{
 	Company: "Test company",
 	Slug:    "test-slug",
 }
-
-func doGetRolesForPerson(uint, uuid.UUID) ([]database.Role, error) {
-	return []database.Role{}, nil
-}
-
-func doGetShowsForUser(id uuid.UUID) ([]database.Show, error) {
-	return []database.Show{mockShow}, nil
-}
-
-func mockEvents(events []database.Event) func(showId uint, userId uuid.UUID) ([]database.Event, error) {
-	return func(showId uint, userId uuid.UUID) ([]database.Event, error) {
-		return events, nil
-	}
-}
+var personId = uuid.NewV4()
 
 func TestDividerEventsAreSkipped(t *testing.T) {
-	mockDb := database.MockDatabase{
-		DoGetRolesForPerson: doGetRolesForPerson,
-		DoGetShowsForUser:   doGetShowsForUser,
-		DoGetEventsWithAvailabilityAndAssignmentsForUser: mockEvents([]database.Event{
-			{
-				Start:      time.Now(),
-				End:        &time.Time{},
-				CurtainsUp: &time.Time{},
-				ShowID:     mockShow.ID,
-				Show:       mockShow,
-				Options: database.EventOptions{
-					Divider:            true,
-					AttendanceRequired: false,
-				},
+	mockDB := database.NewMockIDatabase(t)
+	mockDB.On("GetShowsForUser", personId).Return([]database.Show{mockShow}, nil)
+	mockDB.On("GetRolesForPerson", mockShow.ID, personId).Return([]database.Role{}, nil)
+	mockDB.EXPECT().GetEventsWithAvailabilityAndAssignmentsForUser(mockShow.ID, personId).Return([]database.Event{
+		{
+			Start:      time.Now(),
+			End:        &time.Time{},
+			CurtainsUp: &time.Time{},
+			ShowID:     mockShow.ID,
+			Show:       mockShow,
+			Options: database.EventOptions{
+				Divider:            true,
+				AttendanceRequired: false,
 			},
-		}),
-	}
+		},
+	}, nil)
 
 	ical := iCalendar{
-		UserId:                   [16]byte{},
-		Db:                       &mockDb,
+		UserId:                   personId,
+		Db:                       mockDB,
 		HideEventsNotRequiredFor: false,
 	}
 
 	// Act
 	result, err := ical.CreateCalendarForPerson()
-
 	// Assert
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
@@ -75,30 +60,26 @@ func TestDividerEventsAreSkipped(t *testing.T) {
 }
 
 func TestEventWithNoRolesIsHiddenIfHideEventsIsTrue(t *testing.T) {
-	personId := uuid.NewV4()
-
-	mockDb := database.MockDatabase{
-		DoGetRolesForPerson: doGetRolesForPerson,
-		DoGetShowsForUser:   doGetShowsForUser,
-		DoGetEventsWithAvailabilityAndAssignmentsForUser: mockEvents([]database.Event{
-			{
-				Start:          time.Now(),
-				CurtainsUp:     conv.Pointer(time.Now()),
-				Availabilities: []database.Availability{},
-				Options:        database.EventOptions{},
-			},
-		}),
-	}
+	mockDB := database.NewMockIDatabase(t)
+	mockDB.On("GetShowsForUser", personId).Return([]database.Show{mockShow}, nil)
+	mockDB.On("GetRolesForPerson", mockShow.ID, personId).Return([]database.Role{}, nil)
+	mockDB.EXPECT().GetEventsWithAvailabilityAndAssignmentsForUser(mockShow.ID, personId).Return([]database.Event{
+		{
+			Start:          time.Now(),
+			CurtainsUp:     conv.Pointer(time.Now()),
+			Availabilities: []database.Availability{},
+			Options:        database.EventOptions{},
+		},
+	}, nil)
 
 	ical := iCalendar{
 		UserId:                   personId,
-		Db:                       &mockDb,
+		Db:                       mockDB,
 		HideEventsNotRequiredFor: true,
 	}
 
 	// Act
 	result, err := ical.CreateCalendarForPerson()
-
 	// Assert
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
@@ -109,29 +90,25 @@ func TestEventWithNoRolesIsHiddenIfHideEventsIsTrue(t *testing.T) {
 }
 
 func TestEventWithNoRolesHasCorrectDescriptionIfHideEventsIsFalse(t *testing.T) {
-	personId := uuid.NewV4()
-
-	mockDb := database.MockDatabase{
-		DoGetRolesForPerson: doGetRolesForPerson,
-		DoGetShowsForUser:   doGetShowsForUser,
-		DoGetEventsWithAvailabilityAndAssignmentsForUser: mockEvents([]database.Event{
-			{
-				Start:          time.Now(),
-				CurtainsUp:     conv.Pointer(time.Now()),
-				Availabilities: []database.Availability{},
-				Options:        database.EventOptions{},
-			},
-		}),
-	}
+	mockDB := database.NewMockIDatabase(t)
+	mockDB.On("GetShowsForUser", personId).Return([]database.Show{mockShow}, nil)
+	mockDB.On("GetRolesForPerson", mockShow.ID, personId).Return([]database.Role{}, nil)
+	mockDB.EXPECT().GetEventsWithAvailabilityAndAssignmentsForUser(mockShow.ID, personId).Return([]database.Event{
+		{
+			Start:          time.Now(),
+			CurtainsUp:     conv.Pointer(time.Now()),
+			Availabilities: []database.Availability{},
+			Options:        database.EventOptions{},
+		},
+	}, nil)
 
 	ical := iCalendar{
 		UserId: personId,
-		Db:     &mockDb,
+		Db:     mockDB,
 	}
 
 	// Act
 	result, err := ical.CreateCalendarForPerson()
-
 	// Assert
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
@@ -140,37 +117,34 @@ func TestEventWithNoRolesHasCorrectDescriptionIfHideEventsIsFalse(t *testing.T) 
 }
 
 func TestUnattendingEventIsHiddenIfHideEventsIsTrue(t *testing.T) {
-	personId := uuid.NewV4()
 	startTime, _ := time.Parse("2006-01-02", "2021-01-01")
 
-	mockDb := database.MockDatabase{
-		DoGetRolesForPerson: doGetRolesForPerson,
-		DoGetShowsForUser:   doGetShowsForUser,
-		DoGetEventsWithAvailabilityAndAssignmentsForUser: mockEvents([]database.Event{
-			{
-				Start: startTime,
-				Availabilities: []database.Availability{
-					{
-						PersonID:  personId,
-						Available: false,
-					},
-				},
-				Options: database.EventOptions{
-					AttendanceRequired: true,
+	mockDB := database.NewMockIDatabase(t)
+	mockDB.On("GetShowsForUser", personId).Return([]database.Show{mockShow}, nil)
+	mockDB.On("GetRolesForPerson", mockShow.ID, personId).Return([]database.Role{}, nil)
+	mockDB.EXPECT().GetEventsWithAvailabilityAndAssignmentsForUser(mockShow.ID, personId).Return([]database.Event{
+		{
+			Start: startTime,
+			Availabilities: []database.Availability{
+				{
+					PersonID:  personId,
+					Available: false,
 				},
 			},
-		}),
-	}
+			Options: database.EventOptions{
+				AttendanceRequired: true,
+			},
+		},
+	}, nil)
 
 	ical := iCalendar{
 		UserId:                   personId,
-		Db:                       &mockDb,
+		Db:                       mockDB,
 		HideEventsNotRequiredFor: true,
 	}
 
 	// Act
 	result, err := ical.CreateCalendarForPerson()
-
 	// Assert
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
@@ -181,38 +155,35 @@ func TestUnattendingEventIsHiddenIfHideEventsIsTrue(t *testing.T) {
 }
 
 func TestUnAttendingEventHasCorrectSummary(t *testing.T) {
-	personId := uuid.NewV4()
 	startTime, _ := time.Parse("2006-01-02", "2021-01-01")
 
-	mockDb := database.MockDatabase{
-		DoGetRolesForPerson: doGetRolesForPerson,
-		DoGetShowsForUser:   doGetShowsForUser,
-		DoGetEventsWithAvailabilityAndAssignmentsForUser: mockEvents([]database.Event{
-			{
-				Start: startTime,
-				Name:  conv.Pointer("Test event"),
-				Availabilities: []database.Availability{
-					{
-						PersonID:  personId,
-						Available: false,
-					},
-				},
-				Options: database.EventOptions{
-					AttendanceRequired: true,
+	mockDB := database.NewMockIDatabase(t)
+	mockDB.On("GetShowsForUser", personId).Return([]database.Show{mockShow}, nil)
+	mockDB.On("GetRolesForPerson", mockShow.ID, personId).Return([]database.Role{}, nil)
+	mockDB.EXPECT().GetEventsWithAvailabilityAndAssignmentsForUser(mockShow.ID, personId).Return([]database.Event{
+		{
+			Start: startTime,
+			Name:  conv.Pointer("Test event"),
+			Availabilities: []database.Availability{
+				{
+					PersonID:  personId,
+					Available: false,
 				},
 			},
-		}),
-	}
+			Options: database.EventOptions{
+				AttendanceRequired: true,
+			},
+		},
+	}, nil)
 
 	ical := iCalendar{
 		UserId:                   personId,
 		HideEventsNotRequiredFor: false,
-		Db:                       &mockDb,
+		Db:                       mockDB,
 	}
 
 	// Act
 	result, err := ical.CreateCalendarForPerson()
-
 	// Assert
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
@@ -226,32 +197,29 @@ func TestUnAttendingEventHasCorrectSummary(t *testing.T) {
 }
 
 func TestAttendingUnknownEventHasCorrectSummary(t *testing.T) {
-	personId := uuid.NewV4()
 	startTime, _ := time.Parse("2006-01-02", "2021-01-01")
-	mockDb := database.MockDatabase{
-		DoGetRolesForPerson: doGetRolesForPerson,
-		DoGetShowsForUser:   doGetShowsForUser,
-		DoGetEventsWithAvailabilityAndAssignmentsForUser: mockEvents([]database.Event{
-			{
-				Start:          startTime,
-				Name:           conv.Pointer("Test event"),
-				Availabilities: []database.Availability{},
-				Options: database.EventOptions{
-					AttendanceRequired: true,
-				},
+	mockDB := database.NewMockIDatabase(t)
+	mockDB.On("GetShowsForUser", personId).Return([]database.Show{mockShow}, nil)
+	mockDB.On("GetRolesForPerson", mockShow.ID, personId).Return([]database.Role{}, nil)
+	mockDB.EXPECT().GetEventsWithAvailabilityAndAssignmentsForUser(mockShow.ID, personId).Return([]database.Event{
+		{
+			Start:          startTime,
+			Name:           conv.Pointer("Test event"),
+			Availabilities: []database.Availability{},
+			Options: database.EventOptions{
+				AttendanceRequired: true,
 			},
-		}),
-	}
+		},
+	}, nil)
 
 	ical := iCalendar{
 		UserId:                   personId,
 		HideEventsNotRequiredFor: true,
-		Db:                       &mockDb,
+		Db:                       mockDB,
 	}
 
 	// Act
 	result, err := ical.CreateCalendarForPerson()
-
 	// Assert
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
@@ -266,37 +234,35 @@ func TestAttendingUnknownEventHasCorrectSummary(t *testing.T) {
 }
 
 func TestAttendingEventHasCorrectSummary(t *testing.T) {
-	personId := uuid.NewV4()
 	startTime, _ := time.Parse("2006-01-02", "2021-01-01")
-	mockDb := database.MockDatabase{
-		DoGetRolesForPerson: doGetRolesForPerson,
-		DoGetShowsForUser:   doGetShowsForUser,
-		DoGetEventsWithAvailabilityAndAssignmentsForUser: mockEvents([]database.Event{
-			{
-				Start: startTime,
-				Name:  conv.Pointer("Test event"),
-				Availabilities: []database.Availability{
-					{
-						PersonID:  personId,
-						Available: true,
-					},
-				},
-				Options: database.EventOptions{
-					AttendanceRequired: true,
+
+	mockDB := database.NewMockIDatabase(t)
+	mockDB.On("GetShowsForUser", personId).Return([]database.Show{mockShow}, nil)
+	mockDB.On("GetRolesForPerson", mockShow.ID, personId).Return([]database.Role{}, nil)
+	mockDB.EXPECT().GetEventsWithAvailabilityAndAssignmentsForUser(mockShow.ID, personId).Return([]database.Event{
+		{
+			Start: startTime,
+			Name:  conv.Pointer("Test event"),
+			Availabilities: []database.Availability{
+				{
+					PersonID:  personId,
+					Available: true,
 				},
 			},
-		}),
-	}
+			Options: database.EventOptions{
+				AttendanceRequired: true,
+			},
+		},
+	}, nil)
 
 	ical := iCalendar{
 		UserId:                   personId,
 		HideEventsNotRequiredFor: true,
-		Db:                       &mockDb,
+		Db:                       mockDB,
 	}
 
 	// Act
 	result, err := ical.CreateCalendarForPerson()
-
 	// Assert
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
@@ -311,58 +277,55 @@ func TestAttendingEventHasCorrectSummary(t *testing.T) {
 }
 
 func TestSummaryShouldIncludeRoles(t *testing.T) {
-	personId := uuid.NewV4()
 	eventId := uint(0)
 
-	mockDb := database.MockDatabase{
-		DoGetRolesForPerson: func(showId uint, personId uuid.UUID) ([]database.Role, error) {
-			return []database.Role{
-				{ // base role
-					Name:     "Show role",
-					PersonID: &personId,
-				},
-			}, nil
+	mockDB := database.NewMockIDatabase(t)
+	mockDB.On("GetShowsForUser", personId).Return([]database.Show{mockShow}, nil)
+
+	mockDB.EXPECT().GetRolesForPerson(mockShow.ID, personId).Return([]database.Role{
+		{ // base role
+			Name:     "Show role",
+			PersonID: &personId,
 		},
-		DoGetShowsForUser: doGetShowsForUser,
-		DoGetEventsWithAvailabilityAndAssignmentsForUser: mockEvents([]database.Event{
-			{
-				Model: gorm.Model{
-					ID: eventId,
-				},
-				Start: time.Now(),
-				Name:  conv.Pointer("Test event"),
-				Assignments: []database.Assignment{
-					{ // assignment
-						PersonID: personId,
-						Role: database.Role{
-							Name: "Assigned role",
-						},
-					},
-				},
-				Shadows: []database.Shadow{
-					{ // shadow
-						PersonID: personId,
-						EventID:  eventId,
-						RoleID:   0,
-						Role: database.Role{
-							Name:   "Shadow role",
-							Person: &database.Person{},
-						},
+	}, nil)
+
+	mockDB.EXPECT().GetEventsWithAvailabilityAndAssignmentsForUser(mockShow.ID, personId).Return([]database.Event{
+		{
+			Model: gorm.Model{
+				ID: eventId,
+			},
+			Start: time.Now(),
+			Name:  conv.Pointer("Test event"),
+			Assignments: []database.Assignment{
+				{ // assignment
+					PersonID: personId,
+					Role: database.Role{
+						Name: "Assigned role",
 					},
 				},
 			},
-		}),
-	}
+			Shadows: []database.Shadow{
+				{ // shadow
+					PersonID: personId,
+					EventID:  eventId,
+					RoleID:   0,
+					Role: database.Role{
+						Name:   "Shadow role",
+						Person: &database.Person{},
+					},
+				},
+			},
+		},
+	}, nil)
 
 	ical := iCalendar{
 		UserId:                   personId,
 		HideEventsNotRequiredFor: true,
-		Db:                       &mockDb,
+		Db:                       mockDB,
 	}
 
 	// Act
 	result, err := ical.CreateCalendarForPerson()
-
 	// Assert
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)

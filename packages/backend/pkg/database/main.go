@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"log"
+	"log/slog"
 	"sync"
 
 	"showplanner.io/pkg/config"
@@ -79,14 +80,18 @@ func initDB() *gorm.DB {
 		panic("Failed to run migrations")
 	}
 
-	err = setupIndexes(db)
-	if err != nil {
-		panic("Failed to setup indexes")
-	}
+	if config.IsTest {
+		slog.Info("Running in test mode, skipping indexes and views")
+	} else {
+		err = setupIndexes(db)
+		if err != nil {
+			panic("Failed to setup indexes")
+		}
 
-	err = setupViews(db)
-	if err != nil {
-		panic("Failed to setup views")
+		err = setupViews(db)
+		if err != nil {
+			panic("Failed to setup views")
+		}
 	}
 
 	return db

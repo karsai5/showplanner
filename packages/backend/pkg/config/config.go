@@ -1,5 +1,24 @@
 package config
 
+import (
+	"log"
+	"os"
+	"strings"
+
+	"github.com/joho/godotenv"
+)
+
+var IsTest = strings.HasSuffix(os.Args[0], ".test")
+
+func getEnvVariable(key string, required bool) string {
+	godotenv.Load(".env")
+	result, ok := os.LookupEnv(key)
+	if !ok && required && !IsTest {
+		log.Fatalf("Environment variable required: " + key)
+	}
+	return result
+}
+
 var APP_ENV = getEnvVariable("APP_ENV", false)
 var IsProd = APP_ENV == "PROD"
 var IsDev = APP_ENV != "PROD"
