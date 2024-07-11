@@ -12,7 +12,7 @@ export const useModal = (initialState: boolean = false) => {
 
 export interface NewShowModalProps {
   children: React.ReactNode;
-  title?: string;
+  title?: React.ReactNode;
   close: () => void;
   isOpen: boolean;
   className?: string;

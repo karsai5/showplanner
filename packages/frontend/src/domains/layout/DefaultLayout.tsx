@@ -1,3 +1,4 @@
+import cc from "classnames";
 import { useBreakpoint } from "core/hooks/useBreakpoint";
 import Sidebar from "domains/shows/Sidebar/Sidebar";
 import { useRouter } from "next/router";
@@ -7,7 +8,6 @@ import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import { Footer } from "./components/Footer";
 import { Nav } from "./components/Nav";
 import styles from "./styles.module.scss";
-import cc from "classnames";
 
 export const DefaultLayout: React.FC<{ children: ReactNode }> = ({
   children,

@@ -1,4 +1,4 @@
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { CloudIcon, TrashIcon } from "@heroicons/react/24/outline";
 import {
   useMutation,
   UseMutationResult,
@@ -93,6 +93,7 @@ export const ShadowSelectorPure: FC<{
                 ["text-slate-300"]: s.available === null,
               })}
             >
+              <CloudIcon className="h-5 w-5 inline mr-2" />
               <PersonDisplayName person={s.person} />
             </div>
             <button
@@ -103,7 +104,6 @@ export const ShadowSelectorPure: FC<{
             </button>
           </div>
         ))}
-        {shadows.length === 0 && <div>No shadows are assigned</div>}
       </div>
       {showPersonSelector && (
         <PersonSelectorModal

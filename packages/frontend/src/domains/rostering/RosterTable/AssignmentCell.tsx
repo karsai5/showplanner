@@ -25,7 +25,7 @@ import {
 } from "domains/personnel/PersonDisplayName";
 import { PersonSelectorModal } from "domains/personnel/PersonSelector/PersonSelectorModal";
 import { getBgColorForRoster } from "domains/rostering/helpers";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { colorCodednameComponent } from "./ColorCodedName";
 import { ShadowSelector } from "./ShadowSelector";
@@ -188,9 +188,6 @@ export const AssignmentModal: React.FC<{
   assignment: RosterAssignedDTO;
   people?: PersonSummaryDTO[];
 }> = ({ isOpen, close, Modal, event, role, assignment, people }) => {
-  const titleArray = [role.name, event.name].filter((i) => i);
-  const title = titleArray.length === 0 ? "Assignment" : titleArray.join(" - ");
-
   const queryClient = useQueryClient();
   const changeAssignmentMutation = useMutation<unknown, Error, string>({
     mutationFn: (personId) => {
@@ -222,7 +219,7 @@ export const AssignmentModal: React.FC<{
       showToastError("Could not update availability", e);
     },
     onSuccess: async () => {
-      // TODO: This should be optimised to just reload the cell instead of the whole table
+      // NOTE: This should be optimised to just reload the cell instead of the whole table
       queryClient.invalidateQueries({ queryKey: ["roster", event.showId] });
     },
   });
@@ -234,22 +231,27 @@ export const AssignmentModal: React.FC<{
     <Modal
       isOpen={isOpen}
       close={close}
-      title={title}
+      title={
+        <>
+          {role.name} {event.name && " - " + event.name}
+          {role.person && (
+            <span className="">
+              {" - "}
+              <PersonDisplayName person={role.person} />{" "}
+              {normalPersonAvailability !== true && (
+                <span className="text-slate-500 font-normal text-sm">
+                  ({getAvailabilityString(normalPersonAvailability)})
+                </span>
+              )}
+            </span>
+          )}
+        </>
+      }
       dialogClassName="max-h-full"
     >
       {!people && <LoadingBox />}
       {people && (
         <>
-          {role.person && (
-            <p className="mb-2">
-              Role normally assigned to:{" "}
-              <PersonDisplayName person={role.person} />{" "}
-              <span className="text-slate-500">
-                ({getAvailabilityString(normalPersonAvailability)})
-              </span>
-            </p>
-          )}
-
           <Cover
             mutation={changeAssignmentMutation}
             assignment={assignment}
@@ -257,6 +259,7 @@ export const AssignmentModal: React.FC<{
             people={people}
             role={role}
           />
+          <div className="divider py-2 my-2"></div>
           <Shadows
             role={role}
             mutation={changeAssignmentMutation}
@@ -267,40 +270,6 @@ export const AssignmentModal: React.FC<{
         </>
       )}
     </Modal>
-  );
-};
-
-const Shadows: React.FC<{
-  mutation: UseMutationResult<unknown, Error, string, unknown>;
-  assignment: RosterAssignedDTO;
-  event: RosterDTOEventsInner;
-  role: RoleDTO;
-  people?: PersonSummaryDTO[];
-}> = ({ mutation, assignment, event, people, role }) => {
-  const [showPersonSelector, setShowPersonSelector] = useState(false);
-  const handleChange = (person: PersonSummaryDTO) => {
-    mutation.mutate(person.id, {
-      onSuccess: () => setShowPersonSelector(false),
-    });
-  };
-  return (
-    <>
-      <div className="font-semibold text-lg mt-2 mb-1">Shadows</div>
-      <ShadowSelector
-        event={event}
-        roleId={role.id as number}
-        people={people}
-      />
-      {showPersonSelector && people && (
-        <PersonSelectorModal
-          loading={mutation.isLoading}
-          people={people}
-          onChange={(p) => handleChange(p)}
-          selectedPersonId={assignment?.person?.id}
-          onClose={() => setShowPersonSelector(false)}
-        />
-      )}
-    </>
   );
 };
 
@@ -328,19 +297,25 @@ const Cover: React.FC<{
   const showAssignment =
     assignment.cover || (!role.person && assignment.person);
 
+  useEffect(() => {
+    // Auto open selector if no one is assigned to role
+    if (!role?.person && !assignment.person.id) {
+      setShowPersonSelector(true);
+    }
+  }, [role.person, assignment.person]);
+
   return (
     <>
-      <div className="font-semibold text-lg mt-2 mb-1">Cover</div>
       {showAssignment && (
         <div className="flex items-center gap-2 justify-between">
-          <div>
-            <div>
-              Covered by <PersonDisplayName person={assignment.person} />{" "}
-            </div>
-            <div className="text-slate-500">
-              ({getAvailabilityString(coverAvailability)})
-            </div>
-          </div>
+          <span>
+            <PersonDisplayName person={assignment.person} />{" "}
+            {coverAvailability !== true && (
+              <div className="text-slate-500">
+                ({getAvailabilityString(coverAvailability)})
+              </div>
+            )}
+          </span>
           <div className="mt-2 flex">
             <button
               className="btn btn-outline"
@@ -373,6 +348,39 @@ const Cover: React.FC<{
           nameComponent={colorCodednameComponent(event)}
           onChange={(p) => handleChange(p)}
           selectedPersonId={selectedPersonId}
+        />
+      )}
+    </>
+  );
+};
+
+const Shadows: React.FC<{
+  mutation: UseMutationResult<unknown, Error, string, unknown>;
+  assignment: RosterAssignedDTO;
+  event: RosterDTOEventsInner;
+  role: RoleDTO;
+  people?: PersonSummaryDTO[];
+}> = ({ mutation, assignment, event, people, role }) => {
+  const [showPersonSelector, setShowPersonSelector] = useState(false);
+  const handleChange = (person: PersonSummaryDTO) => {
+    mutation.mutate(person.id, {
+      onSuccess: () => setShowPersonSelector(false),
+    });
+  };
+  return (
+    <>
+      <ShadowSelector
+        event={event}
+        roleId={role.id as number}
+        people={people}
+      />
+      {showPersonSelector && people && (
+        <PersonSelectorModal
+          loading={mutation.isLoading}
+          people={people}
+          onChange={(p) => handleChange(p)}
+          selectedPersonId={assignment?.person?.id}
+          onClose={() => setShowPersonSelector(false)}
         />
       )}
     </>
