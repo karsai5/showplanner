@@ -33,6 +33,13 @@ export const AvailabilitiesTable: React.FC<{
     return <progress className="progress w-56"></progress>;
   }
   if (data.events && data.people) {
+    if (data.events.length === 0) {
+      return (
+        <ErrorBox info>
+          Availabilities are not available until events have been added
+        </ErrorBox>
+      );
+    }
     return (
       <EventTable
         events={data.events}

@@ -117,7 +117,10 @@ export default function ShowPage(
       </div>
       {isError && <ErrorBox>Could not get shows</ErrorBox>}
       {isLoading && <LoadingBox />}
-      {events && (
+      {events && allEvents.length === 0 && (
+        <ErrorBox info>No events have been added for this show yet</ErrorBox>
+      )}
+      {events && allEvents.length > 0 && (
         <>
           {futureEvents.length === 0 && allEvents.length > 0 && (
             <ErrorBox info>Show is over. All events are in the past</ErrorBox>

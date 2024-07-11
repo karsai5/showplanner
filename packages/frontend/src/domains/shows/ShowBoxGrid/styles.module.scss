@@ -1,6 +1,6 @@
 .grid {
   grid-template-columns: 1fr;
   @media (min-width: 640px) {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 400px));
   }
 }

@@ -52,6 +52,13 @@ export const RosterTable: React.FC<{
     rosterRequest.data.events &&
     rosterRequest.data.roles
   ) {
+    if (rosterRequest.data.events.length === 0) {
+      return (
+        <ErrorBox info>
+          Availabilities are not available until events have been added
+        </ErrorBox>
+      );
+    }
     const filteredEvents = rosterRequest.data.events.filter(
       (e) => showPastEvents || e.start > new Date()
     );
