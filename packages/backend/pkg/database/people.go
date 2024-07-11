@@ -34,7 +34,7 @@ func (d *Database) GetPeopleAssignedToShow(id uint) ([]Person, error) {
 }
 
 func GetAllPeople() (people []Person, err error) {
-	res := db.Find(&people)
+	res := db.Find(&people).Order("firstName DESC")
 	err = res.Error
 	return people, err
 }

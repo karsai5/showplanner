@@ -6,6 +6,8 @@ import { SessionAuth } from "supertokens-auth-react/recipe/session";
 
 import { Footer } from "./components/Footer";
 import { Nav } from "./components/Nav";
+import styles from "./styles.module.scss";
+import cc from "classnames";
 
 export const DefaultLayout: React.FC<{ children: ReactNode }> = ({
   children,
@@ -39,7 +41,9 @@ export const ShowLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
       <div className="flex flex-col h-screen overflow-auto">
         <Nav showShowMenu />
         <Sidebar isOpen={!isSmall}>
-          <div className="p-6 w-full">{children}</div>
+          <div className={cc("p-6", { ["w-full"]: isSmall }, styles.content)}>
+            {children}
+          </div>
         </Sidebar>
         <Footer />
       </div>

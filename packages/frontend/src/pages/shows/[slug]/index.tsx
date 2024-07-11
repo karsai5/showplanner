@@ -91,7 +91,7 @@ export default function ShowPage(
       <Head>
         <title>{show.name} - ShowPlanner</title>
       </Head>
-      <div className="flex flex-col justify-between sm:flex-row gap-4">
+      <div className="flex flex-col justify-between sm:flex-row gap-4 sticky left-0">
         <div className="mb-4">
           <H2 className="">{show.name}</H2>
           <Link
