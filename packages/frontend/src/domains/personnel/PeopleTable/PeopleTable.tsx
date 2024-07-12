@@ -6,24 +6,24 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { api_deprecated } from "core/api";
-import { ArrayOfPersonSummaryDTO, PersonSummaryDTO } from "core/api/generated";
+import { PersonDTOWithEmail } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
-import { PERMISSION, showPermission, useHasPermission } from "core/permissions";
-import {
-  getPersonDisplayName,
-  PersonDisplayName,
-} from "domains/personnel/PersonDisplayName";
+import { getPersonDisplayName } from "domains/personnel/PersonDisplayName";
+import { PersonNameWithModal } from "domains/personnel/PersonModal/PersonModal";
 import { FC } from "react";
 
 import { UnassignPersonButton } from "./UnassignPersonButton";
 
 export const PeopleTable: React.FC<{
   showId: number;
-  initialData?: ArrayOfPersonSummaryDTO;
+  initialData?: PersonDTOWithEmail[];
 }> = ({ showId, initialData }) => {
-  const hasPermission = useHasPermission();
-  const { data, isLoading, isError } = useQuery({
+  const {
+    data: people,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["assigned-people", showId],
     queryFn: () => api_deprecated.personnelAssignedGet({ showId }),
     initialData: initialData,
@@ -34,70 +34,28 @@ export const PeopleTable: React.FC<{
   if (isError) {
     return <ErrorBox>Could not load people</ErrorBox>;
   }
-  if (data && data.people) {
-    return (
-      <PurePeopleTable
-        showId={showId}
-        people={data.people}
-        showPrivateDetails={hasPermission(
-          showPermission(showId, PERMISSION.personnelPrivateDetails)
-        )}
-      />
-    );
+  if (people) {
+    return <PurePeopleTable showId={showId} people={people} />;
   }
   return null;
 };
 
-const columnHelper = createColumnHelper<PersonSummaryDTO>();
+const columnHelper = createColumnHelper<PersonDTOWithEmail>();
 const baseColumns = [
   columnHelper.accessor((row) => row, {
     id: "name",
-    cell: (info) => (
-      <PersonDisplayName className="text-nowrap" person={info.getValue()} />
-    ),
+    cell: (info) => <PersonNameWithModal person={info.getValue()} />,
     header: "Name",
   }),
 ];
-const privateDetailsColumns = [
-  columnHelper.accessor((row) => row._private?.phone, {
-    id: "phone",
-    cell: (info) => (
-      <a className="link text-nowrap" href={`tel:${info.getValue()}`}>
-        {info.getValue()}
-      </a>
-    ),
-    header: "Phone",
-  }),
-  columnHelper.accessor((row) => row._private?.email, {
-    id: "email",
-    cell: (info) => (
-      <a className="link text-nowrap" href={`mailto:${info.getValue()}`}>
-        {info.getValue()}
-      </a>
-    ),
-    header: "Email",
-  }),
-  columnHelper.accessor((row) => row._private?.wwc, {
-    id: "wwc",
-    cell: (info) => <span className="text-nowrap">{info.getValue()}</span>,
-    header: "WWC",
-  }),
-  columnHelper.accessor((row) => row._private?.dob, {
-    id: "dob",
-    cell: (info) => <span className="text-nowrap">{info.getValue()}</span>,
-    header: "DOB",
-  }),
-];
 export const PurePeopleTable: FC<{
-  people: PersonSummaryDTO[];
-  showPrivateDetails?: boolean;
+  people: PersonDTOWithEmail[];
   showId: number;
-}> = ({ people, showPrivateDetails, showId }) => {
+}> = ({ people, showId }) => {
   const table = useReactTable({
     data: people,
     columns: [
       ...baseColumns,
-      ...(showPrivateDetails ? privateDetailsColumns : []),
       columnHelper.accessor((row) => row, {
         id: "actions",
         cell: (info) => (

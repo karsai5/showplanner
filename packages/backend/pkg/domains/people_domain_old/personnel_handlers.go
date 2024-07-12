@@ -1,9 +1,10 @@
 package people_domain_old
 
 import (
-	"showplanner.io/pkg/restapi/dtos"
 	"sort"
 	"strings"
+
+	"showplanner.io/pkg/restapi/dtos"
 
 	"github.com/go-openapi/runtime/middleware"
 	"showplanner.io/pkg/conv"
@@ -61,7 +62,6 @@ var handleAssignedPersonnel = operations.GetPersonnelAssignedHandlerFunc(func(pa
 	}
 
 	people, err := database.GetPeopleAssignedToShow(uint(params.ShowID))
-
 	if err != nil {
 		return logError(&err)
 	}
@@ -72,47 +72,7 @@ var handleAssignedPersonnel = operations.GetPersonnelAssignedHandlerFunc(func(pa
 		return personI < personJ
 	})
 
-	hasPerm, err = permissions.ViewPrivatePersonnelDetails.HasPermission(uint(params.ShowID), params.HTTPRequest)
-	if err != nil {
-		return logError(&err)
-	}
-
-	personMapper := MapToPersonSummaryDTO
-	if hasPerm {
-		personMapper = MapToPersonSummaryDTOWithPrivateInfo
-	}
-
 	return &operations.GetPersonnelAssignedOK{
-		Payload: &dtos.ArrayOfPersonSummaryDTO{
-			People: conv.MapArrayOfPointer(people, personMapper),
-		},
-	}
-})
-
-var handleAssignablePersonnel = operations.GetPersonnelAssignableHandlerFunc(func(params operations.GetPersonnelAssignableParams) middleware.Responder {
-	logError := logger.CreateLogErrorFunc("Getting roster", &operations.GetPersonnelAssignableInternalServerError{})
-	hasPerm, err := permissions.ViewPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
-	if err != nil {
-		return logError(&err)
-	}
-	if !hasPerm {
-		return &operations.GetAvailabilitiesUnauthorized{}
-	}
-
-	people, err := database.GetPeopleNotAssignedToShow(uint(params.ShowID))
-	if err != nil {
-		return logError(&err)
-	}
-
-	sort.Slice(people, func(i, j int) bool {
-		personI := strings.Join([]string{people[i].FirstName, people[i].LastName}, "")
-		personJ := strings.Join([]string{people[j].FirstName, people[j].LastName}, "")
-		return personI < personJ
-	})
-
-	return &operations.GetPersonnelAssignableOK{
-		Payload: &dtos.ArrayOfPersonSummaryDTO{
-			People: conv.MapArrayOfPointer(people, MapToPersonSummaryDTO),
-		},
+		Payload: conv.MapArrayOfPointer(people, func(p database.Person) dtos.PersonDTOWithEmail { return p.MapToPersonDTOWithEmail() }),
 	}
 })

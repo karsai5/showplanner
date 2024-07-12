@@ -13,42 +13,55 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { PersonPrivateDetailsDTO } from './PersonPrivateDetailsDTO';
+import {
+    PersonPrivateDetailsDTOFromJSON,
+    PersonPrivateDetailsDTOFromJSONTyped,
+    PersonPrivateDetailsDTOToJSON,
+} from './PersonPrivateDetailsDTO';
+
 /**
  * 
  * @export
- * @interface PersonSummaryDTO
+ * @interface PersonDTO
  */
-export interface PersonSummaryDTO {
+export interface PersonDTO {
     /**
      * 
      * @type {string}
-     * @memberof PersonSummaryDTO
+     * @memberof PersonDTO
      */
     id: string;
     /**
      * 
      * @type {string}
-     * @memberof PersonSummaryDTO
+     * @memberof PersonDTO
      */
     firstName: string;
     /**
      * 
      * @type {string}
-     * @memberof PersonSummaryDTO
+     * @memberof PersonDTO
      */
     preferredName?: string;
     /**
      * 
      * @type {string}
-     * @memberof PersonSummaryDTO
+     * @memberof PersonDTO
      */
     lastName: string;
+    /**
+     * 
+     * @type {PersonPrivateDetailsDTO}
+     * @memberof PersonDTO
+     */
+    _private?: PersonPrivateDetailsDTO;
 }
 
 /**
- * Check if a given object implements the PersonSummaryDTO interface.
+ * Check if a given object implements the PersonDTO interface.
  */
-export function instanceOfPersonSummaryDTO(value: object): boolean {
+export function instanceOfPersonDTO(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "firstName" in value;
@@ -57,11 +70,11 @@ export function instanceOfPersonSummaryDTO(value: object): boolean {
     return isInstance;
 }
 
-export function PersonSummaryDTOFromJSON(json: any): PersonSummaryDTO {
-    return PersonSummaryDTOFromJSONTyped(json, false);
+export function PersonDTOFromJSON(json: any): PersonDTO {
+    return PersonDTOFromJSONTyped(json, false);
 }
 
-export function PersonSummaryDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): PersonSummaryDTO {
+export function PersonDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): PersonDTO {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -71,10 +84,11 @@ export function PersonSummaryDTOFromJSONTyped(json: any, ignoreDiscriminator: bo
         'firstName': json['firstName'],
         'preferredName': !exists(json, 'preferredName') ? undefined : json['preferredName'],
         'lastName': json['lastName'],
+        '_private': !exists(json, 'private') ? undefined : PersonPrivateDetailsDTOFromJSON(json['private']),
     };
 }
 
-export function PersonSummaryDTOToJSON(value?: PersonSummaryDTO | null): any {
+export function PersonDTOToJSON(value?: PersonDTO | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -87,6 +101,7 @@ export function PersonSummaryDTOToJSON(value?: PersonSummaryDTO | null): any {
         'firstName': value.firstName,
         'preferredName': value.preferredName,
         'lastName': value.lastName,
+        'private': PersonPrivateDetailsDTOToJSON(value._private),
     };
 }
 

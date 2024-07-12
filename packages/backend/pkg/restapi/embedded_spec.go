@@ -617,37 +617,6 @@ func init() {
         }
       }
     },
-    "/personnel/assignable": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns people for a show",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the show to get people for",
-            "name": "showId",
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "./schemas/People.yaml#/ArrayOfPersonSummaryDTO"
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "$ref": "#/responses/Error"
-          }
-        }
-      }
-    },
     "/personnel/assigned": {
       "get": {
         "produces": [
@@ -667,7 +636,10 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "./schemas/People.yaml#/ArrayOfPersonSummaryDTO"
+              "type": "array",
+              "items": {
+                "$ref": "./schemas/People.yaml#/PersonDTOWithEmail"
+              }
             }
           },
           "401": {
@@ -723,7 +695,10 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "./schemas/People.yaml#/ArrayOfPersonSummaryDTO"
+              "type": "array",
+              "items": {
+                "$ref": "./schemas/People.yaml#/PersonDTOWithEmail"
+              }
             }
           },
           "401": {
@@ -731,6 +706,41 @@ func init() {
           },
           "500": {
             "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/personnel/people/{personId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "personnel"
+        ],
+        "summary": "Get details of person",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the person",
+            "name": "personId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/People.yaml#/PersonDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -2468,43 +2478,6 @@ func init() {
         }
       }
     },
-    "/personnel/assignable": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns people for a show",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the show to get people for",
-            "name": "showId",
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/arrayOfPersonSummaryDTO"
-            }
-          },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
     "/personnel/assigned": {
       "get": {
         "produces": [
@@ -2524,7 +2497,10 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/arrayOfPersonSummaryDTO"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/personDTOWithEmail"
+              }
             }
           },
           "401": {
@@ -2592,7 +2568,10 @@ func init() {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/arrayOfPersonSummaryDTO"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/personDTOWithEmail"
+              }
             }
           },
           "401": {
@@ -2606,6 +2585,44 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Error"
             }
+          }
+        }
+      }
+    },
+    "/personnel/people/{personId}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "personnel"
+        ],
+        "summary": "Get details of person",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the person",
+            "name": "personId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/personDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -3811,43 +3828,7 @@ func init() {
         }
       }
     },
-    "PersonSummaryDTOPrivate": {
-      "type": "object",
-      "properties": {
-        "allergies": {
-          "type": "string"
-        },
-        "dob": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "emergencyContact": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "phone": {
-              "type": "string"
-            },
-            "relationship": {
-              "type": "string"
-            }
-          }
-        },
-        "phone": {
-          "type": "string"
-        },
-        "wwc": {
-          "type": "string",
-          "x-nullable": true
-        }
-      },
-      "x-nullable": true
-    },
-    "PersonSummaryDTOPrivateEmergencyContact": {
+    "PersonPrivateDetailsDTOEmergencyContact": {
       "type": "object",
       "properties": {
         "name": {
@@ -3963,17 +3944,6 @@ func init() {
             "covering",
             "shadowing"
           ]
-        }
-      }
-    },
-    "arrayOfPersonSummaryDTO": {
-      "type": "object",
-      "properties": {
-        "people": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/personSummaryDTO"
-          }
         }
       }
     },
@@ -4278,6 +4248,84 @@ func init() {
         }
       }
     },
+    "personDTO": {
+      "type": "object",
+      "required": [
+        "id",
+        "firstName",
+        "lastName"
+      ],
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "preferredName": {
+          "type": "string"
+        },
+        "private": {
+          "$ref": "#/definitions/personPrivateDetailsDTO"
+        }
+      }
+    },
+    "personDTOWithEmail": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/personDTO"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "x-nullable": false
+            }
+          }
+        }
+      ]
+    },
+    "personPrivateDetailsDTO": {
+      "type": "object",
+      "properties": {
+        "allergies": {
+          "type": "string"
+        },
+        "dob": {
+          "type": "string",
+          "format": "date"
+        },
+        "email": {
+          "type": "string"
+        },
+        "emergencyContact": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "relationship": {
+              "type": "string"
+            }
+          }
+        },
+        "phone": {
+          "type": "string"
+        },
+        "wwc": {
+          "type": "string",
+          "x-nullable": true
+        }
+      }
+    },
     "personSearchResultDTO": {
       "type": "object",
       "properties": {
@@ -4313,42 +4361,6 @@ func init() {
         },
         "preferredName": {
           "type": "string"
-        },
-        "private": {
-          "type": "object",
-          "properties": {
-            "allergies": {
-              "type": "string"
-            },
-            "dob": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string"
-            },
-            "emergencyContact": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "phone": {
-                  "type": "string"
-                },
-                "relationship": {
-                  "type": "string"
-                }
-              }
-            },
-            "phone": {
-              "type": "string"
-            },
-            "wwc": {
-              "type": "string",
-              "x-nullable": true
-            }
-          },
-          "x-nullable": true
         }
       }
     },

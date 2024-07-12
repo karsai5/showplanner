@@ -2,14 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "core/api";
 import { AccessDenied } from "core/components/AccessDenied/AccessDenied";
 import { H2 } from "core/components/Typography";
-import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
+import { PersonNameWithModal } from "domains/personnel/PersonModal/PersonModal";
 import { useRouter } from "next/router";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import { UserRoleClaim } from "supertokens-web-js/recipe/userroles";
 
 const Impersonate: React.FC = () => {
   const router = useRouter();
-  const { data } = useQuery(["people"], () =>
+  const { data: people } = useQuery(["people"], () =>
     api.personnel.personnelPeopleGet()
   );
   const handleImpersonate = (personId: string) => {
@@ -28,17 +28,15 @@ const Impersonate: React.FC = () => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Email</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {data?.people?.map((person) => (
+          {people?.map((person) => (
             <tr key={person.id}>
               <td>
-                <PersonDisplayName person={person} />
+                <PersonNameWithModal person={person} />
               </td>
-              <td>{person._private?.email}</td>
               <td>
                 <button
                   className="btn"

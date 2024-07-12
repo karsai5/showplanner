@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"log/slog"
 	"time"
 
 	"showplanner.io/pkg/restapi/dtos"
@@ -224,12 +225,46 @@ func (p *Person) GetFullName() string {
 	return fmt.Sprintf("%s %s", p.GetFirstName(), p.LastName)
 }
 
+func (p *Person) MapToPersonDTOWithEmail() dtos.PersonDTOWithEmail {
+	return dtos.PersonDTOWithEmail{
+		PersonDTO: p.MapToPersonDTO(),
+		Email:     p.Email,
+	}
+}
+
 func (p *Person) MapToPersonSummaryDTO() dtos.PersonSummaryDTO {
 	dto := dtos.PersonSummaryDTO{
 		FirstName: &p.FirstName,
 		ID:        conv.UUIDToStrmFmtUUID(p.ID),
 		LastName:  &p.LastName,
-		Private:   nil,
+	}
+	if p.PreferredName != nil {
+		dto.PreferredName = *p.PreferredName
+	}
+	return dto
+}
+
+func (p *Person) MapToPersonDTO() dtos.PersonDTO {
+	dob, err := time.Parse("2006-01-02", p.DOB)
+	if err != nil {
+		slog.Error(fmt.Sprintf("Could not parse DOB for person %s", p.ID))
+	}
+	dto := dtos.PersonDTO{
+		FirstName: &p.FirstName,
+		ID:        conv.UUIDToStrmFmtUUID(p.ID),
+		LastName:  &p.LastName,
+		Private: &dtos.PersonPrivateDetailsDTO{
+			Allergies: p.Allergies,
+			Dob:       strfmt.Date(dob),
+			Email:     p.Email,
+			EmergencyContact: &dtos.PersonPrivateDetailsDTOEmergencyContact{
+				Name:         p.EmergencyName,
+				Phone:        p.EmergencyPhone,
+				Relationship: p.EmergencyRelationship,
+			},
+			Phone: p.Phone,
+			Wwc:   p.WWC,
+		},
 	}
 	if p.PreferredName != nil {
 		dto.PreferredName = *p.PreferredName

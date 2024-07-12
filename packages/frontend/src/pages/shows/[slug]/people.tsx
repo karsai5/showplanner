@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { api } from "core/api";
-import { ArrayOfPersonSummaryDTO } from "core/api/generated";
+import { PersonDTOWithEmail } from "core/api/generated";
 import { H2, H3 } from "core/components/Typography";
 import {
   HasPermission,
@@ -76,7 +76,7 @@ export default function PeoplePage(
         <div>
           <PeopleTable
             showId={show.id}
-            initialData={superjson.parse<ArrayOfPersonSummaryDTO>(
+            initialData={superjson.parse<PersonDTOWithEmail[]>(
               props.peopleJSON
             )}
           />

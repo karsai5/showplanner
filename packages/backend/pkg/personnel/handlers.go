@@ -26,12 +26,53 @@ import (
 )
 
 func SetupHandlers(api *operations.GoBackendAPI) {
+	db := database.Database{}
 	api.PersonnelGetPersonnelPeopleHandler = handleGetAllPeople
 	api.PersonnelPostPersonnelPeoplePersonIDImpersonateHandler = handleImpersonate
 	api.PersonnelPostMeHandler = postMeHandler
 	api.PersonnelGetMeHandler = getMeHandler
 
 	api.PersonnelGetPersonnelSearchHandler = handleSearchForPeople
+	api.PersonnelGetPersonnelPeoplePersonIDHandler = handleGetPerson(&db)
+}
+
+func handleGetPerson(db database.IDatabase) personnel.GetPersonnelPeoplePersonIDHandler {
+	return personnel.GetPersonnelPeoplePersonIDHandlerFunc(func(params personnel.GetPersonnelPeoplePersonIDParams) middleware.Responder {
+		logError := logger.CreateLogErrorFunc("Getting person", &personnel.GetPersonnelPeoplePersonIDInternalServerError{})
+
+		userId := conv.StrfmtUUIDToUUID(&params.PersonID)
+
+		shows, err := db.GetShowsForUser(*userId)
+		if err != nil {
+			return logError(&err)
+		}
+
+		// For each show get permission, see if this user has that permission
+		hasPerm := false
+		for _, s := range shows {
+			showPerm, err := permissions.ViewPrivatePersonnelDetails.HasPermission(s.ID, params.HTTPRequest)
+			if err != nil {
+				return logError(&err)
+			}
+			if showPerm {
+				hasPerm = true
+				break
+			}
+		}
+
+		if !hasPerm {
+			return &personnel.GetPersonnelPeoplePersonIDUnauthorized{}
+		}
+
+		person, err := db.GetPerson(*userId)
+		if err != nil {
+			return logError(&err)
+		}
+
+		return &personnel.GetPersonnelPeoplePersonIDOK{
+			Payload: conv.Pointer(person.MapToPersonDTO()),
+		}
+	})
 }
 
 var handleSearchForPeople = personnel.GetPersonnelSearchHandlerFunc(func(params personnel.GetPersonnelSearchParams) middleware.Responder {
@@ -60,7 +101,6 @@ var handleSearchForPeople = personnel.GetPersonnelSearchHandlerFunc(func(params 
 	people, err := searchForPeople(params.S, &searchOptions{
 		showId: params.ShowID,
 	})
-
 	if err != nil {
 		return logError(&err)
 	}
@@ -80,7 +120,6 @@ var handleGetAllPeople = personnel.GetPersonnelPeopleHandlerFunc(func(params per
 	logError := logger.CreateLogErrorFunc("Getting all personnel", &personnel.GetPersonnelPeopleInternalServerError{})
 
 	hasPerm, err := permissions.HasRole(params.HTTPRequest, "admin")
-
 	if err != nil {
 		return logError(&err)
 	}
@@ -89,20 +128,11 @@ var handleGetAllPeople = personnel.GetPersonnelPeopleHandlerFunc(func(params per
 	}
 
 	people, err := database.GetAllPeople()
-
 	if err != nil {
 		return logError(&err)
 	}
 	return &personnel.GetPersonnelPeopleOK{
-		Payload: &dtos.ArrayOfPersonSummaryDTO{
-			People: conv.MapArrayOfPointer(people, func(p database.Person) dtos.PersonSummaryDTO {
-				dto := p.MapToPersonSummaryDTO()
-				dto.Private = &dtos.PersonSummaryDTOPrivate{
-					Email: p.Email,
-				}
-				return dto
-			}),
-		},
+		Payload: conv.MapArrayOfPointer(people, func(p database.Person) dtos.PersonDTOWithEmail { return p.MapToPersonDTOWithEmail() }),
 	}
 })
 
@@ -129,14 +159,12 @@ var handleImpersonate = personnel.PostPersonnelPeoplePersonIDImpersonateHandlerF
 
 var postMeHandler = personnel.PostMeHandlerFunc(func(params personnel.PostMeParams) middleware.Responder {
 	userId, err := permissions.GetUserId(params.HTTPRequest)
-
 	if err != nil {
 		logger.Error("Could not update me details", err)
 		return &personnel.GetMeInternalServerError{}
 	}
 
 	user, err := permissions.GetUserById(userId)
-
 	if err != nil {
 		logger.Error("Could not update me details", err)
 		return &personnel.GetMeInternalServerError{}
@@ -165,7 +193,6 @@ var postMeHandler = personnel.PostMeHandlerFunc(func(params personnel.PostMePara
 
 	_, getPersonError := database.GetPerson(userId)
 	_, err = database.UpdatePerson(person)
-
 	if err != nil {
 		logger.Error("Could not update me details", err)
 		return &personnel.PostMeInternalServerError{}
@@ -200,7 +227,6 @@ var getMeHandler = personnel.GetMeHandlerFunc(func(params personnel.GetMeParams)
 	}
 
 	person, err := database.GetPerson(userId)
-
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return &personnel.GetMeNotFound{}

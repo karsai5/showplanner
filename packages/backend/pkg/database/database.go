@@ -13,6 +13,7 @@ type IDatabase interface {
 	GetShowById(showId uint) (Show, error)
 
 	GetPeopleAssignedToShow(id uint) ([]Person, error)
+	GetPerson(id uuid.UUID) (Person, error)
 }
 
 type Database struct{}

@@ -17,42 +17,61 @@ PersonSummaryDTO:
       type: string
     lastName:
       type: string
-    private:
-      x-nullable: true
-      type: object
-      properties:
-        email:
-          type: string
-        phone:
-          type: string
-        wwc:
-          x-nullable: true
-          type: string
-        dob:
-          type: string
-        allergies:
-          type: string
-        emergencyContact:
-          type: object
-          properties:
-            name:
-              type: string
-            relationship:
-              type: string
-            phone:
-              type: string
   required:
     - id
     - firstName
     - lastName
-
-ArrayOfPersonSummaryDTO:
+PersonDTO:
   type: object
   properties:
-    people:
-      type: array
-      items:
-        $ref: '#/PersonSummaryDTO'
+    id:
+      type: string
+      format: uuid
+    firstName:
+      type: string
+    preferredName:
+      type: string
+    lastName:
+      type: string
+    private:
+      $ref: '#/PersonPrivateDetailsDTO'
+  required:
+    - id
+    - firstName
+    - lastName
+PersonDTOWithEmail:
+  allOf:
+    - $ref: './People.yaml#/PersonDTO'
+    - type: object
+      properties:
+        email:
+          x-nullable: false
+          type: string
+
+PersonPrivateDetailsDTO:
+  type: object
+  properties:
+    email:
+      type: string
+    phone:
+      type: string
+    wwc:
+      x-nullable: true
+      type: string
+    dob:
+      type: string
+      format: date
+    allergies:
+      type: string
+    emergencyContact:
+      type: object
+      properties:
+        name:
+          type: string
+        relationship:
+          type: string
+        phone:
+          type: string
 
 PersonSearchResultDTO:
   type: object

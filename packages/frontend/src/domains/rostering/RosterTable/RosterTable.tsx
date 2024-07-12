@@ -313,8 +313,9 @@ const AssignRole: React.FC<{
   onClose: () => void;
   roles: RoleDTO[];
 }> = ({ role, showId, onClose, roles }) => {
-  const { data, isLoading } = useQuery(["assigned-people", showId], () =>
-    api_deprecated.personnelAssignedGet({ showId: showId })
+  const { data: people, isLoading } = useQuery(
+    ["assigned-people", showId],
+    () => api_deprecated.personnelAssignedGet({ showId: showId })
   );
   const queryClient = useQueryClient();
 
@@ -340,18 +341,19 @@ const AssignRole: React.FC<{
     },
   });
 
-  return (
-    <>
+  if (people) {
+    return (
       <PersonSelectorModal
         loading={isLoading}
-        people={data?.people || []}
+        people={people}
         selectedPersonId={role.person?.id}
         onChange={(person) => assignRole.mutate(person.id)}
         nameComponent={nameComponentThatShowsExistingRoles(roles)}
         onClose={() => onClose()}
       />
-    </>
-  );
+    );
+  }
+  return null;
 };
 
 const nameComponentThatShowsExistingRoles =

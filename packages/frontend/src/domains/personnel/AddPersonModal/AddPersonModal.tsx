@@ -231,7 +231,7 @@ const useShowEmailInvitationButton = ({
   }
 
   // If email is already assigned
-  if (people.data?.people?.find((p) => p._private?.email === searchString)) {
+  if (people.data?.find((p) => p.email === searchString)) {
     return false;
   }
   return true;

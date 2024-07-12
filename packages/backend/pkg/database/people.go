@@ -15,6 +15,12 @@ func GetPerson(id uuid.UUID) (Person, error) {
 	return person, res.Error
 }
 
+func (d *Database) GetPerson(id uuid.UUID) (Person, error) {
+	person := Person{}
+	res := db.First(&person, id)
+	return person, res.Error
+}
+
 func GetPersonByEmail(email string) (Person, error) {
 	person := Person{}
 	res := db.Where("email = ?", email).First(&person)

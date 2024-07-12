@@ -3,10 +3,9 @@ package schedule_domain
 import (
 	"errors"
 	"net/http"
-	dto2 "showplanner.io/pkg/restapi/dtos"
 	"slices"
 
-	"showplanner.io/pkg/domains/people_domain_old"
+	dto2 "showplanner.io/pkg/restapi/dtos"
 
 	"gorm.io/gorm"
 	"showplanner.io/pkg/conv"
@@ -35,7 +34,6 @@ var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operation
 
 	hasPermission, err := permissions.ViewEvents.HasPermission(showId, params.HTTPRequest)
 	userId, err := permissions.GetUserId(params.HTTPRequest)
-
 	if err != nil {
 		return logError(&err)
 	}
@@ -70,7 +68,6 @@ var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operation
 	NameEventsWithCurtainsUp(scheduledEvents)
 
 	return &operations.GetScheduleOK{
-
 		Payload: scheduledEvents,
 	}
 })
@@ -147,7 +144,7 @@ func getBaseRole(role database.Role, event database.Event, userId uuid.UUID) *dt
 		return assignment.RoleID == role.ID && userId != assignment.PersonID
 	})
 	if coverIdx >= 0 {
-		baseRole.CoveredBy = conv.Pointer(people_domain_old.MapToPersonSummaryDTO(event.Assignments[coverIdx].Person))
+		baseRole.CoveredBy = conv.Pointer(event.Assignments[coverIdx].Person.MapToPersonSummaryDTO())
 	}
 
 	addShadows(&baseRole, event, role.ID)
@@ -166,7 +163,7 @@ func getRolesUserIsShadowing(shadows []database.Shadow, userId uuid.UUID) []*dto
 				Shadowing: nil,
 			}
 			if shadow.Role.Person != nil {
-				role.Shadowing = conv.Pointer(people_domain_old.MapToPersonSummaryDTO(*shadow.Role.Person))
+				role.Shadowing = conv.Pointer(shadow.Role.Person.MapToPersonSummaryDTO())
 			}
 			arr = append(arr, conv.Pointer(role))
 		}
@@ -186,7 +183,7 @@ func getAssignmentsAndCovers(event database.Event, userId uuid.UUID) []*dto2.Sch
 			}
 
 			if assignment.Role.Person != nil {
-				role.Covering = conv.Pointer(people_domain_old.MapToPersonSummaryDTO(*assignment.Role.Person))
+				role.Covering = conv.Pointer(assignment.Role.Person.MapToPersonSummaryDTO())
 				role.Type = COVERING
 			}
 
@@ -202,7 +199,7 @@ func addShadows(role *dto2.ScheduleEventDTORolesItems0, event database.Event, ro
 	shadowsForRole := []*dto2.PersonSummaryDTO{}
 	for _, s := range event.Shadows {
 		if s.RoleID == roleId {
-			shadowsForRole = append(shadowsForRole, conv.Pointer(people_domain_old.MapToPersonSummaryDTO(s.Person)))
+			shadowsForRole = append(shadowsForRole, conv.Pointer(s.Person.MapToPersonSummaryDTO()))
 		}
 	}
 	if len(shadowsForRole) > 0 {

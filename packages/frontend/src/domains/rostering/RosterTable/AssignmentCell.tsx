@@ -84,7 +84,7 @@ export const AssignmentCell: React.FC<{
     <PureAssignmentCell
       assignment={assignment}
       event={event}
-      people={assignedPeopleRequest.data?.people}
+      people={assignedPeopleRequest.data}
       onChangeAssigned={handleChange}
       isLoading={changeAssignmentMutation.isLoading}
       role={role}

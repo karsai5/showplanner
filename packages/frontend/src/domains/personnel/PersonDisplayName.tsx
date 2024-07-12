@@ -1,6 +1,8 @@
 import cc from "classnames";
 import { PersonSummaryDTO } from "core/api/generated";
 
+import { PersonDetails } from "./types/PersonDetails";
+
 export const PersonDisplayName: React.FC<{
   person: PersonSummaryDTO;
   className?: string;
@@ -15,7 +17,7 @@ type PersonDisplayNameOptions = {
 };
 
 export const getPersonDisplayName = (
-  person: PersonSummaryDTO,
+  person: PersonDetails,
   options: PersonDisplayNameOptions = {}
 ) => {
   const firstName = person.preferredName || person.firstName || "";

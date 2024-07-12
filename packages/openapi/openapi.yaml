@@ -282,26 +282,6 @@ paths:
         500:
           $ref: '#/responses/Error'
 
-  /personnel/assignable:
-    get:
-      parameters:
-        - in: query
-          required: true
-          name: showId
-          type: integer
-          description: ID of the show to get people for
-      summary: Returns people for a show
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: './schemas/People.yaml#/ArrayOfPersonSummaryDTO'
-        401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
   /personnel/assigned:
     get:
       parameters:
@@ -317,7 +297,9 @@ paths:
         200:
           description: OK
           schema:
-            $ref: './schemas/People.yaml#/ArrayOfPersonSummaryDTO'
+            type: array
+            items:
+              $ref: './schemas/People.yaml#/PersonDTOWithEmail'
         401:
           $ref: '#/responses/Error'
         500:
@@ -519,7 +501,9 @@ paths:
         200:
           description: OK
           schema:
-            $ref: './schemas/People.yaml#/ArrayOfPersonSummaryDTO'
+            type: array
+            items:
+              $ref: './schemas/People.yaml#/PersonDTOWithEmail'
         401:
           $ref: '#/responses/Error'
         500:
@@ -555,6 +539,29 @@ paths:
         500:
           $ref: '#/responses/Error'
 
+  /personnel/people/{personId}:
+    get:
+      summary: Get details of person
+      tags:
+        - personnel
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: personId
+          type: string
+          format: uuid
+          description: ID of the person
+      responses:
+        500:
+          description: Internal server error
+        401:
+          $ref: '#/responses/Error'
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/People.yaml#/PersonDTO'
   /personnel/people/{personId}/impersonate:
     post:
       summary: Impersonate a person, useful for testing and reproducing bugs

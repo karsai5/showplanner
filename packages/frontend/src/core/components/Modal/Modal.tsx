@@ -19,7 +19,7 @@ export interface NewShowModalProps {
   dialogClassName?: string;
 }
 
-const Modal: FC<NewShowModalProps> = ({
+export const Modal: FC<NewShowModalProps> = ({
   children,
   title,
   close,

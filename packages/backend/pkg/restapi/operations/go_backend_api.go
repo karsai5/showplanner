@@ -82,9 +82,6 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		PersonnelGetMeHandler: personnel.GetMeHandlerFunc(func(params personnel.GetMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation personnel.GetMe has not yet been implemented")
 		}),
-		GetPersonnelAssignableHandler: GetPersonnelAssignableHandlerFunc(func(params GetPersonnelAssignableParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetPersonnelAssignable has not yet been implemented")
-		}),
 		GetPersonnelAssignedHandler: GetPersonnelAssignedHandlerFunc(func(params GetPersonnelAssignedParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPersonnelAssigned has not yet been implemented")
 		}),
@@ -93,6 +90,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		}),
 		PersonnelGetPersonnelPeopleHandler: personnel.GetPersonnelPeopleHandlerFunc(func(params personnel.GetPersonnelPeopleParams) middleware.Responder {
 			return middleware.NotImplemented("operation personnel.GetPersonnelPeople has not yet been implemented")
+		}),
+		PersonnelGetPersonnelPeoplePersonIDHandler: personnel.GetPersonnelPeoplePersonIDHandlerFunc(func(params personnel.GetPersonnelPeoplePersonIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation personnel.GetPersonnelPeoplePersonID has not yet been implemented")
 		}),
 		PersonnelGetPersonnelSearchHandler: personnel.GetPersonnelSearchHandlerFunc(func(params personnel.GetPersonnelSearchParams) middleware.Responder {
 			return middleware.NotImplemented("operation personnel.GetPersonnelSearch has not yet been implemented")
@@ -267,14 +267,14 @@ type GoBackendAPI struct {
 	RosteringGetInvitationsIDHandler rostering.GetInvitationsIDHandler
 	// PersonnelGetMeHandler sets the operation handler for the get me operation
 	PersonnelGetMeHandler personnel.GetMeHandler
-	// GetPersonnelAssignableHandler sets the operation handler for the get personnel assignable operation
-	GetPersonnelAssignableHandler GetPersonnelAssignableHandler
 	// GetPersonnelAssignedHandler sets the operation handler for the get personnel assigned operation
 	GetPersonnelAssignedHandler GetPersonnelAssignedHandler
 	// GetPersonnelAssignedGoogleContactsCSVHandler sets the operation handler for the get personnel assigned google contacts c s v operation
 	GetPersonnelAssignedGoogleContactsCSVHandler GetPersonnelAssignedGoogleContactsCSVHandler
 	// PersonnelGetPersonnelPeopleHandler sets the operation handler for the get personnel people operation
 	PersonnelGetPersonnelPeopleHandler personnel.GetPersonnelPeopleHandler
+	// PersonnelGetPersonnelPeoplePersonIDHandler sets the operation handler for the get personnel people person ID operation
+	PersonnelGetPersonnelPeoplePersonIDHandler personnel.GetPersonnelPeoplePersonIDHandler
 	// PersonnelGetPersonnelSearchHandler sets the operation handler for the get personnel search operation
 	PersonnelGetPersonnelSearchHandler personnel.GetPersonnelSearchHandler
 	// GetPublicCalendarIDHandler sets the operation handler for the get public calendar ID operation
@@ -463,9 +463,6 @@ func (o *GoBackendAPI) Validate() error {
 	if o.PersonnelGetMeHandler == nil {
 		unregistered = append(unregistered, "personnel.GetMeHandler")
 	}
-	if o.GetPersonnelAssignableHandler == nil {
-		unregistered = append(unregistered, "GetPersonnelAssignableHandler")
-	}
 	if o.GetPersonnelAssignedHandler == nil {
 		unregistered = append(unregistered, "GetPersonnelAssignedHandler")
 	}
@@ -474,6 +471,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.PersonnelGetPersonnelPeopleHandler == nil {
 		unregistered = append(unregistered, "personnel.GetPersonnelPeopleHandler")
+	}
+	if o.PersonnelGetPersonnelPeoplePersonIDHandler == nil {
+		unregistered = append(unregistered, "personnel.GetPersonnelPeoplePersonIDHandler")
 	}
 	if o.PersonnelGetPersonnelSearchHandler == nil {
 		unregistered = append(unregistered, "personnel.GetPersonnelSearchHandler")
@@ -720,10 +720,6 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/personnel/assignable"] = NewGetPersonnelAssignable(o.context, o.GetPersonnelAssignableHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
 	o.handlers["GET"]["/personnel/assigned"] = NewGetPersonnelAssigned(o.context, o.GetPersonnelAssignedHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -733,6 +729,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/personnel/people"] = personnel.NewGetPersonnelPeople(o.context, o.PersonnelGetPersonnelPeopleHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/personnel/people/{personId}"] = personnel.NewGetPersonnelPeoplePersonID(o.context, o.PersonnelGetPersonnelPeoplePersonIDHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

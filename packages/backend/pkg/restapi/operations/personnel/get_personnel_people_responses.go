@@ -26,7 +26,7 @@ type GetPersonnelPeopleOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *dtos.ArrayOfPersonSummaryDTO `json:"body,omitempty"`
+	Payload []*dtos.PersonDTOWithEmail `json:"body,omitempty"`
 }
 
 // NewGetPersonnelPeopleOK creates GetPersonnelPeopleOK with default headers values
@@ -36,13 +36,13 @@ func NewGetPersonnelPeopleOK() *GetPersonnelPeopleOK {
 }
 
 // WithPayload adds the payload to the get personnel people o k response
-func (o *GetPersonnelPeopleOK) WithPayload(payload *dtos.ArrayOfPersonSummaryDTO) *GetPersonnelPeopleOK {
+func (o *GetPersonnelPeopleOK) WithPayload(payload []*dtos.PersonDTOWithEmail) *GetPersonnelPeopleOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get personnel people o k response
-func (o *GetPersonnelPeopleOK) SetPayload(payload *dtos.ArrayOfPersonSummaryDTO) {
+func (o *GetPersonnelPeopleOK) SetPayload(payload []*dtos.PersonDTOWithEmail) {
 	o.Payload = payload
 }
 
@@ -50,11 +50,14 @@ func (o *GetPersonnelPeopleOK) SetPayload(payload *dtos.ArrayOfPersonSummaryDTO)
 func (o *GetPersonnelPeopleOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
 	rw.WriteHeader(200)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
+	payload := o.Payload
+	if payload == nil {
+		// return empty array
+		payload = make([]*dtos.PersonDTOWithEmail, 0, 50)
+	}
+
+	if err := producer.Produce(rw, payload); err != nil {
+		panic(err) // let the recovery middleware deal with this
 	}
 }
 

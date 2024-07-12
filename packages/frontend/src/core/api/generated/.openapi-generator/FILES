@@ -4,7 +4,6 @@ apis/RosteringApi.ts
 apis/ShowdocsApi.ts
 apis/index.ts
 index.ts
-models/ArrayOfPersonSummaryDTO.ts
 models/AssignedDTO.ts
 models/AvailabilitiesDTO.ts
 models/AvailabilitiesDTOEventsInner.ts
@@ -21,10 +20,12 @@ models/InvitationDTO.ts
 models/MeDetailsDTO.ts
 models/MediaDTO.ts
 models/ModelError.ts
+models/PersonDTO.ts
+models/PersonDTOWithEmail.ts
+models/PersonPrivateDetailsDTO.ts
+models/PersonPrivateDetailsDTOEmergencyContact.ts
 models/PersonSearchResultDTO.ts
 models/PersonSummaryDTO.ts
-models/PersonSummaryDTOPrivate.ts
-models/PersonSummaryDTOPrivateEmergencyContact.ts
 models/PersonUpdateDTO.ts
 models/PublicScheduleGet200Response.ts
 models/RoleDTO.ts

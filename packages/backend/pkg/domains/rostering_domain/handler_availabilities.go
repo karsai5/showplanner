@@ -3,14 +3,13 @@ package rostering_domain
 import (
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/domains/people_domain_old"
 	"showplanner.io/pkg/domains/schedule_domain"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/postoffice"
 	"showplanner.io/pkg/postoffice/letters"
 	"showplanner.io/pkg/postoffice/topics"
-	dto2 "showplanner.io/pkg/restapi/dtos"
+	"showplanner.io/pkg/restapi/dtos"
 	"showplanner.io/pkg/restapi/operations"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -19,7 +18,6 @@ import (
 var handleGetAvailabilities = operations.GetAvailabilitiesHandlerFunc(func(params operations.GetAvailabilitiesParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting roster", &operations.GetAvailabilitiesInternalServerError{})
 	hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)
-
 	if err != nil {
 		return logError(&err)
 	}
@@ -36,12 +34,12 @@ var handleGetAvailabilities = operations.GetAvailabilitiesHandlerFunc(func(param
 		return logError(&err)
 	}
 
-	mappedPeople := conv.MapArrayOfPointer(people, people_domain_old.MapToPersonSummaryDTO)
+	mappedPeople := conv.MapArrayOfPointer(people, func(p database.Person) dtos.PersonSummaryDTO { return p.MapToPersonSummaryDTO() })
 	mappedEvents := conv.MapArrayOfPointer(events, mapToEventWithAvailabilities(people))
 
 	schedule_domain.NameEventsWithCurtainsUp(mappedEvents)
 
-	dto := dto2.AvailabilitiesDTO{
+	dto := dtos.AvailabilitiesDTO{
 		People: mappedPeople,
 		Events: mappedEvents,
 	}
@@ -60,28 +58,26 @@ var handleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(par
 
 	if params.Availability.PersonID.String() != userId.String() {
 		return &operations.PostAvailabilitiesUnauthorized{
-			Payload: &dto2.Error{
+			Payload: &dtos.Error{
 				Message: "Cannot update an availability for another user",
 			},
 		}
 	}
 
 	event, err := database.GetEvent(uint(*params.Availability.EventID))
-
 	if err != nil {
 		return &operations.PostAvailabilitiesInternalServerError{}
 	}
 
 	if hasPerm, _ := permissions.ViewEvents.HasPermission(event.ShowID, params.HTTPRequest); !hasPerm {
 		return &operations.PostAvailabilitiesUnauthorized{
-			Payload: &dto2.Error{
+			Payload: &dtos.Error{
 				Message: "Cannot update an availability for a show you are not assigned to",
 			},
 		}
 	}
 
 	availability, err := database.UpdateAvailability(userId, uint(*params.Availability.EventID), *params.Availability.Available)
-
 	if err != nil {
 		return &operations.PostAvailabilitiesInternalServerError{}
 	}

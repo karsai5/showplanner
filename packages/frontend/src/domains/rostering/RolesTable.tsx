@@ -36,7 +36,7 @@ export const RolesTable: React.FC<{
       {(isLoading || isLoadingPeople) && <LoadingBox />}
       {(isError || isErrorPeople) && <ErrorBox>Could not get roles</ErrorBox>}
       {!roles?.length && <p>No roles yet</p>}
-      {roles && assignedPersonnel?.people && (
+      {roles && assignedPersonnel && (
         <table className="table">
           <thead>
             <tr>
@@ -47,7 +47,7 @@ export const RolesTable: React.FC<{
             {roles?.map((r) => (
               <tr key={r.id}>
                 <td>
-                  <RoleItem role={r} people={assignedPersonnel.people || []} />
+                  <RoleItem role={r} people={assignedPersonnel} />
                 </td>
               </tr>
             ))}
