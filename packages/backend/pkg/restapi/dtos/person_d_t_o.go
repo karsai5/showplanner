@@ -37,6 +37,9 @@ type PersonDTO struct {
 
 	// private
 	Private *PersonPrivateDetailsDTO `json:"private,omitempty"`
+
+	// pronouns
+	Pronouns string `json:"pronouns,omitempty"`
 }
 
 // Validate validates this person d t o

@@ -2,13 +2,13 @@ import {
   CalendarIcon,
   EnvelopeIcon,
   PhoneIcon,
+  UserIcon,
 } from "@heroicons/react/24/outline";
 import {
   PersonPrivateDetailsDTO,
   PersonPrivateDetailsDTOEmergencyContact,
 } from "core/api/generated";
 import dayjs from "dayjs";
-import { getPersonDisplayName } from "domains/personnel/PersonDisplayName";
 import { PersonDetails } from "domains/personnel/types/PersonDetails";
 import React, { useState } from "react";
 
@@ -16,11 +16,17 @@ export const PersonCard: React.FC<{
   person: PersonDetails;
   privateDetails: PersonPrivateDetailsDTO;
 }> = ({ person, privateDetails }) => {
-  const name = getPersonDisplayName(person);
+  let name = person.firstName;
+  if (person.preferredName) {
+    name = name + ` (${person.preferredName})`;
+  }
+  name = name + ` ${person.lastName}`;
+
   return (
     <div>
       <div className="text-lg font-bold mb-2">{name}</div>
       <ul className="mb-2">
+        <Pronouns pronouns={person.pronouns} />
         <Email email={privateDetails.email} />
         <Phone phone={privateDetails.phone} />
         <Age dob={privateDetails.dob} />
@@ -44,6 +50,18 @@ export const PersonCard: React.FC<{
         </a>
       </div>
     </div>
+  );
+};
+
+const Pronouns: React.FC<{ pronouns?: string }> = ({ pronouns }) => {
+  if (!pronouns) {
+    return null;
+  }
+  return (
+    <li className="flex items-center">
+      <UserIcon className="h-5 w-5 inline mr-1" />
+      {pronouns}
+    </li>
   );
 };
 

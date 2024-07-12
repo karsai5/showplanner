@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { PersonPrivateDetailsDTO,PersonSummaryDTO } from "core/api/generated";
+import { PersonDTO, PersonPrivateDetailsDTO } from "core/api/generated";
 
 import { PersonCard } from "./PersonCard";
 
@@ -10,9 +10,11 @@ const meta: Meta<typeof PersonCard> = {
 export default meta;
 type Story = StoryObj<typeof PersonCard>;
 
-const person: PersonSummaryDTO = {
+const person: PersonDTO = {
   id: "1",
   firstName: "John",
+  preferredName: "Jim",
+  pronouns: "He/Him",
   lastName: "Smith",
 };
 

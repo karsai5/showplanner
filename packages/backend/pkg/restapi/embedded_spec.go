@@ -4271,6 +4271,9 @@ func init() {
         },
         "private": {
           "$ref": "#/definitions/personPrivateDetailsDTO"
+        },
+        "pronouns": {
+          "type": "string"
         }
       }
     },

@@ -269,33 +269,29 @@ func (p *Person) MapToPersonDTO() dtos.PersonDTO {
 	if p.PreferredName != nil {
 		dto.PreferredName = *p.PreferredName
 	}
+	if p.Pronoun != nil {
+		dto.Pronouns = *p.Pronoun
+	}
 	return dto
 }
 
 type ShowTimer struct {
-	ID        uuid.UUID `gorm:"type:uuid;primary_key;"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time `gorm:"index"`
-
-	ExpectedCurtainsUp *time.Time
-
-	ShowStart     *time.Time
-	ShowEnd       *time.Time
-	IntervalStart *time.Time
-	IntervalEnd   *time.Time
-
+	UpdatedAt          time.Time
+	CreatedAt          time.Time
+	IntervalEnd        *time.Time
 	HouseOpen          *time.Time
+	ExpectedCurtainsUp *time.Time
+	ShowStart          *time.Time
+	ShowEnd            *time.Time
+	IntervalStart      *time.Time
+	Event              *Event
+	DeletedAt          *time.Time `gorm:"index"`
 	ActOneFOHClearance *time.Time
 	ActTwoFOHClearance *time.Time
-
-	// linked event
-	EventID *uint
-	Event   *Event
-
-	// linked person
-	CreatedById uuid.UUID
-	CreatedBy   Person
+	EventID            *uint
+	CreatedBy          Person
+	ID                 uuid.UUID `gorm:"type:uuid;primary_key;"`
+	CreatedById        uuid.UUID
 }
 
 func (st *ShowTimer) MapToSummaryDTO() dtos.ShowTimerSummaryDTO {

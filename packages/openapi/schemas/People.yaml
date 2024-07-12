@@ -33,6 +33,8 @@ PersonDTO:
       type: string
     lastName:
       type: string
+    pronouns:
+      type: string
     private:
       $ref: '#/PersonPrivateDetailsDTO'
   required:
