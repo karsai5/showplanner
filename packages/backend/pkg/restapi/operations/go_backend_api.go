@@ -190,6 +190,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		RosteringPostShowsShowIDPeopleUnassignHandler: rostering.PostShowsShowIDPeopleUnassignHandlerFunc(func(params rostering.PostShowsShowIDPeopleUnassignParams) middleware.Responder {
 			return middleware.NotImplemented("operation rostering.PostShowsShowIDPeopleUnassign has not yet been implemented")
 		}),
+		RosteringPostShowsShowIDRolesSetorderHandler: rostering.PostShowsShowIDRolesSetorderHandlerFunc(func(params rostering.PostShowsShowIDRolesSetorderParams) middleware.Responder {
+			return middleware.NotImplemented("operation rostering.PostShowsShowIDRolesSetorder has not yet been implemented")
+		}),
 		RosteringPostShowsShowIDRosterReleaseHandler: rostering.PostShowsShowIDRosterReleaseHandlerFunc(func(params rostering.PostShowsShowIDRosterReleaseParams) middleware.Responder {
 			return middleware.NotImplemented("operation rostering.PostShowsShowIDRosterRelease has not yet been implemented")
 		}),
@@ -339,6 +342,8 @@ type GoBackendAPI struct {
 	ShowdocsPostShowdocTimersIDHandler showdocs.PostShowdocTimersIDHandler
 	// RosteringPostShowsShowIDPeopleUnassignHandler sets the operation handler for the post shows show ID people unassign operation
 	RosteringPostShowsShowIDPeopleUnassignHandler rostering.PostShowsShowIDPeopleUnassignHandler
+	// RosteringPostShowsShowIDRolesSetorderHandler sets the operation handler for the post shows show ID roles setorder operation
+	RosteringPostShowsShowIDRolesSetorderHandler rostering.PostShowsShowIDRolesSetorderHandler
 	// RosteringPostShowsShowIDRosterReleaseHandler sets the operation handler for the post shows show ID roster release operation
 	RosteringPostShowsShowIDRosterReleaseHandler rostering.PostShowsShowIDRosterReleaseHandler
 	// RosteringPostShowsShowIDRosterUnreleaseHandler sets the operation handler for the post shows show ID roster unrelease operation
@@ -570,6 +575,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.RosteringPostShowsShowIDPeopleUnassignHandler == nil {
 		unregistered = append(unregistered, "rostering.PostShowsShowIDPeopleUnassignHandler")
+	}
+	if o.RosteringPostShowsShowIDRolesSetorderHandler == nil {
+		unregistered = append(unregistered, "rostering.PostShowsShowIDRolesSetorderHandler")
 	}
 	if o.RosteringPostShowsShowIDRosterReleaseHandler == nil {
 		unregistered = append(unregistered, "rostering.PostShowsShowIDRosterReleaseHandler")
@@ -861,6 +869,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/shows/{showId}/people/unassign"] = rostering.NewPostShowsShowIDPeopleUnassign(o.context, o.RosteringPostShowsShowIDPeopleUnassignHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/shows/{showId}/roles/setorder"] = rostering.NewPostShowsShowIDRolesSetorder(o.context, o.RosteringPostShowsShowIDRolesSetorderHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

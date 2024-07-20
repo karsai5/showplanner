@@ -44,14 +44,14 @@ var handleGetRoster = operations.GetRosterHandlerFunc(func(params operations.Get
 		return logError(&err)
 	}
 
+	mappedRoles := conv.MapArrayOfPointer(roles, func(r database.Role) dtos.RoleDTO { return r.MapToDTO() })
 	mappedEvents := conv.MapArrayOfPointer(events, mapToEventWithAssignments(roles))
-
 	schedule_domain.NameEventsWithCurtainsUp(mappedEvents)
 
 	return &operations.GetRosterOK{
 		Payload: &dtos.RosterDTO{
 			Events: mappedEvents,
-			Roles:  conv.MapArrayOfPointer(roles, mapToRoleDTO),
+			Roles:  mappedRoles,
 		},
 	}
 })

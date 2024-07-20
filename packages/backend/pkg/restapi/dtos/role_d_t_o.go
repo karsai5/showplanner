@@ -24,6 +24,9 @@ type RoleDTO struct {
 	// name
 	Name string `json:"name,omitempty"`
 
+	// order
+	Order int64 `json:"order,omitempty"`
+
 	// person
 	Person *PersonSummaryDTO `json:"person,omitempty"`
 }

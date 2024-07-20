@@ -16,6 +16,15 @@ RoleDTO:
       type: integer
     name:
       type: string
+    order:
+      type: integer
     person:
       x-nullable: true
       $ref: './People.yaml#/PersonSummaryDTO'
+
+RoleSetOrderDTO:
+  description: ID of roles in desired order
+  type: array
+  items:
+    type: integer
+    description: ID of role

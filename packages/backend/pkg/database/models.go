@@ -389,7 +389,20 @@ type Role struct {
 	Show     Show
 	PersonID *uuid.UUID
 	Person   *Person
+	Sort     uint
 	Name     string
+}
+
+func (r *Role) MapToDTO() dtos.RoleDTO {
+	dto := dtos.RoleDTO{
+		ID:    int64(r.ID),
+		Name:  r.Name,
+		Order: int64(r.Sort),
+	}
+	if r.Person != nil {
+		dto.Person = conv.Pointer(r.Person.MapToPersonSummaryDTO())
+	}
+	return dto
 }
 
 type Media struct {

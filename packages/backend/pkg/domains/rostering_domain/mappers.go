@@ -107,18 +107,6 @@ func fillPersonAndAvailabilityData(dto *dto2.RosterAssignedDTO, person database.
 	}
 }
 
-func mapToRoleDTO(role database.Role) dto2.RoleDTO {
-	var person *dto2.PersonSummaryDTO
-	if role.Person != nil {
-		person = conv.Pointer(role.Person.MapToPersonSummaryDTO())
-	}
-	return dto2.RoleDTO{
-		ID:     int64(role.ID),
-		Name:   role.Name,
-		Person: person,
-	}
-}
-
 func mapToShadowDTO(shadow database.Shadow, event database.Event) dto2.ShadowDTO {
 	dto := dto2.ShadowDTO{
 		Available: nil,

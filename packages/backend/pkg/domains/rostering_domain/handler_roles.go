@@ -6,6 +6,7 @@ import (
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
 	"showplanner.io/pkg/permissions"
+	"showplanner.io/pkg/restapi/dtos"
 	"showplanner.io/pkg/restapi/operations"
 )
 
@@ -52,7 +53,6 @@ var handleUpdateRole = operations.PutRolesIDHandlerFunc(func(params operations.P
 		Name:     params.RoleDetails.Name,
 		PersonID: conv.StrfmtUUIDToUUID(params.RoleDetails.PersonID),
 	})
-
 	if err != nil {
 		return logError(&err)
 	}
@@ -65,12 +65,11 @@ var handleUpdateRole = operations.PutRolesIDHandlerFunc(func(params operations.P
 		role.Person = conv.Pointer(person)
 	}
 
-	return &operations.PutRolesIDOK{Payload: conv.Pointer(mapToRoleDTO(role))}
+	return &operations.PutRolesIDOK{Payload: conv.Pointer(role.MapToDTO())}
 })
 
 var handleCreateRole = operations.PostRolesHandlerFunc(func(params operations.PostRolesParams) middleware.Responder {
 	hasPerm, err := permissions.Rostering.HasPermission(uint(params.RoleDetails.ShowID), params.HTTPRequest)
-
 	if err != nil {
 		logger.Error("Creating role", err)
 		return &operations.GetAvailabilitiesInternalServerError{}
@@ -84,20 +83,17 @@ var handleCreateRole = operations.PostRolesHandlerFunc(func(params operations.Po
 		PersonID: nil,
 		Name:     params.RoleDetails.Name,
 	})
-
 	if err != nil {
 		logger.Error("Creating role", err)
 		return &operations.GetRolesInternalServerError{}
 	}
 
-	mappedRole := mapToRoleDTO(role)
-	return &operations.PostRolesOK{Payload: &mappedRole}
+	return &operations.PostRolesOK{Payload: conv.Pointer(role.MapToDTO())}
 })
 
 var handleGetRoles = operations.GetRolesHandlerFunc(func(params operations.GetRolesParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting roles", &operations.GetAvailabilitiesInternalServerError{})
 	hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)
-
 	if err != nil {
 		return logError(&err)
 	}
@@ -106,12 +102,11 @@ var handleGetRoles = operations.GetRolesHandlerFunc(func(params operations.GetRo
 	}
 
 	roles, err := database.GetRolesForShow(uint(params.ShowID))
-
 	if err != nil {
 		return logError(&err)
 	}
 
-	mappedRoles := conv.MapArrayOfPointer(roles, mapToRoleDTO)
+	mappedRoles := conv.MapArrayOfPointer(roles, func(r database.Role) dtos.RoleDTO { return r.MapToDTO() })
 
 	return &operations.GetRolesOK{
 		Payload: mappedRoles,

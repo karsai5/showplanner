@@ -51,8 +51,14 @@ func UpdateAvailability(userId uuid.UUID, eventId uint, available bool) (*Availa
 
 func GetRolesForShow(showId uint) ([]Role, error) {
 	roles := []Role{}
-	res := db.Order("id").Where("show_id = ?", showId).Preload("Person").Find(&roles)
+	res := db.Order("sort").Where("show_id = ?", showId).Preload("Person").Find(&roles)
 	return roles, res.Error
+}
+
+func (d *Database) UpdateSortOrderOfRole(roleId uint, sortorder uint) error {
+	role := &Role{Model: gorm.Model{ID: roleId}}
+	res := db.Model(&role).Update("sort", sortorder)
+	return res.Error
 }
 
 func DeleteRole(id uint) error {

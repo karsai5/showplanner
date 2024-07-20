@@ -1600,6 +1600,43 @@ func init() {
         }
       }
     },
+    "/shows/{showId}/roles/setorder": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Set the order of the roles for a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "showId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "order",
+            "in": "body",
+            "schema": {
+              "$ref": "./schemas/Role.yaml#/RoleSetOrderDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/shows/{showId}/roster/release": {
       "post": {
         "produces": [
@@ -3644,6 +3681,49 @@ func init() {
         }
       }
     },
+    "/shows/{showId}/roles/setorder": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "rostering"
+        ],
+        "summary": "Set the order of the roles for a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "showId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "order",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/roleSetOrderDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/shows/{showId}/roster/release": {
       "post": {
         "produces": [
@@ -4439,9 +4519,20 @@ func init() {
         "name": {
           "type": "string"
         },
+        "order": {
+          "type": "integer"
+        },
         "person": {
           "$ref": "#/definitions/personSummaryDTO"
         }
+      }
+    },
+    "roleSetOrderDTO": {
+      "description": "ID of roles in desired order",
+      "type": "array",
+      "items": {
+        "description": "ID of role",
+        "type": "integer"
       }
     },
     "roleUpdateDTO": {

@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { api } from "core/api";
 import { RosterDTO } from "core/api/generated";
 import { useConfirmationModal } from "core/components/Modal/ConfirmationModal";
+import { useModal } from "core/components/Modal/Modal";
 import { H2 } from "core/components/Typography";
 import {
   HasPermission,
@@ -16,6 +17,7 @@ import { NavItem } from "domains/layout/components/Nav/items";
 import { AddRoleModal } from "domains/rostering/AddRoleModal/AddRoleModal";
 import { ReleaseRosterButton } from "domains/rostering/ReleaseRosterButton/ReleaseRosterButton";
 import { RosterTable } from "domains/rostering/RosterTable/RosterTable";
+import { SetRoleOrder } from "domains/rostering/SetRoleOrderModal/SetRoleOrderModal";
 import { InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -61,6 +63,8 @@ const ShowPage = (
   const confirm = useConfirmationModal();
   const unreleaseRosterMutation = useUnreleaseRosterMutation(show.id);
 
+  const { Modal, isOpen, close, open } = useModal();
+
   const configItems: NavItem = {
     title: "...",
     children: [
@@ -70,17 +74,27 @@ const ShowPage = (
       },
     ],
   };
-  if (hasRosteringPermission && show.isRosterReleased) {
+  if (hasRosteringPermission) {
     configItems.children?.push({
-      title: "Unrelease roster",
-      onClick: () =>
-        confirm(
-          "Unrelease roster",
-          "Are you sure you want to unrelease the roster?",
-          () => unreleaseRosterMutation.mutate()
-        ),
+      title: "Reorder roles",
+      onClick: () => open(),
     });
+    if (show.isRosterReleased) {
+      configItems.children?.push({
+        title: "Unrelease roster",
+        onClick: () =>
+          confirm(
+            "Unrelease roster",
+            "Are you sure you want to unrelease the roster?",
+            () => unreleaseRosterMutation.mutate()
+          ),
+      });
+    }
   }
+
+  const rosterDTO = props.rosterJSON
+    ? superjson.parse<RosterDTO>(props.rosterJSON)
+    : null;
 
   return (
     <>
@@ -89,8 +103,7 @@ const ShowPage = (
       </Head>
       <div className="flex flex-col justify-between sm:flex-row gap-4">
         <H2 className="mb-4">{show.name} - Roster</H2>
-
-        {props.rosterJSON && (
+        {rosterDTO && (
           <div>
             <HasPermission showId={show.id} permission={PERMISSION.rostering}>
               {!show.isRosterReleased && (
@@ -98,18 +111,25 @@ const ShowPage = (
               )}
               <AddRoleModal showId={show.id} className="mr-2" />
               <DisplayDropdown className="btn mr-2" item={configItems} />
+              <Modal close={close} isOpen={isOpen}>
+                <SetRoleOrder
+                  roles={rosterDTO.roles}
+                  close={close}
+                  show={show}
+                />
+              </Modal>
             </HasPermission>
           </div>
         )}
       </div>
-      {props.rosterJSON && (
+      {rosterDTO && (
         <RosterTable
           showId={show.id}
           showPastEvents={showOldEvents}
-          initialData={superjson.parse<RosterDTO>(props.rosterJSON)}
+          initialData={rosterDTO}
         />
       )}
-      {!props.rosterJSON && (
+      {!rosterDTO && (
         <div className="prose">
           <p>
             The roster has not been released yet.

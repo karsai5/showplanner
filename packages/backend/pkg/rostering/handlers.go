@@ -25,4 +25,6 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 
 	api.RosteringPostShowsShowIDRosterReleaseHandler = handleReleaseRoster(&db)
 	api.RosteringPostShowsShowIDRosterUnreleaseHandler = handleUnreleaseRoster(&db)
+
+	api.RosteringPostShowsShowIDRolesSetorderHandler = handleSetRolesOrder(&db)
 }
