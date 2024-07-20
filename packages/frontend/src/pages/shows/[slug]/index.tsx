@@ -7,6 +7,7 @@ import {
   ScheduleEventDTO,
   ScheduleEventDTOAllOfRoles,
   ScheduleEventDTOAllOfRolesTypeEnum,
+  ShowSummaryDTO,
 } from "core/api/generated";
 import Address from "core/components/Address/Address";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
@@ -126,8 +127,8 @@ export default function ShowPage(
             <ErrorBox info>Show is over. All events are in the past</ErrorBox>
           )}
           <EventTable
-            headers={<Headers showId={show.id} />}
-            eventRenderer={eventRenderer(show.id)}
+            headers={<Headers show={show} />}
+            eventRenderer={eventRenderer(show)}
             dividerRenderer={DividerRenderer}
             events={showAllEvents ? allEvents : futureEvents}
           />
@@ -137,16 +138,16 @@ export default function ShowPage(
   );
 }
 
-const Headers: React.FC<{ showId: number }> = ({ showId }) => {
+const Headers: React.FC<{ show: ShowSummaryDTO }> = ({ show }) => {
   const canEditEvents = useHasPermission()(
-    showPermission(showId, PERMISSION.addEvents)
+    showPermission(show.id, PERMISSION.addEvents)
   );
   return (
     <>
       <th>Date</th>
       <th>Event</th>
       <th>Availability/Attendance</th>
-      <th>Role</th>
+      {show.isRosterReleased && <th>Role</th>}
       <th>Location</th>
       <th>Note</th>
       {canEditEvents && (
@@ -159,14 +160,16 @@ const Headers: React.FC<{ showId: number }> = ({ showId }) => {
   );
 };
 
-function eventRenderer(showId: number): EventRendererType<ScheduleEventDTO> {
+function eventRenderer(
+  show: ShowSummaryDTO
+): EventRendererType<ScheduleEventDTO> {
   const EventRenderer: EventRendererType<ScheduleEventDTO> = ({
     event: e,
     groupLength,
   }) => {
     const path = usePathname();
     const canEditEvents = useHasPermission()(
-      showPermission(showId, PERMISSION.addEvents)
+      showPermission(show.id, PERMISSION.addEvents)
     );
     return (
       <>
@@ -179,12 +182,14 @@ function eventRenderer(showId: number): EventRendererType<ScheduleEventDTO> {
         <td className="border-l border-slate-200 relative">
           <AvailabilityDropdown event={e} />
         </td>
-        <td className="border-l border-slate-200 relative">
-          <RolesDescription
-            roles={e.roles}
-            isShow={!!e.curtainsUp && !e.options?.attendanceRequired}
-          />
-        </td>
+        {show.isRosterReleased && (
+          <td className="border-l border-slate-200 relative">
+            <RolesDescription
+              roles={e.roles}
+              isShow={!!e.curtainsUp && !e.options?.attendanceRequired}
+            />
+          </td>
+        )}
 
         <Td>
           {e.address && (

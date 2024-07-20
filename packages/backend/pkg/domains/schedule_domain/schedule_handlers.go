@@ -42,6 +42,11 @@ var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operation
 		return &operations.GetScheduleUnauthorized{}
 	}
 
+	show, err := database.GetShowById(params.ShowID)
+	if err != nil {
+		return logError(&err)
+	}
+
 	events, err := database.GetEventsWithAvailabilityAndAssignmentsForUser(showId, userId)
 	if err != nil {
 		return logError(&err)
@@ -56,13 +61,17 @@ var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operation
 	scheduledEvents := []*dto2.ScheduleEventDTO{}
 
 	for _, e := range events {
-		scheduledEvents = append(scheduledEvents, conv.Pointer(
+		mappedEvent := conv.Pointer(
 			dto2.ScheduleEventDTO{
 				EventDTO:     e.MapToEventDTO(),
-				Roles:        MapRoles(roles, e, userId),
+				Roles:        []*dto2.ScheduleEventDTORolesItems0{},
 				Availability: getAvailability(e.Availabilities),
 			},
-		))
+		)
+		if show.Options.IsRosterReleased {
+			mappedEvent.Roles = MapRoles(roles, e, userId)
+		}
+		scheduledEvents = append(scheduledEvents, mappedEvent)
 	}
 
 	NameEventsWithCurtainsUp(scheduledEvents)
