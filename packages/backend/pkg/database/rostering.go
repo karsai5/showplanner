@@ -51,7 +51,7 @@ func UpdateAvailability(userId uuid.UUID, eventId uint, available bool) (*Availa
 
 func GetRolesForShow(showId uint) ([]Role, error) {
 	roles := []Role{}
-	res := db.Order("sort").Where("show_id = ?", showId).Preload("Person").Find(&roles)
+	res := db.Order("sort, id").Where("show_id = ?", showId).Preload("Person").Find(&roles)
 	return roles, res.Error
 }
 

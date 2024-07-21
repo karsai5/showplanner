@@ -1,6 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "core/api";
 import { RosterDTO } from "core/api/generated";
+import ErrorBox from "core/components/ErrorBox/ErrorBox";
+import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { useConfirmationModal } from "core/components/Modal/ConfirmationModal";
 import { useModal } from "core/components/Modal/Modal";
 import { H2 } from "core/components/Typography";
@@ -92,9 +94,15 @@ const ShowPage = (
     }
   }
 
-  const rosterDTO = props.rosterJSON
-    ? superjson.parse<RosterDTO>(props.rosterJSON)
-    : null;
+  const { data, isLoading, isError } = useQuery({
+    initialData: props.rosterJSON
+      ? superjson.parse<RosterDTO>(props.rosterJSON)
+      : undefined,
+    queryKey: ["roster", show.id],
+    queryFn: () => api.default.rosterGet({ showId: show.id }),
+  });
+
+  const showRoster = show.isRosterReleased || hasRosteringPermission;
 
   return (
     <>
@@ -103,7 +111,7 @@ const ShowPage = (
       </Head>
       <div className="flex flex-col justify-between sm:flex-row gap-4">
         <H2 className="mb-4">{show.name} - Roster</H2>
-        {rosterDTO && (
+        {data && (
           <div>
             <HasPermission showId={show.id} permission={PERMISSION.rostering}>
               {!show.isRosterReleased && (
@@ -112,24 +120,23 @@ const ShowPage = (
               <AddRoleModal showId={show.id} className="mr-2" />
               <DisplayDropdown className="btn mr-2" item={configItems} />
               <Modal close={close} isOpen={isOpen}>
-                <SetRoleOrder
-                  roles={rosterDTO.roles}
-                  close={close}
-                  show={show}
-                />
+                <SetRoleOrder roles={data.roles} close={close} show={show} />
               </Modal>
             </HasPermission>
           </div>
         )}
       </div>
-      {rosterDTO && (
+      {isError && <ErrorBox>Could not get roster</ErrorBox>}
+      {isLoading && <LoadingBox />}
+      {showRoster && data?.events && data.roles && (
         <RosterTable
           showId={show.id}
           showPastEvents={showOldEvents}
-          initialData={rosterDTO}
+          events={data.events}
+          roles={data.roles}
         />
       )}
-      {!rosterDTO && (
+      {!showRoster && (
         <div className="prose">
           <p>
             The roster has not been released yet.

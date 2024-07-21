@@ -7,7 +7,6 @@ import { H2 } from "core/components/Typography";
 import { showToastError } from "core/utils/errors";
 import { clone } from "lodash";
 import { FC, useState } from "react";
-import { toast } from "react-toastify";
 
 export const SetRoleOrder: FC<{
   roles?: RoleDTO[];
@@ -32,7 +31,6 @@ export const SetRoleOrder: FC<{
         showToastError("Could not save new order", err);
       },
       onSuccess: () => {
-        toast.success("New order saved");
         queryClient.invalidateQueries(["roster", show.id]);
         close();
       },

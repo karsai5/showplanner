@@ -389,18 +389,20 @@ type Role struct {
 	Show     Show
 	PersonID *uuid.UUID
 	Person   *Person
-	Sort     uint
+	Sort     *uint
 	Name     string
 }
 
 func (r *Role) MapToDTO() dtos.RoleDTO {
 	dto := dtos.RoleDTO{
-		ID:    int64(r.ID),
-		Name:  r.Name,
-		Order: int64(r.Sort),
+		ID:   int64(r.ID),
+		Name: r.Name,
 	}
 	if r.Person != nil {
 		dto.Person = conv.Pointer(r.Person.MapToPersonSummaryDTO())
+	}
+	if r.Sort != nil {
+		dto.Order = int64(*r.Sort)
 	}
 	return dto
 }

@@ -7,10 +7,8 @@ import { api_deprecated } from "core/api";
 import {
   PersonSummaryDTO,
   RoleDTO,
-  RosterDTO,
   RosterDTOEventsInner,
 } from "core/api/generated";
-import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { useConfirmationModal } from "core/components/Modal/ConfirmationModal";
 import { useModal } from "core/components/Modal/Modal";
 import { Td } from "core/components/tables/tables";
@@ -33,44 +31,19 @@ import { AssignmentCell, AssignmentDisplay } from "./AssignmentCell";
 export const RosterTable: React.FC<{
   showId: number;
   showPastEvents?: boolean;
-  initialData?: RosterDTO;
-}> = ({ showId, showPastEvents, initialData }) => {
-  const rosterRequest = useQuery({
-    initialData: initialData,
-    queryKey: ["roster", showId],
-    queryFn: () => api_deprecated.rosterGet({ showId: showId }),
-  });
-
-  if (rosterRequest.isError) {
-    return <ErrorBox>Could not get roster</ErrorBox>;
-  }
-  if (rosterRequest.isLoading) {
-    return <progress className="progress w-56"></progress>;
-  }
-  if (
-    rosterRequest.data &&
-    rosterRequest.data.events &&
-    rosterRequest.data.roles
-  ) {
-    if (rosterRequest.data.events.length === 0) {
-      return (
-        <ErrorBox info>
-          Availabilities are not available until events have been added
-        </ErrorBox>
-      );
-    }
-    const filteredEvents = rosterRequest.data.events.filter(
-      (e) => showPastEvents || e.start > new Date()
-    );
-    return (
-      <EventTable
-        events={showPastEvents ? rosterRequest.data.events : filteredEvents}
-        headers={<Headers roles={rosterRequest.data.roles} showId={showId} />}
-        eventRenderer={eventRenderer(rosterRequest.data.roles)}
-      />
-    );
-  }
-  return null;
+  events: RosterDTOEventsInner[];
+  roles: RoleDTO[];
+}> = ({ showId, showPastEvents, events, roles }) => {
+  const filteredEvents = events.filter(
+    (e) => showPastEvents || e.start > new Date()
+  );
+  return (
+    <EventTable
+      events={showPastEvents ? events : filteredEvents}
+      headers={<Headers roles={roles} showId={showId} />}
+      eventRenderer={eventRenderer(roles)}
+    />
+  );
 };
 
 const Headers: React.FC<{ roles: Array<RoleDTO>; showId: number }> = ({
