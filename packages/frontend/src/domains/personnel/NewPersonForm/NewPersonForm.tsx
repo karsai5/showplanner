@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import cc from "classnames";
 import { api } from "core/api";
+import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import FormattedTextInput from "core/components/fields/FormattedTextInput";
 import TextArea from "core/components/fields/TextArea";
 import Input from "core/components/fields/TextInput";
@@ -39,6 +40,9 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
   } = useForm<Inputs>();
 
   const pronoun = watch("pronoun");
+  const firstName = watch("firstname");
+  const lastName = watch("lastname");
+  const preferredName = watch("preferredName");
 
   const mutation = useMutation<unknown, Error, Inputs>({
     mutationFn: (formData) => {
@@ -129,8 +133,26 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
           register={register("preferredName")}
           placeholder="Preferred name"
           errors={errors}
-          label="The name you would want people to refer to you when backstage"
+          label={`Preferred name is optional and if entered will replace your first name in the ShowPlanner. (e.g. Matilda likes to be credited as "Matilda" in programs, but prefers to go by "Till" in person.`}
         />
+        {firstName && lastName && preferredName && preferredName != "" && (
+          <ErrorBox info>
+            <div>
+              <p>
+                Your name in programs will appear as{" "}
+                <span className="font-bold">
+                  {firstName} {lastName}
+                </span>
+              </p>
+              <p>
+                Your name in the ShowPlanner roster etc. will appear as{" "}
+                <span className="font-bold">
+                  {preferredName} {lastName}
+                </span>
+              </p>
+            </div>
+          </ErrorBox>
+        )}
         <FormattedTextInput
           register={register("phone", { required: true })}
           placeholder="Phone"
