@@ -117,14 +117,14 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
           register={register("firstname", { required: true })}
           placeholder="First name"
           errors={errors}
-          label="This is the name that will appear in programs"
+          label="First name (as you want it credited in programs)"
           showRequired
         />
         <Input
+          label="Last name"
           register={register("lastname", { required: true })}
           placeholder="Last name"
           errors={errors}
-          className="md:mt-8"
           showRequired
         />
       </Row>
@@ -153,14 +153,6 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
             </div>
           </ErrorBox>
         )}
-        <FormattedTextInput
-          register={register("phone", { required: true })}
-          placeholder="Phone"
-          errors={errors}
-          mask="0499 999 999"
-          className="md:mt-8"
-          showRequired
-        />
       </Row>
       <Row>
         <FormattedTextInput
@@ -181,6 +173,15 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
           placeholder="Working with Children Check number"
           errors={errors}
           mask="*** ********"
+        />
+        <FormattedTextInput
+          label="Phone number"
+          register={register("phone", { required: true })}
+          placeholder="Phone"
+          errors={errors}
+          mask="0499 999 999"
+          className="md:mt-8"
+          showRequired
         />
         <Input
           label="Date of birth"
