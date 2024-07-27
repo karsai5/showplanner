@@ -1,7 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
 import { getApi } from "core/api";
-import { AvailabilityDTO, ScheduleEventDTO } from "core/api/generated";
+import {
+  AvailabilityDTO,
+  ScheduleEventDTO,
+  UserInputEnum,
+} from "core/api/generated";
 import { useUserId } from "core/permissions";
 import {
   getBgColor,
@@ -19,7 +23,8 @@ export const AvailabilityDropdown: React.FC<{ event: ScheduleEventDTO }> = ({
 }) => {
   const api = getApi();
 
-  const attendanceRequired = !!event.options?.attendanceRequired;
+  const attendanceRequired =
+    event.options?.userInput === UserInputEnum.Attendance;
   const [value, setValue] = useState<string>(
     getStringFromBoolean(event.availability?.available)
   );

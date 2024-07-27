@@ -1,9 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
 import { getApi } from "core/api";
-import { CreateEventDTO, EventDTO } from "core/api/generated";
+import { CreateEventDTO, EventDTO, UserInputEnum } from "core/api/generated";
 import AddressPicker from "core/components/fields/AddressPicker/AddressPicker";
-import { Checkbox } from "core/components/fields/Checkbox";
 import Input from "core/components/fields/TextInput";
 import { getStaticMap } from "core/maps/maps";
 import dayjs, { Dayjs } from "dayjs";
@@ -32,7 +31,7 @@ type Inputs = {
   };
   name: string;
   shortNote: string;
-  attendanceRequired: boolean;
+  userInputType: UserInputEnum;
 };
 
 export const EventForm: FC<{
@@ -141,16 +140,13 @@ export const EventForm: FC<{
           </button>
         </div>
       </div>
-
       <Input label="Event name" register={register("name")} errors={errors} />
-
       <Input
         label="Note"
         register={register("shortNote")}
         errors={errors}
         helpText="Note will appear in calendar description"
       />
-
       <AddressPicker
         control={addressControl}
         className="mb-2"
@@ -177,13 +173,30 @@ export const EventForm: FC<{
           </div>
         </a>
       )}
-
-      <Checkbox
-        label="Attendance is required (dropdown becomes attending/not attending instead of available/unavailable)"
-        register={register("attendanceRequired")}
-        errors={errors}
-      />
-
+      <label className={cc("form-control mb-4")}>
+        <div className="label">
+          <span className="label-text-alt">User input</span>
+        </div>
+        <select
+          className="select select-bordered"
+          {...register("userInputType")}
+        >
+          <option value={UserInputEnum.Availability}>
+            Available / Unavailable
+          </option>
+          <option value={UserInputEnum.Attendance}>
+            Attending / Not attending
+          </option>
+          <option value={UserInputEnum.None}>No input required</option>
+        </select>
+        <div className="label">
+          <span className="label-text-alt">
+            This is what the user will see in the dropdown next to the event.
+            Only events that are &quot;available / Unavailable&quot; appear in
+            the roster.
+          </span>
+        </div>
+      </label>
       <button
         type="submit"
         className={cc({ loading: mutation.isLoading }, "btn btn-block")}
@@ -213,7 +226,7 @@ const getDefaultValues = (
       lng: null,
       address: event.address || "",
     },
-    attendanceRequired: event.options?.attendanceRequired || false,
+    userInputType: event.options?.userInput || UserInputEnum.Availability,
   };
 
   return defaultValues;
@@ -229,7 +242,7 @@ const mapFormValues = (showId: number, form: Inputs): CreateEventDTO => {
     shortnote: form.shortNote,
     name: form.name,
     options: {
-      attendanceRequired: form.attendanceRequired,
+      userInput: form.userInputType,
     },
   };
 };

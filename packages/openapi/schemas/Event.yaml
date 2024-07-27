@@ -45,9 +45,14 @@ EventOptionsDTO:
     divider:
       type: boolean
       x-nullable: true
-    attendanceRequired:
-      type: boolean
-      x-nullable: true
+    userInput:
+      $ref: '#/UserInputEnum'
+UserInputEnum:
+  type: string
+  enum:
+    - availability
+    - attendance
+    - none
 CreateEventDTO:
   properties:
     showId:

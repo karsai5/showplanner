@@ -46,5 +46,6 @@ models/ShowdocReportsIdTexGet200Response.ts
 models/UpdateAssignedDTO.ts
 models/UpdateShowTimerDTO.ts
 models/UpdateShowreportDTO.ts
+models/UserInputEnum.ts
 models/index.ts
 runtime.ts

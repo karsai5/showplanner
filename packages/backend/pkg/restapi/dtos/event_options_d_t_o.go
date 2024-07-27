@@ -8,6 +8,7 @@ package dtos
 import (
 	"context"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
@@ -17,20 +18,73 @@ import (
 // swagger:model eventOptionsDTO
 type EventOptionsDTO struct {
 
-	// attendance required
-	AttendanceRequired *bool `json:"attendanceRequired,omitempty"`
-
 	// divider
 	Divider *bool `json:"divider,omitempty"`
+
+	// user input
+	UserInput UserInputEnum `json:"userInput,omitempty"`
 }
 
 // Validate validates this event options d t o
 func (m *EventOptionsDTO) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateUserInput(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
 	return nil
 }
 
-// ContextValidate validates this event options d t o based on context it is used
+func (m *EventOptionsDTO) validateUserInput(formats strfmt.Registry) error {
+	if swag.IsZero(m.UserInput) { // not required
+		return nil
+	}
+
+	if err := m.UserInput.Validate(formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("userInput")
+		} else if ce, ok := err.(*errors.CompositeError); ok {
+			return ce.ValidateName("userInput")
+		}
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validate this event options d t o based on the context it is used
 func (m *EventOptionsDTO) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateUserInput(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *EventOptionsDTO) contextValidateUserInput(ctx context.Context, formats strfmt.Registry) error {
+
+	if swag.IsZero(m.UserInput) { // not required
+		return nil
+	}
+
+	if err := m.UserInput.ContextValidate(ctx, formats); err != nil {
+		if ve, ok := err.(*errors.Validation); ok {
+			return ve.ValidateName("userInput")
+		} else if ce, ok := err.(*errors.CompositeError); ok {
+			return ce.ValidateName("userInput")
+		}
+		return err
+	}
+
 	return nil
 }
 

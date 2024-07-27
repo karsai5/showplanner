@@ -19,15 +19,14 @@ func mapToDatabaseEvent(dto dto2.CreateEventDTO) database.Event {
 		Name:       dto.Name,
 		ShortNote:  dto.Shortnote,
 		Address:    dto.Address,
-		Options:    database.EventOptions{},
+		Options: database.EventOptions{
+			UserInputType: database.UserInputType(dto.Options.UserInput),
+		},
 	}
 
 	if dto.Options != nil {
 		if dto.Options.Divider != nil {
 			event.Options.Divider = *dto.Options.Divider
-		}
-		if dto.Options.AttendanceRequired != nil {
-			event.Options.AttendanceRequired = *dto.Options.AttendanceRequired
 		}
 	}
 

@@ -4226,13 +4226,12 @@ func init() {
     },
     "eventOptionsDTO": {
       "properties": {
-        "attendanceRequired": {
-          "type": "boolean",
-          "x-nullable": true
-        },
         "divider": {
           "type": "boolean",
           "x-nullable": true
+        },
+        "userInput": {
+          "$ref": "#/definitions/userInputEnum"
         }
       }
     },
@@ -4872,6 +4871,14 @@ func init() {
           "x-nullable": true
         }
       }
+    },
+    "userInputEnum": {
+      "type": "string",
+      "enum": [
+        "availability",
+        "attendance",
+        "none"
+      ]
     }
   },
   "responses": {

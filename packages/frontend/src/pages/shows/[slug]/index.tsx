@@ -8,6 +8,7 @@ import {
   ScheduleEventDTOAllOfRoles,
   ScheduleEventDTOAllOfRolesTypeEnum,
   ShowSummaryDTO,
+  UserInputEnum,
 } from "core/api/generated";
 import Address from "core/components/Address/Address";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
@@ -180,13 +181,18 @@ function eventRenderer(
         )}
         <TimeRangeWithCurtainsUpCell event={e} />
         <td className="border-l border-slate-200 relative">
-          <AvailabilityDropdown event={e} />
+          {e.options?.userInput !== UserInputEnum.None && (
+            <AvailabilityDropdown event={e} />
+          )}
         </td>
         {show.isRosterReleased && (
           <td className="border-l border-slate-200 relative">
             <RolesDescription
               roles={e.roles}
-              isShow={!!e.curtainsUp && !e.options?.attendanceRequired}
+              isShow={
+                !!e.curtainsUp &&
+                e.options?.userInput === UserInputEnum.Availability
+              }
             />
           </td>
         )}

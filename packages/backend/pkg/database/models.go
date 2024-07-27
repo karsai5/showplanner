@@ -13,9 +13,17 @@ import (
 	"showplanner.io/pkg/conv"
 )
 
+type UserInputType string
+
+const (
+	UserInputTypeAvailability UserInputType = "availability"
+	UserInputTypeAttendance   UserInputType = "attendance"
+	UserInputTypeNone         UserInputType = "none"
+)
+
 type EventOptions struct {
-	Divider            bool
-	AttendanceRequired bool
+	Divider       bool
+	UserInputType UserInputType
 }
 
 type Event struct {
@@ -34,6 +42,16 @@ type Event struct {
 	ShowReport     *ShowReport
 	ShowTimer      *ShowTimer
 	Options        EventOptions `gorm:"embedded;embeddedPrefix:options_"`
+}
+
+func (e *Event) IsUserInputTypeAttendance() bool {
+	return e.Options.UserInputType == UserInputTypeAttendance
+}
+func (e *Event) IsUserInputTypeAvailability() bool {
+	return e.Options.UserInputType == UserInputTypeAvailability
+}
+func (e *Event) IsUserInputTypeNone() bool {
+	return e.Options.UserInputType == UserInputTypeNone
 }
 
 func (e *Event) GetCurtainsUp() *strfmt.DateTime {
@@ -79,8 +97,8 @@ func (e *Event) MapToEventDTO() dtos.EventDTO {
 		Shortnote: e.ShortNote,
 		Address:   e.Address,
 		Options: &dtos.EventOptionsDTO{
-			Divider:            conv.Pointer(e.Options.Divider),
-			AttendanceRequired: conv.Pointer(e.Options.AttendanceRequired),
+			Divider:   conv.Pointer(e.Options.Divider),
+			UserInput: dtos.UserInputEnum(e.Options.UserInputType),
 		},
 	}
 

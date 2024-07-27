@@ -70,7 +70,7 @@ func (ical *iCalendar) createEventsForShow(cal *ics.Calendar, show database.Show
 		}
 
 		if ical.HideEventsNotRequiredFor {
-			if hide, _ := ical.shouldAttendingEventBeHidden(*e); e.Options.AttendanceRequired && hide {
+			if hide, _ := ical.shouldAttendingEventBeHidden(*e); e.IsUserInputTypeAttendance() && hide {
 				continue // skip
 			}
 		}
@@ -81,7 +81,7 @@ func (ical *iCalendar) createEventsForShow(cal *ics.Calendar, show database.Show
 		// and the event is not required,
 		// and the event has a curtain time,
 		// and we're hiding events not required for, skip
-		if (len(rolesForUser) == 0 && !e.Options.AttendanceRequired && e.CurtainsUp != nil) && ical.HideEventsNotRequiredFor {
+		if (len(rolesForUser) == 0 && !e.IsUserInputTypeAttendance() && e.CurtainsUp != nil) && ical.HideEventsNotRequiredFor {
 			continue
 		}
 
@@ -157,7 +157,7 @@ func (ical iCalendar) getEventSummary(show database.Show, event database.Event, 
 
 	if len(roleStrings) > 0 {
 		summaryArray = append(summaryArray, strings.Join(roleStrings, ", "))
-	} else if !ical.isUserRequiredForRole(rolesForUser) && !event.Options.AttendanceRequired {
+	} else if !ical.isUserRequiredForRole(rolesForUser) && !event.IsUserInputTypeAttendance() {
 		summaryArray = append(summaryArray, "Not required")
 	}
 
@@ -166,7 +166,7 @@ func (ical iCalendar) getEventSummary(show database.Show, event database.Event, 
 }
 
 func (ical *iCalendar) addAttendingEventSummaryInformation(summaryArray *[]string, e database.Event) {
-	if e.Options.AttendanceRequired {
+	if e.IsUserInputTypeAttendance() {
 		attendance := ical.findAvailabilityForUserInEvent(e)
 		if attendance == nil {
 			*summaryArray = append(*summaryArray, "Attendance unknown")
@@ -179,7 +179,7 @@ func (ical *iCalendar) addAttendingEventSummaryInformation(summaryArray *[]strin
 }
 
 func (ical iCalendar) shouldAttendingEventBeHidden(event database.Event) (bool, error) {
-	if !event.Options.AttendanceRequired {
+	if !event.IsUserInputTypeAvailability() {
 		return false, fmt.Errorf("event %d does not require attendance", event.ID)
 	}
 	attendance := ical.findAvailabilityForUserInEvent(event)

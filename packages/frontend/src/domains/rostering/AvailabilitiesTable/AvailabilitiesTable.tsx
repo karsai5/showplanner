@@ -5,6 +5,7 @@ import {
   AvailabilitiesDTO,
   AvailabilitiesDTOEventsInner,
   PersonSummaryDTO,
+  UserInputEnum,
 } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { Td } from "core/components/tables/tables";
@@ -69,7 +70,7 @@ const EventRenderer: EventRendererType<AvailabilitiesDTOEventsInner> = ({
   event: e,
   groupLength,
 }) => {
-  const attendanceRequired = !!e.options?.attendanceRequired;
+  const attendanceRequired = e.options?.userInput === UserInputEnum.Attendance;
   return (
     <>
       {groupLength && (
