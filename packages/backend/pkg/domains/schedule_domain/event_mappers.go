@@ -1,7 +1,7 @@
 package schedule_domain
 
 import (
-	dto2 "showplanner.io/pkg/restapi/dtos"
+	"showplanner.io/pkg/restapi/dtos"
 	"sort"
 	"strconv"
 	"time"
@@ -10,7 +10,7 @@ import (
 	"showplanner.io/pkg/database"
 )
 
-func mapToDatabaseEvent(dto dto2.CreateEventDTO) database.Event {
+func mapToDatabaseEvent(dto dtos.CreateEventDTO) database.Event {
 	event := database.Event{
 		ShowID:     uint(*dto.ShowID),
 		Start:      time.Time(*dto.Start),
@@ -19,15 +19,13 @@ func mapToDatabaseEvent(dto dto2.CreateEventDTO) database.Event {
 		Name:       dto.Name,
 		ShortNote:  dto.Shortnote,
 		Address:    dto.Address,
-		Options: database.EventOptions{
-			UserInputType: database.UserInputType(dto.Options.UserInput),
-		},
 	}
 
 	if dto.Options != nil {
 		if dto.Options.Divider != nil {
 			event.Options.Divider = *dto.Options.Divider
 		}
+		event.Options.UserInputType = database.UserInputType(dto.Options.UserInput)
 	}
 
 	return event
@@ -42,7 +40,7 @@ type Event interface {
 	int64 | float64
 }
 
-func NameEventsWithCurtainsUp[E dto2.EventWithCurtainsUp](events []E) {
+func NameEventsWithCurtainsUp[E dtos.EventWithCurtainsUp](events []E) {
 	var showEvents []E
 	for _, event := range events {
 		if (event).GetCurtainsUp() != nil {
