@@ -80,6 +80,9 @@ const EventRenderer: EventRendererType<AvailabilitiesDTOEventsInner> = ({
       )}
       <TimeRangeWithCurtainsUpCell event={e} />
       {e.availabilities?.map((a, i) => {
+        if (e.options?.userInput === UserInputEnum.None) {
+          return <Td key={i}> </Td>;
+        }
         if (a === null) {
           return (
             <Td key={i} className="italic text-slate-400">
