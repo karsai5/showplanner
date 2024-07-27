@@ -2,6 +2,7 @@ package database
 
 import (
 	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
 
@@ -10,10 +11,14 @@ func CreateEvent(event Event) (Event, error) {
 	return event, res.Error
 }
 
-func UpdateEvent(id uint, event Event) (Event, error) {
-	updatedEvent := Event{}
-	res := db.Where("ID = ?", id).Model(&updatedEvent).Omit("ShowId").Updates(event)
-	return updatedEvent, res.Error
+func UpdateEvent(id uint, updates Event) (Event, error) {
+	event := Event{
+		Model: gorm.Model{
+			ID: id,
+		},
+	}
+	res := db.Model(&event).Select("start", "end", "curtains_up", "name", "short_note", "address", "options_divider", "options_user_input_type").Updates(updates)
+	return event, res.Error
 }
 
 func GetEvents(showId uint) ([]Event, error) {
