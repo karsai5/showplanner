@@ -23,7 +23,7 @@ func (d *Database) GetPerson(id uuid.UUID) (Person, error) {
 
 func GetPersonByEmail(email string) (Person, error) {
 	person := Person{}
-	res := db.Where("email = ?", email).First(&person)
+	res := db.Where("LOWER(email) = LOWER(?)", email).First(&person)
 	return person, res.Error
 }
 
