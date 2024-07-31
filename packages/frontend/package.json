@@ -1,5 +1,5 @@
 {
-  "name": "@showplanner/frontend-next",
+  "name": "@showplanner/frontend",
   "version": "2.0.0",
   "private": true,
   "scripts": {
