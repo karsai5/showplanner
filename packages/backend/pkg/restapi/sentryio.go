@@ -14,7 +14,7 @@ func initSentry() {
 		// Set TracesSampleRate to 1.0 to capture 100%
 		// of transactions for performance monitoring.
 		// We recommend adjusting this value in production,
-		EnableTracing: true,
+		EnableTracing:    true,
 		TracesSampleRate: 1.0,
 	})
 	if err != nil {

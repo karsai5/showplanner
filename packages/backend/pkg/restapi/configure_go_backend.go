@@ -33,6 +33,7 @@ func configureFlags(api *operations.GoBackendAPI) {
 
 func configureAPI(api *operations.GoBackendAPI) http.Handler {
 	initSentry()
+	initNewrelic()
 
 	api.UseSwaggerUI()
 

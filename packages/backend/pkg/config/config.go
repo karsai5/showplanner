@@ -53,6 +53,9 @@ var GOOGLE_SECRET = getEnvVariable("GOOGLE_SECRET", false)
 // Sentry
 var SENTRY_DSN = getEnvVariable("SENTRY_DSN", IsProd)
 
+// NEWRELIC
+var NEWRELIC_LICENSE = getEnvVariable("NEWRELIC_LICENSE", IsProd)
+
 var FRONTEND_URL = getEnvVariable("FRONTEND_URL", true)
 var ADMIN_EMAIL = getEnvVariable("ADMIN_EMAIL", true)
 var COOKIE_DOMAIN = getEnvVariable("COOKIE_DOMAIN", true)
