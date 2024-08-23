@@ -1041,6 +1041,37 @@ func init() {
         }
       }
     },
+    "/roster": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns roster for a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get events from",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/Rostering.yaml#/RosterDTO"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
     "/rostering/shows": {
       "get": {
         "produces": [
@@ -1596,40 +1627,6 @@ func init() {
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "$ref": "#/responses/Error"
-          }
-        }
-      }
-    },
-    "/shows/{showId}/roster": {
-      "get": {
-        "description": "Get roster",
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "shows"
-        ],
-        "summary": "Returns roster for a show",
-        "parameters": [
-          {
-            "type": "integer",
-            "name": "showId",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "./schemas/Rostering.yaml#/RosterDTO"
-            }
           },
           "401": {
             "$ref": "#/responses/Error"
@@ -3005,6 +3002,43 @@ func init() {
         }
       }
     },
+    "/roster": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Returns roster for a show",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "ID of the show to get events from",
+            "name": "showId",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/rosterDTO"
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/rostering/shows": {
       "get": {
         "produces": [
@@ -3674,46 +3708,6 @@ func init() {
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/shows/{showId}/roster": {
-      "get": {
-        "description": "Get roster",
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "shows"
-        ],
-        "summary": "Returns roster for a show",
-        "parameters": [
-          {
-            "type": "integer",
-            "name": "showId",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/rosterDTO"
-            }
           },
           "401": {
             "description": "Error",

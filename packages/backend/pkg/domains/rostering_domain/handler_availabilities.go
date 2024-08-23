@@ -35,9 +35,7 @@ var handleGetAvailabilities = operations.GetAvailabilitiesHandlerFunc(func(param
 	}
 
 	mappedPeople := conv.MapArrayOfPointer(people, func(p database.Person) dtos.PersonSummaryDTO { return p.MapToPersonSummaryDTO() })
-	mappedEvents := conv.MapArrayOfPointer(events, func(event database.Event) dtos.AvailabilitiesDTOEventsItems0 {
-		return event.MapToEventWithAvailabilities(people)
-	})
+	mappedEvents := conv.MapArrayOfPointer(events, mapToEventWithAvailabilities(people))
 
 	schedule_domain.NameEventsWithCurtainsUp(mappedEvents)
 
@@ -91,6 +89,6 @@ var handleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(par
 	})
 
 	return &operations.PostAvailabilitiesOK{
-		Payload: conv.Pointer((*availability).MapToAvailabilityDTO()),
+		Payload: conv.Pointer(mapToAvailabilityDTO(*availability)),
 	}
 })

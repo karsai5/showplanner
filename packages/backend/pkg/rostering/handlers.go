@@ -23,7 +23,6 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 
 	api.RosteringPostShowsShowIDPeopleUnassignHandler = handleUnasignPersonFromShow
 
-	api.ShowsGetShowsShowIDRosterHandler = handleGetRoster(&db)
 	api.RosteringPostShowsShowIDRosterReleaseHandler = handleReleaseRoster(&db)
 	api.RosteringPostShowsShowIDRosterUnreleaseHandler = handleUnreleaseRoster(&db)
 

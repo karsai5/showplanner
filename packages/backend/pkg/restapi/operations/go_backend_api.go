@@ -23,7 +23,6 @@ import (
 	"showplanner.io/pkg/restapi/operations/personnel"
 	"showplanner.io/pkg/restapi/operations/rostering"
 	"showplanner.io/pkg/restapi/operations/showdocs"
-	"showplanner.io/pkg/restapi/operations/shows"
 )
 
 // NewGoBackendAPI creates a new GoBackend instance
@@ -110,6 +109,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetRolesHandler: GetRolesHandlerFunc(func(params GetRolesParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetRoles has not yet been implemented")
 		}),
+		GetRosterHandler: GetRosterHandlerFunc(func(params GetRosterParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetRoster has not yet been implemented")
+		}),
 		RosteringGetRosteringShowsHandler: rostering.GetRosteringShowsHandlerFunc(func(params rostering.GetRosteringShowsParams) middleware.Responder {
 			return middleware.NotImplemented("operation rostering.GetRosteringShows has not yet been implemented")
 		}),
@@ -136,9 +138,6 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		}),
 		RosteringGetShowsShowIDInvitationsHandler: rostering.GetShowsShowIDInvitationsHandlerFunc(func(params rostering.GetShowsShowIDInvitationsParams) middleware.Responder {
 			return middleware.NotImplemented("operation rostering.GetShowsShowIDInvitations has not yet been implemented")
-		}),
-		ShowsGetShowsShowIDRosterHandler: shows.GetShowsShowIDRosterHandlerFunc(func(params shows.GetShowsShowIDRosterParams) middleware.Responder {
-			return middleware.NotImplemented("operation shows.GetShowsShowIDRoster has not yet been implemented")
 		}),
 		RosteringGetShowsShowSlugSummaryHandler: rostering.GetShowsShowSlugSummaryHandlerFunc(func(params rostering.GetShowsShowSlugSummaryParams) middleware.Responder {
 			return middleware.NotImplemented("operation rostering.GetShowsShowSlugSummary has not yet been implemented")
@@ -289,6 +288,8 @@ type GoBackendAPI struct {
 	GetPublicScheduleHandler GetPublicScheduleHandler
 	// GetRolesHandler sets the operation handler for the get roles operation
 	GetRolesHandler GetRolesHandler
+	// GetRosterHandler sets the operation handler for the get roster operation
+	GetRosterHandler GetRosterHandler
 	// RosteringGetRosteringShowsHandler sets the operation handler for the get rostering shows operation
 	RosteringGetRosteringShowsHandler rostering.GetRosteringShowsHandler
 	// GetScheduleHandler sets the operation handler for the get schedule operation
@@ -307,8 +308,6 @@ type GoBackendAPI struct {
 	ShowdocsGetShowdocTimersIDHandler showdocs.GetShowdocTimersIDHandler
 	// RosteringGetShowsShowIDInvitationsHandler sets the operation handler for the get shows show ID invitations operation
 	RosteringGetShowsShowIDInvitationsHandler rostering.GetShowsShowIDInvitationsHandler
-	// ShowsGetShowsShowIDRosterHandler sets the operation handler for the get shows show ID roster operation
-	ShowsGetShowsShowIDRosterHandler shows.GetShowsShowIDRosterHandler
 	// RosteringGetShowsShowSlugSummaryHandler sets the operation handler for the get shows show slug summary operation
 	RosteringGetShowsShowSlugSummaryHandler rostering.GetShowsShowSlugSummaryHandler
 	// PostAssignmentHandler sets the operation handler for the post assignment operation
@@ -496,6 +495,9 @@ func (o *GoBackendAPI) Validate() error {
 	if o.GetRolesHandler == nil {
 		unregistered = append(unregistered, "GetRolesHandler")
 	}
+	if o.GetRosterHandler == nil {
+		unregistered = append(unregistered, "GetRosterHandler")
+	}
 	if o.RosteringGetRosteringShowsHandler == nil {
 		unregistered = append(unregistered, "rostering.GetRosteringShowsHandler")
 	}
@@ -522,9 +524,6 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.RosteringGetShowsShowIDInvitationsHandler == nil {
 		unregistered = append(unregistered, "rostering.GetShowsShowIDInvitationsHandler")
-	}
-	if o.ShowsGetShowsShowIDRosterHandler == nil {
-		unregistered = append(unregistered, "shows.GetShowsShowIDRosterHandler")
 	}
 	if o.RosteringGetShowsShowSlugSummaryHandler == nil {
 		unregistered = append(unregistered, "rostering.GetShowsShowSlugSummaryHandler")
@@ -765,6 +764,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
+	o.handlers["GET"]["/roster"] = NewGetRoster(o.context, o.GetRosterHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
 	o.handlers["GET"]["/rostering/shows"] = rostering.NewGetRosteringShows(o.context, o.RosteringGetRosteringShowsHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -798,10 +801,6 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/shows/{showId}/invitations"] = rostering.NewGetShowsShowIDInvitations(o.context, o.RosteringGetShowsShowIDInvitationsHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/shows/{showId}/roster"] = shows.NewGetShowsShowIDRoster(o.context, o.ShowsGetShowsShowIDRosterHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

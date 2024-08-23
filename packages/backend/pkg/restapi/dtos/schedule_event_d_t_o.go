@@ -265,7 +265,7 @@ type ScheduleEventDTORolesItems0 struct {
 	Shadowing *PersonSummaryDTO `json:"shadowing,omitempty"`
 
 	// type
-	// Enum: ["baseRole","assigned","covering","shadowing"]
+	// Enum: [baseRole assigned covering shadowing]
 	Type string `json:"type,omitempty"`
 }
 

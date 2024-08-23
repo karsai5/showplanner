@@ -405,6 +405,26 @@ paths:
               $ref: './schemas/Role.yaml#/RoleDTO'
         500:
           $ref: '#/responses/Error'
+  /roster:
+    get:
+      parameters:
+        - in: query
+          required: true
+          name: showId
+          type: integer
+          description: ID of the show to get events from
+      summary: Returns roster for a show
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/Rostering.yaml#/RosterDTO'
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
   /availabilities:
     get:
       parameters:
@@ -938,28 +958,7 @@ paths:
           $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'
-  /shows/{showId}/roster:
-    get:
-      description: Get roster
-      tags:
-        - shows
-      parameters:
-        - in: path
-          required: true
-          name: showId
-          type: integer
-      summary: Returns roster for a show
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: './schemas/Rostering.yaml#/RosterDTO'
-        401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
+
   /shows/{showId}/roster/release:
     post:
       tags:

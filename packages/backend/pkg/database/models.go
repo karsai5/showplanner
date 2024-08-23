@@ -3,8 +3,6 @@ package database
 import (
 	"fmt"
 	"log/slog"
-	"slices"
-	"strconv"
 	"time"
 
 	"showplanner.io/pkg/restapi/dtos"
@@ -123,98 +121,6 @@ func (e *Event) MapToEventDTO() dtos.EventDTO {
 	return dto
 }
 
-func (e *Event) MapToEventWithAssignments(roles []Role) dtos.RosterDTOEventsItems0 {
-	assignments := map[string]*dtos.RosterAssignedDTO{}
-	for _, role := range roles {
-		dto := dtos.RosterAssignedDTO{
-			AssignmentID: nil,
-			Available:    nil,
-			Cover:        conv.Pointer(false),
-			Person:       &dtos.PersonSummaryDTO{},
-		}
-
-		if role.Person != nil {
-			fillPersonAndAvailabilityData(&dto, *role.Person, *e)
-		}
-
-		assignmentIdx := slices.IndexFunc(e.Assignments, func(a Assignment) bool { return a.RoleID == role.ID })
-		if assignmentIdx >= 0 {
-			assignment := e.Assignments[assignmentIdx]
-			dto.AssignmentID = conv.UintToInt64(assignment.ID)
-			fillPersonAndAvailabilityData(&dto, assignment.Person, *e)
-			if role.Person != nil {
-				dto.Cover = conv.Pointer(true)
-			}
-		}
-		assignments[strconv.Itoa(int(role.ID))] = &dto
-	}
-	return dtos.RosterDTOEventsItems0{
-		EventDTO: e.MapToEventDTO(),
-		Assignments: &dtos.RosterDTOEventsItems0AO1Assignments{
-			RosterDTOEventsItems0AO1Assignments: assignments,
-		},
-		Availabilities: &dtos.RosterDTOEventsItems0AO1Availabilities{
-			RosterDTOEventsItems0AO1Availabilities: mapAvailabilityToMap(e.Availabilities),
-		},
-		Shadows: mapShadowsToMap(*e),
-	}
-
-}
-
-func (e *Event) MapToEventWithAvailabilities(people []Person) dtos.AvailabilitiesDTOEventsItems0 {
-	availabilities := []*dtos.AvailabilityDTO{}
-	for _, person := range people {
-		availabilities = append(availabilities, findAvailability(e.Availabilities, *conv.UUIDToStrmFmtUUID(person.ID)))
-	}
-
-	return dtos.AvailabilitiesDTOEventsItems0{
-		EventDTO:       e.MapToEventDTO(),
-		Availabilities: availabilities,
-	}
-}
-
-func findAvailability(availabilities []Availability, personId strfmt.UUID) *dtos.AvailabilityDTO {
-	for i := range availabilities {
-		if availabilities[i].PersonID.String() == personId.String() {
-			return conv.Pointer(availabilities[i].MapToAvailabilityDTO())
-		}
-	}
-	return nil
-}
-
-func fillPersonAndAvailabilityData(dto *dtos.RosterAssignedDTO, person Person, event Event) {
-	dto.Person = conv.Pointer(person.MapToPersonSummaryDTO())
-	availablilityIdx := slices.IndexFunc(event.Availabilities, func(a Availability) bool { return a.PersonID == person.ID })
-	if availablilityIdx >= 0 {
-		dto.Available = &event.Availabilities[availablilityIdx].Available
-	} else {
-		dto.Available = nil
-	}
-}
-
-func mapShadowsToMap(event Event) map[string][]dtos.ShadowDTO {
-	dictionary := map[string][]dtos.ShadowDTO{}
-	for _, s := range event.Shadows {
-		roleId := strconv.Itoa(int(s.RoleID))
-
-		val, ok := dictionary[roleId]
-		if ok {
-			dictionary[roleId] = append(val, s.mapToShadowDTO(event))
-		} else {
-			dictionary[roleId] = []dtos.ShadowDTO{s.mapToShadowDTO(event)}
-		}
-	}
-	return dictionary
-}
-
-func mapAvailabilityToMap(availabilities []Availability) map[string]*dtos.AvailabilityDTO {
-	dictionary := map[string]*dtos.AvailabilityDTO{}
-	for _, a := range availabilities {
-		dictionary[a.PersonID.String()] = conv.Pointer(a.MapToAvailabilityDTO())
-	}
-	return dictionary
-}
-
 type ShowOptions struct {
 	IsRosterReleased bool
 }
@@ -281,16 +187,6 @@ type Availability struct {
 	Available bool
 }
 
-func (availability *Availability) MapToAvailabilityDTO() dtos.AvailabilityDTO {
-	personId := strfmt.UUID(availability.PersonID.String())
-	dto := dtos.AvailabilityDTO{
-		PersonID:  &personId,
-		EventID:   conv.UintToInt64(availability.EventID),
-		Available: &availability.Available,
-	}
-	return dto
-}
-
 type Assignment struct {
 	Event Event
 	Role  Role
@@ -301,14 +197,6 @@ type Assignment struct {
 	PersonID uuid.UUID
 }
 
-func (a *Assignment) MapToAssignedDTO() dtos.AssignedDTO {
-	return dtos.AssignedDTO{
-		EventID: conv.UintToInt64(a.EventID),
-		Person:  conv.Pointer(a.Person.MapToPersonSummaryDTO()),
-		RoleID:  conv.UintToInt64(a.RoleID),
-	}
-}
-
 type Shadow struct {
 	gorm.Model
 	PersonID uuid.UUID
@@ -317,21 +205,6 @@ type Shadow struct {
 	Event    Event
 	Person   Person
 	Role     Role
-}
-
-func (shadow *Shadow) mapToShadowDTO(event Event) dtos.ShadowDTO {
-	dto := dtos.ShadowDTO{
-		Available: nil,
-		ID:        conv.UintToInt64(shadow.ID),
-		Person:    conv.Pointer(shadow.Person.MapToPersonSummaryDTO()),
-	}
-
-	availabilityIdx := slices.IndexFunc(event.Availabilities, func(a Availability) bool { return shadow.Person.ID == a.PersonID })
-	if availabilityIdx >= 0 {
-		dto.Available = &event.Availabilities[availabilityIdx].Available
-	}
-
-	return dto
 }
 
 type Person struct {
