@@ -4,3 +4,4 @@ export * from './DefaultApi';
 export * from './PersonnelApi';
 export * from './RosteringApi';
 export * from './ShowdocsApi';
+export * from './ShowsApi';

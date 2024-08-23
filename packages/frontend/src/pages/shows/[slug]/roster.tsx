@@ -39,7 +39,7 @@ export const getServerSideProps = ssrWrapper(async (context, api) => {
   });
   let data = undefined;
   try {
-    data = await api.default.rosterGet({ showId: show.id });
+    data = await api.shows.showsShowIdRosterGet({ showId: show.id });
   } catch (err) {
     if (!ifResponseErrorCode(err, 401)) {
       throw err;
@@ -99,7 +99,7 @@ const ShowPage = (
       ? superjson.parse<RosterDTO>(props.rosterJSON)
       : undefined,
     queryKey: ["roster", show.id],
-    queryFn: () => api.default.rosterGet({ showId: show.id }),
+    queryFn: () => api.shows.showsShowIdRosterGet({ showId: show.id }),
   });
 
   const showRoster = show.isRosterReleased || hasRosteringPermission;

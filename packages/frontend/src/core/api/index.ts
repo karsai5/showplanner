@@ -7,6 +7,7 @@ import {
   PersonnelApi,
   RosteringApi,
   ShowdocsApi,
+  ShowsApi,
 } from "./generated";
 
 const config = new Configuration({
@@ -18,6 +19,7 @@ export type ApiType = {
   personnel: PersonnelApi;
   showdocs: ShowdocsApi;
   rostering: RosteringApi;
+  shows: ShowsApi;
 };
 
 export const getApi = (): DefaultApi => {
@@ -30,6 +32,7 @@ export const api: ApiType = {
   default: new DefaultApi(config),
   showdocs: new ShowdocsApi(config),
   rostering: new RosteringApi(config),
+  shows: new ShowsApi(config),
 };
 
 export const serverSideApi_deprecated = (ctx: GetServerSidePropsContext) => {
@@ -56,5 +59,6 @@ export const serverSideApi = (ctx: GetServerSidePropsContext) => {
     personnel: new PersonnelApi(ssrConfig),
     showdocs: new ShowdocsApi(ssrConfig),
     rostering: new RosteringApi(ssrConfig),
+    shows: new ShowsApi(ssrConfig),
   };
 };

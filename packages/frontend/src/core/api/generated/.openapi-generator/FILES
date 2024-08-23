@@ -2,6 +2,7 @@ apis/DefaultApi.ts
 apis/PersonnelApi.ts
 apis/RosteringApi.ts
 apis/ShowdocsApi.ts
+apis/ShowsApi.ts
 apis/index.ts
 index.ts
 models/AssignedDTO.ts
