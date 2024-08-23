@@ -28,7 +28,6 @@ import type {
   PublicScheduleGet200Response,
   RoleDTO,
   RoleUpdateDTO,
-  RosterDTO,
   ScheduleEventDTO,
   UpdateAssignedDTO,
 } from '../models/index';
@@ -59,8 +58,6 @@ import {
     RoleDTOToJSON,
     RoleUpdateDTOFromJSON,
     RoleUpdateDTOToJSON,
-    RosterDTOFromJSON,
-    RosterDTOToJSON,
     ScheduleEventDTOFromJSON,
     ScheduleEventDTOToJSON,
     UpdateAssignedDTOFromJSON,
@@ -142,10 +139,6 @@ export interface RolesIdPutRequest {
 
 export interface RolesPostRequest {
     roleDetails?: RoleUpdateDTO;
-}
-
-export interface RosterGetRequest {
-    showId: number;
 }
 
 export interface ScheduleGetRequest {
@@ -792,40 +785,6 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async rolesPost(requestParameters: RolesPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RoleDTO> {
         const response = await this.rolesPostRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Returns roster for a show
-     */
-    async rosterGetRaw(requestParameters: RosterGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RosterDTO>> {
-        if (requestParameters.showId === null || requestParameters.showId === undefined) {
-            throw new runtime.RequiredError('showId','Required parameter requestParameters.showId was null or undefined when calling rosterGet.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.showId !== undefined) {
-            queryParameters['showId'] = requestParameters.showId;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/roster`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => RosterDTOFromJSON(jsonValue));
-    }
-
-    /**
-     * Returns roster for a show
-     */
-    async rosterGet(requestParameters: RosterGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RosterDTO> {
-        const response = await this.rosterGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
