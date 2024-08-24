@@ -28,12 +28,13 @@ var (
 
 var GetScheduleHandler = operations.GetScheduleHandlerFunc(func(params operations.GetScheduleParams) middleware.Responder {
 	db := &database.Database{}
+	ph := permissions.SupertokensPermissionsHandler{}
 
 	logError := logger.CreateLogErrorFunc("Getting roster", &operations.GetScheduleInternalServerError{})
 	showId := uint(params.ShowID)
 
-	hasPermission, err := permissions.ViewEvents.HasPermission(showId, params.HTTPRequest)
-	userId, err := permissions.GetUserId(params.HTTPRequest)
+	hasPermission, err := permissions.ViewEvents.HasPermission(&ph, params.HTTPRequest, showId)
+	userId, err := ph.GetUserId(params.HTTPRequest)
 	if err != nil {
 		return logError(&err)
 	}

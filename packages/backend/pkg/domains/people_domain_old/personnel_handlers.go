@@ -17,11 +17,11 @@ import (
 var handleAssignablePersonnelGoogle = operations.GetPersonnelAssignedGoogleContactsCSVHandlerFunc(func(params operations.GetPersonnelAssignedGoogleContactsCSVParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting people assigned to show as google csv", &operations.GetPersonnelAssignedGoogleContactsCSVInternalServerError{})
 
-	hasPermViewPersonnel, err := permissions.ViewPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	hasPermViewPersonnel, err := permissions.ViewPersonnel.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, uint(params.ShowID))
 	if err != nil {
 		return logError(&err)
 	}
-	hasPermViewPrivateInfo, err := permissions.ViewPrivatePersonnelDetails.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	hasPermViewPrivateInfo, err := permissions.ViewPrivatePersonnelDetails.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, uint(params.ShowID))
 	if err != nil {
 		return logError(&err)
 	}
@@ -53,7 +53,7 @@ var handleAssignablePersonnelGoogle = operations.GetPersonnelAssignedGoogleConta
 var handleAssignedPersonnel = operations.GetPersonnelAssignedHandlerFunc(func(params operations.GetPersonnelAssignedParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting assigned people", &operations.GetPersonnelAssignedInternalServerError{})
 
-	hasPerm, err := permissions.ViewPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	hasPerm, err := permissions.ViewPersonnel.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, uint(params.ShowID))
 	if err != nil {
 		return logError(&err)
 	}

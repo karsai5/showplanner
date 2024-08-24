@@ -1,3 +1,9 @@
 inpackage: True
 with-expecter: True
 testonly: False
+
+packages:
+  github.com/go-openapi/runtime:
+    config:
+    interfaces:
+      Producer:

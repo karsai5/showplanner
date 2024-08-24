@@ -17,7 +17,7 @@ var handlePostShadow = operations.PostShadowHandlerFunc(func(params operations.P
 		return logError(&err)
 	}
 
-	hasPerm, err := permissions.Rostering.HasPermission(event.ShowID, params.HTTPRequest)
+	hasPerm, err := permissions.Rostering.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, event.ShowID)
 	if err != nil {
 		return logError(&err)
 	}
@@ -46,7 +46,7 @@ var handleDeleteShadow = operations.DeleteShadowIDHandlerFunc(func(params operat
 		return logError(&err)
 	}
 
-	hasPerm, err := permissions.Rostering.HasPermission(shadow.Event.ShowID, params.HTTPRequest)
+	hasPerm, err := permissions.Rostering.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, shadow.Event.ShowID)
 	if err != nil {
 		return logError(&err)
 	}

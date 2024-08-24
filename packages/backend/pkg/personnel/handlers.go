@@ -50,7 +50,7 @@ func handleGetPerson(db database.IDatabase) personnel.GetPersonnelPeoplePersonID
 		// For each show get permission, see if this user has that permission
 		hasPerm := false
 		for _, s := range shows {
-			showPerm, err := permissions.ViewPrivatePersonnelDetails.HasPermission(s.ID, params.HTTPRequest)
+			showPerm, err := permissions.ViewPrivatePersonnelDetails.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, s.ID)
 			if err != nil {
 				return logError(&err)
 			}
@@ -90,7 +90,7 @@ var handleSearchForPeople = personnel.GetPersonnelSearchHandlerFunc(func(params 
 		return logError(conv.Pointer(fmt.Errorf("Search without show ID not implemented")))
 	}
 
-	hasPerm, err := permissions.AddPersonnel.HasPermission(uint(*params.ShowID), params.HTTPRequest)
+	hasPerm, err := permissions.AddPersonnel.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, uint(*params.ShowID))
 	if err != nil {
 		return logError(&err)
 	}
@@ -117,9 +117,10 @@ var handleSearchForPeople = personnel.GetPersonnelSearchHandlerFunc(func(params 
 })
 
 var handleGetAllPeople = personnel.GetPersonnelPeopleHandlerFunc(func(params personnel.GetPersonnelPeopleParams) middleware.Responder {
+	ph := permissions.SupertokensPermissionsHandler{}
 	logError := logger.CreateLogErrorFunc("Getting all personnel", &personnel.GetPersonnelPeopleInternalServerError{})
 
-	hasPerm, err := permissions.HasRole(params.HTTPRequest, "admin")
+	hasPerm, err := ph.HasRole(params.HTTPRequest, "admin")
 	if err != nil {
 		return logError(&err)
 	}
@@ -158,7 +159,8 @@ var handleImpersonate = personnel.PostPersonnelPeoplePersonIDImpersonateHandlerF
 })
 
 var postMeHandler = personnel.PostMeHandlerFunc(func(params personnel.PostMeParams) middleware.Responder {
-	userId, err := permissions.GetUserId(params.HTTPRequest)
+	ph := permissions.SupertokensPermissionsHandler{}
+	userId, err := ph.GetUserId(params.HTTPRequest)
 	if err != nil {
 		logger.Error("Could not update me details", err)
 		return &personnel.GetMeInternalServerError{}
@@ -220,7 +222,8 @@ var postMeHandler = personnel.PostMeHandlerFunc(func(params personnel.PostMePara
 })
 
 var getMeHandler = personnel.GetMeHandlerFunc(func(params personnel.GetMeParams) middleware.Responder {
-	userId, err := permissions.GetUserId(params.HTTPRequest)
+	ph := permissions.SupertokensPermissionsHandler{}
+	userId, err := ph.GetUserId(params.HTTPRequest)
 	if err != nil {
 		logger.Error("Could not get me detaisl", err)
 		return &personnel.GetMeInternalServerError{}

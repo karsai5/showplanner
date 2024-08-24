@@ -8,11 +8,11 @@ import (
 	"showplanner.io/pkg/restapi/operations/rostering"
 )
 
-func handleSetRolesOrder(db database.IDatabase) rostering.PostShowsShowIDRolesSetorderHandler {
+func handleSetRolesOrder(db database.IDatabase, ph permissions.IPermissionsHandler) rostering.PostShowsShowIDRolesSetorderHandler {
 	return rostering.PostShowsShowIDRolesSetorderHandlerFunc(func(params rostering.PostShowsShowIDRolesSetorderParams) middleware.Responder {
 		logError := logger.CreateLogErrorFunc("Setting order of roles", &rostering.PostShowsShowIDRolesSetorderInternalServerError{})
 
-		hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)
+		hasPerm, err := permissions.Rostering.HasPermission(ph, params.HTTPRequest, uint(params.ShowID))
 		if err != nil {
 			return logError(&err)
 		}

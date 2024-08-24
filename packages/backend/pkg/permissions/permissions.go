@@ -13,17 +13,17 @@ func (sp ShowPermission) Permission(showId string) string {
 	return "show:" + showId + ":" + sp.perm
 }
 
-func (sp ShowPermission) HasPermission(showId uint, r *http.Request) (bool, error) {
+func (sp ShowPermission) HasPermission(permissionHandler IPermissionsHandler, r *http.Request, showId uint) (bool, error) {
 	id := strconv.Itoa(int(showId))
-	return HasPermission(r, sp.Permission(id))
+	return permissionHandler.HasPermission(r, sp.Permission(id))
 }
 
 type Permission struct {
 	perm string
 }
 
-func (sp Permission) HasPermission(r *http.Request) (bool, error) {
-	return HasPermission(r, sp.perm)
+func (sp Permission) HasPermission(permissionsHandler IPermissionsHandler, r *http.Request) (bool, error) {
+	return permissionsHandler.HasPermission(r, sp.perm)
 }
 
 func (sp Permission) Permission() string {

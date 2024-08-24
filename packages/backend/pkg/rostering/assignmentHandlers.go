@@ -13,7 +13,7 @@ import (
 var handleUnasignPersonFromShow = rostering.PostShowsShowIDPeopleUnassignHandlerFunc(func(params rostering.PostShowsShowIDPeopleUnassignParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Unassigning person from show", &rostering.PostShowsShowIDPeopleUnassignInternalServerError{})
 
-	hasPerm, err := permissions.AddPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	hasPerm, err := permissions.AddPersonnel.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, uint(params.ShowID))
 	if err != nil {
 		return logError(&err)
 	}

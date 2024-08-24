@@ -19,7 +19,7 @@ var GetEventsHandler = operations.GetEventsIDHandlerFunc(func(params operations.
 		return logError(&err)
 	}
 
-	hasPermission, err := permissions.AddEvents.HasPermission(existingEvent.ShowID, params.HTTPRequest)
+	hasPermission, err := permissions.AddEvents.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, existingEvent.ShowID)
 	if err != nil {
 		return logError(&err)
 	}
@@ -40,7 +40,7 @@ var GetEventsHandler = operations.GetEventsIDHandlerFunc(func(params operations.
 
 var CreateEventHandler = operations.PostEventsHandlerFunc(func(params operations.PostEventsParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Creating event", &operations.PostEventsInternalServerError{})
-	hasPermission, err := permissions.AddEvents.HasPermission(uint(*params.Event.ShowID), params.HTTPRequest)
+	hasPermission, err := permissions.AddEvents.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, uint(*params.Event.ShowID))
 
 	if err != nil {
 		return logError(&err)
@@ -70,7 +70,7 @@ var UpdateEventHandler = operations.PostEventsIDHandlerFunc(func(params operatio
 		return logError(&err)
 	}
 
-	hasPermission, err := permissions.AddEvents.HasPermission(existingEvent.ShowID, params.HTTPRequest)
+	hasPermission, err := permissions.AddEvents.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, existingEvent.ShowID)
 
 	if err != nil {
 		return logError(&err)
@@ -100,7 +100,7 @@ var DeleteEventHandler = operations.DeleteEventsIDHandlerFunc(func(params operat
 		return &operations.DeleteEventsIDInternalServerError{}
 	}
 
-	hasPermission, err := permissions.AddEvents.HasPermission(existingEvent.ShowID, params.HTTPRequest)
+	hasPermission, err := permissions.AddEvents.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, existingEvent.ShowID)
 
 	if err != nil {
 		println("error", err.Error())

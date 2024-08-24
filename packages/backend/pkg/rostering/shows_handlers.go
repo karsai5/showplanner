@@ -18,8 +18,9 @@ import (
 
 var handleGetShows = rostering.GetRosteringShowsHandlerFunc(func(params rostering.GetRosteringShowsParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting shows", &rostering.GetRosteringShowsInternalServerError{})
+	ph := permissions.SupertokensPermissionsHandler{}
 
-	userId, err := permissions.GetUserId(params.HTTPRequest)
+	userId, err := ph.GetUserId(params.HTTPRequest)
 	if err != nil {
 		return logError(&err)
 	}
@@ -53,7 +54,7 @@ var handleGetShowSummary = rostering.GetShowsShowSlugSummaryHandlerFunc(func(par
 		return &rostering.GetShowsShowSlugSummaryNotFound{}
 	}
 
-	hasPermission, err := permissions.ViewEvents.HasPermission(show.ID, params.HTTPRequest)
+	hasPermission, err := permissions.ViewEvents.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, show.ID)
 
 	if err != nil {
 		println("Error getting permission: " + err.Error())
@@ -70,13 +71,13 @@ var handleGetShowSummary = rostering.GetShowsShowSlugSummaryHandlerFunc(func(par
 })
 
 var handlePostShow = rostering.PostRosteringShowsHandlerFunc(func(psp rostering.PostRosteringShowsParams) middleware.Responder {
-
-	userId, err := permissions.GetUserId(psp.HTTPRequest)
+	ph := permissions.SupertokensPermissionsHandler{}
+	userId, err := ph.GetUserId(psp.HTTPRequest)
 	if err != nil {
 		return &rostering.PostRosteringShowsInternalServerError{}
 	}
 
-	hasPermission, err := permissions.AddShow.HasPermission(psp.HTTPRequest)
+	hasPermission, err := permissions.AddShow.HasPermission(&permissions.SupertokensPermissionsHandler{}, psp.HTTPRequest)
 
 	if err != nil {
 		return &rostering.PostRosteringShowsInternalServerError{}

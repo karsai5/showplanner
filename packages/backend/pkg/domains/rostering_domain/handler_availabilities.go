@@ -15,9 +15,11 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 )
 
+var ph permissions.IPermissionsHandler = &permissions.SupertokensPermissionsHandler{}
+
 var handleGetAvailabilities = operations.GetAvailabilitiesHandlerFunc(func(params operations.GetAvailabilitiesParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting roster", &operations.GetAvailabilitiesInternalServerError{})
-	hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	hasPerm, err := permissions.Rostering.HasPermission(ph, params.HTTPRequest, uint(params.ShowID))
 	if err != nil {
 		return logError(&err)
 	}
@@ -52,7 +54,7 @@ var handleGetAvailabilities = operations.GetAvailabilitiesHandlerFunc(func(param
 })
 
 var handleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(params operations.PostAvailabilitiesParams) middleware.Responder {
-	userId, err := permissions.GetUserId(params.HTTPRequest)
+	userId, err := ph.GetUserId(params.HTTPRequest)
 	if err != nil {
 		logger.Error("Could not update availabilities", err)
 		return &operations.PostAvailabilitiesInternalServerError{}
@@ -71,7 +73,7 @@ var handleUpdateAvailability = operations.PostAvailabilitiesHandlerFunc(func(par
 		return &operations.PostAvailabilitiesInternalServerError{}
 	}
 
-	if hasPerm, _ := permissions.ViewEvents.HasPermission(event.ShowID, params.HTTPRequest); !hasPerm {
+	if hasPerm, _ := permissions.ViewEvents.HasPermission(ph, params.HTTPRequest, event.ShowID); !hasPerm {
 		return &operations.PostAvailabilitiesUnauthorized{
 			Payload: &dtos.Error{
 				Message: "Cannot update an availability for a show you are not assigned to",

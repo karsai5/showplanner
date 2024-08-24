@@ -18,7 +18,7 @@ var handleDeleteRole = operations.DeleteRolesIDHandlerFunc(func(params operation
 		return logError(&err)
 	}
 
-	hasPerm, err := permissions.Rostering.HasPermission(role.ShowID, params.HTTPRequest)
+	hasPerm, err := permissions.Rostering.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, role.ShowID)
 	if err != nil {
 		return logError(&err)
 	}
@@ -41,7 +41,7 @@ var handleUpdateRole = operations.PutRolesIDHandlerFunc(func(params operations.P
 		return logError(&err)
 	}
 
-	hasPerm, err := permissions.Rostering.HasPermission(role.ShowID, params.HTTPRequest)
+	hasPerm, err := permissions.Rostering.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, role.ShowID)
 	if err != nil {
 		return logError(&err)
 	}
@@ -69,7 +69,7 @@ var handleUpdateRole = operations.PutRolesIDHandlerFunc(func(params operations.P
 })
 
 var handleCreateRole = operations.PostRolesHandlerFunc(func(params operations.PostRolesParams) middleware.Responder {
-	hasPerm, err := permissions.Rostering.HasPermission(uint(params.RoleDetails.ShowID), params.HTTPRequest)
+	hasPerm, err := permissions.Rostering.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, uint(params.RoleDetails.ShowID))
 	if err != nil {
 		logger.Error("Creating role", err)
 		return &operations.GetAvailabilitiesInternalServerError{}
@@ -93,7 +93,7 @@ var handleCreateRole = operations.PostRolesHandlerFunc(func(params operations.Po
 
 var handleGetRoles = operations.GetRolesHandlerFunc(func(params operations.GetRolesParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting roles", &operations.GetAvailabilitiesInternalServerError{})
-	hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	hasPerm, err := permissions.Rostering.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, uint(params.ShowID))
 	if err != nil {
 		return logError(&err)
 	}

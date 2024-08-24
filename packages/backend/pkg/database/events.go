@@ -56,7 +56,7 @@ func GetEventsPreloaded(showId uint) ([]Event, error) {
 	return events, res.Error
 }
 
-func GetEventsForRoster(showId uint) ([]Event, error) {
+func (d *Database) GetEventsForRoster(showId uint) ([]Event, error) {
 	var events []Event
 	res := db.Preload("Shadows.Person").Preload("Assignments.Person").Preload(clause.Associations).Where("show_id = ?", showId).Where("options_user_input_type = ?", "availability").Find(&events)
 

@@ -17,7 +17,7 @@ var handlePostAssignment = operations.PostAssignmentHandlerFunc(func(params oper
 		return logError(&err)
 	}
 
-	hasPerm, err := permissions.Rostering.HasPermission(event.ShowID, params.HTTPRequest)
+	hasPerm, err := permissions.Rostering.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, event.ShowID)
 	if err != nil {
 		return logError(&err)
 	}
@@ -46,7 +46,7 @@ var handlePutAssignment = operations.PutAssignmentIDHandlerFunc(func(params oper
 		return logError(&err)
 	}
 
-	hasPerm, err := permissions.Rostering.HasPermission(assignment.Event.ShowID, params.HTTPRequest)
+	hasPerm, err := permissions.Rostering.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, assignment.Event.ShowID)
 	if err != nil {
 		return logError(&err)
 	}
@@ -75,7 +75,7 @@ var handleDeleteAssignment = operations.DeleteAssignmentIDHandlerFunc(func(param
 		return logError(&err)
 	}
 
-	hasPerm, err := permissions.Rostering.HasPermission(assignment.Event.ShowID, params.HTTPRequest)
+	hasPerm, err := permissions.Rostering.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, assignment.Event.ShowID)
 	if err != nil {
 		return logError(&err)
 	}

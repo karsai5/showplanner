@@ -14,7 +14,7 @@ import (
 	"showplanner.io/pkg/restapi/operations/shows"
 )
 
-func handleGetRoster(db database.IDatabase) shows.GetShowsShowIDRosterHandler {
+func handleGetRoster(db database.IDatabase, ph permissions.IPermissionsHandler) shows.GetShowsShowIDRosterHandler {
 	return shows.GetShowsShowIDRosterHandlerFunc(func(params shows.GetShowsShowIDRosterParams) middleware.Responder {
 		logError := logger.CreateLogErrorFunc("Getting roster", &shows.GetShowsShowIDRosterInternalServerError{})
 
@@ -24,12 +24,12 @@ func handleGetRoster(db database.IDatabase) shows.GetShowsShowIDRosterHandler {
 		}
 
 		// If the roster hasn't been released and the user isn't mananger
-		if hasRosteringPerm, _ := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest); !show.Options.IsRosterReleased && !hasRosteringPerm {
+		if hasRosteringPerm, _ := permissions.Rostering.HasPermission(ph, params.HTTPRequest, uint(params.ShowID)); !show.Options.IsRosterReleased && !hasRosteringPerm {
 			slog.Info("User doesn't have permission to view roster")
 			return &shows.GetShowsShowIDRosterUnauthorized{}
 		}
 
-		hasPerm, err := permissions.ViewEvents.HasPermission(uint(params.ShowID), params.HTTPRequest)
+		hasPerm, err := permissions.ViewEvents.HasPermission(ph, params.HTTPRequest, uint(params.ShowID))
 		if err != nil {
 			return logError(&err)
 		}
@@ -37,11 +37,11 @@ func handleGetRoster(db database.IDatabase) shows.GetShowsShowIDRosterHandler {
 			return &shows.GetShowsShowIDRosterUnauthorized{}
 		}
 
-		roles, err := database.GetRolesForShow(uint(params.ShowID))
+		roles, err := db.GetRolesForShow(show.ID)
 		if err != nil {
 			return logError(&err)
 		}
-		events, err := database.GetEventsForRoster(uint(params.ShowID))
+		events, err := db.GetEventsForRoster(show.ID)
 		if err != nil {
 			return logError(&err)
 		}
@@ -59,11 +59,11 @@ func handleGetRoster(db database.IDatabase) shows.GetShowsShowIDRosterHandler {
 	})
 }
 
-func handleReleaseRoster(db database.IDatabase) rostering.PostShowsShowIDRosterReleaseHandler {
+func handleReleaseRoster(db database.IDatabase, ph permissions.IPermissionsHandler) rostering.PostShowsShowIDRosterReleaseHandler {
 	return rostering.PostShowsShowIDRosterReleaseHandlerFunc(func(params rostering.PostShowsShowIDRosterReleaseParams) middleware.Responder {
 		logError := logger.CreateLogErrorFunc("Releasing roster", &rostering.PostShowsShowIDRosterReleaseInternalServerError{})
 
-		hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)
+		hasPerm, err := permissions.Rostering.HasPermission(ph, params.HTTPRequest, uint(params.ShowID))
 		if err != nil {
 			return logError(&err)
 		}
@@ -85,11 +85,11 @@ func handleReleaseRoster(db database.IDatabase) rostering.PostShowsShowIDRosterR
 	})
 }
 
-func handleUnreleaseRoster(db database.IDatabase) rostering.PostShowsShowIDRosterUnreleaseHandler {
+func handleUnreleaseRoster(db database.IDatabase, ph permissions.IPermissionsHandler) rostering.PostShowsShowIDRosterUnreleaseHandler {
 	return rostering.PostShowsShowIDRosterUnreleaseHandlerFunc(func(params rostering.PostShowsShowIDRosterUnreleaseParams) middleware.Responder {
 		logError := logger.CreateLogErrorFunc("Unreleasing roster", &rostering.PostShowsShowIDRosterUnreleaseInternalServerError{})
 
-		hasPerm, err := permissions.Rostering.HasPermission(uint(params.ShowID), params.HTTPRequest)
+		hasPerm, err := permissions.Rostering.HasPermission(ph, params.HTTPRequest, uint(params.ShowID))
 		if err != nil {
 			return logError(&err)
 		}

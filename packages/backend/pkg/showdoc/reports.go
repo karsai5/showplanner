@@ -13,10 +13,12 @@ import (
 	"showplanner.io/pkg/restapi/operations/showdocs"
 )
 
+var ph permissions.IPermissionsHandler = &permissions.SupertokensPermissionsHandler{}
+
 var handlePostShowdocReports = showdocs.PostShowdocReportsIDHandlerFunc(func(params showdocs.PostShowdocReportsIDParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Updating show report", &showdocs.PostShowdocReportsIDInternalServerError{})
 
-	userId, err := permissions.GetUserId(params.HTTPRequest)
+	userId, err := ph.GetUserId(params.HTTPRequest)
 	if err != nil {
 		return logError(&err)
 	}
@@ -40,7 +42,7 @@ var handlePostShowdocReports = showdocs.PostShowdocReportsIDHandlerFunc(func(par
 
 var handleGetShowReports = showdocs.GetShowdocReportsHandlerFunc(func(params showdocs.GetShowdocReportsParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Updating show report", &showdocs.GetShowdocReportsInternalServerError{})
-	userId, err := permissions.GetUserId(params.HTTPRequest)
+	userId, err := ph.GetUserId(params.HTTPRequest)
 	if err != nil {
 		return logError(&err)
 	}

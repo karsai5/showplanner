@@ -15,6 +15,9 @@ type IDatabase interface {
 	GetPeopleAssignedToShow(id uint) ([]Person, error)
 	GetPerson(id uuid.UUID) (Person, error)
 
+	GetRolesForShow(showId uint) ([]Role, error)
+	GetEventsForRoster(showId uint) ([]Event, error)
+
 	UpdateSortOrderOfRole(roleId uint, sortorder uint) error
 }
 

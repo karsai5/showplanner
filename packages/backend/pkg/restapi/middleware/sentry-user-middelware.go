@@ -15,8 +15,10 @@ type SentryUser struct {
 	handler http.Handler
 }
 
+var ph permissions.IPermissionsHandler = &permissions.SupertokensPermissionsHandler{}
+
 func (ve *SentryUser) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	id, err := permissions.GetUserId(r)
+	id, err := ph.GetUserId(r)
 	if err == nil {
 		sentry.ConfigureScope(func(scope *sentry.Scope) {
 			scope.SetUser(sentry.User{IPAddress: r.RemoteAddr})

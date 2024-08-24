@@ -2,11 +2,14 @@ package rostering
 
 import (
 	"showplanner.io/pkg/database"
+	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/operations"
 )
 
 func SetupHandlers(api *operations.GoBackendAPI) {
 	db := database.Database{}
+	ph := permissions.SupertokensPermissionsHandler{}
+
 	api.RosteringGetRosteringShowsHandler = handleGetShows
 
 	api.RosteringGetShowsShowSlugSummaryHandler = handleGetShowSummary
@@ -23,9 +26,9 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 
 	api.RosteringPostShowsShowIDPeopleUnassignHandler = handleUnasignPersonFromShow
 
-	api.ShowsGetShowsShowIDRosterHandler = handleGetRoster(&db)
-	api.RosteringPostShowsShowIDRosterReleaseHandler = handleReleaseRoster(&db)
-	api.RosteringPostShowsShowIDRosterUnreleaseHandler = handleUnreleaseRoster(&db)
+	api.ShowsGetShowsShowIDRosterHandler = handleGetRoster(&db, &ph)
+	api.RosteringPostShowsShowIDRosterReleaseHandler = handleReleaseRoster(&db, &ph)
+	api.RosteringPostShowsShowIDRosterUnreleaseHandler = handleUnreleaseRoster(&db, &ph)
 
-	api.RosteringPostShowsShowIDRolesSetorderHandler = handleSetRolesOrder(&db)
+	api.RosteringPostShowsShowIDRolesSetorderHandler = handleSetRolesOrder(&db, &ph)
 }

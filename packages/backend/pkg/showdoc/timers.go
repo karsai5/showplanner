@@ -8,7 +8,6 @@ import (
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/logger"
-	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/dtos"
 	"showplanner.io/pkg/restapi/operations/showdocs"
 )
@@ -16,7 +15,7 @@ import (
 var handlePostShowdocTimers = showdocs.PostShowdocTimersIDHandlerFunc(func(params showdocs.PostShowdocTimersIDParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Updating show timer", &showdocs.PostShowdocTimersIDInternalServerError{})
 
-	userId, err := permissions.GetUserId(params.HTTPRequest)
+	userId, err := ph.GetUserId(params.HTTPRequest)
 
 	if err != nil {
 		return logError(&err)
@@ -37,7 +36,7 @@ var handlePostShowdocTimers = showdocs.PostShowdocTimersIDHandlerFunc(func(param
 var handleGetShowTimers = showdocs.GetShowdocTimersHandlerFunc(func(params showdocs.GetShowdocTimersParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting show timers", &showdocs.GetShowdocTimersInternalServerError{})
 
-	userId, err := permissions.GetUserId(params.HTTPRequest)
+	userId, err := ph.GetUserId(params.HTTPRequest)
 	if err != nil {
 		return logError(&err)
 	}

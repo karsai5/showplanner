@@ -17,8 +17,9 @@ import (
 
 var handleDeleteInviation = rostering.DeleteInvitationsIDHandlerFunc(func(params rostering.DeleteInvitationsIDParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Deleting invitation", &rostering.DeleteInvitationsIDInternalServerError{})
+	ph := permissions.SupertokensPermissionsHandler{}
 
-	userId, err := permissions.GetUserId(params.HTTPRequest)
+	userId, err := ph.GetUserId(params.HTTPRequest)
 	if err != nil {
 		return logError(&err)
 	}
@@ -44,8 +45,9 @@ var handleDeleteInviation = rostering.DeleteInvitationsIDHandlerFunc(func(params
 
 var handlePostInvitation = rostering.PostInvitationsHandlerFunc(func(params rostering.PostInvitationsParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Sending invitations", &rostering.PostInvitationsInternalServerError{})
+	ph := permissions.SupertokensPermissionsHandler{}
 
-	hasPerm, err := permissions.AddPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	hasPerm, err := permissions.AddPersonnel.HasPermission(&ph, params.HTTPRequest, uint(params.ShowID))
 	if err != nil {
 		return logError(&err)
 	}
@@ -53,7 +55,7 @@ var handlePostInvitation = rostering.PostInvitationsHandlerFunc(func(params rost
 		return logError(conv.Pointer(errors.New("User does not have permission to send invitations")))
 	}
 
-	invitingUserId, err := permissions.GetUserId(params.HTTPRequest)
+	invitingUserId, err := ph.GetUserId(params.HTTPRequest)
 	if err != nil {
 		return logError(&err)
 	}
@@ -101,7 +103,7 @@ var handlePostInvitation = rostering.PostInvitationsHandlerFunc(func(params rost
 var handleGetInviationsForShow = rostering.GetShowsShowIDInvitationsHandlerFunc(func(params rostering.GetShowsShowIDInvitationsParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting invitations", &rostering.GetShowsShowIDInvitationsInternalServerError{})
 
-	hasPerm, err := permissions.AddPersonnel.HasPermission(uint(params.ShowID), params.HTTPRequest)
+	hasPerm, err := permissions.AddPersonnel.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, uint(params.ShowID))
 	if err != nil {
 		return logError(&err)
 	}
@@ -123,8 +125,9 @@ var handleGetInviationsForShow = rostering.GetShowsShowIDInvitationsHandlerFunc(
 
 var handleGetInviationForPerson = rostering.GetInvitationsHandlerFunc(func(params rostering.GetInvitationsParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting invitations", &rostering.GetInvitationsInternalServerError{})
+	ph := permissions.SupertokensPermissionsHandler{}
 
-	userId, err := permissions.GetUserId(params.HTTPRequest)
+	userId, err := ph.GetUserId(params.HTTPRequest)
 	if err != nil {
 		return logError(&err)
 	}
@@ -141,13 +144,14 @@ var handleGetInviationForPerson = rostering.GetInvitationsHandlerFunc(func(param
 
 var handleGetInvitationByID = rostering.GetInvitationsIDHandlerFunc(func(params rostering.GetInvitationsIDParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting invitation", &rostering.GetInvitationsIDInternalServerError{})
+	ph := permissions.SupertokensPermissionsHandler{}
 
 	invitation, err := getInvitation(*conv.StrfmtUUIDToUUID(&params.ID))
 	if err != nil {
 		return logError(&err)
 	}
 
-	userId, err := permissions.GetUserId(params.HTTPRequest)
+	userId, err := ph.GetUserId(params.HTTPRequest)
 	if err != nil {
 		return logError(&err)
 	}
@@ -163,13 +167,14 @@ var handleGetInvitationByID = rostering.GetInvitationsIDHandlerFunc(func(params 
 
 var handleAcceptInvitation = rostering.PostInvitationsIDAcceptHandlerFunc(func(params rostering.PostInvitationsIDAcceptParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Accepting invitation", &rostering.PostInvitationsIDAcceptInternalServerError{})
+	ph := permissions.SupertokensPermissionsHandler{}
 
 	invitation, err := getInvitation(*conv.StrfmtUUIDToUUID(&params.ID))
 	if err != nil {
 		return logError(&err)
 	}
 
-	userId, err := permissions.GetUserId(params.HTTPRequest)
+	userId, err := ph.GetUserId(params.HTTPRequest)
 	if err != nil {
 		return logError(&err)
 	}
@@ -188,8 +193,9 @@ var handleAcceptInvitation = rostering.PostInvitationsIDAcceptHandlerFunc(func(p
 
 var handleNotifyInvitation = rostering.PostInvitationsIDNotifyHandlerFunc(func(params rostering.PostInvitationsIDNotifyParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Notifying invitation", &rostering.PostInvitationsIDNotifyInternalServerError{})
+	ph := permissions.SupertokensPermissionsHandler{}
 
-	userId, err := permissions.GetUserId(params.HTTPRequest)
+	userId, err := ph.GetUserId(params.HTTPRequest)
 	if err != nil {
 		return logError(&err)
 	}
