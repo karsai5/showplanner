@@ -93,6 +93,8 @@ var handleCreateRole = operations.PostRolesHandlerFunc(func(params operations.Po
 
 var handleGetRoles = operations.GetRolesHandlerFunc(func(params operations.GetRolesParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting roles", &operations.GetAvailabilitiesInternalServerError{})
+	db := database.Database{}
+
 	hasPerm, err := permissions.Rostering.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, uint(params.ShowID))
 	if err != nil {
 		return logError(&err)
@@ -101,7 +103,7 @@ var handleGetRoles = operations.GetRolesHandlerFunc(func(params operations.GetRo
 		return &operations.GetAvailabilitiesUnauthorized{}
 	}
 
-	roles, err := database.GetRolesForShow(uint(params.ShowID))
+	roles, err := db.GetRolesForShow(uint(params.ShowID))
 	if err != nil {
 		return logError(&err)
 	}
