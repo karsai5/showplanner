@@ -30,7 +30,7 @@ func NewPostShowsShowIDRosterRelease(ctx *middleware.Context, handler PostShowsS
 }
 
 /*
-	PostShowsShowIDRosterRelease swagger:route POST /shows/{showId}/roster/release rostering postShowsShowIdRosterRelease
+	PostShowsShowIDRosterRelease swagger:route POST /shows/{showId}/roster/release shows postShowsShowIdRosterRelease
 
 Make the roster viewable by other members of the show
 */

@@ -35,13 +35,13 @@ func NewGetRosteringShowsOK() *GetRosteringShowsOK {
 	return &GetRosteringShowsOK{}
 }
 
-// WithPayload adds the payload to the get rostering shows o k response
+// WithPayload adds the payload to the get shows shows o k response
 func (o *GetRosteringShowsOK) WithPayload(payload []*dtos.ShowDTO) *GetRosteringShowsOK {
 	o.Payload = payload
 	return o
 }
 
-// SetPayload sets the payload to the get rostering shows o k response
+// SetPayload sets the payload to the get shows shows o k response
 func (o *GetRosteringShowsOK) SetPayload(payload []*dtos.ShowDTO) {
 	o.Payload = payload
 }
@@ -83,13 +83,13 @@ func NewGetRosteringShowsUnauthorized() *GetRosteringShowsUnauthorized {
 	return &GetRosteringShowsUnauthorized{}
 }
 
-// WithPayload adds the payload to the get rostering shows unauthorized response
+// WithPayload adds the payload to the get shows shows unauthorized response
 func (o *GetRosteringShowsUnauthorized) WithPayload(payload *dtos.Error) *GetRosteringShowsUnauthorized {
 	o.Payload = payload
 	return o
 }
 
-// SetPayload sets the payload to the get rostering shows unauthorized response
+// SetPayload sets the payload to the get shows shows unauthorized response
 func (o *GetRosteringShowsUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
@@ -128,13 +128,13 @@ func NewGetRosteringShowsInternalServerError() *GetRosteringShowsInternalServerE
 	return &GetRosteringShowsInternalServerError{}
 }
 
-// WithPayload adds the payload to the get rostering shows internal server error response
+// WithPayload adds the payload to the get shows shows internal server error response
 func (o *GetRosteringShowsInternalServerError) WithPayload(payload *dtos.Error) *GetRosteringShowsInternalServerError {
 	o.Payload = payload
 	return o
 }
 
-// SetPayload sets the payload to the get rostering shows internal server error response
+// SetPayload sets the payload to the get shows shows internal server error response
 func (o *GetRosteringShowsInternalServerError) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }

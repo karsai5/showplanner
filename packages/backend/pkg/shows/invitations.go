@@ -1,4 +1,4 @@
-package rostering
+package shows
 
 import (
 	"errors"
@@ -9,7 +9,7 @@ import (
 	"showplanner.io/pkg/conv"
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/permissions"
-	"showplanner.io/pkg/rostering/emails"
+	"showplanner.io/pkg/shows/emails"
 )
 
 type invitation struct {

@@ -30,7 +30,7 @@ func NewPostInvitationsIDNotify(ctx *middleware.Context, handler PostInvitations
 }
 
 /*
-	PostInvitationsIDNotify swagger:route POST /invitations/{id}/notify rostering postInvitationsIdNotify
+	PostInvitationsIDNotify swagger:route POST /invitations/{id}/notify shows postInvitationsIdNotify
 
 Re send invitation email
 */

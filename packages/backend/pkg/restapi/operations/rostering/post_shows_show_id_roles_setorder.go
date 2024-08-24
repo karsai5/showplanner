@@ -30,7 +30,7 @@ func NewPostShowsShowIDRolesSetorder(ctx *middleware.Context, handler PostShowsS
 }
 
 /*
-	PostShowsShowIDRolesSetorder swagger:route POST /shows/{showId}/roles/setorder rostering postShowsShowIdRolesSetorder
+	PostShowsShowIDRolesSetorder swagger:route POST /shows/{showId}/roles/setorder shows postShowsShowIdRolesSetorder
 
 Set the order of the roles for a show
 */

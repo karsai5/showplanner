@@ -30,7 +30,7 @@ func NewPostInvitationsIDAccept(ctx *middleware.Context, handler PostInvitations
 }
 
 /*
-	PostInvitationsIDAccept swagger:route POST /invitations/{id}/accept rostering postInvitationsIdAccept
+	PostInvitationsIDAccept swagger:route POST /invitations/{id}/accept shows postInvitationsIdAccept
 
 Accept an invitation
 */

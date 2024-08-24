@@ -11,7 +11,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 )
 
-// GetRosteringShowsHandlerFunc turns a function with the right signature into a get rostering shows handler
+// GetRosteringShowsHandlerFunc turns a function with the right signature into a get shows shows handler
 type GetRosteringShowsHandlerFunc func(GetRosteringShowsParams) middleware.Responder
 
 // Handle executing the request and returning a response
@@ -19,18 +19,18 @@ func (fn GetRosteringShowsHandlerFunc) Handle(params GetRosteringShowsParams) mi
 	return fn(params)
 }
 
-// GetRosteringShowsHandler interface for that can handle valid get rostering shows params
+// GetRosteringShowsHandler interface for that can handle valid get shows shows params
 type GetRosteringShowsHandler interface {
 	Handle(GetRosteringShowsParams) middleware.Responder
 }
 
-// NewGetRosteringShows creates a new http.Handler for the get rostering shows operation
+// NewGetRosteringShows creates a new http.Handler for the get shows shows operation
 func NewGetRosteringShows(ctx *middleware.Context, handler GetRosteringShowsHandler) *GetRosteringShows {
 	return &GetRosteringShows{Context: ctx, Handler: handler}
 }
 
 /*
-	GetRosteringShows swagger:route GET /rostering/shows rostering getRosteringShows
+	GetRosteringShows swagger:route GET /shows/shows shows getRosteringShows
 
 Returns a list of shows
 */

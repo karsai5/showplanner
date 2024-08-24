@@ -801,7 +801,7 @@ paths:
   /rostering/shows:
     get:
       tags:
-        - rostering
+        - shows
       summary: Returns a list of shows
       produces:
         - application/json
@@ -818,7 +818,7 @@ paths:
               $ref: './schemas/Show.yaml#/ShowDTO'
     post:
       tags:
-        - rostering
+        - shows
       summary: Creates a show
       consumes:
         - application/json
@@ -844,7 +844,7 @@ paths:
   /shows/{showSlug}/summary:
     get:
       tags:
-        - rostering
+        - shows
       summary: Return details about a show from its slug
       parameters:
         - in: path
@@ -869,7 +869,7 @@ paths:
   /shows/{showId}/invitations:
     get:
       tags:
-        - rostering
+        - shows
       parameters:
         - in: path
           required: true
@@ -893,7 +893,7 @@ paths:
   /shows/{showId}/people/unassign:
     post:
       tags:
-        - rostering
+        - shows
       parameters:
         - in: path
           required: true
@@ -918,7 +918,7 @@ paths:
   /shows/{showId}/roles/setorder:
     post:
       tags:
-        - rostering
+        - shows
       parameters:
         - in: path
           required: true
@@ -963,7 +963,7 @@ paths:
   /shows/{showId}/roster/release:
     post:
       tags:
-        - rostering
+        - shows
       parameters:
         - in: path
           required: true
@@ -986,7 +986,7 @@ paths:
   /shows/{showId}/roster/unrelease:
     post:
       tags:
-        - rostering
+        - shows
       parameters:
         - in: path
           required: true
@@ -1006,7 +1006,7 @@ paths:
   /invitations/:
     get:
       tags:
-        - rostering
+        - shows
       summary: Get my invitations
       produces:
         - application/json
@@ -1023,7 +1023,7 @@ paths:
           $ref: '#/responses/Error'
     post:
       tags:
-        - rostering
+        - shows
       parameters:
         - in: query
           required: true
@@ -1055,7 +1055,7 @@ paths:
   /invitations/{id}:
     get:
       tags:
-        - rostering
+        - shows
       summary: View invitation
       produces:
         - application/json
@@ -1077,7 +1077,7 @@ paths:
           $ref: '#/responses/Error'
     delete:
       tags:
-        - rostering
+        - shows
       summary: Delete an invitation
       produces:
         - application/json
@@ -1098,7 +1098,7 @@ paths:
   /invitations/{id}/accept:
     post:
       tags:
-        - rostering
+        - shows
       summary: Accept an invitation
       produces:
         - application/json
@@ -1119,7 +1119,7 @@ paths:
   /invitations/{id}/notify:
     post:
       tags:
-        - rostering
+        - shows
       summary: Re send invitation email
       produces:
         - application/json

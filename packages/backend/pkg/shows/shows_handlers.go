@@ -1,4 +1,4 @@
-package rostering
+package shows
 
 import (
 	"strconv"

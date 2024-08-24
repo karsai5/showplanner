@@ -30,7 +30,7 @@ func NewPostShowsShowIDPeopleUnassign(ctx *middleware.Context, handler PostShows
 }
 
 /*
-	PostShowsShowIDPeopleUnassign swagger:route POST /shows/{showId}/people/unassign rostering postShowsShowIdPeopleUnassign
+	PostShowsShowIDPeopleUnassign swagger:route POST /shows/{showId}/people/unassign shows postShowsShowIdPeopleUnassign
 
 Unassign a person from a show
 */

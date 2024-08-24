@@ -30,7 +30,7 @@ func NewGetInvitationsID(ctx *middleware.Context, handler GetInvitationsIDHandle
 }
 
 /*
-	GetInvitationsID swagger:route GET /invitations/{id} rostering getInvitationsId
+	GetInvitationsID swagger:route GET /invitations/{id} shows getInvitationsId
 
 View invitation
 */

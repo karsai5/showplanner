@@ -30,7 +30,7 @@ func NewPostShowsShowIDRosterUnrelease(ctx *middleware.Context, handler PostShow
 }
 
 /*
-	PostShowsShowIDRosterUnrelease swagger:route POST /shows/{showId}/roster/unrelease rostering postShowsShowIdRosterUnrelease
+	PostShowsShowIDRosterUnrelease swagger:route POST /shows/{showId}/roster/unrelease shows postShowsShowIdRosterUnrelease
 
 Make the roster hidden
 */

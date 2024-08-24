@@ -35,13 +35,13 @@ func NewPostRosteringShowsOK() *PostRosteringShowsOK {
 	return &PostRosteringShowsOK{}
 }
 
-// WithPayload adds the payload to the post rostering shows o k response
+// WithPayload adds the payload to the post shows shows o k response
 func (o *PostRosteringShowsOK) WithPayload(payload *dtos.ShowDTO) *PostRosteringShowsOK {
 	o.Payload = payload
 	return o
 }
 
-// SetPayload sets the payload to the post rostering shows o k response
+// SetPayload sets the payload to the post shows shows o k response
 func (o *PostRosteringShowsOK) SetPayload(payload *dtos.ShowDTO) {
 	o.Payload = payload
 }
@@ -80,13 +80,13 @@ func NewPostRosteringShowsBadRequest() *PostRosteringShowsBadRequest {
 	return &PostRosteringShowsBadRequest{}
 }
 
-// WithPayload adds the payload to the post rostering shows bad request response
+// WithPayload adds the payload to the post shows shows bad request response
 func (o *PostRosteringShowsBadRequest) WithPayload(payload *dtos.Error) *PostRosteringShowsBadRequest {
 	o.Payload = payload
 	return o
 }
 
-// SetPayload sets the payload to the post rostering shows bad request response
+// SetPayload sets the payload to the post shows shows bad request response
 func (o *PostRosteringShowsBadRequest) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }
@@ -125,13 +125,13 @@ func NewPostRosteringShowsUnauthorized() *PostRosteringShowsUnauthorized {
 	return &PostRosteringShowsUnauthorized{}
 }
 
-// WithPayload adds the payload to the post rostering shows unauthorized response
+// WithPayload adds the payload to the post shows shows unauthorized response
 func (o *PostRosteringShowsUnauthorized) WithPayload(payload *dtos.Error) *PostRosteringShowsUnauthorized {
 	o.Payload = payload
 	return o
 }
 
-// SetPayload sets the payload to the post rostering shows unauthorized response
+// SetPayload sets the payload to the post shows shows unauthorized response
 func (o *PostRosteringShowsUnauthorized) SetPayload(payload *dtos.Error) {
 	o.Payload = payload
 }

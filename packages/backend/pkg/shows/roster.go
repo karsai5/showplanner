@@ -1,10 +1,10 @@
-package rostering
+package shows
 
 import (
 	"fmt"
 
 	"showplanner.io/pkg/database"
-	"showplanner.io/pkg/rostering/emails"
+	"showplanner.io/pkg/shows/emails"
 )
 
 func sendEmailNotifyingThatRosterHasBeenReleased(db database.IDatabase, showId uint) (err error) {

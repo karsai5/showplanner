@@ -30,7 +30,7 @@ func NewPostInvitations(ctx *middleware.Context, handler PostInvitationsHandler)
 }
 
 /*
-	PostInvitations swagger:route POST /invitations/ rostering postInvitations
+	PostInvitations swagger:route POST /invitations/ shows postInvitations
 
 Invites a person to a show
 */

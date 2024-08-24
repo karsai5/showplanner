@@ -30,7 +30,7 @@ func NewGetShowsShowIDInvitations(ctx *middleware.Context, handler GetShowsShowI
 }
 
 /*
-	GetShowsShowIDInvitations swagger:route GET /shows/{showId}/invitations rostering getShowsShowIdInvitations
+	GetShowsShowIDInvitations swagger:route GET /shows/{showId}/invitations shows getShowsShowIdInvitations
 
 Get invitations for a show
 */
