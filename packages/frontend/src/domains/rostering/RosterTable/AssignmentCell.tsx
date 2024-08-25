@@ -11,7 +11,7 @@ import {
   PersonSummaryDTO,
   RoleDTO,
   RosterAssignedDTO,
-  RosterDTOEventsInner,
+  RosterEventDTO,
 } from "core/api/generated";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { NewShowModalProps, useModal } from "core/components/Modal/Modal";
@@ -33,7 +33,7 @@ import { ShadowSelector } from "./ShadowSelector";
 export const AssignmentCell: React.FC<{
   assignment: RosterAssignedDTO;
   showId: number;
-  event: RosterDTOEventsInner;
+  event: RosterEventDTO;
   role: RoleDTO;
 }> = ({ assignment, showId, event, role }) => {
   const assignedPeopleRequest = useQuery(["assigned-people", showId], () =>
@@ -94,7 +94,7 @@ export const AssignmentCell: React.FC<{
 
 export const PureAssignmentCell: React.FC<{
   assignment: RosterAssignedDTO;
-  event: RosterDTOEventsInner;
+  event: RosterEventDTO;
   people?: PersonSummaryDTO[];
   onChangeAssigned: (personId: string) => void;
   isLoading?: boolean;
@@ -131,7 +131,7 @@ export const PureAssignmentCell: React.FC<{
 
 export const AssignmentDisplay: React.FC<{
   assignment: RosterAssignedDTO;
-  shadows: RosterDTOEventsInner["shadows"];
+  shadows: RosterEventDTO["shadows"];
   roleId: number;
 }> = ({ assignment, shadows, roleId }) => {
   const shadowsForThisRole = shadows?.[roleId] || [];
@@ -183,7 +183,7 @@ export const AssignmentModal: React.FC<{
   isOpen: boolean;
   close: () => void;
   Modal: React.FC<NewShowModalProps>;
-  event: RosterDTOEventsInner;
+  event: RosterEventDTO;
   role: RoleDTO;
   assignment: RosterAssignedDTO;
   people?: PersonSummaryDTO[];
@@ -276,7 +276,7 @@ export const AssignmentModal: React.FC<{
 const Cover: React.FC<{
   mutation: UseMutationResult<unknown, Error, string, unknown>;
   assignment: RosterAssignedDTO;
-  event: RosterDTOEventsInner;
+  event: RosterEventDTO;
   people?: PersonSummaryDTO[];
   role: RoleDTO;
 }> = ({ mutation, assignment, event, people, role }) => {
@@ -357,7 +357,7 @@ const Cover: React.FC<{
 const Shadows: React.FC<{
   mutation: UseMutationResult<unknown, Error, string, unknown>;
   assignment: RosterAssignedDTO;
-  event: RosterDTOEventsInner;
+  event: RosterEventDTO;
   role: RoleDTO;
   people?: PersonSummaryDTO[];
 }> = ({ mutation, assignment, event, people, role }) => {

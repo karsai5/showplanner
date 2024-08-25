@@ -1,14 +1,10 @@
 /* eslint-disable react/display-name */
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
 import { api_deprecated } from "core/api";
-import {
-  PersonSummaryDTO,
-  RoleDTO,
-  RosterDTOEventsInner,
-} from "core/api/generated";
+import { PersonSummaryDTO, RoleDTO, RosterEventDTO } from "core/api/generated";
 import { useConfirmationModal } from "core/components/Modal/ConfirmationModal";
 import { useModal } from "core/components/Modal/Modal";
 import { Td } from "core/components/tables/tables";
@@ -31,7 +27,7 @@ import { AssignmentCell, AssignmentDisplay } from "./AssignmentCell";
 export const RosterTable: React.FC<{
   showId: number;
   showPastEvents?: boolean;
-  events: RosterDTOEventsInner[];
+  events: RosterEventDTO[];
   roles: RoleDTO[];
 }> = ({ showId, showPastEvents, events, roles }) => {
   const filteredEvents = events.filter(
@@ -66,16 +62,17 @@ const Headers: React.FC<{ roles: Array<RoleDTO>; showId: number }> = ({
   );
 };
 
-const eventRenderer: (
-  roles: RoleDTO[]
-) => EventRendererType<RosterDTOEventsInner> =
+const eventRenderer: (roles: RoleDTO[]) => EventRendererType<RosterEventDTO> =
   (roles) =>
   ({ event: e, groupLength }) => {
     return (
       <>
         {groupLength && (
           <Td className="whitespace-nowrap" rowSpan={groupLength}>
-            {displayDate(e.start)}
+            <div className="flex gap-2 justify-between">
+              {displayDate(e.start)}
+              {/* <ExclamationTriangleIcon className="h-5 w-5" /> */}
+            </div>
           </Td>
         )}
         <TimeRangeWithCurtainsUpCell event={e} />
@@ -211,7 +208,7 @@ const EditableRoleNameHeader: React.FC<{
 
   return (
     <th className="sticky top-0 bg-white z-40">
-      <div className="flex gap-2 justify-between">
+      <div className="flex gap-2 justify-between items-center">
         <div>
           <div>{role.name}</div>
           {role.person && <PersonDisplayName person={role.person} />}
@@ -219,9 +216,10 @@ const EditableRoleNameHeader: React.FC<{
             <span className="loading loading-spinner loading-xs"></span>
           )}
         </div>
+        {/* <ExclamationTriangleIcon className="w-5 h-5" /> */}
         <Menu className="dropdown dropdown-open" as="div">
-          <MenuButton className="btn btn-sm btn-ghost">
-            <EllipsisHorizontalIcon className="h-6 w-6" />
+          <MenuButton className="btn btn-sm btn-ghost px-1.5">
+            <Cog8ToothIcon className="h-5 w-5" />
           </MenuButton>
           <MenuItems
             anchor="bottom end"

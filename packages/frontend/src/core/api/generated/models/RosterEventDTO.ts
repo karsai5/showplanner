@@ -31,6 +31,12 @@ import {
   RosterAssignedDTOFromJSONTyped,
   RosterAssignedDTOToJSON,
 } from "./RosterAssignedDTO";
+import type { RosterWarningDTO } from "./RosterWarningDTO";
+import {
+  RosterWarningDTOFromJSON,
+  RosterWarningDTOFromJSONTyped,
+  RosterWarningDTOToJSON,
+} from "./RosterWarningDTO";
 import type { ShadowDTO } from "./ShadowDTO";
 import {
   ShadowDTOFromJSON,
@@ -41,105 +47,111 @@ import {
 /**
  *
  * @export
- * @interface RosterDTOEventsInner
+ * @interface RosterEventDTO
  */
-export interface RosterDTOEventsInner {
+export interface RosterEventDTO {
   /**
    *
    * @type {number}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   id: number;
   /**
    *
    * @type {number}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   showId?: number;
   /**
    *
    * @type {Date}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   start: Date;
   /**
    *
    * @type {string}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   name?: string | null;
   /**
    *
    * @type {string}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   nameRaw?: string | null;
   /**
    *
    * @type {string}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   shortnote?: string | null;
   /**
    *
    * @type {string}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   address?: string | null;
   /**
    *
    * @type {Date}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   curtainsUp?: Date | null;
   /**
    *
    * @type {Date}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   end?: Date | null;
   /**
    *
    * @type {string}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   showReport?: string | null;
   /**
    *
    * @type {string}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   showTimer?: string | null;
   /**
    *
    * @type {EventOptionsDTO}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   options?: EventOptionsDTO;
   /**
    * A map of availabilities to personId
    * @type {{ [key: string]: AvailabilityDTO; }}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   availabilities?: { [key: string]: AvailabilityDTO };
   /**
    * A map of assignments to roleId
    * @type {{ [key: string]: RosterAssignedDTO; }}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   assignments?: { [key: string]: RosterAssignedDTO };
   /**
    * A map of shadows to roleId
    * @type {{ [key: string]: Array<ShadowDTO>; }}
-   * @memberof RosterDTOEventsInner
+   * @memberof RosterEventDTO
    */
   shadows?: { [key: string]: Array<ShadowDTO> };
+  /**
+   *
+   * @type {Array<RosterWarningDTO>}
+   * @memberof RosterEventDTO
+   */
+  warnings?: Array<RosterWarningDTO>;
 }
 
 /**
- * Check if a given object implements the RosterDTOEventsInner interface.
+ * Check if a given object implements the RosterEventDTO interface.
  */
-export function instanceOfRosterDTOEventsInner(value: object): boolean {
+export function instanceOfRosterEventDTO(value: object): boolean {
   let isInstance = true;
   isInstance = isInstance && "id" in value;
   isInstance = isInstance && "start" in value;
@@ -147,14 +159,14 @@ export function instanceOfRosterDTOEventsInner(value: object): boolean {
   return isInstance;
 }
 
-export function RosterDTOEventsInnerFromJSON(json: any): RosterDTOEventsInner {
-  return RosterDTOEventsInnerFromJSONTyped(json, false);
+export function RosterEventDTOFromJSON(json: any): RosterEventDTO {
+  return RosterEventDTOFromJSONTyped(json, false);
 }
 
-export function RosterDTOEventsInnerFromJSONTyped(
+export function RosterEventDTOFromJSONTyped(
   json: any,
   ignoreDiscriminator: boolean
-): RosterDTOEventsInner {
+): RosterEventDTO {
   if (json === undefined || json === null) {
     return json;
   }
@@ -188,12 +200,13 @@ export function RosterDTOEventsInnerFromJSONTyped(
       ? undefined
       : mapValues(json["assignments"], RosterAssignedDTOFromJSON),
     shadows: !exists(json, "shadows") ? undefined : json["shadows"],
+    warnings: !exists(json, "warnings")
+      ? undefined
+      : (json["warnings"] as Array<any>).map(RosterWarningDTOFromJSON),
   };
 }
 
-export function RosterDTOEventsInnerToJSON(
-  value?: RosterDTOEventsInner | null
-): any {
+export function RosterEventDTOToJSON(value?: RosterEventDTO | null): any {
   if (value === undefined) {
     return undefined;
   }
@@ -232,5 +245,9 @@ export function RosterDTOEventsInnerToJSON(
         ? undefined
         : mapValues(value.assignments, RosterAssignedDTOToJSON),
     shadows: value.shadows,
+    warnings:
+      value.warnings === undefined
+        ? undefined
+        : (value.warnings as Array<any>).map(RosterWarningDTOToJSON),
   };
 }

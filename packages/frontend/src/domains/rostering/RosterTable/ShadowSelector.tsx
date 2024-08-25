@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query";
 import cc from "classnames";
 import { api_deprecated } from "core/api";
-import { PersonSummaryDTO, RosterDTOEventsInner } from "core/api/generated";
+import { PersonSummaryDTO, RosterEventDTO } from "core/api/generated";
 import { showToastError } from "core/utils/errors";
 import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
 import { PersonSelectorModal } from "domains/personnel/PersonSelector/PersonSelectorModal";
@@ -16,7 +16,7 @@ import React from "react";
 import { colorCodednameComponent } from "./ColorCodedName";
 
 export const ShadowSelector: FC<{
-  event: RosterDTOEventsInner;
+  event: RosterEventDTO;
   roleId: number;
   people?: PersonSummaryDTO[];
 }> = (props) => {
@@ -64,7 +64,7 @@ export const ShadowSelector: FC<{
 };
 
 export const ShadowSelectorPure: FC<{
-  event: RosterDTOEventsInner;
+  event: RosterEventDTO;
   roleId: number;
   people?: PersonSummaryDTO[];
   onChange: UseMutationResult<unknown, Error, string, unknown>;

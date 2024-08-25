@@ -33,7 +33,9 @@ models/RoleDTO.ts
 models/RoleUpdateDTO.ts
 models/RosterAssignedDTO.ts
 models/RosterDTO.ts
-models/RosterDTOEventsInner.ts
+models/RosterEventDTO.ts
+models/RosterRoleDTO.ts
+models/RosterWarningDTO.ts
 models/ScheduleEventDTO.ts
 models/ScheduleEventDTOAllOfRoles.ts
 models/ShadowDTO.ts

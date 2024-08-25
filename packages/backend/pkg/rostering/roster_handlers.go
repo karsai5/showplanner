@@ -46,8 +46,8 @@ func handleGetRoster(db database.IDatabase, ph permissions.IPermissionsHandler) 
 			return logError(&err)
 		}
 
-		mappedRoles := conv.MapArrayOfPointer(roles, func(r database.Role) dtos.RoleDTO { return r.MapToDTO() })
-		mappedEvents := conv.MapArrayOfPointer(events, func(event database.Event) dtos.RosterDTOEventsItems0 { return event.MapToEventWithAssignments(roles) })
+		mappedRoles := conv.MapArrayOfPointer(roles, func(r database.Role) dtos.RosterRoleDTO { return r.MapToRosterRoleDTO() })
+		mappedEvents := conv.MapArrayOfPointer(events, func(event database.Event) dtos.RosterEventDTO { return event.MapToEventWithAssignments(roles) })
 		schedule_domain.NameEventsWithCurtainsUp(mappedEvents)
 
 		return &shows.GetShowsShowIDRosterOK{

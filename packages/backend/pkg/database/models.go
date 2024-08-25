@@ -123,7 +123,7 @@ func (e *Event) MapToEventDTO() dtos.EventDTO {
 	return dto
 }
 
-func (e *Event) MapToEventWithAssignments(roles []Role) dtos.RosterDTOEventsItems0 {
+func (e *Event) MapToEventWithAssignments(roles []Role) dtos.RosterEventDTO {
 	assignments := map[string]*dtos.RosterAssignedDTO{}
 	for _, role := range roles {
 		dto := dtos.RosterAssignedDTO{
@@ -148,13 +148,13 @@ func (e *Event) MapToEventWithAssignments(roles []Role) dtos.RosterDTOEventsItem
 		}
 		assignments[strconv.Itoa(int(role.ID))] = &dto
 	}
-	return dtos.RosterDTOEventsItems0{
+	return dtos.RosterEventDTO{
 		EventDTO: e.MapToEventDTO(),
-		Assignments: &dtos.RosterDTOEventsItems0AO1Assignments{
-			RosterDTOEventsItems0AO1Assignments: assignments,
+		Assignments: &dtos.RosterEventDTOAO1Assignments{
+			RosterEventDTOAO1Assignments: assignments,
 		},
-		Availabilities: &dtos.RosterDTOEventsItems0AO1Availabilities{
-			RosterDTOEventsItems0AO1Availabilities: mapAvailabilityToMap(e.Availabilities),
+		Availabilities: &dtos.RosterEventDTOAO1Availabilities{
+			RosterEventDTOAO1Availabilities: mapAvailabilityToMap(e.Availabilities),
 		},
 		Shadows: mapShadowsToMap(*e),
 	}
@@ -548,6 +548,13 @@ func (r *Role) MapToDTO() dtos.RoleDTO {
 	}
 	if r.Sort != nil {
 		dto.Order = int64(*r.Sort)
+	}
+	return dto
+}
+
+func (r *Role) MapToRosterRoleDTO() dtos.RosterRoleDTO {
+	dto := dtos.RosterRoleDTO{
+		RoleDTO: r.MapToDTO(),
 	}
 	return dto
 }

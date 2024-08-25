@@ -1,37 +1,36 @@
 ScheduleEventDTO:
-  allOf: 
-  - $ref: './Event.yaml#/EventDTO'
-  - type: object
-    properties:
-      availability:
-        x-nullable: true
-        $ref: '#/AvailabilityDTO'
-      roles:
-        type: array
-        items:
-          type: object
-          properties:
-            id:
-              type: integer
-            name:
-              type: string
-            type:
-              type: string
-              enum: [baseRole, assigned, covering, shadowing]
-            covering:
-              $ref: './People.yaml#/PersonSummaryDTO'
-            shadowing:
-              $ref: './People.yaml#/PersonSummaryDTO'
-            coveredBy:
-              $ref: './People.yaml#/PersonSummaryDTO'
-            shadowedBy:
-              type: array
-              items:
+  allOf:
+    - $ref: './Event.yaml#/EventDTO'
+    - type: object
+      properties:
+        availability:
+          x-nullable: true
+          $ref: '#/AvailabilityDTO'
+        roles:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              type:
+                type: string
+                enum: [baseRole, assigned, covering, shadowing]
+              covering:
                 $ref: './People.yaml#/PersonSummaryDTO'
-          required:
-            - id
-            - name
-
+              shadowing:
+                $ref: './People.yaml#/PersonSummaryDTO'
+              coveredBy:
+                $ref: './People.yaml#/PersonSummaryDTO'
+              shadowedBy:
+                type: array
+                items:
+                  $ref: './People.yaml#/PersonSummaryDTO'
+            required:
+              - id
+              - name
 
 AvailabilityDTO:
   type: object
@@ -107,35 +106,52 @@ RosterDTO:
     roles:
       type: array
       items:
-        $ref: './Role.yaml#/RoleDTO'
+        $ref: '#/RosterRoleDTO'
     events:
       type: array
       items:
-        allOf: 
-        - $ref: './Event.yaml#/EventDTO'
-        - type: object
+        $ref: '#/RosterEventDTO'
+
+RosterRoleDTO:
+  allOf:
+    - $ref: './Role.yaml#/RoleDTO'
+    - type: object
+      properties:
+        warnings:
+          type: array
+          items:
+            $ref: '#/RosterWarningDTO'
+
+RosterEventDTO:
+  allOf:
+    - $ref: './Event.yaml#/EventDTO'
+    - type: object
+      properties:
+        availabilities:
+          description: 'A map of availabilities to personId'
           properties:
-            availabilities:
-              description: 'A map of availabilities to personId'
-              properties:
-                default:
-                  $ref: '#/AvailabilityDTO'
-              additionalProperties:
-                $ref: '#/AvailabilityDTO'
-            assignments: 
-              description: 'A map of assignments to roleId'
-              properties:
-                default:
-                  $ref: '#/RosterAssignedDTO'
-              additionalProperties:
-                $ref: '#/RosterAssignedDTO'
-            shadows: 
-              type: object
-              description: 'A map of shadows to roleId'
-              additionalProperties:
-                type: array
-                items:
-                  $ref: '#/ShadowDTO'
+            default:
+              $ref: '#/AvailabilityDTO'
+          additionalProperties:
+            $ref: '#/AvailabilityDTO'
+        assignments:
+          description: 'A map of assignments to roleId'
+          properties:
+            default:
+              $ref: '#/RosterAssignedDTO'
+          additionalProperties:
+            $ref: '#/RosterAssignedDTO'
+        shadows:
+          type: object
+          description: 'A map of shadows to roleId'
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/ShadowDTO'
+        warnings:
+          type: array
+          items:
+            $ref: '#/RosterWarningDTO'
 
 ShadowDTO:
   type: object
@@ -151,6 +167,16 @@ ShadowDTO:
     - id
     - person
     - available
+
+RosterWarningDTO:
+  type: object
+  properties:
+    id:
+      type: string
+    message:
+      type: string
+    anchor:
+      type: string
 
 RosterAssignedDTO:
   type: object

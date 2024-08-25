@@ -3928,51 +3928,7 @@ func init() {
         }
       }
     },
-    "RosterDTOEventsItems0": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/eventDTO"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "assignments": {
-              "description": "A map of assignments to roleId",
-              "properties": {
-                "default": {
-                  "$ref": "#/definitions/rosterAssignedDTO"
-                }
-              },
-              "additionalProperties": {
-                "$ref": "#/definitions/rosterAssignedDTO"
-              }
-            },
-            "availabilities": {
-              "description": "A map of availabilities to personId",
-              "properties": {
-                "default": {
-                  "$ref": "#/definitions/availabilityDTO"
-                }
-              },
-              "additionalProperties": {
-                "$ref": "#/definitions/availabilityDTO"
-              }
-            },
-            "shadows": {
-              "description": "A map of shadows to roleId",
-              "type": "object",
-              "additionalProperties": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/shadowDTO"
-                }
-              }
-            }
-          }
-        }
-      ]
-    },
-    "RosterDTOEventsItems0AO1Assignments": {
+    "RosterEventDTOAO1Assignments": {
       "description": "A map of assignments to roleId",
       "properties": {
         "default": {
@@ -3983,7 +3939,7 @@ func init() {
         "$ref": "#/definitions/rosterAssignedDTO"
       }
     },
-    "RosterDTOEventsItems0AO1Availabilities": {
+    "RosterEventDTOAO1Availabilities": {
       "description": "A map of availabilities to personId",
       "properties": {
         "default": {
@@ -4585,14 +4541,96 @@ func init() {
         "events": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/RosterDTOEventsItems0"
+            "$ref": "#/definitions/rosterEventDTO"
           }
         },
         "roles": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/roleDTO"
+            "$ref": "#/definitions/rosterRoleDTO"
           }
+        }
+      }
+    },
+    "rosterEventDTO": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/eventDTO"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "assignments": {
+              "description": "A map of assignments to roleId",
+              "properties": {
+                "default": {
+                  "$ref": "#/definitions/rosterAssignedDTO"
+                }
+              },
+              "additionalProperties": {
+                "$ref": "#/definitions/rosterAssignedDTO"
+              }
+            },
+            "availabilities": {
+              "description": "A map of availabilities to personId",
+              "properties": {
+                "default": {
+                  "$ref": "#/definitions/availabilityDTO"
+                }
+              },
+              "additionalProperties": {
+                "$ref": "#/definitions/availabilityDTO"
+              }
+            },
+            "shadows": {
+              "description": "A map of shadows to roleId",
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/shadowDTO"
+                }
+              }
+            },
+            "warnings": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/rosterWarningDTO"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "rosterRoleDTO": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/roleDTO"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "warnings": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/rosterWarningDTO"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "rosterWarningDTO": {
+      "type": "object",
+      "properties": {
+        "anchor": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
         }
       }
     },
