@@ -104,37 +104,36 @@ func (ical *iCalendar) createEventsForShow(cal *ics.Calendar, show database.Show
 	return nil
 }
 
-func (ical *iCalendar) getDescription(_ database.Show, event database.Event, mappedRoles []*dtos.ScheduleEventDTORolesItems0) string {
+func (ical *iCalendar) getDescription(show database.Show, event database.Event, mappedRoles []*dtos.ScheduleEventDTORolesItems0) (s string) {
 	sBuilder := []string{}
 
-	if event.CurtainsUp != nil {
-		sBuilder = append(sBuilder, fmt.Sprintf("%s show\n", event.CurtainsUp.Format("3:04pm")))
-	}
+	if show.Options.IsRosterReleased {
+		for _, r := range mappedRoles {
+			if r.CoveredBy != nil {
+				sBuilder = append(sBuilder, fmt.Sprintf("Not required for %s, covered by %s %s", *r.Name, *r.CoveredBy.FirstName, *r.CoveredBy.LastName))
+			} else {
+				asBuilder := []string{fmt.Sprintf("Assigned to %s", *r.Name)}
 
-	for _, r := range mappedRoles {
-		if r.CoveredBy != nil {
-			sBuilder = append(sBuilder, fmt.Sprintf("Not required for %s, covered by %s %s", *r.Name, *r.CoveredBy.FirstName, *r.CoveredBy.LastName))
-		} else {
-			asBuilder := []string{fmt.Sprintf("Assigned to %s", *r.Name)}
-
-			if r.ShadowedBy != nil {
-				for _, shadow := range r.ShadowedBy {
-					asBuilder = append(asBuilder, fmt.Sprintf("shadowed by %s %s", *shadow.FirstName, *shadow.LastName))
+				if r.ShadowedBy != nil {
+					for _, shadow := range r.ShadowedBy {
+						asBuilder = append(asBuilder, fmt.Sprintf("shadowed by %s %s", *shadow.FirstName, *shadow.LastName))
+					}
 				}
+
+				sBuilder = append(sBuilder, strings.Join(asBuilder, ", "))
 			}
 
-			sBuilder = append(sBuilder, strings.Join(asBuilder, ", "))
-		}
-
-		if r.Type == COVERING {
-			cover := *r.Covering
-			sBuilder = append(sBuilder, fmt.Sprintf("Covering %s %s as %s", *cover.FirstName, *cover.LastName, *r.Name))
-		}
-		if r.Type == SHADOWING {
-			shadowing := *r.Shadowing
-			sBuilder = append(sBuilder, fmt.Sprintf("Shadowing %s %s as %s", *shadowing.FirstName, *shadowing.LastName, *r.Name))
+			if r.Type == COVERING {
+				cover := *r.Covering
+				sBuilder = append(sBuilder, fmt.Sprintf("Covering %s %s as %s", *cover.FirstName, *cover.LastName, *r.Name))
+			}
+			if r.Type == SHADOWING {
+				shadowing := *r.Shadowing
+				sBuilder = append(sBuilder, fmt.Sprintf("Shadowing %s %s as %s", *shadowing.FirstName, *shadowing.LastName, *r.Name))
+			}
 		}
 	}
+
 	return strings.Join(sBuilder, "\n")
 }
 
@@ -146,19 +145,21 @@ func (ical iCalendar) getEventSummary(show database.Show, event database.Event, 
 
 	ical.addAttendingEventSummaryInformation(&summaryArray, event)
 
-	roleStrings := []string{}
-	for _, r := range rolesForUser {
-		name := *r.Name
-		if r.Shadowing != nil {
-			name = name + " (shadowing)"
+	if show.Options.IsRosterReleased {
+		roleStrings := []string{}
+		for _, r := range rolesForUser {
+			name := *r.Name
+			if r.Shadowing != nil {
+				name = name + " (shadowing)"
+			}
+			roleStrings = append(roleStrings, name)
 		}
-		roleStrings = append(roleStrings, name)
-	}
 
-	if len(roleStrings) > 0 {
-		summaryArray = append(summaryArray, strings.Join(roleStrings, ", "))
-	} else if !ical.isUserRequiredForRole(rolesForUser) && !event.IsUserInputTypeAttendance() {
-		summaryArray = append(summaryArray, "Not required")
+		if len(roleStrings) > 0 {
+			summaryArray = append(summaryArray, strings.Join(roleStrings, ", "))
+		} else if !ical.isUserRequiredForRole(rolesForUser) && !event.IsUserInputTypeAttendance() {
+			summaryArray = append(summaryArray, "Not required")
+		}
 	}
 
 	summaryArray = append(summaryArray, show.Name)

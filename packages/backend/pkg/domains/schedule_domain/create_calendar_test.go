@@ -18,6 +18,9 @@ var mockShow = database.Show{
 	Name:    "Test show",
 	Company: "Test company",
 	Slug:    "test-slug",
+	Options: database.ShowOptions{
+		IsRosterReleased: true,
+	},
 }
 var personId = uuid.NewV4()
 
@@ -333,6 +336,59 @@ func TestSummaryShouldIncludeRoles(t *testing.T) {
 
 	expected := "Test event - Show role\\, Assigned role\\, Shadow role (shadowing) - Test show"
 	expectPropertyToEqual(t, result, "SUMMARY", expected)
+}
+
+func TestSummaryShouldNotIncludeRolesIfTheRosterIsUnreleased(t *testing.T) {
+	eventId := uint(0)
+	var showWithUnreleasedRoster = database.Show{
+		Model: gorm.Model{
+			ID: 0,
+		},
+		Name:    "Test show",
+		Company: "Test company",
+		Slug:    "test-slug",
+		Options: database.ShowOptions{
+			IsRosterReleased: false,
+		},
+	}
+
+	mockDB := database.NewMockIDatabase(t)
+	mockDB.On("GetShowsForUser", personId).Return([]database.Show{showWithUnreleasedRoster}, nil)
+
+	mockDB.EXPECT().GetRolesForPerson(showWithUnreleasedRoster.ID, personId).Return([]database.Role{
+		{ // base role
+			Name:     "Show role",
+			PersonID: &personId,
+		},
+	}, nil)
+
+	mockDB.EXPECT().GetEventsWithAvailabilityAndAssignmentsForUser(showWithUnreleasedRoster.ID, personId).Return([]database.Event{
+		{
+			Model: gorm.Model{
+				ID: eventId,
+			},
+			Start:       time.Now(),
+			Name:        conv.Pointer("Test event"),
+			Assignments: []database.Assignment{},
+			Shadows:     []database.Shadow{},
+		},
+	}, nil)
+
+	ical := iCalendar{
+		UserId:                   personId,
+		HideEventsNotRequiredFor: true,
+		Db:                       mockDB,
+	}
+
+	// Act
+	result, err := ical.CreateCalendarForPerson()
+	// Assert
+	if err != nil {
+		t.Errorf("Expected no error, got %v", err)
+	}
+
+	expectPropertyToEqual(t, result, "SUMMARY", "Test event - Test show")
+	expectPropertyToEqual(t, result, "DESCRIPTION", "")
 }
 
 func expectPropertyToEqual(t *testing.T, result string, key string, expected string) {
