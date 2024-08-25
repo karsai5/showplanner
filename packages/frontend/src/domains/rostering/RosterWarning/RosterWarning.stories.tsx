@@ -11,5 +11,18 @@ export default meta;
 type Story = StoryObj<typeof RosterWarning>;
 
 export const Primary: Story = {
-  args: {},
+  args: {
+    warnings: [
+      {
+        message: "Emma is unavailable as Assistant stage manager",
+        id: "",
+        anchor: "",
+      },
+      {
+        message: "Emma's availability is unknown",
+        id: "",
+        anchor: "",
+      },
+    ],
+  },
 };

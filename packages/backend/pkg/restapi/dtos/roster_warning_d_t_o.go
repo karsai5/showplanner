@@ -8,8 +8,10 @@ package dtos
 import (
 	"context"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 )
 
 // RosterWarningDTO roster warning d t o
@@ -18,17 +20,64 @@ import (
 type RosterWarningDTO struct {
 
 	// anchor
-	Anchor string `json:"anchor,omitempty"`
+	// Required: true
+	Anchor string `json:"anchor"`
 
 	// id
-	ID string `json:"id,omitempty"`
+	// Required: true
+	ID string `json:"id"`
 
 	// message
-	Message string `json:"message,omitempty"`
+	// Required: true
+	Message string `json:"message"`
 }
 
 // Validate validates this roster warning d t o
 func (m *RosterWarningDTO) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateAnchor(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateID(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateMessage(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *RosterWarningDTO) validateAnchor(formats strfmt.Registry) error {
+
+	if err := validate.RequiredString("anchor", "body", m.Anchor); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *RosterWarningDTO) validateID(formats strfmt.Registry) error {
+
+	if err := validate.RequiredString("id", "body", m.ID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *RosterWarningDTO) validateMessage(formats strfmt.Registry) error {
+
+	if err := validate.RequiredString("message", "body", m.Message); err != nil {
+		return err
+	}
+
 	return nil
 }
 

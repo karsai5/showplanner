@@ -4628,15 +4628,23 @@ func init() {
     },
     "rosterWarningDTO": {
       "type": "object",
+      "required": [
+        "id",
+        "message",
+        "anchor"
+      ],
       "properties": {
         "anchor": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": false
         },
         "id": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": false
         },
         "message": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": false
         }
       }
     },

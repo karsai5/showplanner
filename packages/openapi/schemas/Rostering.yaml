@@ -173,10 +173,17 @@ RosterWarningDTO:
   properties:
     id:
       type: string
+      x-nullable: false
     message:
       type: string
+      x-nullable: false
     anchor:
       type: string
+      x-nullable: false
+  required:
+    - id
+    - message
+    - anchor
 
 RosterAssignedDTO:
   type: object

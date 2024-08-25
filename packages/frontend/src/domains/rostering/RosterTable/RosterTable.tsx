@@ -20,6 +20,7 @@ import { PersonDisplayName } from "domains/personnel/PersonDisplayName";
 import { PersonSelectorModal } from "domains/personnel/PersonSelector/PersonSelectorModal";
 import { getBgColorForRoster } from "domains/rostering/helpers";
 import { RenameRole } from "domains/rostering/RolesTable";
+import { RosterWarning } from "domains/rostering/RosterWarning/RosterWarning";
 import React, { useState } from "react";
 
 import { AssignmentCell, AssignmentDisplay } from "./AssignmentCell";
@@ -71,7 +72,7 @@ const eventRenderer: (roles: RoleDTO[]) => EventRendererType<RosterEventDTO> =
           <Td className="whitespace-nowrap" rowSpan={groupLength}>
             <div className="flex gap-2 justify-between">
               {displayDate(e.start)}
-              {/* <ExclamationTriangleIcon className="h-5 w-5" /> */}
+              <RosterWarning warnings={e.warnings} />
             </div>
           </Td>
         )}

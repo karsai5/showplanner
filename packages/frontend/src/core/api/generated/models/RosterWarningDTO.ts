@@ -24,19 +24,19 @@ export interface RosterWarningDTO {
    * @type {string}
    * @memberof RosterWarningDTO
    */
-  id?: string;
+  id: string;
   /**
    *
    * @type {string}
    * @memberof RosterWarningDTO
    */
-  message?: string;
+  message: string;
   /**
    *
    * @type {string}
    * @memberof RosterWarningDTO
    */
-  anchor?: string;
+  anchor: string;
 }
 
 /**
@@ -44,6 +44,9 @@ export interface RosterWarningDTO {
  */
 export function instanceOfRosterWarningDTO(value: object): boolean {
   let isInstance = true;
+  isInstance = isInstance && "id" in value;
+  isInstance = isInstance && "message" in value;
+  isInstance = isInstance && "anchor" in value;
 
   return isInstance;
 }
@@ -60,9 +63,9 @@ export function RosterWarningDTOFromJSONTyped(
     return json;
   }
   return {
-    id: !exists(json, "id") ? undefined : json["id"],
-    message: !exists(json, "message") ? undefined : json["message"],
-    anchor: !exists(json, "anchor") ? undefined : json["anchor"],
+    id: json["id"],
+    message: json["message"],
+    anchor: json["anchor"],
   };
 }
 

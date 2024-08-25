@@ -125,28 +125,39 @@ func (e *Event) MapToEventDTO() dtos.EventDTO {
 
 func (e *Event) MapToEventWithAssignments(roles []Role) dtos.RosterEventDTO {
 	assignments := map[string]*dtos.RosterAssignedDTO{}
+	eventWarnings := make([]*dtos.RosterWarningDTO, 0)
 	for _, role := range roles {
-		dto := dtos.RosterAssignedDTO{
+		assignmentDto := dtos.RosterAssignedDTO{
 			AssignmentID: nil,
 			Available:    nil,
 			Cover:        conv.Pointer(false),
 			Person:       &dtos.PersonSummaryDTO{},
+			Warnings:     make([]*dtos.RosterWarningDTO, 0),
 		}
 
 		if role.Person != nil {
-			fillPersonAndAvailabilityData(&dto, *role.Person, *e)
+			fillPersonAndAvailabilityData(&assignmentDto, *role.Person, *e)
 		}
 
 		assignmentIdx := slices.IndexFunc(e.Assignments, func(a Assignment) bool { return a.RoleID == role.ID })
 		if assignmentIdx >= 0 {
 			assignment := e.Assignments[assignmentIdx]
-			dto.AssignmentID = conv.UintToInt64(assignment.ID)
-			fillPersonAndAvailabilityData(&dto, assignment.Person, *e)
+			assignmentDto.AssignmentID = conv.UintToInt64(assignment.ID)
+			fillPersonAndAvailabilityData(&assignmentDto, assignment.Person, *e)
 			if role.Person != nil {
-				dto.Cover = conv.Pointer(true)
+				assignmentDto.Cover = conv.Pointer(true)
+			}
+			if assignmentDto.Available != nil && !*assignmentDto.Available {
+				warning := dtos.RosterWarningDTO{
+					Anchor:  "",
+					ID:      fmt.Sprintf("unavailable-%s", assignment.Person.ID),
+					Message: fmt.Sprintf("%s is unavailable", assignment.Person.GetFirstName()),
+				}
+				assignmentDto.Warnings = append(assignmentDto.Warnings, &warning)
+				eventWarnings = append(eventWarnings, &warning)
 			}
 		}
-		assignments[strconv.Itoa(int(role.ID))] = &dto
+		assignments[strconv.Itoa(int(role.ID))] = &assignmentDto
 	}
 	return dtos.RosterEventDTO{
 		EventDTO: e.MapToEventDTO(),
@@ -156,7 +167,8 @@ func (e *Event) MapToEventWithAssignments(roles []Role) dtos.RosterEventDTO {
 		Availabilities: &dtos.RosterEventDTOAO1Availabilities{
 			RosterEventDTOAO1Availabilities: mapAvailabilityToMap(e.Availabilities),
 		},
-		Shadows: mapShadowsToMap(*e),
+		Shadows:  mapShadowsToMap(*e),
+		Warnings: eventWarnings,
 	}
 
 }
