@@ -4,4 +4,5 @@
 # npm test
 # yarn lint
 gitleaks protect --staged --no-banner
-cd packages/frontend && yarn lint-staged && yarn test
+(cd packages/frontend && yarn lint-staged && yarn test)
+(cd packages/backend && make test)

@@ -30,7 +30,7 @@ serve-in-container:
 	./go-backend-server --host '' --port 8080
 
 test:
-	godotenv go test ./...
+	go test ./...
 
 lint:
 	golangci-lint run

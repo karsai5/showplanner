@@ -78,7 +78,7 @@ func (ical *iCalendar) createEventsForShow(cal *ics.Calendar, show database.Show
 		rolesForUser := MapRoles(roles, *e, userId)
 
 		// If the user is not required for any roles,
-		// and the event is not required,
+		// and the event is of type attendance
 		// and the event has a curtain time,
 		// and we're hiding events not required for, skip
 		if (len(rolesForUser) == 0 && !e.IsUserInputTypeAttendance() && e.CurtainsUp != nil) && ical.HideEventsNotRequiredFor {
@@ -179,7 +179,7 @@ func (ical *iCalendar) addAttendingEventSummaryInformation(summaryArray *[]strin
 }
 
 func (ical iCalendar) shouldAttendingEventBeHidden(event database.Event) (bool, error) {
-	if !event.IsUserInputTypeAvailability() {
+	if !event.IsUserInputTypeAttendance() {
 		return false, fmt.Errorf("event %d does not require attendance", event.ID)
 	}
 	attendance := ical.findAvailabilityForUserInEvent(event)

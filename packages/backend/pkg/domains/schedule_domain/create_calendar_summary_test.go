@@ -33,8 +33,8 @@ func TestDividerEventsAreSkipped(t *testing.T) {
 			ShowID:     mockShow.ID,
 			Show:       mockShow,
 			Options: database.EventOptions{
-				Divider:            true,
-				AttendanceRequired: false,
+				Divider:       true,
+				UserInputType: database.UserInputTypeAvailability,
 			},
 		},
 	}, nil)
@@ -132,7 +132,7 @@ func TestUnattendingEventIsHiddenIfHideEventsIsTrue(t *testing.T) {
 				},
 			},
 			Options: database.EventOptions{
-				AttendanceRequired: true,
+				UserInputType: database.UserInputTypeAttendance,
 			},
 		},
 	}, nil)
@@ -171,7 +171,7 @@ func TestUnAttendingEventHasCorrectSummary(t *testing.T) {
 				},
 			},
 			Options: database.EventOptions{
-				AttendanceRequired: true,
+				UserInputType: database.UserInputTypeAttendance,
 			},
 		},
 	}, nil)
@@ -207,7 +207,7 @@ func TestAttendingUnknownEventHasCorrectSummary(t *testing.T) {
 			Name:           conv.Pointer("Test event"),
 			Availabilities: []database.Availability{},
 			Options: database.EventOptions{
-				AttendanceRequired: true,
+				UserInputType: database.UserInputTypeAttendance,
 			},
 		},
 	}, nil)
@@ -250,7 +250,7 @@ func TestAttendingEventHasCorrectSummary(t *testing.T) {
 				},
 			},
 			Options: database.EventOptions{
-				AttendanceRequired: true,
+				UserInputType: database.UserInputTypeAttendance,
 			},
 		},
 	}, nil)
