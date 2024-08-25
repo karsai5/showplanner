@@ -4532,6 +4532,12 @@ func init() {
         },
         "person": {
           "$ref": "#/definitions/personSummaryDTO"
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/rosterWarningDTO"
+          }
         }
       }
     },

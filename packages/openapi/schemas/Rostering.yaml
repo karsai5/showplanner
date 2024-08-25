@@ -190,6 +190,10 @@ RosterAssignedDTO:
     assignmentId:
       type: integer
       x-nullable: true
+    warnings:
+      type: array
+      items:
+        $ref: '#/RosterWarningDTO'
   required:
     - person
     - cover

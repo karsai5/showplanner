@@ -7,6 +7,7 @@ package dtos
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
@@ -33,6 +34,9 @@ type RosterAssignedDTO struct {
 	// person
 	// Required: true
 	Person *PersonSummaryDTO `json:"person"`
+
+	// warnings
+	Warnings []*RosterWarningDTO `json:"warnings"`
 }
 
 // Validate validates this roster assigned d t o
@@ -48,6 +52,10 @@ func (m *RosterAssignedDTO) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validatePerson(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateWarnings(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -95,11 +103,41 @@ func (m *RosterAssignedDTO) validatePerson(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *RosterAssignedDTO) validateWarnings(formats strfmt.Registry) error {
+	if swag.IsZero(m.Warnings) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.Warnings); i++ {
+		if swag.IsZero(m.Warnings[i]) { // not required
+			continue
+		}
+
+		if m.Warnings[i] != nil {
+			if err := m.Warnings[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("warnings" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("warnings" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
 // ContextValidate validate this roster assigned d t o based on the context it is used
 func (m *RosterAssignedDTO) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.contextValidatePerson(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateWarnings(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -121,6 +159,31 @@ func (m *RosterAssignedDTO) contextValidatePerson(ctx context.Context, formats s
 			}
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (m *RosterAssignedDTO) contextValidateWarnings(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Warnings); i++ {
+
+		if m.Warnings[i] != nil {
+
+			if swag.IsZero(m.Warnings[i]) { // not required
+				return nil
+			}
+
+			if err := m.Warnings[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("warnings" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("warnings" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
 	}
 
 	return nil
