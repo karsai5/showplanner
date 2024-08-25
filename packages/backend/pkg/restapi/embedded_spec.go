@@ -329,7 +329,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Get my invitations",
         "responses": {
@@ -355,7 +355,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Invites a person to a show",
         "parameters": [
@@ -403,7 +403,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "View invitation",
         "parameters": [
@@ -436,7 +436,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Delete an invitation",
         "parameters": [
@@ -468,7 +468,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Accept an invitation",
         "parameters": [
@@ -500,7 +500,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Re send invitation email",
         "parameters": [
@@ -1041,13 +1041,13 @@ func init() {
         }
       }
     },
-    "/shows/shows": {
+    "/rostering/shows": {
       "get": {
         "produces": [
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Returns a list of shows",
         "responses": {
@@ -1073,7 +1073,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Creates a show",
         "parameters": [
@@ -1502,7 +1502,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Get invitations for a show",
         "parameters": [
@@ -1538,7 +1538,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Unassign a person from a show",
         "parameters": [
@@ -1575,7 +1575,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Set the order of the roles for a show",
         "parameters": [
@@ -1646,7 +1646,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Make the roster viewable by other members of the show",
         "parameters": [
@@ -1681,7 +1681,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Make the roster hidden",
         "parameters": [
@@ -1711,7 +1711,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Return details about a show from its slug",
         "parameters": [
@@ -2188,7 +2188,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Get my invitations",
         "responses": {
@@ -2220,7 +2220,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Invites a person to a show",
         "parameters": [
@@ -2277,7 +2277,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "View invitation",
         "parameters": [
@@ -2316,7 +2316,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Delete an invitation",
         "parameters": [
@@ -2354,7 +2354,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Accept an invitation",
         "parameters": [
@@ -2392,7 +2392,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Re send invitation email",
         "parameters": [
@@ -3005,13 +3005,13 @@ func init() {
         }
       }
     },
-    "/shows/shows": {
+    "/rostering/shows": {
       "get": {
         "produces": [
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Returns a list of shows",
         "responses": {
@@ -3043,7 +3043,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Creates a show",
         "parameters": [
@@ -3568,7 +3568,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Get invitations for a show",
         "parameters": [
@@ -3610,7 +3610,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Unassign a person from a show",
         "parameters": [
@@ -3653,7 +3653,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Set the order of the roles for a show",
         "parameters": [
@@ -3736,7 +3736,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Make the roster viewable by other members of the show",
         "parameters": [
@@ -3777,7 +3777,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Make the roster hidden",
         "parameters": [
@@ -3813,7 +3813,7 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "shows"
+          "rostering"
         ],
         "summary": "Return details about a show from its slug",
         "parameters": [

@@ -20,7 +20,7 @@ func NewGetRosteringShowsParams() GetRosteringShowsParams {
 	return GetRosteringShowsParams{}
 }
 
-// GetRosteringShowsParams contains all the bound params for the get shows shows operation
+// GetRosteringShowsParams contains all the bound params for the get rostering shows operation
 // typically these are obtained from a http.Request
 //
 // swagger:parameters GetRosteringShows

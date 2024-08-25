@@ -24,7 +24,7 @@ func NewPostRosteringShowsParams() PostRosteringShowsParams {
 	return PostRosteringShowsParams{}
 }
 
-// PostRosteringShowsParams contains all the bound params for the post shows shows operation
+// PostRosteringShowsParams contains all the bound params for the post rostering shows operation
 // typically these are obtained from a http.Request
 //
 // swagger:parameters PostRosteringShows

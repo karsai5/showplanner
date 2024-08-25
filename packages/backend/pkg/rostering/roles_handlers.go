@@ -1,4 +1,4 @@
-package shows
+package rostering
 
 import (
 	"github.com/go-openapi/runtime/middleware"

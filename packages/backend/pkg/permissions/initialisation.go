@@ -1,7 +1,7 @@
 package permissions
 
 var ViewEvents = ShowPermission{perm: "view-events"}
-var Rostering = ShowPermission{perm: "shows"}
+var Rostering = ShowPermission{perm: "rostering"}
 var AddEvents = ShowPermission{perm: "add-events"}
 var ViewPersonnel = ShowPermission{perm: "personnel"}
 var AddPersonnel = ShowPermission{perm: "add-personnel"}

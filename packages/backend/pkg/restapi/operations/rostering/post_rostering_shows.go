@@ -11,7 +11,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 )
 
-// PostRosteringShowsHandlerFunc turns a function with the right signature into a post shows shows handler
+// PostRosteringShowsHandlerFunc turns a function with the right signature into a post rostering shows handler
 type PostRosteringShowsHandlerFunc func(PostRosteringShowsParams) middleware.Responder
 
 // Handle executing the request and returning a response
@@ -19,18 +19,18 @@ func (fn PostRosteringShowsHandlerFunc) Handle(params PostRosteringShowsParams) 
 	return fn(params)
 }
 
-// PostRosteringShowsHandler interface for that can handle valid post shows shows params
+// PostRosteringShowsHandler interface for that can handle valid post rostering shows params
 type PostRosteringShowsHandler interface {
 	Handle(PostRosteringShowsParams) middleware.Responder
 }
 
-// NewPostRosteringShows creates a new http.Handler for the post shows shows operation
+// NewPostRosteringShows creates a new http.Handler for the post rostering shows operation
 func NewPostRosteringShows(ctx *middleware.Context, handler PostRosteringShowsHandler) *PostRosteringShows {
 	return &PostRosteringShows{Context: ctx, Handler: handler}
 }
 
 /*
-	PostRosteringShows swagger:route POST /shows/shows shows postRosteringShows
+	PostRosteringShows swagger:route POST /rostering/shows rostering postRosteringShows
 
 Creates a show
 */

@@ -11,7 +11,7 @@ import (
 	golangswaggerpaths "path"
 )
 
-// PostRosteringShowsURL generates an URL for the post shows shows operation
+// PostRosteringShowsURL generates an URL for the post rostering shows operation
 type PostRosteringShowsURL struct {
 	_basePath string
 }
@@ -35,7 +35,7 @@ func (o *PostRosteringShowsURL) SetBasePath(bp string) {
 func (o *PostRosteringShowsURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/shows/shows"
+	var _path = "/rostering/shows"
 
 	_basePath := o._basePath
 	if _basePath == "" {

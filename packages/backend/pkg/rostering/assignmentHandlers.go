@@ -1,4 +1,4 @@
-package shows
+package rostering
 
 import (
 	"github.com/go-openapi/runtime/middleware"
@@ -7,7 +7,7 @@ import (
 	"showplanner.io/pkg/permissions"
 	"showplanner.io/pkg/restapi/dtos"
 	"showplanner.io/pkg/restapi/operations/rostering"
-	"showplanner.io/pkg/shows/people"
+	"showplanner.io/pkg/rostering/people"
 )
 
 var handleUnasignPersonFromShow = rostering.PostShowsShowIDPeopleUnassignHandlerFunc(func(params rostering.PostShowsShowIDPeopleUnassignParams) middleware.Responder {

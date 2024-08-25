@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"showplanner.io/pkg/shows"
+	"showplanner.io/pkg/rostering"
 
 	"github.com/urfave/cli/v2"
 )
@@ -33,7 +33,7 @@ func ConvertInvitations() *cli.Command {
 		Name:  "convertinvitations",
 		Usage: "convert invitations",
 		Action: func(ctx *cli.Context) error {
-			return shows.ConvertEmailInvitationsIntoPeopleInvitations()
+			return rostering.ConvertEmailInvitationsIntoPeopleInvitations()
 		},
 	}
 }

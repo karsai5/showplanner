@@ -30,7 +30,7 @@ func NewGetShowsShowSlugSummary(ctx *middleware.Context, handler GetShowsShowSlu
 }
 
 /*
-	GetShowsShowSlugSummary swagger:route GET /shows/{showSlug}/summary shows getShowsShowSlugSummary
+	GetShowsShowSlugSummary swagger:route GET /shows/{showSlug}/summary rostering getShowsShowSlugSummary
 
 Return details about a show from its slug
 */

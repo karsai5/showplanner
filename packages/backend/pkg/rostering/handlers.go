@@ -1,4 +1,4 @@
-package shows
+package rostering
 
 import (
 	"showplanner.io/pkg/database"

@@ -15,8 +15,8 @@ import (
 	"showplanner.io/pkg/personnel"
 	"showplanner.io/pkg/restapi/middleware"
 	"showplanner.io/pkg/restapi/operations"
+	"showplanner.io/pkg/rostering"
 	"showplanner.io/pkg/showdoc"
-	"showplanner.io/pkg/shows"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/go-openapi/errors"
@@ -63,7 +63,7 @@ func configureAPI(api *operations.GoBackendAPI) http.Handler {
 	schedule_domain.SetupHandlers(api)
 	showdoc.SetupHandlers(api)
 	personnel.SetupHandlers(api)
-	shows.SetupHandlers(api)
+	rostering.SetupHandlers(api)
 
 	api.PreServerShutdown = func() {}
 

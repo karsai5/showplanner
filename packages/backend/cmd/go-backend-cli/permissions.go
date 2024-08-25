@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"showplanner.io/pkg/shows"
-	"showplanner.io/pkg/shows/people"
+	"showplanner.io/pkg/rostering"
+	"showplanner.io/pkg/rostering/people"
 
 	"showplanner.io/pkg/database"
 	"showplanner.io/pkg/permissions"
@@ -99,7 +99,7 @@ func AddToShow() *cli.Command {
 			if err != nil {
 				return err
 			}
-			return shows.AddPersonToShow(showId, userId)
+			return rostering.AddPersonToShow(showId, userId)
 		},
 	}
 }

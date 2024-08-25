@@ -30,7 +30,7 @@ func NewDeleteInvitationsID(ctx *middleware.Context, handler DeleteInvitationsID
 }
 
 /*
-	DeleteInvitationsID swagger:route DELETE /invitations/{id} shows deleteInvitationsId
+	DeleteInvitationsID swagger:route DELETE /invitations/{id} rostering deleteInvitationsId
 
 Delete an invitation
 */
