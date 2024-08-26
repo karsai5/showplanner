@@ -304,26 +304,6 @@ paths:
           $ref: '#/responses/Error'
         500:
           $ref: '#/responses/Error'
-  /personnel/assigned/googleContactsCSV:
-    get:
-      parameters:
-        - in: query
-          required: true
-          name: showId
-          type: integer
-          description: ID of the show to get people for
-      summary: Returns people for a show
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            type: string
-        401:
-          $ref: '#/responses/Error'
-        500:
-          $ref: '#/responses/Error'
   /roles/{id}:
     put:
       parameters:
@@ -910,6 +890,27 @@ paths:
       responses:
         200:
           description: OK
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+  /shows/{showId}/people/csv-google:
+    get:
+      tags:
+        - shows
+      parameters:
+        - in: path
+          required: true
+          name: showId
+          type: integer
+      summary: Returns a CSV file of people for a show compatible with google
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: string
         401:
           $ref: '#/responses/Error'
         500:

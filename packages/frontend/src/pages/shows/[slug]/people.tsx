@@ -93,7 +93,7 @@ const DownloadGoogleCSVButton: React.FC<{ showId: number }> = ({ showId }) => {
   const mutation = useDownloadCSV(showId, "google-contacts.csv", "text/csv");
   return (
     <button className="btn" onClick={() => mutation.mutate()}>
-      Download CSV
+      Download Google CSV
     </button>
   );
 };
@@ -101,7 +101,7 @@ const DownloadGoogleCSVButton: React.FC<{ showId: number }> = ({ showId }) => {
 const useDownloadCSV = (id: number, filename: string, type: string) => {
   return useMutation<string>({
     mutationFn: () => {
-      return api.default.personnelAssignedGoogleContactsCSVGet({
+      return api.shows.showsShowIdPeopleCsvGoogleGet({
         showId: id,
       });
     },

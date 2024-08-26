@@ -86,9 +86,6 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		GetPersonnelAssignedHandler: GetPersonnelAssignedHandlerFunc(func(params GetPersonnelAssignedParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPersonnelAssigned has not yet been implemented")
 		}),
-		GetPersonnelAssignedGoogleContactsCSVHandler: GetPersonnelAssignedGoogleContactsCSVHandlerFunc(func(params GetPersonnelAssignedGoogleContactsCSVParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetPersonnelAssignedGoogleContactsCSV has not yet been implemented")
-		}),
 		PersonnelGetPersonnelPeopleHandler: personnel.GetPersonnelPeopleHandlerFunc(func(params personnel.GetPersonnelPeopleParams) middleware.Responder {
 			return middleware.NotImplemented("operation personnel.GetPersonnelPeople has not yet been implemented")
 		}),
@@ -136,6 +133,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		}),
 		RosteringGetShowsShowIDInvitationsHandler: rostering.GetShowsShowIDInvitationsHandlerFunc(func(params rostering.GetShowsShowIDInvitationsParams) middleware.Responder {
 			return middleware.NotImplemented("operation rostering.GetShowsShowIDInvitations has not yet been implemented")
+		}),
+		ShowsGetShowsShowIDPeopleCsvGoogleHandler: shows.GetShowsShowIDPeopleCsvGoogleHandlerFunc(func(params shows.GetShowsShowIDPeopleCsvGoogleParams) middleware.Responder {
+			return middleware.NotImplemented("operation shows.GetShowsShowIDPeopleCsvGoogle has not yet been implemented")
 		}),
 		ShowsGetShowsShowIDRosterHandler: shows.GetShowsShowIDRosterHandlerFunc(func(params shows.GetShowsShowIDRosterParams) middleware.Responder {
 			return middleware.NotImplemented("operation shows.GetShowsShowIDRoster has not yet been implemented")
@@ -273,8 +273,6 @@ type GoBackendAPI struct {
 	PersonnelGetMeHandler personnel.GetMeHandler
 	// GetPersonnelAssignedHandler sets the operation handler for the get personnel assigned operation
 	GetPersonnelAssignedHandler GetPersonnelAssignedHandler
-	// GetPersonnelAssignedGoogleContactsCSVHandler sets the operation handler for the get personnel assigned google contacts c s v operation
-	GetPersonnelAssignedGoogleContactsCSVHandler GetPersonnelAssignedGoogleContactsCSVHandler
 	// PersonnelGetPersonnelPeopleHandler sets the operation handler for the get personnel people operation
 	PersonnelGetPersonnelPeopleHandler personnel.GetPersonnelPeopleHandler
 	// PersonnelGetPersonnelPeoplePersonIDHandler sets the operation handler for the get personnel people person ID operation
@@ -307,6 +305,8 @@ type GoBackendAPI struct {
 	ShowdocsGetShowdocTimersIDHandler showdocs.GetShowdocTimersIDHandler
 	// RosteringGetShowsShowIDInvitationsHandler sets the operation handler for the get shows show ID invitations operation
 	RosteringGetShowsShowIDInvitationsHandler rostering.GetShowsShowIDInvitationsHandler
+	// ShowsGetShowsShowIDPeopleCsvGoogleHandler sets the operation handler for the get shows show ID people csv google operation
+	ShowsGetShowsShowIDPeopleCsvGoogleHandler shows.GetShowsShowIDPeopleCsvGoogleHandler
 	// ShowsGetShowsShowIDRosterHandler sets the operation handler for the get shows show ID roster operation
 	ShowsGetShowsShowIDRosterHandler shows.GetShowsShowIDRosterHandler
 	// RosteringGetShowsShowSlugSummaryHandler sets the operation handler for the get shows show slug summary operation
@@ -472,9 +472,6 @@ func (o *GoBackendAPI) Validate() error {
 	if o.GetPersonnelAssignedHandler == nil {
 		unregistered = append(unregistered, "GetPersonnelAssignedHandler")
 	}
-	if o.GetPersonnelAssignedGoogleContactsCSVHandler == nil {
-		unregistered = append(unregistered, "GetPersonnelAssignedGoogleContactsCSVHandler")
-	}
 	if o.PersonnelGetPersonnelPeopleHandler == nil {
 		unregistered = append(unregistered, "personnel.GetPersonnelPeopleHandler")
 	}
@@ -522,6 +519,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.RosteringGetShowsShowIDInvitationsHandler == nil {
 		unregistered = append(unregistered, "rostering.GetShowsShowIDInvitationsHandler")
+	}
+	if o.ShowsGetShowsShowIDPeopleCsvGoogleHandler == nil {
+		unregistered = append(unregistered, "shows.GetShowsShowIDPeopleCsvGoogleHandler")
 	}
 	if o.ShowsGetShowsShowIDRosterHandler == nil {
 		unregistered = append(unregistered, "shows.GetShowsShowIDRosterHandler")
@@ -733,10 +733,6 @@ func (o *GoBackendAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/personnel/assigned/googleContactsCSV"] = NewGetPersonnelAssignedGoogleContactsCSV(o.context, o.GetPersonnelAssignedGoogleContactsCSVHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
 	o.handlers["GET"]["/personnel/people"] = personnel.NewGetPersonnelPeople(o.context, o.PersonnelGetPersonnelPeopleHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -798,6 +794,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/shows/{showId}/invitations"] = rostering.NewGetShowsShowIDInvitations(o.context, o.RosteringGetShowsShowIDInvitationsHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/shows/{showId}/people/csv-google"] = shows.NewGetShowsShowIDPeopleCsvGoogle(o.context, o.ShowsGetShowsShowIDPeopleCsvGoogleHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

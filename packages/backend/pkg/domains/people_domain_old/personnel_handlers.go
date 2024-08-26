@@ -14,42 +14,6 @@ import (
 	"showplanner.io/pkg/restapi/operations"
 )
 
-var handleAssignablePersonnelGoogle = operations.GetPersonnelAssignedGoogleContactsCSVHandlerFunc(func(params operations.GetPersonnelAssignedGoogleContactsCSVParams) middleware.Responder {
-	logError := logger.CreateLogErrorFunc("Getting people assigned to show as google csv", &operations.GetPersonnelAssignedGoogleContactsCSVInternalServerError{})
-
-	hasPermViewPersonnel, err := permissions.ViewPersonnel.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, uint(params.ShowID))
-	if err != nil {
-		return logError(&err)
-	}
-	hasPermViewPrivateInfo, err := permissions.ViewPrivatePersonnelDetails.HasPermission(&permissions.SupertokensPermissionsHandler{}, params.HTTPRequest, uint(params.ShowID))
-	if err != nil {
-		return logError(&err)
-	}
-
-	if !hasPermViewPersonnel || !hasPermViewPrivateInfo {
-		return &operations.GetPersonnelAssignedUnauthorized{}
-	}
-
-	people, err := database.GetPeopleAssignedToShow(uint(params.ShowID))
-	if err != nil {
-		return logError(&err)
-	}
-
-	show, err := database.GetShowById(params.ShowID)
-	if err != nil {
-		return logError(&err)
-	}
-
-	csvString, err := getGoogleCSV(people, show.Name)
-	if err != nil {
-		return logError(&err)
-	}
-
-	return &operations.GetPersonnelAssignedGoogleContactsCSVOK{
-		Payload: csvString,
-	}
-})
-
 var handleAssignedPersonnel = operations.GetPersonnelAssignedHandlerFunc(func(params operations.GetPersonnelAssignedParams) middleware.Responder {
 	logError := logger.CreateLogErrorFunc("Getting assigned people", &operations.GetPersonnelAssignedInternalServerError{})
 

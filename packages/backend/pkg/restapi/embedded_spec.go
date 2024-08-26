@@ -651,37 +651,6 @@ func init() {
         }
       }
     },
-    "/personnel/assigned/googleContactsCSV": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns people for a show",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the show to get people for",
-            "name": "showId",
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "string"
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Error"
-          },
-          "500": {
-            "$ref": "#/responses/Error"
-          }
-        }
-      }
-    },
     "/personnel/people": {
       "get": {
         "produces": [
@@ -1521,6 +1490,39 @@ func init() {
               "items": {
                 "$ref": "./schemas/Invitations.yaml#/InvitationDTO"
               }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Error"
+          },
+          "500": {
+            "$ref": "#/responses/Error"
+          }
+        }
+      }
+    },
+    "/shows/{showId}/people/csv-google": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "shows"
+        ],
+        "summary": "Returns a CSV file of people for a show compatible with google",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "showId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
             }
           },
           "401": {
@@ -2558,43 +2560,6 @@ func init() {
         }
       }
     },
-    "/personnel/assigned/googleContactsCSV": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Returns people for a show",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "ID of the show to get people for",
-            "name": "showId",
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "string"
-            }
-          },
-          "401": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "500": {
-            "description": "Error",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
     "/personnel/people": {
       "get": {
         "produces": [
@@ -3587,6 +3552,45 @@ func init() {
               "items": {
                 "$ref": "#/definitions/invitationDTO"
               }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/shows/{showId}/people/csv-google": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "shows"
+        ],
+        "summary": "Returns a CSV file of people for a show compatible with google",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "showId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
             }
           },
           "401": {

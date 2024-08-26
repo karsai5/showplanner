@@ -1,4 +1,4 @@
-package people_domain_old
+package rostering
 
 import (
 	"fmt"
