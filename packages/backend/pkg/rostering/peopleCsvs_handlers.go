@@ -45,3 +45,36 @@ func handleGetGoogleCSV(db database.IDatabase, ph permissions.IPermissionsHandle
 		}
 	})
 }
+
+func handleGetContactCSV(db database.IDatabase, ph permissions.IPermissionsHandler) shows.GetShowsShowIDPeopleCsvHandler {
+	return shows.GetShowsShowIDPeopleCsvHandlerFunc(func(params shows.GetShowsShowIDPeopleCsvParams) middleware.Responder {
+		logError := logger.CreateLogErrorFunc("Getting  CSV", &shows.GetShowsShowIDPeopleCsvInternalServerError{})
+
+		hasPermViewPersonnel, err := permissions.ViewPersonnel.HasPermission(ph, params.HTTPRequest, uint(params.ShowID))
+		if err != nil {
+			return logError(&err)
+		}
+		hasPermViewPrivateInfo, err := permissions.ViewPrivatePersonnelDetails.HasPermission(ph, params.HTTPRequest, uint(params.ShowID))
+		if err != nil {
+			return logError(&err)
+		}
+
+		if !hasPermViewPersonnel || !hasPermViewPrivateInfo {
+			return &shows.GetShowsShowIDPeopleCsvUnauthorized{}
+		}
+
+		people, err := database.GetPeopleAssignedToShow(uint(params.ShowID))
+		if err != nil {
+			return logError(&err)
+		}
+
+		csvString, err := getContactCSV(people)
+		if err != nil {
+			return logError(&err)
+		}
+
+		return &shows.GetShowsShowIDPeopleCsvOK{
+			Payload: csvString,
+		}
+	})
+}

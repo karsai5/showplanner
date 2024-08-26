@@ -134,6 +134,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		RosteringGetShowsShowIDInvitationsHandler: rostering.GetShowsShowIDInvitationsHandlerFunc(func(params rostering.GetShowsShowIDInvitationsParams) middleware.Responder {
 			return middleware.NotImplemented("operation rostering.GetShowsShowIDInvitations has not yet been implemented")
 		}),
+		ShowsGetShowsShowIDPeopleCsvHandler: shows.GetShowsShowIDPeopleCsvHandlerFunc(func(params shows.GetShowsShowIDPeopleCsvParams) middleware.Responder {
+			return middleware.NotImplemented("operation shows.GetShowsShowIDPeopleCsv has not yet been implemented")
+		}),
 		ShowsGetShowsShowIDPeopleCsvGoogleHandler: shows.GetShowsShowIDPeopleCsvGoogleHandlerFunc(func(params shows.GetShowsShowIDPeopleCsvGoogleParams) middleware.Responder {
 			return middleware.NotImplemented("operation shows.GetShowsShowIDPeopleCsvGoogle has not yet been implemented")
 		}),
@@ -305,6 +308,8 @@ type GoBackendAPI struct {
 	ShowdocsGetShowdocTimersIDHandler showdocs.GetShowdocTimersIDHandler
 	// RosteringGetShowsShowIDInvitationsHandler sets the operation handler for the get shows show ID invitations operation
 	RosteringGetShowsShowIDInvitationsHandler rostering.GetShowsShowIDInvitationsHandler
+	// ShowsGetShowsShowIDPeopleCsvHandler sets the operation handler for the get shows show ID people csv operation
+	ShowsGetShowsShowIDPeopleCsvHandler shows.GetShowsShowIDPeopleCsvHandler
 	// ShowsGetShowsShowIDPeopleCsvGoogleHandler sets the operation handler for the get shows show ID people csv google operation
 	ShowsGetShowsShowIDPeopleCsvGoogleHandler shows.GetShowsShowIDPeopleCsvGoogleHandler
 	// ShowsGetShowsShowIDRosterHandler sets the operation handler for the get shows show ID roster operation
@@ -519,6 +524,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.RosteringGetShowsShowIDInvitationsHandler == nil {
 		unregistered = append(unregistered, "rostering.GetShowsShowIDInvitationsHandler")
+	}
+	if o.ShowsGetShowsShowIDPeopleCsvHandler == nil {
+		unregistered = append(unregistered, "shows.GetShowsShowIDPeopleCsvHandler")
 	}
 	if o.ShowsGetShowsShowIDPeopleCsvGoogleHandler == nil {
 		unregistered = append(unregistered, "shows.GetShowsShowIDPeopleCsvGoogleHandler")
@@ -794,6 +802,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/shows/{showId}/invitations"] = rostering.NewGetShowsShowIDInvitations(o.context, o.RosteringGetShowsShowIDInvitationsHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/shows/{showId}/people/csv"] = shows.NewGetShowsShowIDPeopleCsv(o.context, o.ShowsGetShowsShowIDPeopleCsvHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

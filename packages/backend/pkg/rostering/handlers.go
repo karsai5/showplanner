@@ -26,6 +26,7 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 
 	api.RosteringPostShowsShowIDPeopleUnassignHandler = handleUnasignPersonFromShow
 	api.ShowsGetShowsShowIDPeopleCsvGoogleHandler = handleGetGoogleCSV(&db, &ph)
+	api.ShowsGetShowsShowIDPeopleCsvHandler = handleGetContactCSV(&db, &ph)
 
 	api.ShowsGetShowsShowIDRosterHandler = handleGetRoster(&db, &ph)
 	api.RosteringPostShowsShowIDRosterReleaseHandler = handleReleaseRoster(&db, &ph)

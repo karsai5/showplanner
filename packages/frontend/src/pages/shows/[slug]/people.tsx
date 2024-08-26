@@ -60,6 +60,7 @@ export default function PeoplePage(
             showId={show.id}
           >
             <DownloadGoogleCSVButton showId={show.id} />
+            <DownloadContactsCSVButton showId={show.id} />
           </HasPermission>
         </div>
       </div>
@@ -90,7 +91,11 @@ export default function PeoplePage(
 }
 
 const DownloadGoogleCSVButton: React.FC<{ showId: number }> = ({ showId }) => {
-  const mutation = useDownloadCSV(showId, "google-contacts.csv", "text/csv");
+  const mutation = useDownloadGoogleCSV(
+    showId,
+    "google-contacts.csv",
+    "text/csv"
+  );
   return (
     <button className="btn" onClick={() => mutation.mutate()}>
       Download Google CSV
@@ -98,10 +103,41 @@ const DownloadGoogleCSVButton: React.FC<{ showId: number }> = ({ showId }) => {
   );
 };
 
-const useDownloadCSV = (id: number, filename: string, type: string) => {
+const DownloadContactsCSVButton: React.FC<{ showId: number }> = ({
+  showId,
+}) => {
+  const mutation = useDownloadContactsCSV(showId, "contacts.csv", "text/csv");
+  return (
+    <button className="btn" onClick={() => mutation.mutate()}>
+      Contacts CSV
+    </button>
+  );
+};
+
+const useDownloadGoogleCSV = (id: number, filename: string, type: string) => {
   return useMutation<string>({
     mutationFn: () => {
       return api.shows.showsShowIdPeopleCsvGoogleGet({
+        showId: id,
+      });
+    },
+    onError: () => {
+      showToastError("Something went wrong downloading file");
+    },
+    onSuccess: (csv) => {
+      const fileURL = window.URL.createObjectURL(new Blob([csv], { type }));
+      const tempLink = document.createElement("a");
+      tempLink.href = fileURL;
+      tempLink.setAttribute("download", sanitize(filename));
+      tempLink.click();
+    },
+  });
+};
+
+const useDownloadContactsCSV = (id: number, filename: string, type: string) => {
+  return useMutation<string>({
+    mutationFn: () => {
+      return api.shows.showsShowIdPeopleCsvGet({
         showId: id,
       });
     },

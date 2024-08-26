@@ -1,15 +1,15 @@
-package googlecsv_test
+package csv_test
 
 import (
 	"strings"
 	"testing"
 
-	googlecsv "showplanner.io/pkg/google_csv"
+	googlecsv "showplanner.io/pkg/csv"
 )
 
 func TestCorrectHeaderIsReturned(t *testing.T) {
 	g := googlecsv.GoogleCSV{}
-	c := googlecsv.Contact{}
+	c := googlecsv.GoogleContact{}
 	g.AddContact(c)
 
 	wanted := "Name,Given Name,Additional Name,Family Name,Yomi Name,Given Name Yomi,Additional Name Yomi,Family Name Yomi,Name Prefix,Name Suffix,Initials,Nickname,Short Name,Maiden Name,File As,Birthday,Gender,Location,Billing Information,Directory Server,Mileage,Occupation,Hobby,Sensitivity,Priority,Subject,Notes,Language,Photo,Group Membership,E-mail 1 - Type,E-mail 1 - Value,Phone 1 - Type,Phone 1 - Value"
@@ -22,7 +22,7 @@ func TestCorrectHeaderIsReturned(t *testing.T) {
 }
 func TestBaseDetailsAreReturned(t *testing.T) {
 	g := googlecsv.GoogleCSV{}
-	c := googlecsv.Contact{
+	c := googlecsv.GoogleContact{
 		FirstName: "John",
 		LastName:  "Doe",
 		Phone:     "1234567890",
@@ -42,7 +42,7 @@ func TestBaseDetailsAreReturned(t *testing.T) {
 
 func TestCustomFieldsCanBeAdded(t *testing.T) {
 	g := googlecsv.GoogleCSV{}
-	c := googlecsv.Contact{
+	c := googlecsv.GoogleContact{
 		FirstName: "John",
 		LastName:  "Doe",
 		Phone:     "1234567890",

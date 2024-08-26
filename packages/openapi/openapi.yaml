@@ -916,6 +916,28 @@ paths:
         500:
           $ref: '#/responses/Error'
 
+  /shows/{showId}/people/csv:
+    get:
+      tags:
+        - shows
+      parameters:
+        - in: path
+          required: true
+          name: showId
+          type: integer
+      summary: Returns a CSV file of people for a show
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: string
+        401:
+          $ref: '#/responses/Error'
+        500:
+          $ref: '#/responses/Error'
+
   /shows/{showId}/roles/setorder:
     post:
       tags:

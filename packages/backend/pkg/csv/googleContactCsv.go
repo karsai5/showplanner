@@ -1,8 +1,8 @@
-package googlecsv
+package csv
 
 import (
 	"bytes"
-	"encoding/csv"
+	encodingCsv "encoding/csv"
 	"fmt"
 )
 
@@ -11,7 +11,7 @@ type CustomField struct {
 	Value string
 }
 
-type Contact struct {
+type GoogleContact struct {
 	FirstName    string
 	LastName     string
 	Phone        string
@@ -21,10 +21,10 @@ type Contact struct {
 	CustomFields []CustomField
 }
 
-func (c *Contact) AddCustomField(name, value string) {
+func (c *GoogleContact) AddCustomField(name, value string) {
 	c.CustomFields = append(c.CustomFields, CustomField{name, value})
 }
-func (c *Contact) GetCSVRow(sizeWithoutCustomFields int) []string {
+func (c *GoogleContact) GetCSVRow(sizeWithoutCustomFields int) []string {
 	row := make([]string, sizeWithoutCustomFields)
 	row[0] = fmt.Sprintf("%s %s", c.FirstName, c.LastName)
 	row[1] = c.FirstName
@@ -43,10 +43,10 @@ func (c *Contact) GetCSVRow(sizeWithoutCustomFields int) []string {
 }
 
 type GoogleCSV struct {
-	contacts []Contact
+	contacts []GoogleContact
 }
 
-func (g *GoogleCSV) AddContact(contact Contact) {
+func (g *GoogleCSV) AddContact(contact GoogleContact) {
 	g.contacts = append(g.contacts, contact)
 }
 
@@ -58,7 +58,7 @@ func (g *GoogleCSV) GetString() (string, error) {
 	headers = append(headers, g.getCustomFieldHeaders()...)
 
 	b := new(bytes.Buffer)
-	w := csv.NewWriter(b)
+	w := encodingCsv.NewWriter(b)
 
 	rows := [][]string{headers}
 	for _, c := range g.contacts {

@@ -16,6 +16,10 @@ import * as runtime from "../runtime";
 import type { RosterDTO } from "../models/index";
 import { RosterDTOFromJSON, RosterDTOToJSON } from "../models/index";
 
+export interface ShowsShowIdPeopleCsvGetRequest {
+  showId: number;
+}
+
 export interface ShowsShowIdPeopleCsvGoogleGetRequest {
   showId: number;
 }
@@ -28,6 +32,61 @@ export interface ShowsShowIdRosterGetRequest {
  *
  */
 export class ShowsApi extends runtime.BaseAPI {
+  /**
+   * Returns a CSV file of people for a show
+   */
+  async showsShowIdPeopleCsvGetRaw(
+    requestParameters: ShowsShowIdPeopleCsvGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<string>> {
+    if (
+      requestParameters.showId === null ||
+      requestParameters.showId === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "showId",
+        "Required parameter requestParameters.showId was null or undefined when calling showsShowIdPeopleCsvGet."
+      );
+    }
+
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request(
+      {
+        path: `/shows/{showId}/people/csv`.replace(
+          `{${"showId"}}`,
+          encodeURIComponent(String(requestParameters.showId))
+        ),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    );
+
+    if (this.isJsonMime(response.headers.get("content-type"))) {
+      return new runtime.JSONApiResponse<string>(response);
+    } else {
+      return new runtime.TextApiResponse(response) as any;
+    }
+  }
+
+  /**
+   * Returns a CSV file of people for a show
+   */
+  async showsShowIdPeopleCsvGet(
+    requestParameters: ShowsShowIdPeopleCsvGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<string> {
+    const response = await this.showsShowIdPeopleCsvGetRaw(
+      requestParameters,
+      initOverrides
+    );
+    return await response.value();
+  }
+
   /**
    * Returns a CSV file of people for a show compatible with google
    */
