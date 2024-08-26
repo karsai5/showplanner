@@ -125,7 +125,7 @@ func (e *Event) MapToEventDTO() dtos.EventDTO {
 
 func (e *Event) MapToEventWithAssignments(roles []Role) dtos.RosterEventDTO {
 	assignments := map[string]*dtos.RosterAssignedDTO{}
-	eventWarnings := make([]*dtos.RosterWarningDTO, 0)
+	w := Warnings{}
 	for _, role := range roles {
 		assignmentDto := dtos.RosterAssignedDTO{
 			AssignmentID: nil,
@@ -136,27 +136,11 @@ func (e *Event) MapToEventWithAssignments(roles []Role) dtos.RosterEventDTO {
 		}
 
 		if role.Person != nil {
-			fillPersonAndAvailabilityData(&assignmentDto, *role.Person, *e)
+			fillPersonAndAvailabilityDataFromRole(&assignmentDto, *role.Person, *e)
+		} else {
+			fillPersonAndAvailabilityDataFromAssignment(&assignmentDto, role, *e)
 		}
-
-		assignmentIdx := slices.IndexFunc(e.Assignments, func(a Assignment) bool { return a.RoleID == role.ID })
-		if assignmentIdx >= 0 {
-			assignment := e.Assignments[assignmentIdx]
-			assignmentDto.AssignmentID = conv.UintToInt64(assignment.ID)
-			fillPersonAndAvailabilityData(&assignmentDto, assignment.Person, *e)
-			if role.Person != nil {
-				assignmentDto.Cover = conv.Pointer(true)
-			}
-			if assignmentDto.Available != nil && !*assignmentDto.Available {
-				warning := dtos.RosterWarningDTO{
-					Anchor:  "",
-					ID:      fmt.Sprintf("unavailable-%s", assignment.Person.ID),
-					Message: fmt.Sprintf("%s is unavailable", assignment.Person.GetFirstName()),
-				}
-				assignmentDto.Warnings = append(assignmentDto.Warnings, &warning)
-				eventWarnings = append(eventWarnings, &warning)
-			}
-		}
+		w.GenerateWarnings(*e, role, assignmentDto)
 		assignments[strconv.Itoa(int(role.ID))] = &assignmentDto
 	}
 	return dtos.RosterEventDTO{
@@ -168,7 +152,7 @@ func (e *Event) MapToEventWithAssignments(roles []Role) dtos.RosterEventDTO {
 			RosterEventDTOAO1Availabilities: mapAvailabilityToMap(e.Availabilities),
 		},
 		Shadows:  mapShadowsToMap(*e),
-		Warnings: eventWarnings,
+		Warnings: w.GetWarnings(),
 	}
 
 }
@@ -194,13 +178,25 @@ func findAvailability(availabilities []Availability, personId strfmt.UUID) *dtos
 	return nil
 }
 
-func fillPersonAndAvailabilityData(dto *dtos.RosterAssignedDTO, person Person, event Event) {
+func fillPersonAndAvailabilityDataFromRole(dto *dtos.RosterAssignedDTO, person Person, event Event) {
 	dto.Person = conv.Pointer(person.MapToPersonSummaryDTO())
 	availablilityIdx := slices.IndexFunc(event.Availabilities, func(a Availability) bool { return a.PersonID == person.ID })
 	if availablilityIdx >= 0 {
 		dto.Available = &event.Availabilities[availablilityIdx].Available
 	} else {
 		dto.Available = nil
+	}
+}
+
+func fillPersonAndAvailabilityDataFromAssignment(dto *dtos.RosterAssignedDTO, role Role, e Event) {
+	assignmentIdx := slices.IndexFunc(e.Assignments, func(a Assignment) bool { return a.RoleID == role.ID })
+	if assignmentIdx >= 0 {
+		assignment := e.Assignments[assignmentIdx]
+		dto.AssignmentID = conv.UintToInt64(assignment.ID)
+		fillPersonAndAvailabilityDataFromRole(dto, assignment.Person, e)
+		if role.Person != nil {
+			dto.Cover = conv.Pointer(true)
+		}
 	}
 }
 
