@@ -50,7 +50,7 @@ func (*UnavailabilityWarningGenerator) GenerateWarnings(event Event, role Role, 
 	if assignment.Person.ID != nil {
 		name := *assignment.Person.FirstName
 		if assignment.Person.PreferredName != "" {
-			name = fmt.Sprintf("%s %s", name, *&assignment.Person.PreferredName)
+			name = assignment.Person.PreferredName
 		}
 		if assignment.Available != nil && !*assignment.Available {
 
