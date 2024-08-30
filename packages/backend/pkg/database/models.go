@@ -137,9 +137,9 @@ func (e *Event) MapToEventWithAssignments(roles []Role) dtos.RosterEventDTO {
 
 		if role.Person != nil {
 			fillPersonAndAvailabilityDataFromRole(&assignmentDto, *role.Person, *e)
-		} else {
-			fillPersonAndAvailabilityDataFromAssignment(&assignmentDto, role, *e)
 		}
+		fillPersonAndAvailabilityDataFromAssignment(&assignmentDto, role, *e)
+
 		w.GenerateWarnings(*e, role, assignmentDto)
 		assignments[strconv.Itoa(int(role.ID))] = &assignmentDto
 	}
