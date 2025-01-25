@@ -1,3 +1,4 @@
+import { UserCircleIcon } from "@heroicons/react/20/solid";
 import {
   CalendarDaysIcon,
   ClockIcon,
@@ -10,6 +11,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { api } from "core/api";
 import { UserIcon } from "core/components/Icons";
+import { MeContext } from "core/components/MeContext/MeContext";
 import {
   PERMISSION,
   showPermission,
@@ -18,6 +20,7 @@ import {
   useIsLoggedIn,
 } from "core/permissions";
 import { useShowSlugFromUrl } from "domains/shows/lib/helpers";
+import { useContext } from "react";
 import { signOut } from "supertokens-auth-react/recipe/thirdpartyemailpassword";
 
 export type NavItem = {
@@ -31,6 +34,7 @@ export type NavItem = {
 export const useMainNavItems = (): NavItem[] => {
   const isLoggedIn = useIsLoggedIn();
   const hasRole = useHasRole();
+  const me = useContext(MeContext);
 
   async function onLogout() {
     await signOut();
@@ -74,6 +78,11 @@ export const useMainNavItems = (): NavItem[] => {
       {
         title: "Shows",
         href: "/shows",
+      },
+      {
+        title: me?.firstName || "Profile",
+        href: "/me",
+        icon: <UserCircleIcon className="h-6 w-6" />,
       },
       {
         title: "Log out",

@@ -103,23 +103,25 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       />
       <QueryClientProvider client={queryClient}>
         <ConfirmationModalWrapper>
-          {getLayout(
-            <MeContextWrapper>
-              <Head>
-                <meta name="description" content="Your crew, in one place" />
-                <link rel="icon" href="/favicon.ico" />
-                <meta
-                  name="viewport"
-                  content="width=device-width, initial-scale=1.0"
-                />
-                <title>ShowPlanner</title>
-              </Head>
+          <MeContextWrapper>
+            {getLayout(
+              <>
+                <Head>
+                  <meta name="description" content="Your crew, in one place" />
+                  <link rel="icon" href="/favicon.ico" />
+                  <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1.0"
+                  />
+                  <title>ShowPlanner</title>
+                </Head>
 
-              <ImpersonnatingWarning />
+                <ImpersonnatingWarning />
 
-              {loading ? <DelayedLoading /> : <Component {...pageProps} />}
-            </MeContextWrapper>
-          )}
+                {loading ? <DelayedLoading /> : <Component {...pageProps} />}
+              </>
+            )}
+          </MeContextWrapper>
         </ConfirmationModalWrapper>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
