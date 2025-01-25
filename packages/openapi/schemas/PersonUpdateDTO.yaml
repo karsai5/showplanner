@@ -25,15 +25,6 @@ properties:
     type: string
   emergencyRelationship:
     type: string
-  hearAboutUs:
-    type: string
-    x-nullable: true
-  previousWork:
-    type: string
-    x-nullable: true
-  reasonForCrewing:
-    type: string
-    x-nullable: true
 required:
   - firstName
   - lastName

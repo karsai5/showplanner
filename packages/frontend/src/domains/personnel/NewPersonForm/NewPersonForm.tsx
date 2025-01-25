@@ -31,13 +31,19 @@ type Inputs = {
   publishedAt: Date;
 };
 
-const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
+const NewPersonForm: FC<{
+  onSuccess?: () => void;
+  initialData?: Partial<Inputs>;
+}> = ({ onSuccess, initialData }) => {
   const {
     register,
     handleSubmit,
+    formState,
     formState: { errors },
     watch,
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({
+    defaultValues: initialData,
+  });
 
   const pronoun = watch("pronoun");
   const firstName = watch("firstname");
@@ -228,26 +234,13 @@ const NewPersonForm: FC<{ onSuccess?: () => void }> = ({ onSuccess }) => {
         />
       </Row>
 
-      <p className="mb-2 text-lg font-bold">Other</p>
-      <TextArea
-        register={register("hearAboutUs")}
-        placeholder="How did you hear about us?"
-        errors={errors}
-        className="h-20 mb-4"
-      />
-      <TextArea
-        register={register("previousWork")}
-        placeholder="Previous work or experience"
-        errors={errors}
-        className="h-20 mb-4"
-      />
-      <TextArea
-        register={register("reasonForCrewing")}
-        placeholder="What are your reasons for doing community crewing? Are there any goals you hope to accomplish (meeting new people, getting professional work etc.)"
-        errors={errors}
-        className="h-20 mb-4"
-      />
-      <button type="submit" className={"btn btn-block"}>
+      <button
+        type="submit"
+        className={cc("btn btn-block", {
+          ["btn-secondary sticky bottom-2"]:
+            Object.keys(formState.dirtyFields).length > 0 && initialData,
+        })}
+      >
         {mutation.isLoading && (
           <span className="loading loading-spinner"></span>
         )}

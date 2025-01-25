@@ -5,7 +5,7 @@ import (
 )
 
 func UpdatePerson(person Person) (Person, error) {
-	res := db.Create(&person)
+	res := db.Save(&person)
 	return person, res.Error
 }
 

@@ -576,6 +576,22 @@ paths:
           $ref: '#/responses/Error'
         200:
           description: OK
+  /me/details:
+    get:
+      summary: Full details about logged in user
+      tags:
+        - personnel
+      produces:
+        - application/json
+      responses:
+        500:
+          description: Internal server error
+        404:
+          description: Not found
+        200:
+          description: OK
+          schema:
+            $ref: './schemas/People.yaml#/PersonDTO'
 
   # SHOWDOCS
   # ========

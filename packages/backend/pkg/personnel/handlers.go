@@ -31,6 +31,7 @@ func SetupHandlers(api *operations.GoBackendAPI) {
 	api.PersonnelPostPersonnelPeoplePersonIDImpersonateHandler = handleImpersonate
 	api.PersonnelPostMeHandler = postMeHandler
 	api.PersonnelGetMeHandler = getMeHandler
+	api.PersonnelGetMeDetailsHandler = getMeDetailsHandler
 
 	api.PersonnelGetPersonnelSearchHandler = handleSearchForPeople
 	api.PersonnelGetPersonnelPeoplePersonIDHandler = handleGetPerson(&db)
@@ -188,9 +189,6 @@ var postMeHandler = personnel.PostMeHandlerFunc(func(params personnel.PostMePara
 		EmergencyPhone:        *p.EmergencyPhone,
 		EmergencyName:         *p.EmergencyName,
 		EmergencyRelationship: *p.EmergencyRelationship,
-		HearAboutUs:           p.HearAboutUs,
-		PreviousWork:          p.PreviousWork,
-		ReasonForCrewing:      p.ReasonForCrewing,
 	}
 
 	_, getPersonError := database.GetPerson(userId)
@@ -208,12 +206,9 @@ var postMeHandler = personnel.PostMeHandlerFunc(func(params personnel.PostMePara
 		}
 
 		postoffice.PublishLetter(topics.UserFilledInProfile, letters.UserFilledInProfileLetter{
-			Email:            user.Email,
-			FirstName:        person.FirstName,
-			LastName:         person.LastName,
-			HearAboutUs:      *person.HearAboutUs,
-			PreviousWork:     *person.PreviousWork,
-			ReasonForCrewing: *person.ReasonForCrewing,
+			Email:     user.Email,
+			FirstName: person.FirstName,
+			LastName:  person.LastName,
 		})
 		rostering.ConvertEmailInvitationsIntoPeopleInvitations()
 	}
@@ -243,5 +238,27 @@ var getMeHandler = personnel.GetMeHandlerFunc(func(params personnel.GetMeParams)
 			FirstName: person.FirstName,
 			Email:     person.Email,
 		},
+	}
+})
+
+var getMeDetailsHandler = personnel.GetMeDetailsHandlerFunc(func(params personnel.GetMeDetailsParams) middleware.Responder {
+	ph := permissions.SupertokensPermissionsHandler{}
+	userId, err := ph.GetUserId(params.HTTPRequest)
+	if err != nil {
+		logger.Error("Could not get me detaisl", err)
+		return &personnel.GetMeInternalServerError{}
+	}
+
+	person, err := database.GetPerson(userId)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return &personnel.GetMeNotFound{}
+		}
+		logger.Error("Could not get me details", err)
+		return &personnel.GetMeInternalServerError{}
+	}
+
+	return &personnel.GetMeDetailsOK{
+		Payload: conv.Pointer(person.MapToPersonDTO()),
 	}
 })

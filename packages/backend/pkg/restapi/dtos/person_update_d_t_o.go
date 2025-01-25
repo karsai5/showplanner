@@ -43,9 +43,6 @@ type PersonUpdateDTO struct {
 	// Required: true
 	FirstName *string `json:"firstName"`
 
-	// hear about us
-	HearAboutUs *string `json:"hearAboutUs,omitempty"`
-
 	// last name
 	// Required: true
 	LastName *string `json:"lastName"`
@@ -57,14 +54,8 @@ type PersonUpdateDTO struct {
 	// preferred name
 	PreferredName *string `json:"preferredName,omitempty"`
 
-	// previous work
-	PreviousWork *string `json:"previousWork,omitempty"`
-
 	// pronoun
 	Pronoun *string `json:"pronoun,omitempty"`
-
-	// reason for crewing
-	ReasonForCrewing *string `json:"reasonForCrewing,omitempty"`
 
 	// wwc
 	Wwc *string `json:"wwc,omitempty"`

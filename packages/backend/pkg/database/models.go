@@ -360,9 +360,6 @@ type Person struct {
 	EmergencyPhone        string
 	EmergencyName         string
 	EmergencyRelationship string
-	HearAboutUs           *string
-	PreviousWork          *string
-	ReasonForCrewing      *string
 
 	Shows []Show `gorm:"many2many:show_people;"`
 }

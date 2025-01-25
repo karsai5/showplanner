@@ -580,6 +580,31 @@ func init() {
         }
       }
     },
+    "/me/details": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "personnel"
+        ],
+        "summary": "Full details about logged in user",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "./schemas/People.yaml#/PersonDTO"
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/media/upload": {
       "post": {
         "consumes": [
@@ -2509,6 +2534,31 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Error"
             }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/me/details": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "personnel"
+        ],
+        "summary": "Full details about logged in user",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/personDTO"
+            }
+          },
+          "404": {
+            "description": "Not found"
           },
           "500": {
             "description": "Internal server error"
@@ -4515,10 +4565,6 @@ func init() {
         "firstName": {
           "type": "string"
         },
-        "hearAboutUs": {
-          "type": "string",
-          "x-nullable": true
-        },
         "lastName": {
           "type": "string"
         },
@@ -4529,15 +4575,7 @@ func init() {
           "type": "string",
           "x-nullable": true
         },
-        "previousWork": {
-          "type": "string",
-          "x-nullable": true
-        },
         "pronoun": {
-          "type": "string",
-          "x-nullable": true
-        },
-        "reasonForCrewing": {
           "type": "string",
           "x-nullable": true
         },

@@ -83,6 +83,9 @@ func NewGoBackendAPI(spec *loads.Document) *GoBackendAPI {
 		PersonnelGetMeHandler: personnel.GetMeHandlerFunc(func(params personnel.GetMeParams) middleware.Responder {
 			return middleware.NotImplemented("operation personnel.GetMe has not yet been implemented")
 		}),
+		PersonnelGetMeDetailsHandler: personnel.GetMeDetailsHandlerFunc(func(params personnel.GetMeDetailsParams) middleware.Responder {
+			return middleware.NotImplemented("operation personnel.GetMeDetails has not yet been implemented")
+		}),
 		GetPersonnelAssignedHandler: GetPersonnelAssignedHandlerFunc(func(params GetPersonnelAssignedParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetPersonnelAssigned has not yet been implemented")
 		}),
@@ -274,6 +277,8 @@ type GoBackendAPI struct {
 	RosteringGetInvitationsIDHandler rostering.GetInvitationsIDHandler
 	// PersonnelGetMeHandler sets the operation handler for the get me operation
 	PersonnelGetMeHandler personnel.GetMeHandler
+	// PersonnelGetMeDetailsHandler sets the operation handler for the get me details operation
+	PersonnelGetMeDetailsHandler personnel.GetMeDetailsHandler
 	// GetPersonnelAssignedHandler sets the operation handler for the get personnel assigned operation
 	GetPersonnelAssignedHandler GetPersonnelAssignedHandler
 	// PersonnelGetPersonnelPeopleHandler sets the operation handler for the get personnel people operation
@@ -473,6 +478,9 @@ func (o *GoBackendAPI) Validate() error {
 	}
 	if o.PersonnelGetMeHandler == nil {
 		unregistered = append(unregistered, "personnel.GetMeHandler")
+	}
+	if o.PersonnelGetMeDetailsHandler == nil {
+		unregistered = append(unregistered, "personnel.GetMeDetailsHandler")
 	}
 	if o.GetPersonnelAssignedHandler == nil {
 		unregistered = append(unregistered, "GetPersonnelAssignedHandler")
@@ -734,6 +742,10 @@ func (o *GoBackendAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/me"] = personnel.NewGetMe(o.context, o.PersonnelGetMeHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/me/details"] = personnel.NewGetMeDetails(o.context, o.PersonnelGetMeDetailsHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
