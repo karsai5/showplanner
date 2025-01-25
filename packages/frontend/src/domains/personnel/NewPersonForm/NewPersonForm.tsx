@@ -24,9 +24,6 @@ type Inputs = {
   emergencyPhone: string;
   emergencyName: string;
   emergencyRelationship: string;
-  hearAboutUs: string;
-  previousWork: string;
-  reasonForCrewing: string;
   user: string;
   publishedAt: Date;
 };
@@ -69,9 +66,6 @@ const NewPersonForm: FC<{
           emergencyName: formData.emergencyName,
           emergencyRelationship: formData.emergencyRelationship,
           emergencyPhone: formData.emergencyPhone,
-          hearAboutUs: formData.hearAboutUs,
-          previousWork: formData.previousWork,
-          reasonForCrewing: formData.reasonForCrewing,
         },
       });
     },
