@@ -1,5 +1,5 @@
-import { UserCircleIcon } from "@heroicons/react/20/solid";
 import {
+  BuildingLibraryIcon,
   CalendarDaysIcon,
   ClockIcon,
   DocumentCheckIcon,
@@ -19,6 +19,7 @@ import {
   useHasRole,
   useIsLoggedIn,
 } from "core/permissions";
+import { Avatar } from "domains/personnel/Avatar";
 import { useShowSlugFromUrl } from "domains/shows/lib/helpers";
 import { useContext } from "react";
 import { signOut } from "supertokens-auth-react/recipe/thirdpartyemailpassword";
@@ -78,11 +79,12 @@ export const useMainNavItems = (): NavItem[] => {
       {
         title: "Shows",
         href: "/shows",
+        icon: <BuildingLibraryIcon className="h-6 w-6" />,
       },
       {
         title: me?.firstName || "Profile",
         href: "/me",
-        icon: <UserCircleIcon className="h-6 w-6" />,
+        icon: <Avatar person={me} />,
       },
       {
         title: "Log out",
