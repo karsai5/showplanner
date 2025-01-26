@@ -20,18 +20,18 @@ const MePage: React.FC = () => {
           initialData={{
             firstname: data.firstName,
             lastname: data.lastName,
-            pronoun: data.pronouns,
+            pronoun: data.pronouns || "Rather not say",
             preferredName: data.preferredName,
             wwc: data._private?.wwc || undefined,
-            phone: data._private?.phone,
+            phone: data._private?.phone as string,
             dob: data._private?.dob
               ? dayjs(data._private.dob).format("YYYY-MM-DD")
-              : undefined,
+              : "",
             allergies: data._private?.allergies,
-            emergencyName: data._private?.emergencyContact?.name,
-            emergencyPhone: data._private?.emergencyContact?.phone,
+            emergencyName: data._private?.emergencyContact?.name || "",
+            emergencyPhone: data._private?.emergencyContact?.phone || "",
             emergencyRelationship:
-              data._private?.emergencyContact?.relationship,
+              data._private?.emergencyContact?.relationship || "",
           }}
         />
       )}

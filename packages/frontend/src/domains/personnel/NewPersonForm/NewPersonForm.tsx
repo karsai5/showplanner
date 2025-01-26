@@ -11,26 +11,46 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 type Inputs = {
-  avatar: string;
+  avatar?: string;
   pronoun: string;
   firstname: string;
   lastname: string;
-  preferredName: string;
+  preferredName?: string;
   phone: string;
-  wwc: string;
+  wwc?: string;
   dob: string;
-  manualPronoun: string;
-  allergies: string;
+  manualPronoun?: string;
+  allergies?: string;
   emergencyPhone: string;
   emergencyName: string;
   emergencyRelationship: string;
-  user: string;
-  publishedAt: Date;
+};
+
+const PRONOUNS = {
+  SHE: "She/Her",
+  HE: "He/Him",
+  THEY: "They/Them",
+  OTHER: "Other",
+  NULL: "Rather not say",
+};
+
+const mapInitialData = (data?: Inputs) => {
+  if (!data) {
+    return undefined;
+  }
+  const mappedIntialData = {
+    ...data,
+  };
+  if (!Object.values(PRONOUNS).includes(data.pronoun)) {
+    mappedIntialData.manualPronoun = data.pronoun;
+    mappedIntialData.pronoun = "Other";
+  }
+  return mappedIntialData;
 };
 
 const NewPersonForm: FC<{
   onSuccess?: () => void;
-  initialData?: Partial<Inputs>;
+  initialData?: Inputs;
 }> = ({ onSuccess, initialData }) => {
   const {
     register,
@@ -39,7 +59,7 @@ const NewPersonForm: FC<{
     formState: { errors },
     watch,
   } = useForm<Inputs>({
-    defaultValues: initialData,
+    values: mapInitialData(initialData),
   });
 
   const pronoun = watch("pronoun");
@@ -50,7 +70,7 @@ const NewPersonForm: FC<{
   const mutation = useMutation<unknown, Error, Inputs>({
     mutationFn: (formData) => {
       let finalPronoun = formData.pronoun;
-      if (finalPronoun === "Other") {
+      if (finalPronoun === "Other" && formData.manualPronoun) {
         finalPronoun = formData.manualPronoun;
       }
       return api.personnel.mePost({
@@ -62,7 +82,7 @@ const NewPersonForm: FC<{
           phone: formData.phone,
           wwc: formData.wwc,
           dob: formData.dob,
-          allergies: formData.allergies,
+          allergies: formData.allergies || "",
           emergencyName: formData.emergencyName,
           emergencyRelationship: formData.emergencyRelationship,
           emergencyPhone: formData.emergencyPhone,
@@ -95,11 +115,11 @@ const NewPersonForm: FC<{
             <span className="label-text-alt">Pronoun</span>
           </div>
           <select className="select select-bordered" {...register("pronoun")}>
-            <option>She/Her</option>
-            <option>He/Him</option>
-            <option>They/Them</option>
-            <option value="Other">Other</option>
-            <option value="null">Rather not say</option>
+            <option>{PRONOUNS.SHE}</option>
+            <option>{PRONOUNS.HE}</option>
+            <option>{PRONOUNS.THEY}</option>
+            <option>{PRONOUNS.OTHER}</option>
+            <option value="null">{PRONOUNS.NULL}</option>
           </select>
         </label>
 
