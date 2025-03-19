@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "core/api";
-import { RosterDTO } from "core/api/generated";
+import { RosterDTO, ShowSummaryDTO } from "core/api/generated";
 import ErrorBox from "core/components/ErrorBox/ErrorBox";
 import { LoadingBox } from "core/components/LoadingBox/LoadingBox";
 import { useConfirmationModal } from "core/components/Modal/ConfirmationModal";
@@ -54,14 +54,50 @@ export const getServerSideProps = ssrWrapper(async (context, api) => {
   };
 });
 
-const ShowPage = (
+const RosterPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => {
   const { show } = props;
-  const [showOldEvents, setShowOldEvents] = useState(false);
   const hasRosteringPermission = useHasPermission()(
     showPermission(show.id, PERMISSION.rostering)
   );
+
+  const shouldShowRoster = show.isRosterReleased || hasRosteringPermission;
+
+  return (
+    <>
+      <Head>
+        <title>Roster - {show.name} - ShowPlanner</title>
+      </Head>
+      {shouldShowRoster ? (
+        <Roster
+          show={show}
+          rosterJSON={props.rosterJSON}
+          hasRosteringPermission={hasRosteringPermission}
+        />
+      ) : (
+        <>
+          <H2 className="mb-4">{show.name} - Roster</H2>
+          <div className="prose">
+            <p>
+              The roster has not been released yet.
+              <br />
+              You&apos;ll get an email when the roster is released.
+            </p>
+          </div>
+        </>
+      )}
+    </>
+  );
+};
+
+const Roster: React.FC<{
+  show: ShowSummaryDTO;
+  rosterJSON: string | null;
+  hasRosteringPermission: boolean;
+}> = ({ show, rosterJSON, hasRosteringPermission }) => {
+  const [showOldEvents, setShowOldEvents] = useState(false);
+
   const confirm = useConfirmationModal();
   const unreleaseRosterMutation = useUnreleaseRosterMutation(show.id);
 
@@ -95,23 +131,24 @@ const ShowPage = (
   }
 
   const { data, isLoading, isError } = useQuery({
-    initialData: props.rosterJSON
-      ? superjson.parse<RosterDTO>(props.rosterJSON)
+    initialData: rosterJSON
+      ? superjson.parse<RosterDTO>(rosterJSON)
       : undefined,
     queryKey: ["roster", show.id],
     queryFn: () => api.shows.showsShowIdRosterGet({ showId: show.id }),
   });
 
-  const showRoster = show.isRosterReleased || hasRosteringPermission;
-
+  if (isError) {
+    return <ErrorBox>Could not get roster</ErrorBox>;
+  }
+  if (isLoading) {
+    return <LoadingBox />;
+  }
   return (
     <>
-      <Head>
-        <title>Roster - {show.name} - ShowPlanner</title>
-      </Head>
-      <div className="flex flex-col justify-between sm:flex-row gap-4">
-        <H2 className="mb-4">{show.name} - Roster</H2>
-        {data && (
+      {data && (
+        <div className="flex flex-col justify-between sm:flex-row gap-4">
+          <H2 className="mb-4">{show.name} - Roster</H2>
           <div>
             <HasPermission showId={show.id} permission={PERMISSION.rostering}>
               {!show.isRosterReleased && (
@@ -124,26 +161,15 @@ const ShowPage = (
               </Modal>
             </HasPermission>
           </div>
-        )}
-      </div>
-      {isError && <ErrorBox>Could not get roster</ErrorBox>}
-      {isLoading && <LoadingBox />}
-      {showRoster && data?.events && data.roles && (
+        </div>
+      )}
+      {data?.events && data.roles && (
         <RosterTable
           showId={show.id}
           showPastEvents={showOldEvents}
           events={data.events}
           roles={data.roles}
         />
-      )}
-      {!showRoster && (
-        <div className="prose">
-          <p>
-            The roster has not been released yet.
-            <br />
-            You&apos;ll get an email when the roster is released.
-          </p>
-        </div>
       )}
     </>
   );
@@ -166,4 +192,4 @@ const useUnreleaseRosterMutation = (showId: number) => {
   return mutation;
 };
 
-export default ShowPage;
+export default RosterPage;
