@@ -124,6 +124,12 @@ export const useNavItemsForShow = (): NavItem[] => {
     });
   }
 
+  navItems.push({
+    title: "Roster",
+    href: `/shows/${slug}/roster`,
+    icon: <CalendarDaysIcon className="h-6 w-6" />,
+  });
+
   if (show && hasPermission(showPermission(show.id, PERMISSION.personnel))) {
     navItems.push({
       title: "People",
@@ -131,12 +137,6 @@ export const useNavItemsForShow = (): NavItem[] => {
       icon: <UserIcon className="h-6 w-6" />,
     });
   }
-
-  navItems.push({
-    title: "Roster",
-    href: `/shows/${slug}/roster`,
-    icon: <CalendarDaysIcon className="h-6 w-6" />,
-  });
 
   return navItems;
 };
