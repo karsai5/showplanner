@@ -4,7 +4,12 @@ import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import cc from "classnames";
 import { api_deprecated } from "core/api";
-import { PersonSummaryDTO, RoleDTO, RosterEventDTO } from "core/api/generated";
+import {
+  PersonSummaryDTO,
+  RoleDTO,
+  RosterEventDTO,
+  UserInputEnum,
+} from "core/api/generated";
 import { useConfirmationModal } from "core/components/Modal/ConfirmationModal";
 import { useModal } from "core/components/Modal/Modal";
 import { Td } from "core/components/tables/tables";
@@ -66,35 +71,61 @@ const Headers: React.FC<{ roles: Array<RoleDTO>; showId: number }> = ({
 const eventRenderer: (roles: RoleDTO[]) => EventRendererType<RosterEventDTO> =
   (roles) =>
   ({ event: e, groupLength }) => {
+    const rosterableEvent = e.options?.userInput === UserInputEnum.Availability;
     return (
       <>
+        {/* Date */}
         {groupLength && (
           <Td className="whitespace-nowrap" rowSpan={groupLength}>
             <div className="flex gap-2 justify-between">
               {displayDate(e.start)}
-              <RosterWarning warnings={e.warnings} />
+              {rosterableEvent && <RosterWarning warnings={e.warnings} />}
             </div>
           </Td>
         )}
+        {/* Description and title */}
         <TimeRangeWithCurtainsUpCell event={e} />
-        {roles?.map((r) => {
-          if (r.id === undefined || e.assignments === undefined) {
-            throw new Error();
-          }
-          const a = e.assignments[r.id];
-          return (
-            <Cell
-              key={r.id}
-              assignment={a}
-              showId={e.showId as number}
-              event={e}
-              role={r}
-            />
-          );
-        })}
+
+        {rosterableEvent ? (
+          <RosteredCells event={e} roles={roles} />
+        ) : (
+          <Td colSpan={roles.length} className={cc("relative")}>
+            <div
+              className="p-2 tooltip tooltip-right italic text-slate-400"
+              data-tip={`Change user input for event to "Available / Unavailable" if you want to be able to assign users`}
+            >
+              Non-assignable event
+            </div>
+          </Td>
+        )}
       </>
     );
   };
+
+const RosteredCells: React.FC<{ event: RosterEventDTO; roles: RoleDTO[] }> = ({
+  event: e,
+  roles,
+}) => {
+  return (
+    <>
+      {roles?.map((r) => {
+        if (r.id === undefined || e.assignments === undefined) {
+          throw new Error();
+        }
+        const a = e.assignments[r.id];
+        return (
+          <Cell
+            key={r.id}
+            assignment={a}
+            showId={e.showId as number}
+            event={e}
+            role={r}
+          />
+        );
+      })}
+    </>
+  );
+};
 
 const Cell: React.FC<React.ComponentProps<typeof AssignmentCell>> = (props) => {
   const { assignment, event, role } = props;

@@ -49,7 +49,7 @@ func GetEventsWithAvailabilities(showId uint) ([]Event, error) {
 	return events, res.Error
 }
 
-func GetEventsPreloaded(showId uint) ([]Event, error) {
+func (d *Database) GetEventsPreloaded(showId uint) ([]Event, error) {
 	var events []Event
 	res := db.Preload("Shadows.Person").Preload("Assignments.Person").Preload(clause.Associations).Where("show_id = ?", showId).Find(&events)
 
@@ -58,7 +58,7 @@ func GetEventsPreloaded(showId uint) ([]Event, error) {
 
 func (d *Database) GetEventsForRoster(showId uint) ([]Event, error) {
 	var events []Event
-	res := db.Preload("Shadows.Person").Preload("Assignments.Person").Preload(clause.Associations).Where("show_id = ?", showId).Where("options_user_input_type = ?", "availability").Find(&events)
+	res := db.Preload("Shadows.Person").Preload("Assignments.Person").Preload(clause.Associations).Where("show_id = ?", showId).Where("options_user_input_type = ? OR options_divider = true", "availability").Find(&events)
 
 	return events, res.Error
 }

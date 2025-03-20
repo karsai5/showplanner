@@ -6,6 +6,7 @@ import uuid "github.com/satori/go.uuid"
 type IDatabase interface {
 	GetShowsForUser(id uuid.UUID) ([]Show, error)
 	GetEventsWithAvailabilityAndAssignmentsForUser(showId uint, userId uuid.UUID) ([]Event, error)
+	GetEventsPreloaded(showId uint) ([]Event, error)
 	GetRolesForPerson(showId uint, personId uuid.UUID) ([]Role, error)
 
 	UpdateShow(showId uint, show Show) (Show, error)

@@ -41,7 +41,7 @@ func handleGetRoster(db database.IDatabase, ph permissions.IPermissionsHandler) 
 		if err != nil {
 			return logError(&err)
 		}
-		events, err := db.GetEventsForRoster(show.ID)
+		events, err := db.GetEventsPreloaded(show.ID)
 		if err != nil {
 			return logError(&err)
 		}
