@@ -6,7 +6,6 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-//go:generate mockery --name IPermissionsHandler
 type IPermissionsHandler interface {
 	HasRole(r *http.Request, role string) (bool, error)
 	GetUserId(r *http.Request) (uuid.UUID, error)

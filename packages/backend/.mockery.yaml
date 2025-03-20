@@ -1,9 +1,26 @@
+filename: 'mock_{{.InterfaceName}}.go'
+dir: '{{.InterfaceDir}}'
+mockname: 'Mock{{.InterfaceName}}'
+outpkg: '{{.PackageName}}'
 inpackage: True
-with-expecter: True
-testonly: False
+resolve-type-alias: False
+disable-version-string: True
+issue-845-fix: true
 
 packages:
   github.com/go-openapi/runtime:
     config:
+      filename: 'mock_{{.InterfaceName}}.go'
+      dir: 'mocks/{{.PackagePath}}'
+      mockname: 'Mock{{.InterfaceName}}'
+      outpkg: '{{.PackageName}}'
     interfaces:
       Producer:
+  showplanner.io/pkg/database:
+    config:
+    interfaces:
+      IDatabase:
+  showplanner.io/pkg/permissions:
+    config:
+    interfaces:
+      IPermissionsHandler:

@@ -11,6 +11,9 @@ generate:
 	rm -rf pkg/restapi/dto/*_d_t_o.go pkg/restapi/operations
 	swagger generate server -f ../openapi/openapi.yaml -A go-backend -P models.Principal --model-package="pkg/restapi/dtos" --server-package="pkg/restapi"
 
+generate-mocks:
+	mockery
+
 build: build-cli build-server
 
 build-image:
@@ -20,12 +23,12 @@ publish: build-image
 
 build-server:
 	go build ./cmd/go-backend-server || exit 1
-build-cli: 
+build-cli:
 	go build ./cmd/go-backend-cli || exit 1
 
 serve:
 	./go-backend-server --host localhost --port 8080
-	
+
 serve-in-container:
 	./go-backend-server --host '' --port 8080
 
